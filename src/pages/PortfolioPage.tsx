@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { RESUME } from '../data/resumeData';
-import { Mail, Link2, Phone, ArrowLeft, ChevronUp, Code2 } from 'lucide-react';
+import { Mail, Link2, ArrowLeft, ChevronUp, Code2 } from 'lucide-react';
 
 // ── Scroll-reveal hook ────────────────────────────────────────────────────────
 function useInView(threshold = 0.12) {

@@ -230,7 +230,7 @@ export default function CodeMoverView() {
         <DropZone
           label={label}
           onFileLoad={setFile}
-          fileName={file?.name}
+          fileName={undefined}
         />
       );
     };
