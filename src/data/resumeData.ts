@@ -18,7 +18,7 @@ export const RESUME = {
   experience: [
     {
       company: 'Lytx India Technologies',
-      role: 'SDE-3',
+      role: 'Sr. Software Engineer',
       period: 'Oct 2024 – Present',
       current: true,
       color: '#4f8ef7',
@@ -82,7 +82,7 @@ export const RESUME = {
       period: '2025',
       tech: ['React', 'TypeScript', 'Vite', 'Monaco Editor', 'Tailwind CSS'],
       color: '#89b4fa',
-      github: null,
+      github: 'https://github.com/pspcps/diffwise',
       bullets: [
         'Side-by-side text and file comparison tool powered by Monaco Editor with syntax highlighting for 50+ languages.',
         'Per-line diff arrows in a dedicated center strip let users move individual changed lines left or right with one click.',
