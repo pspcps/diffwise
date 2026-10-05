@@ -17,7 +17,7 @@ export default function WelcomeScreen({ onDone }: { onDone: () => void }) {
   const exiting = useRef(false);
 
   useEffect(() => {
-    const t = setTimeout(handleExit, 5500);
+    const t = setTimeout(handleExit, 1000);
     return () => clearTimeout(t);
   }, []);
 
@@ -25,7 +25,7 @@ export default function WelcomeScreen({ onDone }: { onDone: () => void }) {
     if (exiting.current) return;
     exiting.current = true;
     setPhase('out');
-    setTimeout(onDone, 900);
+    setTimeout(onDone, 150);
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {

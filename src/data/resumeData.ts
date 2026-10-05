@@ -72,7 +72,7 @@ export const RESUME = {
     'Messaging & Streaming':  { color: '#8b5cf6', items: ['Kafka', 'RabbitMQ', 'AWS SQS', 'MQTT'] },
     'Databases':              { color: '#10b981', items: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'T-SQL', 'Snowflake'] },
     'DevOps & Cloud':         { color: '#f59e0b', items: ['AWS', 'GCP', 'Docker', 'Kubernetes', 'GitLab CI/CD', 'Jenkins'] },
-    'GenAI & Emerging Tech':  { color: '#ec4899', items: ['Gemini', 'Vertex AI', 'ADK', 'MCP', 'Ollama', 'LangChain', 'ChromaDB'] },
+    'GenAI & Emerging Tech':  { color: '#ec4899', items: ['Gemini', 'Vertex AI', 'ADK', 'MCP', 'Ollama', 'LangChain', 'ChromaDB', 'Claude', 'AIDLC'] },
   },
 
   projects: [
@@ -87,6 +87,30 @@ export const RESUME = {
         'Side-by-side text and file comparison tool powered by Monaco Editor with syntax highlighting for 50+ languages.',
         'Per-line diff arrows in a dedicated center strip let users move individual changed lines left or right with one click.',
         'File Compare mode uses a hidden diff engine sharing live Monaco models for zero-flicker ViewZone alignment.',
+      ],
+    },
+    {
+      title: 'ApiDesk Studio',
+      subtitle: 'API Testing, Mocking & Collaboration Workspace',
+      period: '2025',
+      tech: ['React', 'Node.js', 'Express', 'PostgreSQL', 'OpenAPI', 'REST'],
+      color: '#f97316',
+      github: 'https://github.com/pspcps/ApiDesk-Studio',
+      bullets: [
+        'Centralized workspace for designing, testing, and validating REST APIs with a clean developer-first workflow.',
+        'Supports request building, response inspection, environment configuration, and streamlined API collaboration.',
+      ],
+    },
+    {
+      title: 'Wealth Management Portfolio Tracker',
+      subtitle: 'Portfolio Monitoring & Investment Insights Dashboard',
+      period: '2025',
+      tech: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Charts', 'Finance'],
+      color: '#10b981',
+      github: 'https://github.com/pspcps/Wealth-Management-Portfolio-Tracker',
+      bullets: [
+        'Tracks investment holdings and portfolio performance with a clear overview of balances, trends, and allocation health.',
+        'Designed to help users monitor wealth growth, portfolio composition, and key financial insights in one place.',
       ],
     },
     {
@@ -157,7 +181,7 @@ export const RESUME = {
       period: '2025',
       tech: ['Next.js 14', 'React', 'TypeScript', 'Go', 'Gin', 'Sarama', 'PostgreSQL', 'Docker', 'Kafka'],
       color: '#f97316',
-      github: null,
+      github: 'https://github.com/pspcps/kafkaUI',
       bullets: [
         'Full-stack Kafka management dashboard — view broker/topic/consumer group status and controller info in real time.',
         'Topics manager with create/list/delete, partition details, and a message browser with filter by partition, offset, key, and value.',
