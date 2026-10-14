@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GitCompare, FileText, UserRound, CaseSensitive, Braces, Clock3, Image, FileCode2, Regex, Network } from 'lucide-react';
+import { GitCompare, FileText, UserRound, CaseSensitive, Braces, Clock3, Image as ImageIcon, FileCode2, Regex, Network, Layers, Crop } from 'lucide-react';
 import type { ViewMode } from '../../types';
 
 interface ToolbarProps {
@@ -13,10 +13,12 @@ const tabs: { id: ViewMode; label: string; icon: React.ReactNode }[] = [
   { id: 'case', label: 'Case Converter', icon: <CaseSensitive size={13} /> },
   { id: 'json', label: 'JSON Tools', icon: <Braces size={13} /> },
   { id: 'time', label: 'Time Zones', icon: <Clock3 size={13} /> },
-  { id: 'base64', label: 'Image Base64', icon: <Image size={13} /> },
+  { id: 'base64', label: 'Image Base64', icon: <ImageIcon size={13} /> },
   { id: 'markup', label: 'Markup Studio', icon: <FileCode2 size={13} /> },
   { id: 'regex', label: 'Regex Lab', icon: <Regex size={13} /> },
   { id: 'architecture', label: 'Architecture Lab', icon: <Network size={13} /> },
+  { id: 'pdf', label: 'PDF Studio', icon: <Layers size={13} /> },
+  { id: 'image_studio', label: 'Image Studio', icon: <Crop size={13} /> },
 ];
 
 const CACHE_KEY = 'dw_quotes_cache';
@@ -55,14 +57,13 @@ const FALLBACK_QUOTES: QuoteItem[] = [
 ];
 
 function useRotatingQuote() {
-  const [quotes, setQuotes]   = useState<QuoteItem[]>([]);
+  const [quotes, setQuotes]   = useState<QuoteItem[]>(() => getCached() ?? []);
   const [idx, setIdx]         = useState(0);
   const [visible, setVisible] = useState(true); // for fade toggle
 
   // Fetch quotes once per day
   useEffect(() => {
-    const cached = getCached();
-    if (cached?.length) { setQuotes(cached); return; }
+    if (quotes.length > 0) return;
 
     fetch('https://api.quotable.io/quotes/random?limit=8&maxLength=110')
       .then(r => r.json())
@@ -72,7 +73,7 @@ function useRotatingQuote() {
         setQuotes(q);
       })
       .catch(() => setQuotes(FALLBACK_QUOTES));
-  }, []);
+  }, [quotes.length]);
 
   // Rotate with cross-fade
   useEffect(() => {

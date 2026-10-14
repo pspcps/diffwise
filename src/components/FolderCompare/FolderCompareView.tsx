@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { DiffEditor as MonacoDiffEditor } from '@monaco-editor/react';
 import { FolderOpen, GitCompare, X, Save, FileText } from 'lucide-react';
 import DropZone from '../Common/DropZone';
@@ -64,8 +64,10 @@ export default function FolderCompareView() {
   const activeTabRef = useRef<string | null>(null);
   const openTabsRef = useRef<TabItem[]>([]);
 
-  activeTabRef.current = activeTab;
-  openTabsRef.current = openTabs;
+  useEffect(() => {
+    activeTabRef.current = activeTab;
+    openTabsRef.current = openTabs;
+  }, [activeTab, openTabs]);
 
   const reset = () => {
     setLeftFiles(null);

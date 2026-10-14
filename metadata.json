@@ -1,0 +1,8 @@
+{
+  "name": "DevBench — Developer Tools for Code",
+  "description": "DevBench brings code comparison, JSON and XML tools, regex debugging, URL conversion, SQL formatting, time conversion, and image Base64 tools together in one workspace.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

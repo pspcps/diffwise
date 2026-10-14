@@ -26,6 +26,57 @@ function normalize(text: string, settings: DiffSettings) {
   return text;
 }
 
+interface PanelHeaderProps {
+  side: 'left' | 'right';
+  label: string;
+  color: string;
+  text: string;
+  onCopy: () => void;
+  onClear: () => void;
+}
+
+function PanelHeader({
+  side, label, color, text, onCopy, onClear,
+}: PanelHeaderProps) {
+  const lines = text ? text.split('\n').length : 0;
+  const chars = text.length;
+  return (
+    <div
+      className="flex items-center justify-between px-3 shrink-0"
+      style={{
+        height: 40,
+        background: 'linear-gradient(180deg, #1c1c30 0%, #181825 100%)',
+        borderBottom: '1px solid #2a2a3e',
+        borderLeft: side === 'left' ? `3px solid ${color}` : undefined,
+        borderRight: side === 'right' ? `3px solid ${color}` : undefined,
+      }}
+    >
+      <div className="flex items-center gap-2">
+        <span className="w-1.5 h-1.5 rounded-full" style={{ background: color, boxShadow: `0 0 6px ${color}` }} />
+        <span className="text-xs font-semibold text-[#cdd6f4]">{label}</span>
+        {text && (
+          <span className="text-[10px] px-1.5 py-0.5 rounded-md text-[#6c7086] font-mono"
+            style={{ background: 'rgba(69,71,90,0.35)' }}>
+            {lines.toLocaleString()} {lines === 1 ? 'line' : 'lines'} · {chars.toLocaleString()} chars
+          </span>
+        )}
+      </div>
+      <div className="flex items-center gap-0.5">
+        {text && <>
+          <button onClick={onCopy} title="Copy"
+            className="p-1.5 rounded-lg hover:bg-[#2a2a3e] text-[#6c7086] hover:text-[#cdd6f4] transition-all">
+            <Copy size={12} />
+          </button>
+          <button onClick={onClear} title="Clear"
+            className="p-1.5 rounded-lg hover:bg-[#2a2a3e] text-[#6c7086] hover:text-[#f38ba8] transition-all">
+            <RotateCcw size={12} />
+          </button>
+        </>}
+      </div>
+    </div>
+  );
+}
+
 export default function TextCompareView() {
   const [leftText, setLeftText] = useState('');
   const [rightText, setRightText] = useState('');
@@ -313,51 +364,6 @@ export default function TextCompareView() {
   // ── Input view ────────────────────────────────────────────────────────────
   const leftLines  = leftText  ? leftText.split('\n').length  : 0;
   const rightLines = rightText ? rightText.split('\n').length : 0;
-
-  const PanelHeader = ({
-    side, label, color, text, onCopy, onClear,
-  }: {
-    side: 'left' | 'right'; label: string; color: string;
-    text: string; onCopy: () => void; onClear: () => void;
-  }) => {
-    const lines = text ? text.split('\n').length : 0;
-    const chars = text.length;
-    return (
-      <div
-        className="flex items-center justify-between px-3 shrink-0"
-        style={{
-          height: 40,
-          background: 'linear-gradient(180deg, #1c1c30 0%, #181825 100%)',
-          borderBottom: '1px solid #2a2a3e',
-          borderLeft: side === 'left' ? `3px solid ${color}` : undefined,
-          borderRight: side === 'right' ? `3px solid ${color}` : undefined,
-        }}
-      >
-        <div className="flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full" style={{ background: color, boxShadow: `0 0 6px ${color}` }} />
-          <span className="text-xs font-semibold text-[#cdd6f4]">{label}</span>
-          {text && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded-md text-[#6c7086] font-mono"
-              style={{ background: 'rgba(69,71,90,0.35)' }}>
-              {lines.toLocaleString()} {lines === 1 ? 'line' : 'lines'} · {chars.toLocaleString()} chars
-            </span>
-          )}
-        </div>
-        <div className="flex items-center gap-0.5">
-          {text && <>
-            <button onClick={onCopy} title="Copy"
-              className="p-1.5 rounded-lg hover:bg-[#2a2a3e] text-[#6c7086] hover:text-[#cdd6f4] transition-all">
-              <Copy size={12} />
-            </button>
-            <button onClick={onClear} title="Clear"
-              className="p-1.5 rounded-lg hover:bg-[#2a2a3e] text-[#6c7086] hover:text-[#f38ba8] transition-all">
-              <RotateCcw size={12} />
-            </button>
-          </>}
-        </div>
-      </div>
-    );
-  };
 
   return (
     <div className="flex flex-col h-full">

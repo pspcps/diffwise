@@ -16,17 +16,17 @@ export default function WelcomeScreen({ onDone }: { onDone: () => void }) {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const exiting = useRef(false);
 
-  useEffect(() => {
-    const t = setTimeout(handleExit, 1000);
-    return () => clearTimeout(t);
-  }, []);
-
   const handleExit = () => {
     if (exiting.current) return;
     exiting.current = true;
     setPhase('out');
     setTimeout(onDone, 150);
   };
+
+  useEffect(() => {
+    const t = setTimeout(handleExit, 1000);
+    return () => clearTimeout(t);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const rect = e.currentTarget.getBoundingClientRect();

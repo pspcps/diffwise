@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0 --port 3000",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -14,10 +14,14 @@
     "@monaco-editor/react": "^4.7.0",
     "@xyflow/react": "^12.12.0",
     "diff": "^8.0.4",
+    "docx-preview": "^0.4.1",
     "html-to-image": "^1.11.13",
+    "jszip": "^3.10.2",
     "lucide-react": "^1.8.0",
+    "mammoth": "^1.13.0",
     "mermaid": "^12.2.0",
     "monaco-editor": "^0.55.1",
+    "pdf-lib": "^1.17.1",
     "prettier": "^3.9.10",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

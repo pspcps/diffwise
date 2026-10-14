@@ -27,12 +27,11 @@ function setCache(quote: QuoteData) {
 }
 
 export default function QuoteBanner() {
-  const [quote, setQuote] = useState<QuoteData | null>(null);
+  const [quote, setQuote] = useState<QuoteData | null>(() => getCached());
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    const cached = getCached();
-    if (cached) { setQuote(cached); return; }
+    if (quote) return;
 
     fetch('https://api.quotable.io/random?maxLength=120')
       .then(r => r.json())
@@ -46,7 +45,7 @@ export default function QuoteBanner() {
         const fallback = { content: 'The best way to predict the future is to create it.', author: 'Peter Drucker' };
         setQuote(fallback);
       });
-  }, []);
+  }, [quote]);
 
   if (!quote || dismissed) return null;
 

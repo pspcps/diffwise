@@ -17,6 +17,8 @@ import PortfolioPage from './pages/PortfolioPage';
 import type { ViewMode } from './types';
 
 const ArchitectureLabView = lazy(() => import('./components/ArchitectureLab/ArchitectureLabView'));
+const PdfStudioView = lazy(() => import('./components/PdfStudio/PdfStudioView'));
+const ImageStudioView = lazy(() => import('./components/ImageStudio/ImageStudioView'));
 
 function useHashRoute() {
   const [hash, setHash] = useState(window.location.hash);
@@ -85,6 +87,16 @@ export default function App() {
         {mode === 'architecture' && <div className="absolute inset-0 flex flex-col">
           <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#9399b2]">Loading Architecture Lab…</div>}>
             <ArchitectureLabView />
+          </Suspense>
+        </div>}
+        {mode === 'pdf' && <div className="absolute inset-0 flex flex-col">
+          <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#9399b2]">Loading PDF Studio…</div>}>
+            <PdfStudioView />
+          </Suspense>
+        </div>}
+        {mode === 'image_studio' && <div className="absolute inset-0 flex flex-col">
+          <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#9399b2]">Loading Image Studio…</div>}>
+            <ImageStudioView />
           </Suspense>
         </div>}
       </div>
