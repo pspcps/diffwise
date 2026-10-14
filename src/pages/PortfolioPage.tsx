@@ -419,7 +419,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             className="mt-10 flex items-center gap-2 mx-auto text-xs transition-all hover:opacity-100"
             style={{ color: '#3d3f55', opacity: 0.6 }}>
             <ArrowLeft size={11} />
-            Back to DiffWise Tool
+            Back to DevBench Tool
           </button>
         </div>
       </section>

@@ -77,8 +77,8 @@ export const RESUME = {
 
   projects: [
     {
-      title: 'DiffWise',
-      subtitle: 'Smart Online Diff Tool for Developers',
+      title: 'DevBench',
+      subtitle: 'Developer Toolkit for Comparing, Converting & Debugging Code',
       period: '2025',
       tech: ['React', 'TypeScript', 'Vite', 'Monaco Editor', 'Tailwind CSS'],
       color: '#89b4fa',

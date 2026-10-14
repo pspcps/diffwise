@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GitCompare, FileText, UserRound } from 'lucide-react';
+import { GitCompare, FileText, UserRound, CaseSensitive, Braces, Clock3, Image, FileCode2, Regex, Network } from 'lucide-react';
 import type { ViewMode } from '../../types';
 
 interface ToolbarProps {
@@ -10,7 +10,13 @@ interface ToolbarProps {
 
 const tabs: { id: ViewMode; label: string; icon: React.ReactNode }[] = [
   { id: 'text', label: 'Text Compare', icon: <FileText size={13} /> },
-  { id: 'file', label: 'File Compare', icon: <GitCompare size={13} /> },
+  { id: 'case', label: 'Case Converter', icon: <CaseSensitive size={13} /> },
+  { id: 'json', label: 'JSON Tools', icon: <Braces size={13} /> },
+  { id: 'time', label: 'Time Zones', icon: <Clock3 size={13} /> },
+  { id: 'base64', label: 'Image Base64', icon: <Image size={13} /> },
+  { id: 'markup', label: 'Markup Studio', icon: <FileCode2 size={13} /> },
+  { id: 'regex', label: 'Regex Lab', icon: <Regex size={13} /> },
+  { id: 'architecture', label: 'Architecture Lab', icon: <Network size={13} /> },
 ];
 
 const CACHE_KEY = 'dw_quotes_cache';
@@ -111,7 +117,7 @@ export default function Toolbar({ mode, onModeChange, onAbout }: ToolbarProps) {
             WebkitTextFillColor: 'transparent',
           }}
         >
-          DiffWise
+          DevBench
         </span>
       </div>
 
@@ -119,14 +125,15 @@ export default function Toolbar({ mode, onModeChange, onAbout }: ToolbarProps) {
       <div className="w-px h-5 mr-3 shrink-0" style={{ background: '#2a2a3e' }} />
 
       {/* Mode tabs */}
-      <div className="flex gap-1 shrink-0">
+      <div className="flex gap-1 shrink-0 max-w-[calc(100vw-210px)] overflow-x-auto">
         {tabs.map(tab => {
           const active = mode === tab.id;
           return (
             <button
               key={tab.id}
               onClick={() => onModeChange(tab.id)}
-              className="relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150"
+              title={tab.label}
+              className="relative flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 whitespace-nowrap"
               style={active ? {
                 background: 'rgba(137,180,250,0.12)',
                 color: '#89b4fa',
@@ -153,7 +160,7 @@ export default function Toolbar({ mode, onModeChange, onAbout }: ToolbarProps) {
 
       {/* Quote — fills center space */}
       {quote && (
-        <div className="flex-1 min-w-0 flex items-center justify-center px-4 overflow-hidden">
+        <div className="hidden xl:flex flex-1 min-w-0 items-center justify-center px-4 overflow-hidden">
           <p
             className="text-[11px] truncate text-center"
             style={{

@@ -119,15 +119,15 @@ export default function WelcomeScreen({ onDone }: { onDone: () => void }) {
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                 }}>
-                DiffWise
+                DevBench
               </h1>
             </div>
 
             {/* Tagline */}
             <div className="wsc-t2">
               <p className="text-[#585b70] text-sm leading-relaxed max-w-[260px]">
-                The precise way to compare files &amp; text.<br />
-                Built for developers who care.
+                Compare, convert, debug, and format code.<br />
+                A practical bench for developers.
               </p>
             </div>
 
@@ -139,7 +139,7 @@ export default function WelcomeScreen({ onDone }: { onDone: () => void }) {
             <div className="wsc-t4">
               <p className="text-[11px] text-[#3d3f55] leading-relaxed">
                 Your presence here means a lot to us.<br />
-                Thank you for choosing DiffWise ✦
+                Thank you for choosing DevBench ✦
               </p>
             </div>
 

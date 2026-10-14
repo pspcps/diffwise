@@ -111,7 +111,7 @@ export default function AboutPanel({ onClose, onPortfolio }: AboutPanelProps) {
           </button>
           <p className="text-center text-[10px]" style={{ color: '#2a2b3d' }}>
             <Code2 size={10} className="inline mr-1" />
-            Also built DiffWise — this tool
+            Also built DevBench — this toolkit
           </p>
         </div>
       </div>
