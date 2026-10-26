@@ -128,6 +128,15 @@ export default function App() {
       const ogDesc = document.querySelector('meta[property="og:description"]');
       if (ogDesc) ogDesc.setAttribute('content', seo.desc);
     }
+
+    // Send page_view event to Google Analytics (GA4) for tab and hash navigation
+    if (typeof (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag === 'function') {
+      (window as unknown as { gtag: (...args: unknown[]) => void }).gtag('event', 'page_view', {
+        page_title: document.title,
+        page_location: window.location.href,
+        page_path: window.location.pathname + window.location.hash,
+      });
+    }
   }, [mode, hash]);
 
   const handleModeChange = (newMode: ViewMode) => {
