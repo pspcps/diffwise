@@ -118,7 +118,7 @@ export default function Toolbar({ mode, onModeChange, onAbout }: ToolbarProps) {
             WebkitTextFillColor: 'transparent',
           }}
         >
-          DevBench
+          PSDevTool
         </span>
       </div>
 

@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f0f17"/>
+      <stop offset="50%" stop-color="#181825"/>
+      <stop offset="100%" stop-color="#1e1e2e"/>
+    </linearGradient>
+    <linearGradient id="primaryGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#89b4fa"/>
+      <stop offset="50%" stop-color="#cba6f7"/>
+      <stop offset="100%" stop-color="#f38ba8"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#24273a" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#181825" stop-opacity="0.9"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="60" result="blur"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Glowing Orbs in background -->
+  <circle cx="200" cy="150" r="180" fill="#89b4fa" opacity="0.12" filter="url(#glow)"/>
+  <circle cx="1000" cy="480" r="220" fill="#cba6f7" opacity="0.10" filter="url(#glow)"/>
+  <circle cx="600" cy="300" r="140" fill="#a6e3a1" opacity="0.06" filter="url(#glow)"/>
+
+  <!-- Subtle Grid Lines -->
+  <g opacity="0.05" stroke="#cdd6f4" stroke-width="1">
+    <line x1="0" y1="100" x2="1200" y2="100"/>
+    <line x1="0" y1="200" x2="1200" y2="200"/>
+    <line x1="0" y1="300" x2="1200" y2="300"/>
+    <line x1="0" y1="400" x2="1200" y2="400"/>
+    <line x1="0" y1="500" x2="1200" y2="500"/>
+    <line x1="200" y1="0" x2="200" y2="630"/>
+    <line x1="400" y1="0" x2="400" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="800" y1="0" x2="800" y2="630"/>
+    <line x1="1000" y1="0" x2="1000" y2="630"/>
+  </g>
+
+  <!-- Header Badge -->
+  <g transform="translate(100, 75)">
+    <rect width="270" height="36" rx="18" fill="#313244" stroke="#45475a" stroke-width="1"/>
+    <circle cx="20" cy="18" r="6" fill="#a6e3a1"/>
+    <text x="36" y="23" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600" fill="#a6e3a1" letter-spacing="0.5">100% PRIVATE • CLIENT-SIDE</text>
+  </g>
+
+  <!-- Title & Domain -->
+  <text x="100" y="180" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="64" font-weight="800" fill="url(#primaryGrad)" letter-spacing="-1">
+    PSDevTool.online
+  </text>
+  <text x="100" y="235" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="500" fill="#cdd6f4">
+    The All-in-One Developer Tools &amp; PDF Conversion Studio
+  </text>
+  <text x="100" y="275" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="400" fill="#9399b2">
+    Instant Word to PDF • Side-by-Side Code Diff • JSON Tools • Regex Debugger • DB Schema Designer
+  </text>
+
+  <!-- Tool Cards Grid -->
+  <g transform="translate(100, 320)">
+    <!-- Card 1: Word to PDF -->
+    <rect x="0" y="0" width="310" height="110" rx="14" fill="url(#cardGrad)" stroke="#313244" stroke-width="1.5"/>
+    <text x="24" y="42" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="700" fill="#f38ba8">Word to PDF Studio</text>
+    <text x="24" y="70" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#a6adc8">Direct .docx conversion, merge,</text>
+    <text x="24" y="90" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#a6adc8">split, rotate &amp; compress files</text>
+
+    <!-- Card 2: Code & File Diff -->
+    <rect x="345" y="0" width="310" height="110" rx="14" fill="url(#cardGrad)" stroke="#313244" stroke-width="1.5"/>
+    <text x="369" y="42" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="700" fill="#89b4fa">Diff &amp; Code Compare</text>
+    <text x="369" y="70" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#a6adc8">Side-by-side text &amp; folder diff</text>
+    <text x="369" y="90" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#a6adc8">with live syntax highlighting</text>
+
+    <!-- Card 3: JSON & Regex -->
+    <rect x="690" y="0" width="310" height="110" rx="14" fill="url(#cardGrad)" stroke="#313244" stroke-width="1.5"/>
+    <text x="714" y="42" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="700" fill="#a6e3a1">JSON &amp; Regex Lab</text>
+    <text x="714" y="70" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#a6adc8">Format, validate, query paths,</text>
+    <text x="714" y="90" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#a6adc8">and test complex expressions</text>
+  </g>
+
+  <!-- Footer Info -->
+  <g transform="translate(100, 480)">
+    <!-- Card 4: Architecture Lab -->
+    <rect x="0" y="0" width="480" height="80" rx="12" fill="url(#cardGrad)" stroke="#313244" stroke-width="1.5"/>
+    <text x="24" y="34" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="17" font-weight="700" fill="#cba6f7">Architecture &amp; Schema Lab</text>
+    <text x="24" y="58" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#a6adc8">Design flowcharts, database ERDs &amp; cloud infrastructure diagrams</text>
+
+    <!-- Card 5: Image Studio -->
+    <rect x="520" y="0" width="480" height="80" rx="12" fill="url(#cardGrad)" stroke="#313244" stroke-width="1.5"/>
+    <text x="544" y="34" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="17" font-weight="700" fill="#fab387">Image &amp; Base64 Studio</text>
+    <text x="544" y="58" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#a6adc8">Crop, resize, convert SVG/PNG/JPG/WebP, and inspect Base64</text>
+  </g>
+
+  <!-- Bottom Bar -->
+  <text x="100" y="598" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="600" fill="#6c7086">
+    FREE FOREVER • NO SERVER UPLOADS • NO SIGNUP REQUIRED • HTTPS://PSDEVTOOL.ONLINE
+  </text>
+</svg>

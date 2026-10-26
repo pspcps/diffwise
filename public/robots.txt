@@ -1,4 +1,11 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://diffwise.vercel.app/sitemap.xml
+# Fast crawl for major search bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://psdevtool.online/sitemap.xml

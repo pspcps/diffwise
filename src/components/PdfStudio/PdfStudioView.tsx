@@ -574,6 +574,9 @@ export default function PdfStudioView() {
         });
 
         const section = sections[i];
+        section.style.opacity = '1';
+        section.style.visibility = 'visible';
+        section.style.backgroundColor = '#ffffff';
 
         // Attempt crisp lossless PNG capture first; fallback to high-quality JPEG
         const captureOptions = {
@@ -582,23 +585,35 @@ export default function PdfStudioView() {
           backgroundColor: '#ffffff',
           cacheBust: true,
           skipFonts: true,
-          fontEmbedCSS: '',
+          fontEmbedCSS: ' ',
         };
 
-        let dataUrl: string;
+        let dataUrl: string = '';
         try {
           dataUrl = await toPng(section, captureOptions);
         } catch {
-          dataUrl = await toJpeg(section, captureOptions);
+          try {
+            dataUrl = await toJpeg(section, captureOptions);
+          } catch {
+            dataUrl = await toPng(section, {
+              ...captureOptions,
+              pixelRatio: 1.5,
+              cacheBust: false,
+            });
+          }
+        }
+
+        if (!dataUrl) {
+          throw new Error(`Failed to render page ${i + 1} of document.`);
         }
 
         const rect = section.getBoundingClientRect();
-        const elementWidth = rect.width > 0 ? rect.width : 595.28;
-        const elementHeight = rect.height > 0 ? rect.height : 841.89;
+        const elementWidth = rect.width > 0 ? rect.width : section.offsetWidth || 595.28;
+        const elementHeight = rect.height > 0 ? rect.height : section.offsetHeight || section.scrollHeight || 841.89;
         const aspect = elementHeight / elementWidth;
 
         const pdfWidth = 595.28; // Standard A4 width in points (72pt/inch)
-        const pdfHeight = pdfWidth * aspect;
+        const pdfHeight = Math.max(841.89, pdfWidth * aspect);
 
         let embeddedImage;
         if (dataUrl.startsWith('data:image/png')) {
@@ -1657,8 +1672,8 @@ export default function PdfStudioView() {
         <div
           ref={wordHiddenContainerRef}
           aria-hidden="true"
-          className="fixed left-0 top-0 pointer-events-none opacity-0 z-[-9999] bg-white text-black overflow-hidden"
-          style={{ width: '850px', minHeight: '1100px' }}
+          className="fixed -left-[99999px] top-0 pointer-events-none z-[-9999] bg-white text-black overflow-hidden"
+          style={{ width: '850px', minHeight: '1100px', opacity: 1 }}
         />
       </div>
     </div>
