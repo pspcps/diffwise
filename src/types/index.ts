@@ -1,4 +1,4 @@
-export type ViewMode = 'text' | 'file' | 'case' | 'json' | 'time' | 'base64' | 'markup' | 'regex' | 'url' | 'architecture' | 'pdf' | 'image_studio';
+export type ViewMode = 'text' | 'file' | 'case' | 'json' | 'time' | 'base64' | 'markup' | 'regex' | 'url' | 'architecture' | 'image_studio' | 'har' | 'jwt' | 'uuid' | 'api' | 'pdf';
 
 export interface FileEntry {
   name: string;

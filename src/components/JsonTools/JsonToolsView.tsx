@@ -1,10 +1,11 @@
+import YAML from 'yaml';
 import { Fragment, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type WheelEvent as ReactWheelEvent } from 'react';
 import { ArrowLeftRight, Braces, Check, ChevronRight, ChevronsUpDown, Copy, Download, GitBranch, ListFilter, Minus, Network, Plus, RotateCcw, Table2 } from 'lucide-react';
 import { jsonToXml, parseXml } from '../../utils/jsonXml';
 
 type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 type Row = Record<string, string>;
-type JsonView = 'editor' | 'table' | 'tree' | 'graph' | 'xml';
+type JsonView = 'editor' | 'table' | 'tree' | 'graph' | 'xml' | 'yaml';
 
 function isRecord(value: JsonValue): value is { [key: string]: JsonValue } {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -372,6 +373,8 @@ const PAGE_SIZES = [25, 50, 100, 250];
 export default function JsonToolsView() {
   const [source, setSource] = useState('');
   const [xmlSource, setXmlSource] = useState('');
+  const [yamlSource, setYamlSource] = useState('');
+  const [yamlError, setYamlError] = useState('');
   const [view, setView] = useState<JsonView>('editor');
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(() => new Set(['$']));
   const [search, setSearch] = useState('');
@@ -466,7 +469,9 @@ export default function JsonToolsView() {
             ['tree', 'Tree', <GitBranch size={12} />],
             ['graph', 'Graph', <Network size={12} />],
             ['xml', 'JSON ↔ XML', <ArrowLeftRight size={12} />],
-          ] as const).map(([id, label, icon]) => <button key={id} role="tab" aria-selected={view === id} onClick={() => { setView(id); if (id === 'xml' && !xmlSource && parsed !== undefined) setXmlSource(jsonToXml(parsed)); }}
+            ['yaml', 'JSON ↔ YAML', <ArrowLeftRight size={12} />],
+          ] as const).map(([id, label, icon]) => <button key={id} role="tab" aria-selected={view === id} onClick={() => { setView(id); if (id === 'xml' && !xmlSource && parsed !== undefined) setXmlSource(jsonToXml(parsed));
+              if (id === 'yaml' && !yamlSource && parsed !== undefined) { try { setYamlSource(YAML.stringify(parsed)); } catch {} } }}
             className={`flex shrink-0 items-center gap-1.5 rounded px-2.5 py-1 text-[11px] ${view === id ? 'bg-[#313244] text-[#cdd6f4]' : 'text-[#6c7086] hover:text-[#cdd6f4]'}`}>{icon}{label}</button>)}
         </div>
         <div className="flex min-w-0 items-center gap-2 text-[11px]" aria-live="polite">
@@ -491,6 +496,78 @@ export default function JsonToolsView() {
               {valid && parsed !== undefined ? <JsonTreeNode value={parsed} label="root" path="$" depth={0} expandedPaths={expandedPaths} onToggle={togglePath} />
                 : <p className={`px-1 py-2 text-xs ${parseError ? 'text-[#f38ba8]' : 'text-[#6c7086]'}`}>{parseError ? 'Fix the JSON syntax to see the parsed preview.' : 'Parsed structure will appear here.'}</p>}
             </div>
+          </div>
+        </div>
+      ) : view === 'yaml' ? (
+        <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-2">
+          <div className="flex min-h-0 flex-col border-b border-[#313244] md:border-b-0 md:border-r">
+            <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 px-4 py-2">
+              <span className="text-[11px] font-medium text-[#9399b2]">JSON source</span>
+              <button
+                onClick={() => {
+                  if (valid && parsed !== undefined) {
+                    try {
+                      setYamlSource(YAML.stringify(parsed));
+                      setYamlError('');
+                    } catch (e: unknown) {
+                      setYamlError(e instanceof Error ? e.message : 'Conversion error');
+                    }
+                  }
+                }}
+                disabled={!valid}
+                className="flex items-center gap-1.5 rounded border border-[#89b4fa]/30 px-2.5 py-1 text-[10px] text-[#89b4fa] disabled:opacity-40"
+              >
+                <ArrowLeftRight size={11} />JSON to YAML
+              </button>
+            </div>
+            <textarea
+              value={source}
+              onChange={event => {
+                setSource(event.target.value);
+                setExpandedPaths(new Set(['$']));
+                setExpandedRows(new Set());
+              }}
+              spellCheck={false}
+              aria-label="JSON for YAML conversion"
+              placeholder="Paste JSON to convert to YAML..."
+              className="min-h-0 flex-1 resize-none bg-[#1a1a2c] px-4 py-3 font-mono text-[12px] leading-6 text-[#cdd6f4] outline-none placeholder:text-[#585b70] focus:ring-1 focus:ring-inset focus:ring-[#89b4fa]/20"
+            />
+          </div>
+          <div className="flex min-h-0 flex-col">
+            <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 px-4 py-2">
+              <span className="text-[11px] font-medium text-[#9399b2]">
+                YAML source {yamlError ? <span className="font-normal text-[#f38ba8]">· {yamlError}</span> : yamlSource.trim() ? <span className="font-normal text-[#a6e3a1]">· Valid YAML</span> : null}
+              </span>
+              <button
+                onClick={() => {
+                  try {
+                    const parsedYaml = YAML.parse(yamlSource);
+                    setSource(JSON.stringify(parsedYaml, null, 2));
+                    setYamlError('');
+                    setExpandedPaths(new Set(['$']));
+                    setExpandedRows(new Set());
+                  } catch (e: unknown) {
+                    setYamlError(e instanceof Error ? e.message : 'Invalid YAML syntax');
+                  }
+                }}
+                disabled={!yamlSource.trim()}
+                className="flex items-center gap-1.5 rounded border border-[#a6e3a1]/30 px-2.5 py-1 text-[10px] text-[#a6e3a1] disabled:opacity-40"
+              >
+                <ArrowLeftRight size={11} />YAML to JSON
+              </button>
+            </div>
+            <textarea
+              value={yamlSource}
+              onChange={event => {
+                setYamlSource(event.target.value);
+                setYamlError('');
+              }}
+              spellCheck={false}
+              aria-label="YAML for JSON conversion"
+              placeholder="Paste or generate YAML here..."
+              className="min-h-0 flex-1 resize-none bg-[#1a1a2c] px-4 py-3 font-mono text-[12px] leading-6 text-[#cdd6f4] outline-none placeholder:text-[#585b70] focus:ring-1 focus:ring-inset focus:ring-[#89b4fa]/20"
+            />
+            {yamlError && <p className="shrink-0 border-t border-[#313244] px-4 py-2 text-[10px] text-[#f38ba8]">{yamlError}</p>}
           </div>
         </div>
       ) : view === 'xml' ? (

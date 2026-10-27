@@ -1,24 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { GitCompare, FileText, UserRound, CaseSensitive, Braces, Clock3, Image as ImageIcon, FileCode2, Regex, Network, Layers, Crop } from 'lucide-react';
+import {
+  GitCompare,
+  FileText,
+  UserRound,
+  CaseSensitive,
+  Braces,
+  Clock3,
+  Image as ImageIcon,
+  FileCode2,
+  Regex,
+  Network,
+  Layers,
+  Crop,
+  Globe,
+  KeyRound,
+  Search,
+  Fingerprint,
+  Send,
+} from 'lucide-react';
 import type { ViewMode } from '../../types';
 
 interface ToolbarProps {
   mode: ViewMode;
   onModeChange: (m: ViewMode) => void;
   onAbout: () => void;
+  onOpenSearch?: () => void;
 }
 
 const tabs: { id: ViewMode; label: string; icon: React.ReactNode }[] = [
-  { id: 'text', label: 'Text Compare', icon: <FileText size={13} /> },
-  { id: 'case', label: 'Case Converter', icon: <CaseSensitive size={13} /> },
-  { id: 'json', label: 'JSON Tools', icon: <Braces size={13} /> },
+  { id: 'text', label: 'Diff Checker', icon: <FileText size={13} /> },
+  { id: 'har', label: 'HAR Viewer', icon: <Globe size={13} /> },
+  { id: 'api', label: 'API Desk & Swagger', icon: <Send size={13} /> },
+  { id: 'jwt', label: 'JWT Debugger', icon: <KeyRound size={13} /> },
+  { id: 'json', label: 'JSON & YAML', icon: <Braces size={13} /> },
+  { id: 'uuid', label: 'UUID Generator', icon: <Fingerprint size={13} /> },
+  { id: 'regex', label: 'Regex Lab', icon: <Regex size={13} /> },
+  { id: 'architecture', label: 'Architecture Lab', icon: <Network size={13} /> },
+  { id: 'image_studio', label: 'Image Studio', icon: <Crop size={13} /> },
   { id: 'time', label: 'Time Zones', icon: <Clock3 size={13} /> },
   { id: 'base64', label: 'Image Base64', icon: <ImageIcon size={13} /> },
   { id: 'markup', label: 'Markup Studio', icon: <FileCode2 size={13} /> },
-  { id: 'regex', label: 'Regex Lab', icon: <Regex size={13} /> },
-  { id: 'architecture', label: 'Architecture Lab', icon: <Network size={13} /> },
-  { id: 'pdf', label: 'PDF Studio', icon: <Layers size={13} /> },
-  { id: 'image_studio', label: 'Image Studio', icon: <Crop size={13} /> },
+  { id: 'case', label: 'Case Converter', icon: <CaseSensitive size={13} /> },
+  { id: 'pdf', label: 'PDF Studio', icon: <Layers size={13} /> }, // Placed at very end as requested
 ];
 
 const CACHE_KEY = 'dw_quotes_cache';
@@ -91,7 +114,7 @@ function useRotatingQuote() {
   return { quote: quotes[idx] ?? null, visible };
 }
 
-export default function Toolbar({ mode, onModeChange, onAbout }: ToolbarProps) {
+export default function Toolbar({ mode, onModeChange, onAbout, onOpenSearch }: ToolbarProps) {
   const { quote, visible } = useRotatingQuote();
 
   return (
@@ -180,13 +203,18 @@ export default function Toolbar({ mode, onModeChange, onAbout }: ToolbarProps) {
       )}
 
       {/* Right side */}
-      <div className="flex items-center gap-2 shrink-0">
-        <span
-          className="text-[10px] px-2 py-0.5 rounded-md font-mono"
-          style={{ background: 'rgba(137,180,250,0.06)', color: '#3d3f55', border: '1px solid #252535' }}
-        >
-          v1.0
-        </span>
+      <div className="flex items-center gap-1.5 shrink-0">
+        {onOpenSearch && (
+          <button
+            onClick={onOpenSearch}
+            title="Quick search tools (Cmd+K)"
+            className="flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs transition-all bg-[#181825] hover:bg-[#313244] border border-[#313244] text-[#9399b2] hover:text-[#cdd6f4]"
+          >
+            <Search size={12} className="text-[#89b4fa]" />
+            <span className="text-[11px] hidden md:inline">Tools</span>
+            <kbd className="hidden sm:inline-block px-1 bg-[#11111b] border border-[#45475a] rounded text-[9px] font-mono text-[#6c7086]">⌘K</kbd>
+          </button>
+        )}
 
         {/* About Me button */}
         <button
