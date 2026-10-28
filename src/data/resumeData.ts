@@ -77,16 +77,16 @@ export const RESUME = {
 
   projects: [
     {
-      title: 'DevBench',
-      subtitle: 'Developer Toolkit for Comparing, Converting & Debugging Code',
+      title: 'PSDevTool',
+      subtitle: 'All-in-One Developer Workspace, Diagnostic & Code Studio',
       period: '2025',
-      tech: ['React', 'TypeScript', 'Vite', 'Monaco Editor', 'Tailwind CSS'],
+      tech: ['React', 'TypeScript', 'Vite', 'Monaco Editor', 'Tailwind CSS', 'OpenAPI', 'GraphQL', 'Mermaid'],
       color: '#89b4fa',
       github: 'https://github.com/pspcps/diffwise',
       bullets: [
-        'Side-by-side text and file comparison tool powered by Monaco Editor with syntax highlighting for 50+ languages.',
-        'Per-line diff arrows in a dedicated center strip let users move individual changed lines left or right with one click.',
-        'File Compare mode uses a hidden diff engine sharing live Monaco models for zero-flicker ViewZone alignment.',
+        'Multi-tool engineering workspace featuring side-by-side Monaco Diff Checker supporting syntax highlighting and formatters for 50+ languages.',
+        'Integrated ApiDesk Studio with Postman-style REST/GraphQL runner, cURL paste auto-parser, and bidirectional Swagger YAML/JSON explorer.',
+        'Full diagnostic lab with HAR Network Waterfall Viewer, JWT Debugger & Token Claims analyzer, Architecture Lab (Mermaid & ERD), and PDF/Image Studios.',
       ],
     },
     {

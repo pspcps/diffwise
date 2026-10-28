@@ -14,8 +14,6 @@ import {
   VolumeX,
   Palette,
 } from 'lucide-react';
-import { ThreeDArchitectureNexus } from '../components/Portfolio/ThreeDArchitectureNexus';
-import { ThreeDCareerPath } from '../components/Portfolio/ThreeDCareerPath';
 import { Projects3DSection } from '../components/Portfolio/Projects3DSection';
 import {
   LANGUAGE_THEMES,
@@ -257,7 +255,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             {/* Nav anchors */}
             <div className="hidden lg:flex items-center gap-1">
               {[
-                { id: 'experience', label: '3D Journey' },
+                { id: 'experience', label: 'Experience' },
                 { id: 'projects', label: 'Projects' },
                 { id: 'skills', label: 'Tech Stack' },
                 { id: 'education', label: 'Credentials' },
@@ -420,13 +418,8 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             ))}
           </div>
 
-          {/* ── 3D Interactive Distributed Architecture & Data Path Nexus ────────── */}
-          <div className="w-full pt-4">
-            <ThreeDArchitectureNexus theme={theme} />
-          </div>
-
           {/* Hero Action Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-3.5 pt-4">
+          <div className="flex flex-wrap items-center justify-center gap-3.5 pt-2">
             <button
               onClick={() => scrollTo('projects')}
               className="px-6 py-3 rounded-2xl text-xs sm:text-sm font-bold text-[#060814] shadow-xl transition-all hover:scale-105 active:scale-95"
@@ -435,13 +428,13 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
                 boxShadow: `0 10px 25px ${theme.primaryHex}40`,
               }}
             >
-              Explore 3D Projects ↓
+              Explore Featured Projects ↓
             </button>
             <button
               onClick={() => scrollTo('experience')}
               className="px-6 py-3 rounded-2xl text-xs sm:text-sm font-bold text-white bg-[#141834] hover:bg-[#1d234d] border border-white/10 transition-all hover:scale-105 active:scale-95"
             >
-              Interactive 3D Career Path
+              View Work Experience
             </button>
             <a
               href={`mailto:${RESUME.email}`}
@@ -453,7 +446,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
         </div>
       </section>
 
-      {/* ── 3D Interactive Career Milestone Path & Timeline ───────────────────── */}
+      {/* ── Work Experience Timeline Section ───────────────────────────────────── */}
       <Section id="experience" className="bg-[#060818]/70 rounded-3xl border border-white/5 my-8">
         <div className="text-center space-y-3 mb-10">
           <div
@@ -468,16 +461,11 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             <span>9+ Years High-Scale Journey</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-white">
-            Professional Experience &amp; 3D Spline Path
+            Professional Experience
           </h2>
           <p className="text-sm text-[#9399b2] max-w-xl mx-auto">
-            Interactive 3D spline trajectory illustrating 9+ years of scaling event-driven microservices, distributed Kafka clusters, and AI reasoning pipelines.
+            Designing event-driven streaming architectures, optimizing PostgreSQL queries, and delivering high-scale cloud microservices across 9+ years.
           </p>
-        </div>
-
-        {/* 3D Spline Career Trajectory */}
-        <div className="mb-12">
-          <ThreeDCareerPath theme={theme} />
         </div>
 
         {/* Detailed Timeline Entries */}
@@ -488,7 +476,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
         </div>
       </Section>
 
-      {/* ── 3D Projects Showcase Section ───────────────────────────────────────── */}
+      {/* ── Projects Showcase Section ───────────────────────────────────────────── */}
       <Section id="projects">
         <div className="text-center space-y-3 mb-12">
           <div
@@ -500,13 +488,13 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             }}
           >
             <Sparkles size={12} />
-            <span>Interactive 3D Showcase</span>
+            <span>Featured Engineering Showcase</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-white">
             Featured Projects &amp; Systems
           </h2>
           <p className="text-sm text-[#9399b2] max-w-xl mx-auto">
-            Hover over cards for 3D holographic tilt effects. Click any project to inspect architectural highlights, system designs, and live links.
+            Interactive project gallery. Click any project card to inspect architectural highlights, system designs, and live GitHub repositories.
           </p>
         </div>
 
@@ -679,7 +667,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
               className="text-xs text-[#6c7086] hover:text-[#89b4fa] transition-colors flex items-center gap-1.5 mx-auto font-medium"
             >
               <ArrowLeft size={12} />
-              <span>Return to DevBench Developer Toolkit</span>
+              <span>Return to PSDevTool Developer Workspace</span>
             </button>
           </div>
         </div>
@@ -687,7 +675,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
 
       {/* ── Footer ───────────────────────────────────────────────────────────── */}
       <footer className="text-center py-8 border-t border-white/5 text-xs text-[#6c7086] font-mono">
-        © 2025 Prakash Choudhary • High-Scale Architecture &amp; 3D Interactive Portfolio
+        © 2025 Prakash Choudhary • Senior Software Engineer &amp; Systems Architect
       </footer>
 
       {/* ── Back to Top Floating Button ───────────────────────────────────────── */}

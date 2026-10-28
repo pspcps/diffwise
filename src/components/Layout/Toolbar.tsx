@@ -245,7 +245,7 @@ export default function Toolbar({ mode, onModeChange, onAbout, onOpenSearch }: T
           {/* Profile / About Me Button */}
           <button
             onClick={onAbout}
-            title="About the builder / 3D Portfolio"
+            title="About the builder / Portfolio"
             className="w-8 h-8 rounded-lg flex items-center justify-center transition-all bg-[#1e1e32] hover:bg-[#313244] border border-[#313244] text-[#89b4fa] hover:text-white hover:scale-105 active:scale-95 shadow-sm"
           >
             <UserRound size={15} />

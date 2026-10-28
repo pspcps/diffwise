@@ -9,6 +9,7 @@ import {
   TrendingUp,
   X,
   ChevronRight,
+  Server,
 } from 'lucide-react';
 import { soundFX } from './SoundFX';
 
@@ -38,16 +39,26 @@ type ProjectItem = (typeof RESUME.projects)[number] & {
   architectureDetails?: string[];
 };
 
-// Augment projects with category tags & architectural details
+// Augment all projects with category tags & architectural details
 const ENRICHED_PROJECTS: ProjectItem[] = [
   {
-    ...RESUME.projects[0], // DevBench
-    category: 'tools',
-    metricBadge: '50+ Languages Diffing',
+    ...RESUME.projects[8], // Kafbat UI (https://github.com/pspcps/kafkaUI)
+    category: 'systems',
+    metricBadge: 'Real-time Kafka Cluster UI',
     architectureDetails: [
-      'Dual Monaco Diff Editor instance with synchronized scrolling & ViewZone injection.',
-      'Per-line interactive diff mover strip allowing 1-click code transfers.',
-      '100% Client-side sandbox with Web Workers for offline execution.',
+      'Full-stack Kafka management dashboard tracking broker, topic, partition, and consumer lag.',
+      'Message browser with real-time filtering by partition offset, message key, timestamp, and payload.',
+      'Go backend powered by IBM Sarama with Next.js 14 App Router and Docker containerization.',
+    ],
+  },
+  {
+    ...RESUME.projects[0], // PSDevTool
+    category: 'tools',
+    metricBadge: 'All-in-One Dev Workspace',
+    architectureDetails: [
+      'Dual Monaco Diff Editor instance with synchronized scrolling, ViewZone injection, and per-line diff mover strip.',
+      'ApiDesk Studio integrating Postman-like REST/GraphQL testing, cURL import parser, and bidirectional OpenAPI/Swagger.',
+      'Comprehensive developer utilities: HAR Network Waterfall Viewer, JWT Debugger, Architecture Lab, and PDF/Image Studios.',
     ],
   },
   {
@@ -98,6 +109,36 @@ const ENRICHED_PROJECTS: ProjectItem[] = [
       'Offline document embeddings stored directly in Redis Vector Search.',
       'Local Ollama LLM integration (Llama 3 / Mistral) ensuring zero data leakage.',
       'Custom chunking & semantic retrieval pipeline with Streamlit & Flask.',
+    ],
+  },
+  {
+    ...RESUME.projects[6], // Safety App
+    category: 'ai',
+    metricBadge: 'Local Vision LLM',
+    architectureDetails: [
+      'Automated video frame extraction via ffmpeg analyzed locally by llama3.2-vision:11b.',
+      'Dual cabin & road safety anomaly detection pipeline without cloud latency or third-party data transmission.',
+      'Real-time incident alert engine built with Python & Flask.',
+    ],
+  },
+  {
+    ...RESUME.projects[7], // InkMind
+    category: 'ai',
+    metricBadge: 'Cross-Platform RAG',
+    architectureDetails: [
+      'Offline-first AI notebook with local ChromaDB vector embeddings and Ollama chat agents.',
+      'Interactive architecture flow simulator with animated network packet metrics and failure injections.',
+      'Cross-platform native packaging supporting macOS, Windows, and Android via Capacitor.',
+    ],
+  },
+  {
+    ...RESUME.projects[9], // FleetMind
+    category: 'ai',
+    metricBadge: 'Multi-Agent Fleet Ops',
+    architectureDetails: [
+      'Multi-agent natural language query interface for IoT telematics and real-time fleet events.',
+      'Decentralized fan-out query orchestration across DynamoDB, MySQL, and New Relic.',
+      'Synthesized natural-language operational diagnostics with sub-second response times.',
     ],
   },
 ];
@@ -268,6 +309,7 @@ export const Projects3DSection: React.FC = () => {
       <div className="flex items-center justify-center gap-2 flex-wrap">
         {[
           { id: 'all', label: 'All Projects', icon: <Layers size={13} /> },
+          { id: 'systems', label: 'Kafka & Distributed Systems', icon: <Server size={13} /> },
           { id: 'ai', label: 'AI & GenAI Systems', icon: <Brain size={13} /> },
           { id: 'tools', label: 'Developer Workspaces', icon: <Wrench size={13} /> },
           { id: 'fintech', label: 'FinTech & Analytics', icon: <TrendingUp size={13} /> },
