@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   GitCompare,
   FileText,
@@ -116,118 +116,142 @@ function useRotatingQuote() {
 
 export default function Toolbar({ mode, onModeChange, onAbout, onOpenSearch }: ToolbarProps) {
   const { quote, visible } = useRotatingQuote();
+  const activeTabRef = useRef<HTMLButtonElement>(null);
+
+  // Auto-scroll active tab into view when mode changes
+  useEffect(() => {
+    if (activeTabRef.current) {
+      activeTabRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+  }, [mode]);
 
   return (
-    <div
-      className="flex items-center shrink-0 select-none px-3 gap-1"
-      style={{
-        height: 44,
-        background: 'linear-gradient(180deg, #1a1a2e 0%, #181825 100%)',
-        borderBottom: '1px solid #252535',
-        boxShadow: '0 1px 0 rgba(137,180,250,0.04)',
-      }}
-    >
-      {/* Logo */}
-      <div className="flex items-center gap-2 px-2 mr-3 shrink-0">
-        <div className="w-6 h-6 rounded-lg flex items-center justify-center"
-          style={{ background: 'linear-gradient(135deg, rgba(137,180,250,0.2), rgba(203,166,247,0.1))', border: '1px solid rgba(137,180,250,0.2)' }}>
-          <GitCompare size={13} color="#89b4fa" />
-        </div>
-        <span
-          className="text-sm font-bold tracking-tight"
-          style={{
-            background: 'linear-gradient(90deg, #cdd6f4, #89b4fa)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}
-        >
-          PSDevTool
-        </span>
-      </div>
-
-      {/* Divider */}
-      <div className="w-px h-5 mr-3 shrink-0" style={{ background: '#2a2a3e' }} />
-
-      {/* Mode tabs */}
-      <div className="flex gap-1 shrink-0 max-w-[calc(100vw-210px)] overflow-x-auto">
-        {tabs.map(tab => {
-          const active = mode === tab.id;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => onModeChange(tab.id)}
-              title={tab.label}
-              className="relative flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 whitespace-nowrap"
-              style={active ? {
-                background: 'rgba(137,180,250,0.12)',
-                color: '#89b4fa',
-                boxShadow: '0 0 0 1px rgba(137,180,250,0.2)',
-              } : {
-                color: '#585b70',
-                background: 'transparent',
-              }}
-              onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.color = '#cdd6f4'; }}
-              onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.color = '#585b70'; }}
-            >
-              {tab.icon}
-              {tab.label}
-              {active && (
-                <span
-                  className="absolute bottom-0 left-3 right-3 h-px rounded-full"
-                  style={{ background: 'linear-gradient(90deg, transparent, #89b4fa, transparent)' }}
-                />
-              )}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Quote — fills center space */}
-      {quote && (
-        <div className="hidden xl:flex flex-1 min-w-0 items-center justify-center px-4 overflow-hidden">
-          <p
-            className="text-[11px] truncate text-center"
+    <header className="relative w-full shrink-0 select-none bg-[#181825] border-b border-[#252535] z-30">
+      <div
+        className="flex items-center h-11 px-2 sm:px-3 gap-1.5 w-full justify-between"
+        style={{
+          background: 'linear-gradient(180deg, #1a1a2e 0%, #181825 100%)',
+          boxShadow: '0 1px 0 rgba(137,180,250,0.04)',
+        }}
+      >
+        {/* Logo */}
+        <div className="flex items-center gap-1.5 sm:gap-2 pr-1.5 sm:pr-2.5 shrink-0 border-r border-[#252535]">
+          <div
+            className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0"
             style={{
-              color: '#3d3f55',
-              opacity: visible ? 1 : 0,
-              transform: visible ? 'translateY(0)' : 'translateY(4px)',
-              transition: `opacity ${FADE_DURATION}ms ease, transform ${FADE_DURATION}ms ease`,
-              maxWidth: 480,
+              background: 'linear-gradient(135deg, rgba(137,180,250,0.2), rgba(203,166,247,0.1))',
+              border: '1px solid rgba(137,180,250,0.25)',
             }}
           >
-            <span style={{ color: '#45475a' }}>{quote.content}</span>
-            <span className="mx-1.5" style={{ color: '#2a2b3d' }}>—</span>
-            <span style={{ color: '#3d3f55', fontStyle: 'italic' }}>{quote.author}</span>
-          </p>
-        </div>
-      )}
-
-      {/* Right side */}
-      <div className="flex items-center gap-1.5 shrink-0">
-        {onOpenSearch && (
-          <button
-            onClick={onOpenSearch}
-            title="Quick search tools (Cmd+K)"
-            className="flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs transition-all bg-[#181825] hover:bg-[#313244] border border-[#313244] text-[#9399b2] hover:text-[#cdd6f4]"
+            <GitCompare size={13} color="#89b4fa" />
+          </div>
+          <span
+            className="text-xs sm:text-sm font-bold tracking-tight"
+            style={{
+              background: 'linear-gradient(90deg, #cdd6f4, #89b4fa)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
           >
-            <Search size={12} className="text-[#89b4fa]" />
-            <span className="text-[11px] hidden md:inline">Tools</span>
-            <kbd className="hidden sm:inline-block px-1 bg-[#11111b] border border-[#45475a] rounded text-[9px] font-mono text-[#6c7086]">⌘K</kbd>
-          </button>
+            <span className="hidden sm:inline">PSDevTool</span>
+            <span className="sm:hidden">PSDev</span>
+          </span>
+        </div>
+
+        {/* Mode tabs with smooth scroll, flex-1 min-w-0 ensures it NEVER overflows parent */}
+        <div className="flex-1 min-w-0 flex items-center gap-1 overflow-x-auto no-scrollbar scroll-smooth py-1 px-1">
+          {tabs.map(tab => {
+            const active = mode === tab.id;
+            return (
+              <button
+                key={tab.id}
+                ref={active ? activeTabRef : null}
+                onClick={() => onModeChange(tab.id)}
+                title={tab.label}
+                className="relative flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-medium transition-all duration-150 whitespace-nowrap shrink-0"
+                style={
+                  active
+                    ? {
+                        background: 'rgba(137,180,250,0.15)',
+                        color: '#89b4fa',
+                        boxShadow: '0 0 0 1px rgba(137,180,250,0.3)',
+                      }
+                    : {
+                        color: '#6c7086',
+                        background: 'transparent',
+                      }
+                }
+                onMouseEnter={e => {
+                  if (!active) (e.currentTarget as HTMLElement).style.color = '#cdd6f4';
+                }}
+                onMouseLeave={e => {
+                  if (!active) (e.currentTarget as HTMLElement).style.color = '#6c7086';
+                }}
+              >
+                {tab.icon}
+                <span>{tab.label}</span>
+                {active && (
+                  <span
+                    className="absolute bottom-0 left-2.5 right-2.5 h-0.5 rounded-full"
+                    style={{ background: 'linear-gradient(90deg, transparent, #89b4fa, transparent)' }}
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Quote — fills center space on desktop only */}
+        {quote && (
+          <div className="hidden 2xl:flex flex-1 min-w-0 items-center justify-center px-3 overflow-hidden">
+            <p
+              className="text-[11px] truncate text-center"
+              style={{
+                color: '#3d3f55',
+                opacity: visible ? 1 : 0,
+                transform: visible ? 'translateY(0)' : 'translateY(4px)',
+                transition: `opacity ${FADE_DURATION}ms ease, transform ${FADE_DURATION}ms ease`,
+                maxWidth: 420,
+              }}
+            >
+              <span style={{ color: '#45475a' }}>{quote.content}</span>
+              <span className="mx-1.5" style={{ color: '#2a2b3d' }}>—</span>
+              <span style={{ color: '#3d3f55', fontStyle: 'italic' }}>{quote.author}</span>
+            </p>
+          </div>
         )}
 
-        {/* About Me button */}
-        <button
-          onClick={onAbout}
-          title="About the builder"
-          className="w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:bg-white/5"
-          style={{ color: '#45475a' }}
-          onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#6c7086'}
-          onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = '#45475a'}
-        >
-          <UserRound size={14} />
-        </button>
+        {/* Right side Actions (Pinned & Always Visible on all screen sizes) */}
+        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 ml-auto pl-1 sm:pl-1.5 z-20 bg-[#181825]">
+          {/* Quick Search Button */}
+          {onOpenSearch && (
+            <button
+              onClick={onOpenSearch}
+              title="Quick search tools (Cmd+K)"
+              className="flex items-center gap-1.5 p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs transition-all bg-[#1e1e32] hover:bg-[#313244] border border-[#313244] text-[#9399b2] hover:text-[#cdd6f4] shadow-sm active:scale-95"
+            >
+              <Search size={14} className="text-[#89b4fa]" />
+              <span className="text-[11px] font-medium hidden md:inline">Tools</span>
+              <kbd className="hidden lg:inline-block px-1 bg-[#11111b] border border-[#45475a] rounded text-[9px] font-mono text-[#6c7086]">
+                ⌘K
+              </kbd>
+            </button>
+          )}
+
+          {/* Profile / About Me Button */}
+          <button
+            onClick={onAbout}
+            title="About the builder / 3D Portfolio"
+            className="w-8 h-8 rounded-lg flex items-center justify-center transition-all bg-[#1e1e32] hover:bg-[#313244] border border-[#313244] text-[#89b4fa] hover:text-white hover:scale-105 active:scale-95 shadow-sm"
+          >
+            <UserRound size={15} />
+          </button>
+        </div>
       </div>
-    </div>
+    </header>
   );
 }

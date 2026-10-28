@@ -170,7 +170,7 @@ const TOOLS: ToolItem[] = [
     id: 'portfolio',
     name: '3D Interactive Portfolio & Projects',
     category: 'About',
-    keywords: ['about', 'portfolio', '3d', 'keyboard', 'creator', 'prakash', 'contact', 'resume', 'projects', 'experience'],
+    keywords: ['about', 'portfolio', '3d', 'nexus', 'path', 'spline', 'architecture', 'languages', 'creator', 'prakash', 'contact', 'resume', 'projects', 'experience'],
     icon: <UserRound size={16} />,
     color: '#89b4fa',
   },

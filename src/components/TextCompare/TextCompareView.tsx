@@ -344,9 +344,9 @@ export default function TextCompareView() {
     return (
       <div className="flex flex-col h-full relative">
         {/* Panel headers */}
-        <div className="flex shrink-0 bg-[#181825] border-b border-[#45475a] flex-wrap">
+        <div className="flex shrink-0 bg-[#181825] border-b border-[#45475a] overflow-x-auto no-scrollbar items-center">
           {/* Left header */}
-          <div className="flex-1 flex items-center justify-between px-3 py-1.5 border-r border-[#45475a] min-w-0">
+          <div className="flex-1 flex items-center justify-between px-3 py-1.5 border-r border-[#45475a] min-w-[220px]">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#f38ba8]" />
               <span className="text-xs text-[#cdd6f4] font-medium">Original</span>
@@ -430,7 +430,7 @@ export default function TextCompareView() {
           </div>
 
           {/* Right header */}
-          <div className="flex-1 flex items-center justify-between px-3 py-1.5 min-w-0">
+          <div className="flex-1 flex items-center justify-between px-3 py-1.5 min-w-[260px]">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#a6e3a1]" />
               <span className="text-xs text-[#cdd6f4] font-medium">Modified</span>
@@ -641,7 +641,7 @@ export default function TextCompareView() {
 
   return (
     <div className="flex flex-col h-full relative">
-      <div className="flex flex-1 min-h-0">
+      <div className="flex flex-col md:flex-row flex-1 min-h-0">
         {/* Left pane */}
         <div className="flex-1 flex flex-col" style={{ borderRight: '1px solid #2a2a3e' }}>
           <PanelHeader

@@ -12,9 +12,15 @@ import {
   Briefcase,
   Volume2,
   VolumeX,
+  Palette,
 } from 'lucide-react';
-import { ThreeDKeyboard, type Portfolio3DTheme } from '../components/Portfolio/ThreeDKeyboard';
+import { ThreeDArchitectureNexus } from '../components/Portfolio/ThreeDArchitectureNexus';
+import { ThreeDCareerPath } from '../components/Portfolio/ThreeDCareerPath';
 import { Projects3DSection } from '../components/Portfolio/Projects3DSection';
+import {
+  LANGUAGE_THEMES,
+  type LanguageThemeKey,
+} from '../components/Portfolio/LanguageThemes';
 import { soundFX } from '../components/Portfolio/SoundFX';
 
 // ── Scroll-reveal hook ────────────────────────────────────────────────────────
@@ -172,14 +178,16 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [showTop, setShowTop] = useState(false);
   const [soundActive, setSoundActive] = useState(true);
-  const [theme, setTheme] = useState<Portfolio3DTheme>('cyberpunk');
+  const [currentLang, setCurrentLang] = useState<LanguageThemeKey>('nodejs');
+
+  const theme = LANGUAGE_THEMES[currentLang];
 
   const role = useTypewriter([
     'Senior Software Engineer (9+ Years)',
-    'Kafka & Event-Driven Systems Architect',
-    'Full-Stack Developer (Node.js & React)',
-    'AI Engineer & GenAI Systems Builder',
-    'Cloud-Native Performance Optimizer',
+    'Kafka Distributed Event Streaming Architect',
+    'Full-Stack Developer (Node.js, TypeScript & React)',
+    'AI Engineer & GenAI Systems Pipeline Builder',
+    'High-Scale Microservices & Cloud-Native Lead',
   ]);
 
   useEffect(() => {
@@ -196,23 +204,31 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const handleSelectLanguage = (langKey: LanguageThemeKey) => {
+    soundFX.playKeyClick();
+    setCurrentLang(langKey);
+  };
+
   return (
     <div className="min-h-screen bg-[#030712] text-[#cdd6f4] font-sans selection:bg-[#89b4fa]/30 overflow-x-hidden">
       {/* ── Sticky Modern Navigation Bar ──────────────────────────────────────── */}
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 ${
           scrolled
-            ? 'py-3 bg-[#030712]/90 backdrop-blur-xl border-b border-white/10 shadow-2xl'
+            ? 'py-3 bg-[#030712]/92 backdrop-blur-xl border-b border-white/10 shadow-2xl'
             : 'py-5 bg-transparent'
         }`}
       >
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
           {/* Brand & Avatar */}
           <div
             onClick={() => scrollTo('hero')}
             className="flex items-center gap-3 cursor-pointer group"
           >
-            <div className="w-8 h-8 rounded-xl overflow-hidden ring-2 ring-white/20 group-hover:ring-[#89b4fa] transition-all">
+            <div
+              className="w-8 h-8 rounded-xl overflow-hidden ring-2 transition-all"
+              style={{ borderColor: theme.primaryHex }}
+            >
               <img
                 src="/avatar.jpg"
                 alt="Prakash Choudhary"
@@ -220,32 +236,78 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
               />
             </div>
             <div>
-              <span className="text-sm font-bold text-white group-hover:text-[#89b4fa] transition-colors">
+              <span className="text-sm font-bold text-white transition-colors" style={{ color: theme.primaryHex }}>
                 {RESUME.name}
               </span>
-              <span className="hidden sm:inline-block ml-2 text-[10px] px-2 py-0.5 rounded-full font-mono bg-[#89b4fa]/15 text-[#89b4fa] border border-[#89b4fa]/25">
-                Senior SDE
+              <span
+                className="hidden sm:inline-block ml-2 text-[10px] px-2 py-0.5 rounded-full font-mono border"
+                style={{
+                  backgroundColor: `${theme.primaryHex}18`,
+                  color: theme.primaryHex,
+                  borderColor: `${theme.primaryHex}35`,
+                }}
+              >
+                9+ Yrs Lead SDE
               </span>
             </div>
           </div>
 
-          {/* Navigation Links */}
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            {[
-              { id: 'experience', label: 'Experience' },
-              { id: 'projects', label: '3D Projects' },
-              { id: 'skills', label: 'Skills' },
-              { id: 'education', label: 'About' },
-              { id: 'contact', label: 'Contact' },
-            ].map(sec => (
-              <button
-                key={sec.id}
-                onClick={() => scrollTo(sec.id)}
-                className="hidden md:inline-block px-3 py-1.5 rounded-xl text-xs font-semibold text-[#9399b2] hover:text-white hover:bg-white/5 transition-all"
-              >
-                {sec.label}
-              </button>
-            ))}
+          {/* Navigation Links & Language Theme Switcher */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Nav anchors */}
+            <div className="hidden lg:flex items-center gap-1">
+              {[
+                { id: 'experience', label: '3D Journey' },
+                { id: 'projects', label: 'Projects' },
+                { id: 'skills', label: 'Tech Stack' },
+                { id: 'education', label: 'Credentials' },
+                { id: 'contact', label: 'Contact' },
+              ].map(sec => (
+                <button
+                  key={sec.id}
+                  onClick={() => scrollTo(sec.id)}
+                  className="px-3 py-1.5 rounded-xl text-xs font-semibold text-[#9399b2] hover:text-white hover:bg-white/5 transition-all"
+                >
+                  {sec.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Language Theme Selector in Nav */}
+            <div className="flex items-center gap-1 bg-[#0a0f24] p-1 rounded-2xl border border-white/10 shadow-inner">
+              <span className="text-[10px] font-mono text-[#6c7086] px-1.5 hidden md:inline">
+                <Palette size={12} className="inline mr-1" />
+                Lang:
+              </span>
+              {(['nodejs', 'python', 'typescript', 'golang', 'rust'] as LanguageThemeKey[]).map(key => {
+                const item = LANGUAGE_THEMES[key];
+                const active = currentLang === key;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => handleSelectLanguage(key)}
+                    title={`Switch portfolio theme to ${item.name}`}
+                    className={`px-2.5 py-1 rounded-xl text-[11px] font-mono font-bold transition-all ${
+                      active
+                        ? 'shadow-lg scale-105'
+                        : 'text-[#9399b2] hover:text-white hover:bg-white/5 opacity-70 hover:opacity-100'
+                    }`}
+                    style={
+                      active
+                        ? {
+                            backgroundColor: `${item.primaryHex}25`,
+                            color: item.primaryHex,
+                            border: `1px solid ${item.primaryHex}60`,
+                          }
+                        : {}
+                    }
+                  >
+                    <span>{item.iconSymbol}</span>
+                    <span className="ml-1 hidden sm:inline">{item.shortName}</span>
+                  </button>
+                );
+              })}
+            </div>
 
             {/* Sound FX Toggle */}
             <button
@@ -254,7 +316,8 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
                 soundFX.enabled = !soundActive;
               }}
               title={soundActive ? 'Mute Audio FX' : 'Enable Audio FX'}
-              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-[#89b4fa] transition-colors"
+              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
+              style={{ color: theme.primaryHex }}
             >
               {soundActive ? <Volume2 size={14} /> : <VolumeX size={14} />}
             </button>
@@ -262,59 +325,59 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             {/* Back to DevBench */}
             <button
               onClick={onBack}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#4f8ef7] to-[#8b5cf6] hover:opacity-90 shadow-lg shadow-[#4f8ef7]/20 transition-all hover:scale-105"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#334155] to-[#1e293b] hover:opacity-90 border border-white/10 transition-all hover:scale-105"
             >
               <ArrowLeft size={12} />
-              <span>Back to Tools</span>
+              <span className="hidden sm:inline">Tools</span>
             </button>
           </div>
         </div>
       </nav>
 
-      {/* ── Hero Section with 3D Mechanical Keyboard Centerpiece ──────────────── */}
+      {/* ── Hero Section with 3D Architecture Nexus Centerpiece ──────────────── */}
       <section id="hero" className="relative pt-28 pb-16 px-6 max-w-6xl mx-auto">
-        {/* Dynamic Ambient Background Glows */}
+        {/* Dynamic Ambient Background Glows matching active Language Theme */}
         <div
-          className="absolute top-12 left-1/4 w-[500px] h-[500px] rounded-full blur-[140px] pointer-events-none opacity-20"
-          style={{
-            background:
-              theme === 'cyberpunk'
-                ? '#00f0ff'
-                : theme === 'matrix'
-                ? '#10b981'
-                : theme === 'sunset'
-                ? '#f59e0b'
-                : '#8b5cf6',
-          }}
+          className="absolute top-12 left-1/4 w-[500px] h-[500px] rounded-full blur-[140px] pointer-events-none opacity-25 transition-all duration-700"
+          style={{ background: theme.primaryHex }}
         />
         <div
-          className="absolute top-36 right-1/4 w-[400px] h-[400px] rounded-full blur-[130px] pointer-events-none opacity-15"
-          style={{
-            background:
-              theme === 'cyberpunk'
-                ? '#ff007f'
-                : theme === 'matrix'
-                ? '#a6e3a1'
-                : theme === 'sunset'
-                ? '#f43f5e'
-                : '#3b82f6',
-          }}
+          className="absolute top-36 right-1/4 w-[400px] h-[400px] rounded-full blur-[130px] pointer-events-none opacity-20 transition-all duration-700"
+          style={{ background: theme.secondaryHex }}
         />
 
         <div className="flex flex-col items-center text-center space-y-6">
           {/* Availability Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#10b981]/10 border border-[#10b981]/30 text-xs font-semibold text-[#10b981] animate-in fade-in duration-500">
-            <span className="w-2 h-2 rounded-full bg-[#10b981] animate-ping" />
-            <span>Open for Senior Engineering Roles &amp; High-Scale Architectural Consulting</span>
+          <div
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold animate-in fade-in duration-500"
+            style={{
+              backgroundColor: `${theme.primaryHex}12`,
+              borderColor: `${theme.primaryHex}40`,
+              color: theme.primaryHex,
+            }}
+          >
+            <span
+              className="w-2 h-2 rounded-full animate-ping"
+              style={{ backgroundColor: theme.primaryHex }}
+            />
+            <span>Open for Principal / Senior Engineering Roles &amp; High-Scale Architectural Consulting</span>
           </div>
 
           {/* Name & Title */}
           <div className="space-y-2 max-w-3xl">
             <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white">
-              Hi, I&apos;m <span className="bg-gradient-to-r from-[#4f8ef7] via-[#89b4fa] to-[#cba6f7] bg-clip-text text-transparent">{RESUME.name}</span>
+              Hi, I&apos;m{' '}
+              <span
+                className="bg-clip-text text-transparent bg-gradient-to-r transition-all duration-500"
+                style={{
+                  backgroundImage: `linear-gradient(90deg, ${theme.primaryHex}, #ffffff, ${theme.secondaryHex})`,
+                }}
+              >
+                {RESUME.name}
+              </span>
             </h1>
             <div className="h-9 flex items-center justify-center">
-              <span className="text-lg sm:text-xl font-mono font-bold text-[#89b4fa]">
+              <span className="text-lg sm:text-xl font-mono font-bold" style={{ color: theme.primaryHex }}>
                 {role}
                 <span className="animate-pulse">_</span>
               </span>
@@ -325,6 +388,22 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
           <p className="max-w-2xl text-sm sm:text-base text-[#9399b2] leading-relaxed">
             {RESUME.summary}
           </p>
+
+          {/* Language Theme Description Bar */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+            <span className="text-xs font-mono text-[#6c7086]">Active Tech Mode:</span>
+            <span
+              className="px-3 py-1 rounded-xl text-xs font-bold font-mono border"
+              style={{
+                backgroundColor: `${theme.primaryHex}15`,
+                color: theme.primaryHex,
+                borderColor: `${theme.primaryHex}35`,
+              }}
+            >
+              {theme.iconSymbol} {theme.name}
+            </span>
+            <span className="text-xs text-[#9399b2] hidden sm:inline">• {theme.tagline}</span>
+          </div>
 
           {/* Key Impact Stats Bar */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-3xl pt-2">
@@ -341,24 +420,20 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             ))}
           </div>
 
-          {/* ── 3D Interactive Mechanical Keyboard Hero Canvas ────────────────── */}
+          {/* ── 3D Interactive Distributed Architecture & Data Path Nexus ────────── */}
           <div className="w-full pt-4">
-            <ThreeDKeyboard
-              currentTheme={theme}
-              onThemeChange={setTheme}
-              soundEnabled={soundActive}
-              onToggleSound={() => {
-                setSoundActive(!soundActive);
-                soundFX.enabled = !soundActive;
-              }}
-            />
+            <ThreeDArchitectureNexus theme={theme} />
           </div>
 
           {/* Hero Action Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-3.5 pt-4">
             <button
               onClick={() => scrollTo('projects')}
-              className="px-6 py-3 rounded-2xl text-xs sm:text-sm font-bold text-[#060814] bg-[#89b4fa] hover:bg-[#b4befe] shadow-xl shadow-[#89b4fa]/25 transition-all hover:scale-105 active:scale-95"
+              className="px-6 py-3 rounded-2xl text-xs sm:text-sm font-bold text-[#060814] shadow-xl transition-all hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: theme.primaryHex,
+                boxShadow: `0 10px 25px ${theme.primaryHex}40`,
+              }}
             >
               Explore 3D Projects ↓
             </button>
@@ -366,7 +441,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
               onClick={() => scrollTo('experience')}
               className="px-6 py-3 rounded-2xl text-xs sm:text-sm font-bold text-white bg-[#141834] hover:bg-[#1d234d] border border-white/10 transition-all hover:scale-105 active:scale-95"
             >
-              View Work Experience
+              Interactive 3D Career Path
             </button>
             <a
               href={`mailto:${RESUME.email}`}
@@ -378,10 +453,52 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
         </div>
       </section>
 
+      {/* ── 3D Interactive Career Milestone Path & Timeline ───────────────────── */}
+      <Section id="experience" className="bg-[#060818]/70 rounded-3xl border border-white/5 my-8">
+        <div className="text-center space-y-3 mb-10">
+          <div
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-bold uppercase tracking-wider"
+            style={{
+              backgroundColor: `${theme.primaryHex}15`,
+              color: theme.primaryHex,
+              borderColor: `${theme.primaryHex}35`,
+            }}
+          >
+            <Briefcase size={12} />
+            <span>9+ Years High-Scale Journey</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-black text-white">
+            Professional Experience &amp; 3D Spline Path
+          </h2>
+          <p className="text-sm text-[#9399b2] max-w-xl mx-auto">
+            Interactive 3D spline trajectory illustrating 9+ years of scaling event-driven microservices, distributed Kafka clusters, and AI reasoning pipelines.
+          </p>
+        </div>
+
+        {/* 3D Spline Career Trajectory */}
+        <div className="mb-12">
+          <ThreeDCareerPath theme={theme} />
+        </div>
+
+        {/* Detailed Timeline Entries */}
+        <div className="relative border-l-2 border-[#1e2342] ml-4 md:ml-12 max-w-4xl mx-auto">
+          {RESUME.experience.map((exp, idx) => (
+            <TimelineEntry key={exp.company} exp={exp} idx={idx} />
+          ))}
+        </div>
+      </Section>
+
       {/* ── 3D Projects Showcase Section ───────────────────────────────────────── */}
       <Section id="projects">
         <div className="text-center space-y-3 mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#89b4fa]/10 text-[#89b4fa] border border-[#89b4fa]/30 text-xs font-bold uppercase tracking-wider">
+          <div
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-bold uppercase tracking-wider"
+            style={{
+              backgroundColor: `${theme.primaryHex}15`,
+              color: theme.primaryHex,
+              borderColor: `${theme.primaryHex}35`,
+            }}
+          >
             <Sparkles size={12} />
             <span>Interactive 3D Showcase</span>
           </div>
@@ -396,33 +513,17 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
         <Projects3DSection />
       </Section>
 
-      {/* ── Work Experience Timeline Section ───────────────────────────────────── */}
-      <Section id="experience" className="bg-[#060818]/60 rounded-3xl border border-white/5 my-8">
-        <div className="text-center space-y-3 mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#4f8ef7]/10 text-[#4f8ef7] border border-[#4f8ef7]/30 text-xs font-bold uppercase tracking-wider">
-            <Briefcase size={12} />
-            <span>9+ Years Career Track</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-white">
-            Professional Experience
-          </h2>
-          <p className="text-sm text-[#9399b2] max-w-xl mx-auto">
-            Designing event-driven streaming architectures, optimizing PostgreSQL queries, and delivering high-scale cloud microservices.
-          </p>
-        </div>
-
-        {/* Timeline container */}
-        <div className="relative border-l-2 border-[#1e2342] ml-4 md:ml-12 max-w-4xl mx-auto">
-          {RESUME.experience.map((exp, idx) => (
-            <TimelineEntry key={exp.company} exp={exp} idx={idx} />
-          ))}
-        </div>
-      </Section>
-
-      {/* ── Skills & Technical Expertise Section ──────────────────────────────── */}
+      {/* ── Skills & Technical Ecosystem Section ──────────────────────────────── */}
       <Section id="skills">
         <div className="text-center space-y-3 mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#cba6f7]/10 text-[#cba6f7] border border-[#cba6f7]/30 text-xs font-bold uppercase tracking-wider">
+          <div
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-bold uppercase tracking-wider"
+            style={{
+              backgroundColor: `${theme.primaryHex}15`,
+              color: theme.primaryHex,
+              borderColor: `${theme.primaryHex}35`,
+            }}
+          >
             <Cpu size={12} />
             <span>Technical Mastery</span>
           </div>
@@ -476,7 +577,9 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
 
             <div>
               <h3 className="text-lg font-bold text-white">{RESUME.education.degree}</h3>
-              <p className="text-sm text-[#89b4fa] font-medium">{RESUME.education.institution}</p>
+              <p className="text-sm font-medium" style={{ color: theme.primaryHex }}>
+                {RESUME.education.institution}
+              </p>
               <p className="text-xs text-[#6c7086] mt-1">{RESUME.education.period} • {RESUME.education.location}</p>
             </div>
 
@@ -526,23 +629,34 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
       {/* ── Contact Section ───────────────────────────────────────────────────── */}
       <section id="contact" className="py-24 px-6 text-center max-w-3xl mx-auto relative">
         <div className="p-10 md:p-14 rounded-3xl bg-gradient-to-b from-[#0c1028] to-[#060814] border border-white/15 shadow-2xl space-y-6 relative overflow-hidden">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#89b4fa]/15 text-[#89b4fa] border border-[#89b4fa]/30 text-xs font-bold uppercase tracking-wider">
+          <div
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-bold uppercase tracking-wider"
+            style={{
+              backgroundColor: `${theme.primaryHex}15`,
+              color: theme.primaryHex,
+              borderColor: `${theme.primaryHex}35`,
+            }}
+          >
             <Sparkles size={12} />
             <span>Connect &amp; Collaborate</span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-            Let&apos;s Build Something Incredible
+            Let&apos;s Build Something High-Scale
           </h2>
 
           <p className="text-sm text-[#9399b2] max-w-lg mx-auto leading-relaxed">
-            Whether you are scaling distributed microservices, architecting Kafka streaming pipelines, or designing AI-powered products, feel free to reach out.
+            Whether you are scaling distributed microservices, architecting Kafka streaming pipelines, or designing agentic AI systems, feel free to reach out.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
             <a
               href={`mailto:${RESUME.email}`}
-              className="flex items-center gap-2 px-6 py-3 rounded-2xl text-xs sm:text-sm font-bold text-[#060814] bg-[#89b4fa] hover:bg-[#b4befe] shadow-lg shadow-[#89b4fa]/25 transition-all hover:scale-105"
+              className="flex items-center gap-2 px-6 py-3 rounded-2xl text-xs sm:text-sm font-bold text-[#060814] transition-all hover:scale-105"
+              style={{
+                backgroundColor: theme.primaryHex,
+                boxShadow: `0 8px 20px ${theme.primaryHex}35`,
+              }}
             >
               <Mail size={16} />
               <span>{RESUME.email}</span>
@@ -573,14 +687,18 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
 
       {/* ── Footer ───────────────────────────────────────────────────────────── */}
       <footer className="text-center py-8 border-t border-white/5 text-xs text-[#6c7086] font-mono">
-        © 2025 Prakash Choudhary • Built with React, TypeScript &amp; Three.js
+        © 2025 Prakash Choudhary • High-Scale Architecture &amp; 3D Interactive Portfolio
       </footer>
 
       {/* ── Back to Top Floating Button ───────────────────────────────────────── */}
       {showTop && (
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-6 right-6 w-11 h-11 rounded-2xl bg-[#89b4fa] text-[#060814] flex items-center justify-center shadow-2xl shadow-[#89b4fa]/40 hover:scale-110 active:scale-95 transition-all z-40"
+          className="fixed bottom-6 right-6 w-11 h-11 rounded-2xl text-[#060814] flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all z-40"
+          style={{
+            backgroundColor: theme.primaryHex,
+            boxShadow: `0 10px 25px ${theme.primaryHex}50`,
+          }}
         >
           <ChevronUp size={20} />
         </button>

@@ -2381,15 +2381,15 @@ export default function ArchitectureLabView() {
   return (
     <section className="flex h-full min-h-0 flex-col bg-[#1e1e2e] text-[#cdd6f4]">
       {/* Top Header / Mode Switcher */}
-      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#313244] bg-[#181825] px-4 py-2">
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#313244] bg-[#181825] px-3 sm:px-4 py-1.5 sm:py-2">
         <div>
-          <h1 className="text-sm font-bold text-[#cdd6f4]">Architecture Lab</h1>
-          <p className="mt-0.5 text-[10px] text-[#6c7086]">
+          <h1 className="text-xs sm:text-sm font-bold text-[#cdd6f4]">Architecture Lab</h1>
+          <p className="mt-0.5 text-[9px] sm:text-[10px] text-[#6c7086] hidden sm:block">
             Mermaid diagram studio, system design traffic simulator, and database ERD modeler.
           </p>
         </div>
 
-        <div className="flex gap-1 rounded-md border border-[#313244] bg-[#11111b] p-0.5" role="tablist">
+        <div className="flex gap-1 rounded-md border border-[#313244] bg-[#11111b] p-0.5 overflow-x-auto no-scrollbar max-w-full" role="tablist">
           {(
             [
               ['mermaid', 'Mermaid Studio', <Workflow size={12} key="m" />],
