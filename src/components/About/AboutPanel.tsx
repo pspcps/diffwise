@@ -107,11 +107,11 @@ export default function AboutPanel({ onClose, onPortfolio }: AboutPanelProps) {
             }}
           >
             <ExternalLink size={14} />
-            View Full Portfolio
+            View 3D Interactive Portfolio
           </button>
-          <p className="text-center text-[10px]" style={{ color: '#2a2b3d' }}>
-            <Code2 size={10} className="inline mr-1" />
-            Also built DevBench — this toolkit
+          <p className="text-center text-[10px]" style={{ color: '#6c7086' }}>
+            <Code2 size={10} className="inline mr-1 text-[#89b4fa]" />
+            Featuring interactive 3D mechanical keyboard &amp; projects
           </p>
         </div>
       </div>

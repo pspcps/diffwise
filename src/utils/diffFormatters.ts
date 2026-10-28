@@ -45,14 +45,14 @@ export function detectFormat(text: string): 'json' | 'xml' | 'yaml' | 'text' {
   // 2. Check for XML / HTML
   if (trimmed.startsWith('<') && trimmed.endsWith('>')) {
     // Quick heuristic: has opening and closing tags or XML declaration
-    if (/<[a-zA-Z0-9_\-:]+(\s+[^>]*)?>[\s\S]*<\/[a-zA-Z0-9_\-:]+>/.test(trimmed) || trimmed.startsWith('<?xml')) {
+    if (/<[a-zA-Z0-9_:-]+(\s+[^>]*)?>[\s\S]*<\/[a-zA-Z0-9_:-]+>/.test(trimmed) || trimmed.startsWith('<?xml')) {
       return 'xml';
     }
   }
 
   // 3. Check for YAML
   // Must have key: value patterns and not be plain sentences
-  if (/^[a-zA-Z0-9_"\s\-]+:\s*.+$/m.test(trimmed)) {
+  if (/^[a-zA-Z0-9_"\s-]+:\s*.+$/m.test(trimmed)) {
     try {
       const parsed = YAML.parse(trimmed);
       if (parsed !== null && typeof parsed === 'object' && Object.keys(parsed).length > 0) {

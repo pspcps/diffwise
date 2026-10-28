@@ -324,7 +324,7 @@ export default function HarViewerView() {
         } else {
           alert('Invalid HAR file: Missing log.entries structure');
         }
-      } catch (err) {
+      } catch {
         alert('Failed to parse HAR JSON file.');
       }
     };
