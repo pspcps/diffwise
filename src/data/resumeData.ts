@@ -4,6 +4,8 @@ export const RESUME = {
   email: 'prakash.seervi9460@gmail.com',
   phone: '+91-8440944580',
   linkedin: 'https://linkedin.com/in/prakashseervi63',
+  resumeUrl: 'https://drive.google.com/file/d/16lvAhHCQe8zniP1_wrmYbEmXkVAjRzb9/view?usp=drivesdk',
+  resumeDownloadUrl: 'https://drive.google.com/uc?export=download&id=16lvAhHCQe8zniP1_wrmYbEmXkVAjRzb9',
   title: 'Senior Software Engineer',
   focus: 'Kafka · Node.js · React · AWS · GCP · GenAI',
   summary: 'Results-driven backend engineer with 9+ years of experience building high-scale, cloud-native microservices and real-time systems. Deep expertise in Kafka, Node.js, PostgreSQL, and AWS/GCP, with a strong background in event-driven architecture and performance optimization. Led and mentored teams of 4–6 engineers, driving architectural decisions and delivering solutions generating over $1M/year in cost savings.',

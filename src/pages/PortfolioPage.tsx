@@ -13,6 +13,7 @@ import {
   Volume2,
   VolumeX,
   Palette,
+  FileDown,
 } from 'lucide-react';
 import { Projects3DSection } from '../components/Portfolio/Projects3DSection';
 import {
@@ -271,12 +272,8 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
               ))}
             </div>
 
-            {/* Language Theme Selector in Nav */}
+            {/* Language Theme Selector in Nav (Icon Only) */}
             <div className="flex items-center gap-1 bg-[#0a0f24] p-1 rounded-2xl border border-white/10 shadow-inner">
-              <span className="text-[10px] font-mono text-[#6c7086] px-1.5 hidden md:inline">
-                <Palette size={12} className="inline mr-1" />
-                Lang:
-              </span>
               {(['nodejs', 'python', 'typescript', 'golang', 'rust'] as LanguageThemeKey[]).map(key => {
                 const item = LANGUAGE_THEMES[key];
                 const active = currentLang === key;
@@ -284,8 +281,8 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
                   <button
                     key={key}
                     onClick={() => handleSelectLanguage(key)}
-                    title={`Switch portfolio theme to ${item.name}`}
-                    className={`px-2.5 py-1 rounded-xl text-[11px] font-mono font-bold transition-all ${
+                    title={`${item.name} — ${item.tagline}`}
+                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-xl text-xs sm:text-sm font-mono font-bold flex items-center justify-center transition-all ${
                       active
                         ? 'shadow-lg scale-105'
                         : 'text-[#9399b2] hover:text-white hover:bg-white/5 opacity-70 hover:opacity-100'
@@ -301,11 +298,27 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
                     }
                   >
                     <span>{item.iconSymbol}</span>
-                    <span className="ml-1 hidden sm:inline">{item.shortName}</span>
                   </button>
                 );
               })}
             </div>
+
+            {/* Resume Download in Nav */}
+            <a
+              href={RESUME.resumeDownloadUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Download Prakash Choudhary's Resume (PDF)"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all hover:scale-105 active:scale-95 border"
+              style={{
+                backgroundColor: `${theme.primaryHex}18`,
+                borderColor: `${theme.primaryHex}40`,
+                color: theme.primaryHex,
+              }}
+            >
+              <FileDown size={13} />
+              <span className="hidden sm:inline">Resume</span>
+            </a>
 
             {/* Sound FX Toggle */}
             <button
@@ -387,20 +400,45 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             {RESUME.summary}
           </p>
 
-          {/* Language Theme Description Bar */}
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
-            <span className="text-xs font-mono text-[#6c7086]">Active Tech Mode:</span>
-            <span
-              className="px-3 py-1 rounded-xl text-xs font-bold font-mono border"
-              style={{
-                backgroundColor: `${theme.primaryHex}15`,
-                color: theme.primaryHex,
-                borderColor: `${theme.primaryHex}35`,
-              }}
-            >
-              {theme.iconSymbol} {theme.name}
+          {/* Language Theme Selector Bar (Icon-only) */}
+          <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1">
+            <span className="text-xs font-mono text-[#6c7086] flex items-center gap-1.5">
+              <Palette size={13} style={{ color: theme.primaryHex }} />
+              <span>Theme:</span>
             </span>
-            <span className="text-xs text-[#9399b2] hidden sm:inline">• {theme.tagline}</span>
+            <div className="flex items-center gap-1.5 bg-[#0a0f24] p-1 rounded-2xl border border-white/10 shadow-inner">
+              {(['nodejs', 'python', 'typescript', 'golang', 'rust'] as LanguageThemeKey[]).map(key => {
+                const item = LANGUAGE_THEMES[key];
+                const active = currentLang === key;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => handleSelectLanguage(key)}
+                    title={`${item.name} — ${item.tagline}`}
+                    className={`w-8 h-8 rounded-xl text-sm font-bold flex items-center justify-center transition-all ${
+                      active
+                        ? 'shadow-lg scale-110'
+                        : 'text-[#9399b2] hover:text-white hover:bg-white/5 opacity-70 hover:opacity-100 hover:scale-105'
+                    }`}
+                    style={
+                      active
+                        ? {
+                            backgroundColor: `${item.primaryHex}28`,
+                            color: item.primaryHex,
+                            border: `1.5px solid ${item.primaryHex}`,
+                            boxShadow: `0 0 16px ${item.primaryHex}40`,
+                          }
+                        : {
+                            border: '1px solid transparent',
+                          }
+                    }
+                  >
+                    <span>{item.iconSymbol}</span>
+                  </button>
+                );
+              })}
+            </div>
+            <span className="text-xs text-[#9399b2] hidden sm:inline font-mono">• {theme.tagline}</span>
           </div>
 
           {/* Key Impact Stats Bar */}
@@ -420,6 +458,20 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
 
           {/* Hero Action Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-3.5 pt-2">
+            <a
+              href={RESUME.resumeDownloadUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-6 py-3 rounded-2xl text-xs sm:text-sm font-bold text-white transition-all hover:scale-105 active:scale-95 border shadow-xl"
+              style={{
+                backgroundColor: `${theme.primaryHex}25`,
+                borderColor: `${theme.primaryHex}60`,
+                boxShadow: `0 8px 25px ${theme.primaryHex}30`,
+              }}
+            >
+              <FileDown size={16} style={{ color: theme.primaryHex }} />
+              <span>Download Resume (PDF)</span>
+            </a>
             <button
               onClick={() => scrollTo('projects')}
               className="px-6 py-3 rounded-2xl text-xs sm:text-sm font-bold text-[#060814] shadow-xl transition-all hover:scale-105 active:scale-95"
@@ -658,6 +710,21 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             >
               <Link2 size={16} />
               <span>LinkedIn Profile</span>
+            </a>
+
+            <a
+              href={RESUME.resumeDownloadUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-6 py-3 rounded-2xl text-xs sm:text-sm font-bold text-white transition-all hover:scale-105 border"
+              style={{
+                backgroundColor: `${theme.primaryHex}20`,
+                borderColor: `${theme.primaryHex}50`,
+                color: '#ffffff',
+              }}
+            >
+              <FileDown size={16} style={{ color: theme.primaryHex }} />
+              <span>Download Resume (PDF)</span>
             </a>
           </div>
 
