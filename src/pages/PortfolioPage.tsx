@@ -84,7 +84,7 @@ function Section({
       id={id}
       ref={ref}
       className={`py-20 px-6 max-w-6xl mx-auto transition-all duration-700 ${
-        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        visible ? 'opacity-100 transform-none' : 'opacity-0 translate-y-8'
       } ${className}`}
     >
       {children}
@@ -505,7 +505,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             Featured Projects &amp; Systems
           </h2>
           <p className="text-sm text-[#9399b2] max-w-xl mx-auto">
-            Interactive project gallery. Click any project card to inspect architectural highlights, system designs, and live GitHub repositories.
+            Autonomous GenAI systems, distributed Kafka event architectures, and air-gapped developer workspaces. Click <strong className="text-white">Architecture &amp; Specs</strong> on any project to explore interactive topologies and detailed system specifications.
           </p>
         </div>
 
@@ -701,7 +701,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
 
       {/* ── Footer ───────────────────────────────────────────────────────────── */}
       <footer className="text-center py-8 border-t border-white/5 text-xs text-[#6c7086] font-mono">
-        © 2025 Prakash Choudhary • Senior Software Engineer &amp; Systems Architect
+        © 2026 Prakash Choudhary • Senior Software Engineer &amp; Systems Architect
       </footer>
 
       {/* ── Back to Top Floating Button ───────────────────────────────────────── */}

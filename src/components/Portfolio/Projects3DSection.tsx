@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { RESUME } from '../../data/resumeData';
 import {
   ExternalLink,
@@ -10,7 +11,11 @@ import {
   X,
   ChevronRight,
   Server,
+  ShieldCheck,
+  Globe,
+  Workflow,
 } from 'lucide-react';
+import InteractiveArchitectureDiagram from './InteractiveArchitectureDiagram';
 import { soundFX } from './SoundFX';
 
 // GitHub SVG Icon helper
@@ -37,52 +42,20 @@ type ProjectItem = (typeof RESUME.projects)[number] & {
   category: ProjectCategory;
   metricBadge?: string;
   architectureDetails?: string[];
+  securityDetails?: string[];
+  liveUrl?: string;
 };
 
-// Augment all projects with category tags & architectural details
+// Robust project lookup helper
+const getProject = (keyword: string) => {
+  const p = RESUME.projects.find(item => item.title.toLowerCase().includes(keyword.toLowerCase()));
+  return p || RESUME.projects[0];
+};
+
+// Augment all projects with category tags & architectural details (GenAI projects on top)
 const ENRICHED_PROJECTS: ProjectItem[] = [
   {
-    ...RESUME.projects[8], // Kafbat UI (https://github.com/pspcps/kafkaUI)
-    category: 'systems',
-    metricBadge: 'Real-time Kafka Cluster UI',
-    architectureDetails: [
-      'Full-stack Kafka management dashboard tracking broker, topic, partition, and consumer lag.',
-      'Message browser with real-time filtering by partition offset, message key, timestamp, and payload.',
-      'Go backend powered by IBM Sarama with Next.js 14 App Router and Docker containerization.',
-    ],
-  },
-  {
-    ...RESUME.projects[0], // PSDevTool
-    category: 'tools',
-    metricBadge: 'All-in-One Dev Workspace',
-    architectureDetails: [
-      'Dual Monaco Diff Editor instance with synchronized scrolling, ViewZone injection, and per-line diff mover strip.',
-      'ApiDesk Studio integrating Postman-like REST/GraphQL testing, cURL import parser, and bidirectional OpenAPI/Swagger.',
-      'Comprehensive developer utilities: HAR Network Waterfall Viewer, JWT Debugger, Architecture Lab, and PDF/Image Studios.',
-    ],
-  },
-  {
-    ...RESUME.projects[1], // ApiDesk Studio
-    category: 'tools',
-    metricBadge: 'Full REST & Swagger Hub',
-    architectureDetails: [
-      'Postman-like request runner with GraphQL query & variables builder.',
-      'Auto-cURL detection on URL bar paste with parameter extraction.',
-      'Bidirectional Swagger/OpenAPI JSON ↔ YAML converter & interactive route explorer.',
-    ],
-  },
-  {
-    ...RESUME.projects[2], // Wealth Management
-    category: 'fintech',
-    metricBadge: 'Real-time Portfolio Insights',
-    architectureDetails: [
-      'Multi-asset balance tracking with automated portfolio allocation insights.',
-      'PostgreSQL data pipeline with transactional integrity for investment records.',
-      'Interactive financial charting and risk exposure monitoring.',
-    ],
-  },
-  {
-    ...RESUME.projects[3], // Project Drishti
+    ...getProject('drishti'), // Project Drishti (GenAI Flagship #1)
     category: 'ai',
     metricBadge: '85–90% Agentic AI Crowd Safety',
     architectureDetails: [
@@ -90,9 +63,62 @@ const ENRICHED_PROJECTS: ProjectItem[] = [
       'Autonomous Gemini LLM risk assessment pipeline with automated emergency routing.',
       'Containerized on Google Cloud Run with sub-second incident alerting.',
     ],
+    securityDetails: [
+      'Client-to-cloud TLS encrypted frame transmission with zero raw video retention.',
+      'Least-privilege Google Cloud Run service accounts with fine-grained Vertex AI IAM roles.',
+      'Automated sanitization of camera metadata ensuring visitor privacy compliance.',
+    ],
   },
   {
-    ...RESUME.projects[4], // Resume AI
+    ...getProject('fleetmind'), // FleetMind (GenAI Flagship #2)
+    category: 'ai',
+    metricBadge: 'Multi-Agent Fleet Ops',
+    architectureDetails: [
+      'Multi-agent natural language query interface for IoT telematics and real-time fleet events.',
+      'Decentralized fan-out query orchestration across DynamoDB, MySQL, and New Relic.',
+      'Synthesized natural-language operational diagnostics with sub-second response times.',
+    ],
+    securityDetails: [
+      'Role-based access control (RBAC) ensuring operators only access authorized fleet domains.',
+      'Sanitized SQL & NRQL parameterization eliminating query injection via conversational prompts.',
+      'Encrypted telemetry at rest (DynamoDB KMS) and in flight with audit-logged agent actions.',
+    ],
+  },
+  {
+    ...getProject('psdevtool'), // PSDevTool (Flagship Client-Side Studio)
+    category: 'tools',
+    metricBadge: 'All-in-One Dev Workstation (100% Client-Side)',
+    liveUrl: 'https://psdevtool.online/',
+    architectureDetails: [
+      '4-Layer Modular Client Architecture: Shell/Routing Layer (Hash-based deep links, dynamic SEO sync), Domain Studio Engines, Parsing/Computation Layer, and Hardware Platform APIs.',
+      '100% Client-Side Air-Gapped Privacy: All computations (diffing, token parsing, HAR waterfalls, DOCX to PDF synthesis) execute entirely inside browser V8 memory with zero server data leakage.',
+      'Monaco Diff Engine & Line Mover: Dual-editor instances with background Web Workers for non-blocking tokenization, DOM virtualization (60fps on 100k+ lines), synchronized scrolling, and custom ViewZone line transfer (CodeMover).',
+      'Diagnostic Suite: ApiDesk (Postman/GraphQL runner, auto cURL parser, Swagger YAML/JSON), HAR Network Waterfall with TTFB analysis & 1-click token sanitizer, JWT debugger with WebCrypto signature validation.',
+      'Document & System Studio: Client-side Word DOCX to PDF vector synthesis (mammoth + pdf-lib), live Mermaid diagram AST compiler, and visual ERD database designer (@xyflow/react).',
+      'Performance & Zero CLS: Bundle code-splitting via React.lazy and dynamic imports, debounced real-time compilers (250ms), React Portals to document.body, and 0ms layout shift.',
+    ],
+    securityDetails: [
+      'Air-gapped execution: Zero user code, tokens, or files are sent to remote backends.',
+      'Iframe sandbox isolation (sandbox="allow-scripts") for live HTML/CSS previews.',
+      'Automated token redaction (Bearer tokens, cookies, auth headers) in HAR network inspector.',
+    ],
+  },
+  {
+    ...getProject('kafbat'), // Kafbat UI
+    category: 'systems',
+    metricBadge: 'Real-time Kafka Cluster UI',
+    architectureDetails: [
+      'Full-stack Kafka management dashboard tracking broker, topic, partition, and consumer lag.',
+      'Message browser with real-time filtering by partition offset, message key, timestamp, and payload.',
+      'Go backend powered by IBM Sarama with Next.js 14 App Router and Docker containerization.',
+    ],
+    securityDetails: [
+      'Read-only sandbox mode for production broker clusters with TLS mTLS authentication.',
+      'Strict RBAC guards on topic deletion and configuration mutation endpoints.',
+    ],
+  },
+  {
+    ...getProject('resume ai'), // Resume AI
     category: 'ai',
     metricBadge: 'Gemini 2.5 Pro ATS Scoring',
     architectureDetails: [
@@ -102,7 +128,7 @@ const ENRICHED_PROJECTS: ProjectItem[] = [
     ],
   },
   {
-    ...RESUME.projects[5], // Ask My Docs
+    ...getProject('ask my docs'), // Ask My Docs
     category: 'ai',
     metricBadge: '100% Offline Local RAG',
     architectureDetails: [
@@ -112,7 +138,7 @@ const ENRICHED_PROJECTS: ProjectItem[] = [
     ],
   },
   {
-    ...RESUME.projects[6], // Safety App
+    ...getProject('safety app'), // Safety App
     category: 'ai',
     metricBadge: 'Local Vision LLM',
     architectureDetails: [
@@ -122,7 +148,7 @@ const ENRICHED_PROJECTS: ProjectItem[] = [
     ],
   },
   {
-    ...RESUME.projects[7], // InkMind
+    ...getProject('inkmind'), // InkMind
     category: 'ai',
     metricBadge: 'Cross-Platform RAG',
     architectureDetails: [
@@ -132,13 +158,23 @@ const ENRICHED_PROJECTS: ProjectItem[] = [
     ],
   },
   {
-    ...RESUME.projects[9], // FleetMind
-    category: 'ai',
-    metricBadge: 'Multi-Agent Fleet Ops',
+    ...getProject('apidesk'), // ApiDesk Studio
+    category: 'tools',
+    metricBadge: 'Full REST & Swagger Hub',
     architectureDetails: [
-      'Multi-agent natural language query interface for IoT telematics and real-time fleet events.',
-      'Decentralized fan-out query orchestration across DynamoDB, MySQL, and New Relic.',
-      'Synthesized natural-language operational diagnostics with sub-second response times.',
+      'Postman-like request runner with GraphQL query & variables builder.',
+      'Auto-cURL detection on URL bar paste with parameter extraction.',
+      'Bidirectional Swagger/OpenAPI JSON ↔ YAML converter & interactive route explorer.',
+    ],
+  },
+  {
+    ...getProject('wealth'), // Wealth Management
+    category: 'fintech',
+    metricBadge: 'Real-time Portfolio Insights',
+    architectureDetails: [
+      'Multi-asset balance tracking with automated portfolio allocation insights.',
+      'PostgreSQL data pipeline with transactional integrity for investment records.',
+      'Interactive financial charting and risk exposure monitoring.',
     ],
   },
 ];
@@ -297,6 +333,26 @@ const TiltCard: React.FC<{
 export const Projects3DSection: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>('all');
   const [inspectedProject, setInspectedProject] = useState<ProjectItem | null>(null);
+  const [modalTab, setModalTab] = useState<'visual' | 'specs'>('visual');
+
+  // Lock body scroll and handle Escape key when modal is open
+  useEffect(() => {
+    if (inspectedProject) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          soundFX.playKeyClick();
+          setInspectedProject(null);
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [inspectedProject]);
 
   const filteredProjects = ENRICHED_PROJECTS.filter(p => {
     if (activeCategory === 'all') return true;
@@ -309,8 +365,8 @@ export const Projects3DSection: React.FC = () => {
       <div className="flex items-center justify-center gap-2 flex-wrap">
         {[
           { id: 'all', label: 'All Projects', icon: <Layers size={13} /> },
-          { id: 'systems', label: 'Kafka & Distributed Systems', icon: <Server size={13} /> },
           { id: 'ai', label: 'AI & GenAI Systems', icon: <Brain size={13} /> },
+          { id: 'systems', label: 'Kafka & Distributed Systems', icon: <Server size={13} /> },
           { id: 'tools', label: 'Developer Workspaces', icon: <Wrench size={13} /> },
           { id: 'fintech', label: 'FinTech & Analytics', icon: <TrendingUp size={13} /> },
         ].map(cat => (
@@ -340,33 +396,39 @@ export const Projects3DSection: React.FC = () => {
             project={p}
             onInspect={item => {
               soundFX.playKeyClick();
+              setModalTab('visual');
               setInspectedProject(item);
             }}
           />
         ))}
       </div>
 
-      {/* Architectural Inspection Modal */}
-      {inspectedProject && (
+      {/* Architectural Inspection Modal (Portaled directly to document.body for true viewport centering) */}
+      {inspectedProject && typeof document !== 'undefined' && createPortal(
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
-          onClick={() => setInspectedProject(null)}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
+          onClick={() => {
+            soundFX.playKeyClick();
+            setInspectedProject(null);
+          }}
+          role="dialog"
+          aria-modal="true"
         >
           <div
-            className="relative w-full max-w-2xl bg-[#0c1024] border border-white/15 rounded-3xl p-6 md:p-8 shadow-2xl space-y-6 overflow-hidden"
+            className="relative w-full max-w-4xl max-h-[90vh] bg-[#0c1024] border border-white/15 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200"
             onClick={e => e.stopPropagation()}
           >
             {/* Top Glow Bar */}
             <div
-              className="absolute top-0 left-0 right-0 h-1.5"
+              className="h-1.5 w-full shrink-0"
               style={{ backgroundColor: inspectedProject.color }}
             />
 
-            {/* Modal Header */}
-            <div className="flex items-start justify-between gap-4">
-              <div>
+            {/* Modal Header (Fixed at top of modal) */}
+            <div className="flex items-start justify-between gap-4 p-6 pb-4 border-b border-white/10 shrink-0 bg-[#0c1024]">
+              <div className="space-y-1">
                 <span
-                  className="text-xs font-mono font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block"
+                  className="text-xs font-mono font-bold px-3 py-1 rounded-full uppercase tracking-wider inline-block"
                   style={{
                     backgroundColor: `${inspectedProject.color}15`,
                     color: inspectedProject.color,
@@ -375,76 +437,181 @@ export const Projects3DSection: React.FC = () => {
                 >
                   {inspectedProject.metricBadge || inspectedProject.category}
                 </span>
-                <h3 className="text-2xl font-black text-white">{inspectedProject.title}</h3>
-                <p className="text-sm font-medium mt-1" style={{ color: inspectedProject.color }}>
+                <h3 className="text-xl sm:text-2xl font-black text-white">{inspectedProject.title}</h3>
+                <p className="text-xs sm:text-sm font-medium" style={{ color: inspectedProject.color }}>
                   {inspectedProject.subtitle}
                 </p>
               </div>
 
               <button
-                onClick={() => setInspectedProject(null)}
-                className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-[#9399b2] hover:text-white transition-colors"
+                onClick={() => {
+                  soundFX.playKeyClick();
+                  setInspectedProject(null);
+                }}
+                aria-label="Close modal"
+                className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-[#9399b2] hover:text-white transition-colors shrink-0"
               >
                 <X size={18} />
               </button>
             </div>
 
-            {/* Architectural Highlights */}
-            {inspectedProject.architectureDetails && (
-              <div className="space-y-3 bg-[#111736] p-4 rounded-2xl border border-white/5">
-                <span className="text-xs font-bold text-[#89b4fa] uppercase tracking-wider flex items-center gap-1.5">
-                  <Cpu size={14} /> Architecture &amp; Engineering Highlights
-                </span>
-                <ul className="space-y-2">
-                  {inspectedProject.architectureDetails.map((detail, dIdx) => (
-                    <li key={dIdx} className="flex items-start gap-2.5 text-xs text-[#cdd6f4]">
-                      <span className="mt-1 text-[#89b4fa] font-bold font-mono">▸</span>
-                      <span>{detail}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Tech Stack */}
-            <div>
-              <span className="text-xs font-bold text-[#6c7086] uppercase tracking-wider mb-2 block">
-                Technology Stack
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {inspectedProject.tech.map(t => (
-                  <span
-                    key={t}
-                    className="text-xs font-mono px-3 py-1 rounded-xl bg-[#161d3e] text-[#cdd6f4] border border-white/10"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Modal Actions */}
-            <div className="pt-4 border-t border-white/10 flex items-center justify-end gap-3">
-              {inspectedProject.github && (
-                <a
-                  href={inspectedProject.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-[#89b4fa] hover:bg-[#b4befe] hover:text-[#060814] transition-all shadow-lg shadow-[#89b4fa]/20"
-                >
-                  <GithubIcon size={14} />
-                  <span>View Repository</span>
-                </a>
-              )}
+            {/* Modal Navigation Tabs: Interactive Diagram vs Specifications */}
+            <div className="flex items-center gap-2 px-6 pt-3 pb-2 border-b border-white/5 bg-[#0a0d20] shrink-0">
               <button
-                onClick={() => setInspectedProject(null)}
-                className="px-4 py-2.5 rounded-xl text-xs font-bold text-[#9399b2] hover:text-white bg-white/5 hover:bg-white/10 transition-colors"
+                onClick={() => {
+                  soundFX.playHoverBlip();
+                  setModalTab('visual');
+                }}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  modalTab === 'visual'
+                    ? 'bg-[#89b4fa] text-[#060814] shadow-md shadow-[#89b4fa]/20 scale-105'
+                    : 'text-[#9399b2] hover:text-white hover:bg-white/5'
+                }`}
               >
-                Close
+                <Workflow size={13} />
+                <span>Visual Architecture Topology</span>
+              </button>
+              <button
+                onClick={() => {
+                  soundFX.playHoverBlip();
+                  setModalTab('specs');
+                }}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  modalTab === 'specs'
+                    ? 'bg-[#89b4fa] text-[#060814] shadow-md shadow-[#89b4fa]/20 scale-105'
+                    : 'text-[#9399b2] hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <Cpu size={13} />
+                <span>Technical Specifications &amp; Security</span>
               </button>
             </div>
+
+            {/* Modal Scrollable Body */}
+            <div className="p-6 overflow-y-auto space-y-6 flex-1">
+              {modalTab === 'visual' ? (
+                <InteractiveArchitectureDiagram
+                  projectTitle={inspectedProject.title}
+                  projectColor={inspectedProject.color}
+                />
+              ) : (
+                <>
+                  {/* Architectural Highlights */}
+                  {inspectedProject.architectureDetails && (
+                    <div className="space-y-3 bg-[#111736] p-4.5 rounded-2xl border border-white/5">
+                      <span className="text-xs font-bold text-[#89b4fa] uppercase tracking-wider flex items-center gap-1.5">
+                        <Cpu size={14} /> Architecture &amp; Engineering Highlights
+                      </span>
+                      <ul className="space-y-2.5">
+                        {inspectedProject.architectureDetails.map((detail, dIdx) => (
+                          <li key={dIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-[#cdd6f4] leading-relaxed">
+                            <span className="mt-1 text-[#89b4fa] font-bold font-mono shrink-0">▸</span>
+                            <span>{detail}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Security & Privacy Architecture */}
+                  {inspectedProject.securityDetails && (
+                    <div className="space-y-3 bg-[#0d1829] p-4.5 rounded-2xl border border-[#10b981]/25">
+                      <span className="text-xs font-bold text-[#10b981] uppercase tracking-wider flex items-center gap-1.5">
+                        <ShieldCheck size={14} /> Security &amp; Air-Gapped Privacy Architecture
+                      </span>
+                      <ul className="space-y-2">
+                        {inspectedProject.securityDetails.map((sec, sIdx) => (
+                          <li key={sIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-[#cdd6f4] leading-relaxed">
+                            <span className="mt-1 text-[#10b981] font-bold font-mono shrink-0">✓</span>
+                            <span>{sec}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Core Technical Impact */}
+                  {inspectedProject.bullets && inspectedProject.bullets.length > 0 && (
+                    <div className="space-y-2">
+                      <span className="text-xs font-bold text-[#6c7086] uppercase tracking-wider block">
+                        Core Technical Impact
+                      </span>
+                      <ul className="space-y-2">
+                        {inspectedProject.bullets.map((b, bIdx) => (
+                          <li key={bIdx} className="flex items-start gap-2 text-xs text-[#9399b2] leading-relaxed">
+                            <span
+                              className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"
+                              style={{ backgroundColor: inspectedProject.color }}
+                            />
+                            <span>{b}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Tech Stack */}
+                  <div>
+                    <span className="text-xs font-bold text-[#6c7086] uppercase tracking-wider mb-2.5 block">
+                      Technology Stack
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                      {inspectedProject.tech.map(t => (
+                        <span
+                          key={t}
+                          className="text-xs font-mono px-3 py-1 rounded-xl bg-[#161d3e] text-[#cdd6f4] border border-white/10"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Modal Actions Footer (Fixed at bottom of modal) */}
+            <div className="p-4 px-6 border-t border-white/10 flex items-center justify-between gap-3 shrink-0 bg-[#0c1024]">
+              <span className="text-[11px] font-mono text-[#6c7086]">
+                {inspectedProject.period}
+              </span>
+              <div className="flex items-center gap-2">
+                {inspectedProject.liveUrl && (
+                  <a
+                    href={inspectedProject.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs font-bold text-[#060814] bg-[#89b4fa] hover:bg-[#b4befe] transition-all shadow-lg shadow-[#89b4fa]/20 hover:scale-105 active:scale-95"
+                  >
+                    <Globe size={14} />
+                    <span>Open Live Tool</span>
+                  </a>
+                )}
+                {inspectedProject.github && (
+                  <a
+                    href={inspectedProject.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-[#1a1f3c] hover:bg-[#252c56] border border-white/10 transition-all shadow-md hover:scale-105 active:scale-95"
+                  >
+                    <GithubIcon size={14} />
+                    <span>View Repository</span>
+                  </a>
+                )}
+                <button
+                  onClick={() => {
+                    soundFX.playKeyClick();
+                    setInspectedProject(null);
+                  }}
+                  className="px-4 py-2.5 rounded-xl text-xs font-bold text-[#9399b2] hover:text-white bg-white/5 hover:bg-white/10 transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
