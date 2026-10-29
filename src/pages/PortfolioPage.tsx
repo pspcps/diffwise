@@ -12,7 +12,6 @@ import {
   Briefcase,
   Volume2,
   VolumeX,
-  Palette,
   FileDown,
 } from 'lucide-react';
 import { Projects3DSection } from '../components/Portfolio/Projects3DSection';
@@ -400,46 +399,6 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             {RESUME.summary}
           </p>
 
-          {/* Language Theme Selector Bar (Icon-only) */}
-          <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1">
-            <span className="text-xs font-mono text-[#6c7086] flex items-center gap-1.5">
-              <Palette size={13} style={{ color: theme.primaryHex }} />
-              <span>Theme:</span>
-            </span>
-            <div className="flex items-center gap-1.5 bg-[#0a0f24] p-1 rounded-2xl border border-white/10 shadow-inner">
-              {(['nodejs', 'python', 'typescript', 'golang', 'rust'] as LanguageThemeKey[]).map(key => {
-                const item = LANGUAGE_THEMES[key];
-                const active = currentLang === key;
-                return (
-                  <button
-                    key={key}
-                    onClick={() => handleSelectLanguage(key)}
-                    title={`${item.name} — ${item.tagline}`}
-                    className={`w-8 h-8 rounded-xl text-sm font-bold flex items-center justify-center transition-all ${
-                      active
-                        ? 'shadow-lg scale-110'
-                        : 'text-[#9399b2] hover:text-white hover:bg-white/5 opacity-70 hover:opacity-100 hover:scale-105'
-                    }`}
-                    style={
-                      active
-                        ? {
-                            backgroundColor: `${item.primaryHex}28`,
-                            color: item.primaryHex,
-                            border: `1.5px solid ${item.primaryHex}`,
-                            boxShadow: `0 0 16px ${item.primaryHex}40`,
-                          }
-                        : {
-                            border: '1px solid transparent',
-                          }
-                    }
-                  >
-                    <span>{item.iconSymbol}</span>
-                  </button>
-                );
-              })}
-            </div>
-            <span className="text-xs text-[#9399b2] hidden sm:inline font-mono">• {theme.tagline}</span>
-          </div>
 
           {/* Key Impact Stats Bar */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-3xl pt-2">
