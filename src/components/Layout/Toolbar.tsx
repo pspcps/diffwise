@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  GitCompare,
   FileText,
   UserRound,
   CaseSensitive,
@@ -18,6 +17,7 @@ import {
   Fingerprint,
   Send,
 } from 'lucide-react';
+import PSDevLogo from '../Common/PSDevLogo';
 import type { ViewMode } from '../../types';
 
 interface ToolbarProps {
@@ -139,27 +139,8 @@ export default function Toolbar({ mode, onModeChange, onAbout, onOpenSearch }: T
         }}
       >
         {/* Logo */}
-        <div className="flex items-center gap-1.5 sm:gap-2 pr-1.5 sm:pr-2.5 shrink-0 border-r border-[#252535]">
-          <div
-            className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0"
-            style={{
-              background: 'linear-gradient(135deg, rgba(137,180,250,0.2), rgba(203,166,247,0.1))',
-              border: '1px solid rgba(137,180,250,0.25)',
-            }}
-          >
-            <GitCompare size={13} color="#89b4fa" />
-          </div>
-          <span
-            className="text-xs sm:text-sm font-bold tracking-tight"
-            style={{
-              background: 'linear-gradient(90deg, #cdd6f4, #89b4fa)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            <span className="hidden sm:inline">PSDevTool</span>
-            <span className="sm:hidden">PSDev</span>
-          </span>
+        <div className="flex items-center pr-2 shrink-0 border-r border-[#252535]">
+          <PSDevLogo size="sm" />
         </div>
 
         {/* Mode tabs with smooth scroll, flex-1 min-w-0 ensures it NEVER overflows parent */}

@@ -10,7 +10,6 @@ import Base64ImageView from './components/Base64Image/Base64ImageView';
 import MarkupStudioView from './components/MarkupStudio/MarkupStudioView';
 import RegexLabView from './components/RegexLab/RegexLabView';
 import UrlToolsView from './components/UrlTools/UrlToolsView';
-import WelcomeScreen from './components/WelcomeScreen';
 import AdBanner from './components/Ads/AdBanner';
 import AboutPanel from './components/About/AboutPanel';
 import PortfolioPage from './pages/PortfolioPage';
@@ -194,7 +193,6 @@ export default function App() {
   const hash = useHashRoute();
   const initialMode = HASH_TO_MODE[window.location.hash] || 'text';
   const [mode, setMode] = useState<ViewMode>(initialMode);
-  const [showWelcome, setShowWelcome] = useState(true);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
 
@@ -259,8 +257,6 @@ export default function App() {
 
   return (
     <div className="flex flex-col h-screen bg-[#1e1e2e] text-[#cdd6f4] overflow-hidden">
-      {showWelcome && <WelcomeScreen onDone={() => setShowWelcome(false)} />}
-
       {/* About Me slide-in panel */}
       {aboutOpen && (
         <AboutPanel onClose={() => setAboutOpen(false)} onPortfolio={goPortfolio} />
