@@ -1,11 +1,11 @@
 import YAML from 'yaml';
 import { Fragment, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type WheelEvent as ReactWheelEvent } from 'react';
-import { ArrowLeftRight, Braces, Check, ChevronRight, ChevronsUpDown, Copy, Download, GitBranch, ListFilter, Minus, Network, Plus, RotateCcw, Table2 } from 'lucide-react';
+import { ArrowLeftRight, Braces, Check, ChevronRight, ChevronsUpDown, Copy, Download, GitBranch, ListFilter, Minus, Network, Plus, RotateCcw, SlidersHorizontal, Sparkles, Table2 } from 'lucide-react';
 import { jsonToXml, parseXml } from '../../utils/jsonXml';
 
 type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 type Row = Record<string, string>;
-type JsonView = 'editor' | 'table' | 'tree' | 'graph' | 'xml' | 'yaml';
+type JsonView = 'editor' | 'env' | 'table' | 'tree' | 'graph' | 'xml' | 'yaml';
 
 function isRecord(value: JsonValue): value is { [key: string]: JsonValue } {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -368,6 +368,130 @@ function HighlightedText({ text, query }: { text: string; query: string }) {
     : part);
 }
 
+const DEFAULT_ENV_SAMPLE = `DATABASE_NAME=app_analytics
+Secret__DATABASE_SERVICE_API_KEY=dev_secret_key_987
+SERVICE_ENDPOINT:https://api.example.com/v1
+CLUSTER_HOSTNAME=cluster-node-01.internal`;
+
+function parseEnvToNestedJson(
+  rawText: string,
+  options: {
+    nestDoubleUnderscore: boolean;
+    nestDot: boolean;
+    autoParseTypes: boolean;
+  }
+): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
+  if (!rawText.trim()) return result;
+
+  const lines = rawText.split(/\r?\n/);
+  for (let idx = 0; idx < lines.length; idx++) {
+    let line = lines[idx].trim();
+    if (!line || line.startsWith('#') || line.startsWith('//')) {
+      continue;
+    }
+    if (line.startsWith('export ')) {
+      line = line.slice(7).trim();
+    }
+
+    const eqIdx = line.indexOf('=');
+    const colonIdx = line.indexOf(':');
+
+    let splitIdx = -1;
+    if (eqIdx !== -1 && colonIdx !== -1) {
+      splitIdx = Math.min(eqIdx, colonIdx);
+    } else if (eqIdx !== -1) {
+      splitIdx = eqIdx;
+    } else if (colonIdx !== -1) {
+      splitIdx = colonIdx;
+    }
+
+    let key = '';
+    let valStr = '';
+
+    if (splitIdx === -1) {
+      key = line.trim();
+      valStr = '';
+    } else {
+      key = line.slice(0, splitIdx).trim();
+      valStr = line.slice(splitIdx + 1).trim();
+    }
+
+    if (!key) continue;
+
+    if (
+      (valStr.startsWith('"') && valStr.endsWith('"') && valStr.length >= 2) ||
+      (valStr.startsWith("'") && valStr.endsWith("'") && valStr.length >= 2)
+    ) {
+      valStr = valStr.slice(1, -1);
+    }
+
+    let finalVal: unknown = valStr;
+    if (options.autoParseTypes) {
+      const lower = valStr.toLowerCase();
+      if (lower === 'true') finalVal = true;
+      else if (lower === 'false') finalVal = false;
+      else if (lower === 'null') finalVal = null;
+      else if (!isNaN(Number(valStr)) && valStr.trim() !== '') {
+        finalVal = Number(valStr);
+      } else if (
+        (valStr.startsWith('{') && valStr.endsWith('}')) ||
+        (valStr.startsWith('[') && valStr.endsWith(']'))
+      ) {
+        try {
+          finalVal = JSON.parse(valStr);
+        } catch {
+          finalVal = valStr;
+        }
+      }
+    }
+
+    let segments: string[] = [key];
+    if (options.nestDoubleUnderscore && key.includes('__')) {
+      segments = key.split('__');
+    } else if (options.nestDot && key.includes('.')) {
+      segments = key.split('.');
+    }
+
+    let current: Record<string, unknown> = result;
+    for (let s = 0; s < segments.length - 1; s++) {
+      const seg = segments[s].trim();
+      if (!seg) continue;
+      if (typeof current[seg] !== 'object' || current[seg] === null || Array.isArray(current[seg])) {
+        current[seg] = {};
+      }
+      current = current[seg] as Record<string, unknown>;
+    }
+
+    const lastSeg = segments[segments.length - 1].trim();
+    if (lastSeg) {
+      current[lastSeg] = finalVal;
+    }
+  }
+
+  return result;
+}
+
+function jsonToEnvString(obj: unknown, prefix = '', nestDoubleUnderscore = true): string {
+  if (typeof obj !== 'object' || obj === null) {
+    return prefix ? `${prefix}=${obj ?? ''}` : '';
+  }
+  const lines: string[] = [];
+  const entries = Object.entries(obj as Record<string, unknown>);
+  for (const [k, v] of entries) {
+    const sep = nestDoubleUnderscore ? '__' : '.';
+    const currentKey = prefix ? `${prefix}${sep}${k}` : k;
+    if (typeof v === 'object' && v !== null && !Array.isArray(v)) {
+      lines.push(jsonToEnvString(v, currentKey, nestDoubleUnderscore));
+    } else if (Array.isArray(v)) {
+      lines.push(`${currentKey}=${JSON.stringify(v)}`);
+    } else {
+      lines.push(`${currentKey}=${v ?? ''}`);
+    }
+  }
+  return lines.filter(Boolean).join('\n');
+}
+
 const PAGE_SIZES = [25, 50, 100, 250];
 
 export default function JsonToolsView() {
@@ -383,6 +507,68 @@ export default function JsonToolsView() {
   const [sort, setSort] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
   const [expandedRows, setExpandedRows] = useState<Set<number>>(() => new Set());
   const [copied, setCopied] = useState(false);
+  const [envSource, setEnvSource] = useState(DEFAULT_ENV_SAMPLE);
+  const [envJsonOutput, setEnvJsonOutput] = useState(() => {
+    try {
+      return JSON.stringify(parseEnvToNestedJson(DEFAULT_ENV_SAMPLE, { nestDoubleUnderscore: true, nestDot: false, autoParseTypes: false }), null, 2);
+    } catch {
+      return '';
+    }
+  });
+  const [nestDoubleUnderscore, setNestDoubleUnderscore] = useState(true);
+  const [nestDot, setNestDot] = useState(false);
+  const [autoParseTypes, setAutoParseTypes] = useState(false);
+  const [envJsonCopied, setEnvJsonCopied] = useState(false);
+  const [envError, setEnvError] = useState('');
+
+  const handleConvertEnvToJson = (
+    overrideSource?: string,
+    optionsOverride?: { nestDoubleUnderscore?: boolean; nestDot?: boolean; autoParseTypes?: boolean }
+  ) => {
+    try {
+      const src = overrideSource !== undefined ? overrideSource : envSource;
+      const opts = {
+        nestDoubleUnderscore: optionsOverride?.nestDoubleUnderscore !== undefined ? optionsOverride.nestDoubleUnderscore : nestDoubleUnderscore,
+        nestDot: optionsOverride?.nestDot !== undefined ? optionsOverride.nestDot : nestDot,
+        autoParseTypes: optionsOverride?.autoParseTypes !== undefined ? optionsOverride.autoParseTypes : autoParseTypes,
+      };
+      const parsedData = parseEnvToNestedJson(src, opts);
+      const jsonStr = JSON.stringify(parsedData, null, 2);
+      setEnvJsonOutput(jsonStr);
+      setEnvError('');
+    } catch (e) {
+      setEnvError(e instanceof Error ? e.message : 'Error converting Env to JSON');
+    }
+  };
+
+  const handleConvertJsonToEnv = () => {
+    try {
+      let targetObj: unknown;
+      if (envJsonOutput.trim()) {
+        targetObj = JSON.parse(envJsonOutput);
+      } else if (valid && parsed !== undefined) {
+        targetObj = parsed;
+      } else {
+        setEnvError('Please enter valid JSON in the output area or JSON Studio first.');
+        return;
+      }
+      const envStr = jsonToEnvString(targetObj, '', nestDoubleUnderscore);
+      setEnvSource(envStr);
+      setEnvError('');
+    } catch (e) {
+      setEnvError(e instanceof Error ? e.message : 'Invalid JSON for Env conversion');
+    }
+  };
+
+  const applyEnvJsonToStudio = () => {
+    if (envJsonOutput.trim()) {
+      setSource(envJsonOutput);
+      setExpandedPaths(new Set(['$']));
+      setExpandedRows(new Set());
+      setView('editor');
+    }
+  };
+
   let parsed: JsonValue | undefined;
   let parseError = '';
   try {
@@ -465,13 +651,18 @@ export default function JsonToolsView() {
         <div className="flex max-w-full items-center gap-1 overflow-x-auto rounded-md border border-[#313244] p-0.5" role="tablist" aria-label="JSON view">
           {([
             ['editor', 'JSON', <Braces size={12} />],
+            ['env', 'Env ↔ JSON', <SlidersHorizontal size={12} />],
             ['table', 'Table', <Table2 size={12} />],
             ['tree', 'Tree', <GitBranch size={12} />],
             ['graph', 'Graph', <Network size={12} />],
             ['xml', 'JSON ↔ XML', <ArrowLeftRight size={12} />],
             ['yaml', 'JSON ↔ YAML', <ArrowLeftRight size={12} />],
-          ] as const).map(([id, label, icon]) => <button key={id} role="tab" aria-selected={view === id} onClick={() => { setView(id); if (id === 'xml' && !xmlSource && parsed !== undefined) setXmlSource(jsonToXml(parsed));
-              if (id === 'yaml' && !yamlSource && parsed !== undefined) { try { setYamlSource(YAML.stringify(parsed)); } catch {} } }}
+          ] as const).map(([id, label, icon]) => <button key={id} role="tab" aria-selected={view === id} onClick={() => {
+              setView(id);
+              if (id === 'xml' && !xmlSource && parsed !== undefined) setXmlSource(jsonToXml(parsed));
+              if (id === 'yaml' && !yamlSource && parsed !== undefined) { try { setYamlSource(YAML.stringify(parsed)); } catch {} }
+              if (id === 'env' && !envJsonOutput && envSource) { handleConvertEnvToJson(); }
+            }}
             className={`flex shrink-0 items-center gap-1.5 rounded px-2.5 py-1 text-[11px] ${view === id ? 'bg-[#313244] text-[#cdd6f4]' : 'text-[#6c7086] hover:text-[#cdd6f4]'}`}>{icon}{label}</button>)}
         </div>
         <div className="flex min-w-0 items-center gap-2 text-[11px]" aria-live="polite">
@@ -495,6 +686,198 @@ export default function JsonToolsView() {
             <div className="min-h-0 flex-1 overflow-auto bg-[#1a1a2c] px-3 py-2">
               {valid && parsed !== undefined ? <JsonTreeNode value={parsed} label="root" path="$" depth={0} expandedPaths={expandedPaths} onToggle={togglePath} />
                 : <p className={`px-1 py-2 text-xs ${parseError ? 'text-[#f38ba8]' : 'text-[#6c7086]'}`}>{parseError ? 'Fix the JSON syntax to see the parsed preview.' : 'Parsed structure will appear here.'}</p>}
+            </div>
+          </div>
+        </div>
+      ) : view === 'env' ? (
+        <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-2">
+          {/* Left Column: Key-Value / .env Source */}
+          <div className="flex min-h-0 flex-col border-b border-[#313244] md:border-b-0 md:border-r">
+            <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#313244]/60 px-4 py-2 bg-[#181825]/50">
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-semibold text-[#89b4fa]">Key-Value / .env Source</span>
+                <span className="rounded bg-[#313244] px-1.5 py-0.5 text-[9px] font-mono text-[#9399b2]">
+                  Supports = and :
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => {
+                    setEnvSource(DEFAULT_ENV_SAMPLE);
+                    handleConvertEnvToJson(DEFAULT_ENV_SAMPLE);
+                  }}
+                  title="Load sample configuration with Secret__ hierarchy"
+                  className="rounded border border-[#89b4fa]/30 px-2 py-0.5 text-[10px] text-[#89b4fa] hover:bg-[#89b4fa]/10 transition-colors"
+                >
+                  Load Sample
+                </button>
+                <button
+                  onClick={() => {
+                    setEnvSource('');
+                    setEnvJsonOutput('');
+                    setEnvError('');
+                  }}
+                  className="rounded border border-[#313244] px-2 py-0.5 text-[10px] text-[#6c7086] hover:text-[#cdd6f4] hover:bg-[#313244] transition-colors"
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+
+            {/* Options Bar */}
+            <div className="flex shrink-0 flex-wrap items-center gap-3 border-b border-[#313244]/40 px-4 py-1.5 text-[10px] bg-[#151522]">
+              <label className="flex items-center gap-1.5 cursor-pointer text-[#cdd6f4] select-none hover:text-white">
+                <input
+                  type="checkbox"
+                  checked={nestDoubleUnderscore}
+                  onChange={e => {
+                    const checked = e.target.checked;
+                    setNestDoubleUnderscore(checked);
+                    handleConvertEnvToJson(undefined, { nestDoubleUnderscore: checked });
+                  }}
+                  className="rounded border-[#45475a] bg-[#1e1e2e] text-[#89b4fa] focus:ring-0 focus:ring-offset-0"
+                />
+                <span className="font-mono text-[#89b4fa]">__</span>
+                <span>Nest Objects (Secret__KEY → Secret: {'{ KEY }'})</span>
+              </label>
+
+              <label className="flex items-center gap-1.5 cursor-pointer text-[#9399b2] select-none hover:text-[#cdd6f4]">
+                <input
+                  type="checkbox"
+                  checked={nestDot}
+                  onChange={e => {
+                    const checked = e.target.checked;
+                    setNestDot(checked);
+                    handleConvertEnvToJson(undefined, { nestDot: checked });
+                  }}
+                  className="rounded border-[#45475a] bg-[#1e1e2e] text-[#89b4fa] focus:ring-0 focus:ring-offset-0"
+                />
+                <span className="font-mono text-[#a6e3a1]">.</span>
+                <span>Nest on dot</span>
+              </label>
+
+              <label className="flex items-center gap-1.5 cursor-pointer text-[#9399b2] select-none hover:text-[#cdd6f4]">
+                <input
+                  type="checkbox"
+                  checked={autoParseTypes}
+                  onChange={e => {
+                    const checked = e.target.checked;
+                    setAutoParseTypes(checked);
+                    handleConvertEnvToJson(undefined, { autoParseTypes: checked });
+                  }}
+                  className="rounded border-[#45475a] bg-[#1e1e2e] text-[#89b4fa] focus:ring-0 focus:ring-offset-0"
+                />
+                <span>Parse types (numbers/booleans)</span>
+              </label>
+            </div>
+
+            <textarea
+              value={envSource}
+              onChange={event => {
+                const val = event.target.value;
+                setEnvSource(val);
+                handleConvertEnvToJson(val);
+              }}
+              spellCheck={false}
+              aria-label="Env or Key-Value input"
+              placeholder={'DATABASE_NAME=app_analytics\nSecret__DATABASE_SERVICE_API_KEY=dev_secret_key_987\nSERVICE_ENDPOINT:https://api.example.com/v1\nCLUSTER_HOSTNAME=cluster-node-01.internal'}
+              className="min-h-0 flex-1 resize-none bg-[#1a1a2c] px-4 py-3 font-mono text-[12px] leading-6 text-[#cdd6f4] outline-none placeholder:text-[#585b70] focus:ring-1 focus:ring-inset focus:ring-[#89b4fa]/20"
+            />
+
+            <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-t border-[#313244] px-4 py-2 bg-[#181825]">
+              <span className="text-[10px] text-[#6c7086]">
+                {envSource.trim() ? `${envSource.trim().split(/\r?\n/).length} lines detected` : 'Empty input'}
+              </span>
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => handleConvertJsonToEnv()}
+                  disabled={!envJsonOutput.trim()}
+                  title="Convert JSON from right pane back into Env/KV lines"
+                  className="flex items-center gap-1 rounded border border-[#313244] px-2.5 py-1 text-[10px] text-[#9399b2] hover:text-[#cdd6f4] hover:bg-[#313244] disabled:opacity-40 transition-colors"
+                >
+                  <ArrowLeftRight size={11} />
+                  <span>JSON to Env</span>
+                </button>
+                <button
+                  onClick={() => handleConvertEnvToJson()}
+                  disabled={!envSource.trim()}
+                  className="flex items-center gap-1.5 rounded bg-[#89b4fa] px-3 py-1 text-[10px] font-semibold text-[#11111b] hover:bg-[#b4befe] disabled:opacity-40 shadow-sm transition-colors"
+                >
+                  <span>Env to JSON →</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Generated Nested JSON */}
+          <div className="flex min-h-0 flex-col">
+            <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#313244]/60 px-4 py-2 bg-[#181825]/50">
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-semibold text-[#a6e3a1]">Nested JSON Result</span>
+                {envError ? (
+                  <span className="text-[10px] text-[#f38ba8]">· {envError}</span>
+                ) : envJsonOutput.trim() ? (
+                  <span className="text-[10px] text-[#a6e3a1]">· Ready</span>
+                ) : null}
+              </div>
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={async () => {
+                    try {
+                      await navigator.clipboard.writeText(envJsonOutput);
+                      setEnvJsonCopied(true);
+                      setTimeout(() => setEnvJsonCopied(false), 1200);
+                    } catch {}
+                  }}
+                  disabled={!envJsonOutput.trim()}
+                  className="flex items-center gap-1 rounded border border-[#313244] px-2.5 py-1 text-[10px] text-[#cdd6f4] hover:bg-[#313244] disabled:opacity-40 transition-colors"
+                >
+                  <Copy size={11} />
+                  <span>{envJsonCopied ? 'Copied!' : 'Copy JSON'}</span>
+                </button>
+                <button
+                  onClick={() => {
+                    if (envJsonOutput.trim()) {
+                      downloadText(envJsonOutput, 'env-config.json', 'application/json');
+                    }
+                  }}
+                  disabled={!envJsonOutput.trim()}
+                  className="flex items-center gap-1 rounded border border-[#313244] px-2.5 py-1 text-[10px] text-[#9399b2] hover:text-[#cdd6f4] hover:bg-[#313244] disabled:opacity-40 transition-colors"
+                >
+                  <Download size={11} />
+                  <span>Download</span>
+                </button>
+                <button
+                  onClick={applyEnvJsonToStudio}
+                  disabled={!envJsonOutput.trim()}
+                  title="Open this generated JSON in main JSON Studio (Table, Tree, Graph, YAML)"
+                  className="flex items-center gap-1 rounded border border-[#a6e3a1]/30 bg-[#a6e3a1]/10 px-2.5 py-1 text-[10px] font-medium text-[#a6e3a1] hover:bg-[#a6e3a1]/20 disabled:opacity-40 transition-colors"
+                >
+                  <Sparkles size={11} />
+                  <span>Open in Studio</span>
+                </button>
+              </div>
+            </div>
+
+            <textarea
+              value={envJsonOutput}
+              onChange={event => {
+                setEnvJsonOutput(event.target.value);
+                setEnvError('');
+              }}
+              spellCheck={false}
+              aria-label="Nested JSON Output"
+              placeholder="Nested JSON output will appear here..."
+              className="min-h-0 flex-1 resize-none bg-[#1a1a2c] px-4 py-3 font-mono text-[12px] leading-6 text-[#cdd6f4] outline-none placeholder:text-[#585b70] focus:ring-1 focus:ring-inset focus:ring-[#89b4fa]/20"
+            />
+
+            {envError && (
+              <p className="shrink-0 border-t border-[#313244] px-4 py-2 text-[10px] text-[#f38ba8]">{envError}</p>
+            )}
+
+            <div className="flex shrink-0 items-center justify-between border-t border-[#313244] px-4 py-2 text-[10px] text-[#6c7086] bg-[#181825]">
+              <span>Tip: Click "Open in Studio" to inspect table, graph, or convert to YAML/XML.</span>
+              <span>{envJsonOutput.trim().length} chars</span>
             </div>
           </div>
         </div>

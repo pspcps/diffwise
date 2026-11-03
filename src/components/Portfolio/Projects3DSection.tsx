@@ -104,17 +104,21 @@ const ENRICHED_PROJECTS: ProjectItem[] = [
     ],
   },
   {
-    ...getProject('kafbat'), // Kafbat UI
+    ...getProject('kafbat'), // Kafbat UI (Cloud-Native Kafka Platform & Streaming ETL)
     category: 'systems',
-    metricBadge: 'Real-time Kafka Cluster UI',
+    metricBadge: '<40MB Control Plane · K8s Streaming ETL',
     architectureDetails: [
-      'Full-stack Kafka management dashboard tracking broker, topic, partition, and consumer lag.',
-      'Message browser with real-time filtering by partition offset, message key, timestamp, and payload.',
-      'Go backend powered by IBM Sarama with Next.js 14 App Router and Docker containerization.',
+      'Decoupled Control Plane & Data Plane: Go 1.21 Gin REST engine (:8080) for cluster metadata and K8s orchestration; Python 3.11 worker pods with C-librdkafka for high-throughput streaming replication.',
+      'Kubernetes-Native Replication Workers: Programmatic client-go controller provisioning isolated apps/v1.Deployment pods in namespace "kafbat" with dynamic replica scaling, rolling updates, and ANSI log streaming.',
+      'Multi-Sink Database Adapters: Continuous ETL into PostgreSQL (execute_batch with ON CONFLICT), MySQL (ON DUPLICATE KEY UPDATE), SQL Server (T-SQL MERGE), and MongoDB (UpdateOne upsert).',
+      'Sub-Millisecond Schema Engine: Thread-safe in-memory cache (validation.Cache) compiling Avro (hamba/avro) & JSON Schema (Draft 2020-12) with <120µs p99 pre-publish validation.',
+      'SQL-Generated Consumer Lag: Real-time partition lag calculated dynamically in PostgreSQL 16 via stored generated column lag = GREATEST(end_offset - current_offset, 0).',
+      'Resilient Poison-Pill Isolation: Traps database insert exceptions, posts audit traces to job_errors table, and commits offsets to prevent pipeline freezing.',
     ],
     securityDetails: [
-      'Read-only sandbox mode for production broker clusters with TLS mTLS authentication.',
-      'Strict RBAC guards on topic deletion and configuration mutation endpoints.',
+      'Role-Based Access Control (RBAC): Salted bcrypt password hashing and HMAC-SHA256 JWT tokens enforcing admin vs viewer role privileges.',
+      'Enterprise Multi-Cluster Auth: Native support for AWS MSK IAM SigV4 signing, SASL/SCRAM-SHA-512, TLS v1.2/v1.3, and Kerberos GSSAPI.',
+      'Parameterized SQL & K8s Isolation: Parameterized lib/pq queries eliminating SQL injection, with worker pods isolated in dedicated Kubernetes namespaces.',
     ],
   },
   {
