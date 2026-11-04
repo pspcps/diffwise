@@ -16,6 +16,7 @@ import {
   Search,
   Fingerprint,
   Send,
+  Bug,
 } from 'lucide-react';
 import PSDevLogo from '../Common/PSDevLogo';
 import type { ViewMode } from '../../types';
@@ -41,6 +42,7 @@ const tabs: { id: ViewMode; label: string; icon: React.ReactNode }[] = [
   { id: 'base64', label: 'Image Base64', icon: <ImageIcon size={13} /> },
   { id: 'markup', label: 'Markup Studio', icon: <FileCode2 size={13} /> },
   { id: 'case', label: 'Case Converter', icon: <CaseSensitive size={13} /> },
+  { id: 'debug', label: 'DebugFlow', icon: <Bug size={13} /> },
   { id: 'pdf', label: 'PDF Studio', icon: <Layers size={13} /> }, // Placed at very end as requested
 ];
 

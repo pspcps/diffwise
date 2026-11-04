@@ -22,6 +22,7 @@ const HarViewerView = lazy(() => import('./components/HarViewer/HarViewerView'))
 const JwtStudioView = lazy(() => import('./components/JwtStudio/JwtStudioView'));
 const UuidStudioView = lazy(() => import('./components/UuidStudio/UuidStudioView'));
 const ApiStudioView = lazy(() => import('./components/ApiStudio/ApiStudioView'));
+const ErrorDebuggerView = lazy(() => import('./components/ErrorDebugger/ErrorDebuggerView'));
 import CommandPalette from './components/CommandPalette/CommandPalette';
 
 const HASH_TO_MODE: Record<string, ViewMode> = {
@@ -110,6 +111,12 @@ const HASH_TO_MODE: Record<string, ViewMode> = {
   '#/swagger': 'api',
   '#/openapi': 'api',
   '#/graphql': 'api',
+
+  '#/debug': 'debug',
+  '#/debugflow': 'debug',
+  '#/error-debugger': 'debug',
+  '#/stacktrace': 'debug',
+  '#/logs': 'debug',
 };
 
 const MODE_SEO: Record<ViewMode, { title: string; desc: string }> = {
@@ -176,6 +183,10 @@ const MODE_SEO: Record<ViewMode, { title: string; desc: string }> = {
   api: {
     title: 'ApiDesk Studio: Postman Client & Swagger OpenAPI Hub — PSDevTool',
     desc: 'Lightweight client-side Postman API tester and Swagger OpenAPI spec explorer. Send HTTP requests, inspect latency, import cURL, and convert Swagger to JSON/YAML.',
+  },
+  debug: {
+    title: 'DebugFlow — Universal Error & Stack Trace Debugger — PSDevTool',
+    desc: 'Analyze logs, exceptions, and stack traces across C#, Java, Python, Node.js, and Go with deterministic root cause analysis and execution flow mapping.',
   },
 };
 
@@ -353,6 +364,15 @@ export default function App() {
           <div className="absolute inset-0 flex flex-col">
             <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#9399b2]">Loading Image Studio…</div>}>
               <ImageStudioView />
+            </Suspense>
+          </div>
+        )}
+
+        {/* DebugFlow Universal Debugger */}
+        {mode === 'debug' && (
+          <div className="absolute inset-0 flex flex-col">
+            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#9399b2]">Loading DebugFlow…</div>}>
+              <ErrorDebuggerView />
             </Suspense>
           </div>
         )}

@@ -18,6 +18,7 @@ import {
   X,
   UserRound,
   Send,
+  Bug,
 } from 'lucide-react';
 import type { ViewMode } from '../../types';
 
@@ -38,6 +39,14 @@ interface ToolItem {
 }
 
 const TOOLS: ToolItem[] = [
+  {
+    id: 'debug',
+    name: 'DebugFlow (Universal Log & Stack Trace Analyzer)',
+    category: 'Network & Debugging',
+    keywords: ['debug', 'debugflow', 'stacktrace', 'error', 'log', 'exception', 'stack', 'trace', 'crash', 'debugger', 'csharp', 'dotnet', 'java', 'python'],
+    icon: <Bug size={16} />,
+    color: '#fab387',
+  },
   {
     id: 'har',
     name: 'HAR File Viewer',
