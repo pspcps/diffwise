@@ -23,6 +23,7 @@ const JwtStudioView = lazy(() => import('./components/JwtStudio/JwtStudioView'))
 const UuidStudioView = lazy(() => import('./components/UuidStudio/UuidStudioView'));
 const ApiStudioView = lazy(() => import('./components/ApiStudio/ApiStudioView'));
 const ErrorDebuggerView = lazy(() => import('./components/ErrorDebugger/ErrorDebuggerView'));
+const GeoDistanceView = lazy(() => import('./components/GeoDistance/GeoDistanceView'));
 import CommandPalette from './components/CommandPalette/CommandPalette';
 
 const HASH_TO_MODE: Record<string, ViewMode> = {
@@ -117,6 +118,14 @@ const HASH_TO_MODE: Record<string, ViewMode> = {
   '#/error-debugger': 'debug',
   '#/stacktrace': 'debug',
   '#/logs': 'debug',
+
+  '#/distance': 'distance',
+  '#/geodistance': 'distance',
+  '#/geo-distance': 'distance',
+  '#/coordinates': 'distance',
+  '#/lat-lon': 'distance',
+  '#/latlon': 'distance',
+  '#/haversine': 'distance',
 };
 
 const MODE_SEO: Record<ViewMode, { title: string; desc: string }> = {
@@ -187,6 +196,10 @@ const MODE_SEO: Record<ViewMode, { title: string; desc: string }> = {
   debug: {
     title: 'DebugFlow — Universal Error & Stack Trace Debugger — PSDevTool',
     desc: 'Analyze logs, exceptions, and stack traces across C#, Java, Python, Node.js, and Go with deterministic root cause analysis and execution flow mapping.',
+  },
+  distance: {
+    title: 'Geo Distance & Coordinates Calculator (Lat/Lon Haversine & Vincenty) — PSDevTool',
+    desc: 'Calculate distance between two GPS coordinates (latitude and longitude) with high precision using Vincenty WGS-84 and Haversine formulas, coordinate delta breakdown, and travel times.',
   },
 };
 
@@ -373,6 +386,15 @@ export default function App() {
           <div className="absolute inset-0 flex flex-col">
             <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#9399b2]">Loading DebugFlow…</div>}>
               <ErrorDebuggerView />
+            </Suspense>
+          </div>
+        )}
+
+        {/* Geo Distance & Coordinates Calculator */}
+        {mode === 'distance' && (
+          <div className="absolute inset-0 flex flex-col">
+            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#9399b2]">Loading Geo Distance Calculator…</div>}>
+              <GeoDistanceView />
             </Suspense>
           </div>
         )}

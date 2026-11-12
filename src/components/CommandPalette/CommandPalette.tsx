@@ -19,6 +19,7 @@ import {
   UserRound,
   Send,
   Bug,
+  Compass,
 } from 'lucide-react';
 import type { ViewMode } from '../../types';
 
@@ -46,6 +47,14 @@ const TOOLS: ToolItem[] = [
     keywords: ['debug', 'debugflow', 'stacktrace', 'error', 'log', 'exception', 'stack', 'trace', 'crash', 'debugger', 'csharp', 'dotnet', 'java', 'python'],
     icon: <Bug size={16} />,
     color: '#fab387',
+  },
+  {
+    id: 'distance',
+    name: 'Geo Distance & Coordinate Difference Calculator',
+    category: 'Calculators & Converters',
+    keywords: ['distance', 'lat', 'lon', 'latitude', 'longitude', 'coordinates', 'haversine', 'vincenty', 'geodesic', 'geofence', 'gps', 'bearing', 'heading', 'miles', 'km'],
+    icon: <Compass size={16} />,
+    color: '#89b4fa',
   },
   {
     id: 'har',
