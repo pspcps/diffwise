@@ -1,5 +1,4 @@
-import { useEffect, useRef } from "react";
-import { ArrowLeft, Search, ArrowUpRight } from "lucide-react";
+import { Search, ArrowLeft, UserRound } from "lucide-react";
 import ThemeChoice from "../Guide/ThemeChoice";
 import Brand from "../Spatial/Brand";
 import { TOOLS } from "../../data/tools";
@@ -7,7 +6,7 @@ import type { ViewMode } from "../../types";
 import "../../spatial.css";
 interface ToolbarProps {
   mode: ViewMode;
-  onModeChange: (m: ViewMode) => void;
+  onModeChange: (mode: ViewMode) => void;
   onAbout: () => void;
   onOpenSearch?: () => void;
 }
@@ -17,61 +16,58 @@ export default function Toolbar({
   onAbout,
   onOpenSearch,
 }: ToolbarProps) {
-  const active = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    active.current?.scrollIntoView({
-      block: "nearest",
-      inline: "center",
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? "instant"
-        : "smooth",
-    });
-  }, [mode]);
   return (
-    <header className="tool-toolbar">
-      <div className="toolbar-main">
-        <Brand
+    <header className="tool-toolbar compact-toolbar">
+      <Brand
+        onClick={() => {
+          window.location.hash = "#/";
+        }}
+      />
+      <span className="toolbar-divider" />
+      <select
+        className="tool-picker"
+        aria-label="Choose developer tool"
+        value={mode}
+        onChange={(e) => onModeChange(e.target.value as ViewMode)}
+      >
+        {["Code & data", "Network", "Create", "Utilities"].map((category) => (
+          <optgroup key={category} label={category}>
+            {TOOLS.filter((t) => t.category === category).map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name}
+              </option>
+            ))}
+          </optgroup>
+        ))}
+      </select>
+      <div className="compact-toolbar-actions">
+        <button
+          className="toolbar-home"
           onClick={() => {
             window.location.hash = "#/";
           }}
-        />
-        <div className="tool-toolbar-actions"><ThemeChoice/>
-          <button
-            className="toolbar-home"
-            onClick={() => {
-              window.location.hash = "#/";
-            }}
-          >
-            <ArrowLeft size={14} /> All tools
-          </button>
-          <button
-            className="search-shortcut"
-            onClick={onOpenSearch}
-            aria-label="Quick search tools"
-          >
-            <Search size={15} />
-            <span>Quick search</span>
-            <kbd>⌘ K</kbd>
-          </button>
-          <button className="toolbar-home" onClick={onAbout}>
-            The builder <ArrowUpRight size={13} />
-          </button>
-        </div>
+          aria-label="All tools"
+        >
+          <ArrowLeft size={15} />
+          <span>All tools</span>
+        </button>
+        <button
+          className="toolbar-home"
+          onClick={onOpenSearch}
+          aria-label="Quick search tools"
+        >
+          <Search size={16} />
+          <kbd>⌘ K</kbd>
+        </button>
+        <ThemeChoice />
+        <button
+          className="toolbar-home builder-action"
+          onClick={onAbout}
+          aria-label="About the builder"
+        >
+          <UserRound size={16} />
+        </button>
       </div>
-      <nav className="toolbar-tools" aria-label="Developer tools">
-        {TOOLS.map((t) => (
-          <button
-            key={t.id}
-            ref={mode === t.id ? active : undefined}
-            className={mode === t.id ? "active" : ""}
-            aria-current={mode === t.id ? "page" : undefined}
-            onClick={() => onModeChange(t.id)}
-          >
-            <t.icon size={13} />
-            {t.name}
-          </button>
-        ))}
-      </nav>
     </header>
   );
 }

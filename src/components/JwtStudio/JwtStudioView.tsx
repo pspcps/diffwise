@@ -296,9 +296,9 @@ export default function JwtStudioView() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-[#e4ebdd]">JWT Debugger &amp; Claims Inspector</h2>
+              <h2 className="text-sm font-bold text-[#e4ebdd]">JWT Inspector</h2>
               <span className="px-2 py-0.5 text-[10px] rounded-full bg-[#b5dfa3]/15 text-[#b5dfa3] font-semibold border border-[#b5dfa3]/30">
-                100% Client-Side Private
+                Local token analysis
               </span>
             </div>
             <p className="text-[11px] text-[#b1bea8]">

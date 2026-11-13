@@ -1,4 +1,4 @@
-import SyntaxInput from '../Common/SyntaxInput';
+import StructuredEditor from '../Common/StructuredEditor';
 import YAML from 'yaml';
 import { Fragment, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type WheelEvent as ReactWheelEvent } from 'react';
 import { ArrowLeftRight, Braces, Check, ChevronRight, ChevronsUpDown, Copy, Download, GitBranch, ListFilter, Minus, Network, Plus, RotateCcw, SlidersHorizontal, Sparkles, Table2 } from 'lucide-react';
@@ -675,7 +675,7 @@ export default function JsonToolsView() {
         <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-2">
           <label className="flex min-h-0 flex-col border-b border-[#344435] md:border-b-0 md:border-r">
             <span className="shrink-0 px-4 py-2 text-[11px] text-[#b1bea8]">Input JSON</span>
-            <SyntaxInput aria-label="JSON source" value={source} onChange={event => { setSource(event.target.value); setPage(0); setExpandedPaths(new Set(['$'])); setExpandedRows(new Set()); }}
+            <StructuredEditor aria-label="JSON source" value={source} onChange={value => { setSource(value); setPage(0); setExpandedPaths(new Set(['$'])); setExpandedRows(new Set()); }}
               placeholder={'Paste JSON here, for example:\n[{"name":"Ada","profile":{"city":"London"}}]'} spellCheck={false}
               className="min-h-0 flex-1 resize-none bg-[#141a16] px-4 py-3 font-mono text-[12px] leading-6 text-[#e4ebdd] outline-none placeholder:text-[#899980] focus:ring-1 focus:ring-inset focus:ring-[#c8edb6]/20" />
           </label>
@@ -901,13 +901,13 @@ export default function JsonToolsView() {
                 disabled={!valid}
                 className="flex items-center gap-1.5 rounded border border-[#c8edb6]/30 px-2.5 py-1 text-[10px] text-[#c8edb6] disabled:opacity-40"
               >
-                <ArrowLeftRight size={11} />JSON to YAML
+                <span aria-hidden="true">→</span> JSON to YAML
               </button>
             </div>
-            <textarea
+            <StructuredEditor
               value={source}
-              onChange={event => {
-                setSource(event.target.value);
+              onChange={value => {
+                setSource(value);
                 setExpandedPaths(new Set(['$']));
                 setExpandedRows(new Set());
               }}
@@ -937,13 +937,13 @@ export default function JsonToolsView() {
                 disabled={!yamlSource.trim()}
                 className="flex items-center gap-1.5 rounded border border-[#b5dfa3]/30 px-2.5 py-1 text-[10px] text-[#b5dfa3] disabled:opacity-40"
               >
-                <ArrowLeftRight size={11} />YAML to JSON
+                <span aria-hidden="true">←</span> YAML to JSON
               </button>
             </div>
-            <textarea
+            <StructuredEditor language="yaml"
               value={yamlSource}
-              onChange={event => {
-                setYamlSource(event.target.value);
+              onChange={value => {
+                setYamlSource(value);
                 setYamlError('');
               }}
               spellCheck={false}
@@ -959,17 +959,17 @@ export default function JsonToolsView() {
           <div className="flex min-h-0 flex-col border-b border-[#344435] md:border-b-0 md:border-r">
             <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 px-4 py-2">
               <span className="text-[11px] font-medium text-[#b1bea8]">JSON source</span>
-              <button onClick={() => { if (valid && parsed !== undefined) setXmlSource(jsonToXml(parsed)); }} disabled={!valid} className="flex items-center gap-1.5 rounded border border-[#c8edb6]/30 px-2.5 py-1 text-[10px] text-[#c8edb6] disabled:opacity-40"><ArrowLeftRight size={11} />JSON to XML</button>
+              <button onClick={() => { if (valid && parsed !== undefined) setXmlSource(jsonToXml(parsed)); }} disabled={!valid} className="flex items-center gap-1.5 rounded border border-[#c8edb6]/30 px-2.5 py-1 text-[10px] text-[#c8edb6] disabled:opacity-40"><span aria-hidden="true">→</span> JSON to XML</button>
             </div>
-            <SyntaxInput value={source} onChange={event => { setSource(event.target.value); setExpandedPaths(new Set(['$'])); setExpandedRows(new Set()); }} spellCheck={false} aria-label="JSON for XML conversion" placeholder="Paste JSON to convert to XML..."
+            <StructuredEditor value={source} onChange={value => { setSource(value); setExpandedPaths(new Set(['$'])); setExpandedRows(new Set()); }} spellCheck={false} aria-label="JSON for XML conversion" placeholder="Paste JSON to convert to XML..."
               className="min-h-0 flex-1 resize-none bg-[#141a16] px-4 py-3 font-mono text-[12px] leading-6 text-[#e4ebdd] outline-none placeholder:text-[#899980] focus:ring-1 focus:ring-inset focus:ring-[#c8edb6]/20" />
           </div>
           <div className="flex min-h-0 flex-col">
             <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 px-4 py-2">
               <span className="text-[11px] font-medium text-[#b1bea8]">XML source {xmlResult && (xmlResult.error ? <span className="font-normal text-[#f19aa6]">· Invalid XML</span> : <span className="font-normal text-[#b5dfa3]">· Valid XML</span>)}</span>
-              <button onClick={() => { if (xmlResult?.value !== undefined) { setSource(JSON.stringify(xmlResult.value, null, 2)); setExpandedPaths(new Set(['$'])); setExpandedRows(new Set()); } }} disabled={!xmlResult || xmlResult.error !== undefined} className="flex items-center gap-1.5 rounded border border-[#b5dfa3]/30 px-2.5 py-1 text-[10px] text-[#b5dfa3] disabled:opacity-40"><ArrowLeftRight size={11} />XML to JSON</button>
+              <button onClick={() => { if (xmlResult?.value !== undefined) { setSource(JSON.stringify(xmlResult.value, null, 2)); setExpandedPaths(new Set(['$'])); setExpandedRows(new Set()); } }} disabled={!xmlResult || xmlResult.error !== undefined} className="flex items-center gap-1.5 rounded border border-[#b5dfa3]/30 px-2.5 py-1 text-[10px] text-[#b5dfa3] disabled:opacity-40"><span aria-hidden="true">←</span> XML to JSON</button>
             </div>
-            <textarea value={xmlSource} onChange={event => setXmlSource(event.target.value)} spellCheck={false} aria-label="XML for JSON conversion" placeholder="Paste or generate XML here..."
+            <StructuredEditor language="xml" value={xmlSource} onChange={value => setXmlSource(value)} spellCheck={false} aria-label="XML for JSON conversion" placeholder="Paste or generate XML here..."
               className="min-h-0 flex-1 resize-none bg-[#141a16] px-4 py-3 font-mono text-[12px] leading-6 text-[#e4ebdd] outline-none placeholder:text-[#899980] focus:ring-1 focus:ring-inset focus:ring-[#c8edb6]/20" />
             {xmlResult?.error && <p className="shrink-0 border-t border-[#344435] px-4 py-2 text-[10px] text-[#f19aa6]">{xmlResult.error}</p>}
           </div>

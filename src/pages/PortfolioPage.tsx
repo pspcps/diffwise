@@ -25,6 +25,9 @@ const InteractiveArchitectureDiagram = lazy(
   () => import("../components/Portfolio/InteractiveArchitectureDiagram"),
 );
 
+import { PROJECT_CASE_STUDIES } from "../data/projectCaseStudies";
+import { downloadProfile } from "../utils/downloadProfile";
+
 type Project = (typeof RESUME.projects)[number];
 const FILTERS = ["All projects", "AI & agents", "Developer tools"];
 const DEV_PROJECTS = ["PSDevTool", "Kafbat UI", "ApiDesk Studio"];
@@ -55,7 +58,8 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
     expanded || filter !== "All projects" ? filtered : filtered.slice(0, 6);
   return (
     <div className="portfolio-space" ref={root}>
-      <header className="portfolio-nav"><ThemeChoice/>
+      <header className="portfolio-nav">
+        <ThemeChoice />
         <button
           className="portfolio-identity"
           onClick={() => root.current?.scrollTo({ top: 0, behavior: "smooth" })}
@@ -87,8 +91,9 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
               <em>I build for scale.</em>
             </h1>
             <p>
-              I’m Prakash Choudhary, a senior software engineer turning
-              ambitious ideas into thoughtful, scalable products.
+              I’m Prakash Choudhary, a senior software engineer turning backend
+              services, distributed systems, and applied AI into practical
+              products.
             </p>
             <div className="portfolio-role">
               <span className="live-dot" />
@@ -109,14 +114,21 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
               >
                 View résumé <Download size={15} />
               </a>
+              <button className="text-button" onClick={downloadProfile}>
+                Download text profile <Download size={15} />
+              </button>
             </div>
           </div>
-          <div className="portfolio-hero-art"><CharacterGuide stories={[
-            "Hi! I’m your guide to Prakash’s work. He builds cloud-native systems, real-time platforms, and AI products. Tap me to explore his story.",
-            "At Lytx, Prakash architected a reverse-geocoding system using OpenStreetMap and Redis, saving approximately $1M each year.",
-            "Project Drishti connects camera feeds, Vertex AI Vision, and Gemini to help teams assess crowd safety and respond to incidents.",
-            "PSDevTool is the workspace you’re using: code comparison, data tools, document processing, and more. Explore a project below for the details.",
-          ]}/></div>
+          <div className="portfolio-hero-art">
+            <CharacterGuide
+              stories={[
+                "Hi! I’m your guide to Prakash’s work. He builds cloud-native systems, real-time platforms, and AI products. Tap me to explore his story.",
+                "At Lytx, Prakash architected a reverse-geocoding system using OpenStreetMap and Redis, saving approximately $1M each year.",
+                "Project Drishti connects camera feeds, Vertex AI Vision, and Gemini to help teams assess crowd safety and respond to incidents.",
+                "PSDevTool is the workspace you’re using: code comparison, data tools, document processing, and more. Explore a project below for the details.",
+              ]}
+            />
+          </div>
         </section>
         <section className="portfolio-stats" aria-label="Career highlights">
           {RESUME.stats.map((s) => (
@@ -130,7 +142,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
           <div className="section-heading">
             <div>
               <span className="eyebrow muted">SELECTED WORK / 01</span>
-              <h2>Built with purpose.</h2>
+              <h2>Selected engineering projects.</h2>
             </div>
             <p>
               From real-time systems to local AI.
@@ -164,7 +176,8 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
               >
                 <div className="project-space-content">
                   <h3>{p.title}</h3>
-                  <p>{p.subtitle}</p><p className="project-real-summary">{p.bullets[0]}</p>
+                  <p>{p.subtitle}</p>
+                  <p className="project-real-summary">{p.bullets[0]}</p>
                   <div className="project-tech">
                     {p.tech.slice(0, 4).map((t) => (
                       <span key={t}>{t}</span>
@@ -192,17 +205,13 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
         <section className="portfolio-section portfolio-about" id="about">
           <div>
             <span className="eyebrow muted">A LITTLE ABOUT ME / 02</span>
-            <h2>
-              Curiosity is
-              <br />
-              my constant.
-            </h2>
+            <h2>Professional summary.</h2>
           </div>
           <p>{RESUME.summary}</p>
         </section>
         <section className="portfolio-section" id="experience">
           <span className="eyebrow muted">THE JOURNEY / 03</span>
-          <h2>Experience that compounds.</h2>
+          <h2>Professional experience.</h2>
           <div className="experience-list">
             {RESUME.experience.map((e, i) => (
               <details key={e.company} open={i === 0}>
@@ -228,7 +237,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
         </section>
         <section className="portfolio-section" id="skills">
           <span className="eyebrow muted">THE BUILDING BLOCKS / 04</span>
-          <h2>My working toolkit.</h2>
+          <h2>Technical skills.</h2>
           <div className="skills-grid">
             {Object.entries(RESUME.skills).map(([name, skill]) => (
               <div className="skill-space-card" key={name}>
@@ -244,7 +253,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
         </section>
         <section className="portfolio-section" id="education">
           <span className="eyebrow muted">FOUNDATIONS / 05</span>
-          <h2>Always learning.</h2>
+          <h2>Education & certifications.</h2>
           <div className="credential-row">
             <div>
               <span className="eyebrow muted">EDUCATION</span>
@@ -265,7 +274,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
               ))}
             </div>
           </div>
-          <h2>Giving back to the source.</h2>
+          <h2>Open-source contributions.</h2>
           <div className="open-source-grid">
             {RESUME.openSource.map((o) => (
               <div key={o.project}>
@@ -340,7 +349,14 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
       >
         {selected && (
           <>
-            <CharacterGuide compact key={selected.title} stories={[`${selected.title}: ${selected.subtitle}`, ...selected.bullets]}/>
+            <CharacterGuide
+              compact
+              key={selected.title}
+              stories={[
+                `${selected.title}: ${selected.subtitle}`,
+                ...selected.bullets,
+              ]}
+            />
             <button
               className="dialog-close"
               aria-label="Close project"
@@ -351,6 +367,10 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             <div className="eyebrow muted">PROJECT / {selected.period}</div>
             <h2 id="project-title">{selected.title}</h2>
             <p>{selected.subtitle}</p>
+            <div className="case-problem">
+              <h3>Problem & purpose</h3>
+              <p>{PROJECT_CASE_STUDIES[selected.title].problem}</p>
+            </div>
             <div className="project-tech">
               {selected.tech.map((t) => (
                 <span key={t}>{t}</span>
@@ -361,33 +381,31 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
                 <li key={b}>{b}</li>
               ))}
             </ul>
-            {[
-              "Project Drishti",
-              "FleetMind",
-              "PSDevTool",
-              "Kafbat UI",
-            ].includes(selected.title) && (
-              <div className="architecture-walkthrough">
-                <button
-                  className="secondary-button"
-                  onClick={() => setShowArchitecture((v) => !v)}
-                  aria-expanded={showArchitecture}
-                >
-                  {showArchitecture
-                    ? "Hide architecture"
-                    : "Explore architecture"}
-                  <ChevronDown size={15} />
-                </button>
-                {showArchitecture && (
-                  <Suspense fallback={<p>Loading architecture…</p>}>
-                    <InteractiveArchitectureDiagram
-                      key={selected.title}
-                      projectTitle={selected.title}
-                      projectColor={selected.color}
-                    />
-                  </Suspense>
-                )}
-              </div>
+            <div className="architecture-walkthrough">
+              <button
+                className="secondary-button"
+                onClick={() => setShowArchitecture((v) => !v)}
+                aria-expanded={showArchitecture}
+              >
+                {showArchitecture
+                  ? "Hide architecture"
+                  : "Explore architecture"}
+                <ChevronDown size={15} />
+              </button>
+              {showArchitecture && (
+                <Suspense fallback={<p>Loading architecture…</p>}>
+                  <InteractiveArchitectureDiagram
+                    key={selected.title}
+                    projectTitle={selected.title}
+                    projectColor={selected.color}
+                  />
+                </Suspense>
+              )}
+            </div>
+            {!selected.github && (
+              <p className="private-source-label">
+                Private repository · Architecture summary available above
+              </p>
             )}
             {selected.github && (
               <a

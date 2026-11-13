@@ -30,3 +30,14 @@ Production build (TypeScript/Vite), focused ESLint checks for the new shared com
 ![Portfolio](redesign/portfolio.jpg)
 ![Comparison input and syntax colors](redesign/tools.jpg)
 [Mobile portfolio](redesign/mobile.jpg)
+
+## Recruiting content and compact workspaces
+
+Project descriptions and architecture stages now come from a source review of all ten listed repositories. See [the source-review notes](portfolio-source-review.md). The profile includes the exact merged Liquibase PR, corrected project stacks, source-linked engineering case studies, and a downloadable text profile with standard recruiting headings.
+
+Tool navigation uses a single 54px desktop / 49px mobile header and grouped tool picker. The horizontal tool strip and duplicate tool-introduction header have been removed. The guide launcher is smaller, and its speech icon no longer inherits the character illustration's dimensions.
+
+JSON/XML/YAML inputs use Monaco with visible gutter folding arrows, Fold/Unfold actions, syntax coloring, and explicit two-way conversion controls. Browser checks cover all 18 routes plus folding, both conversion directions, the profile download, all ten architecture cases, and mobile theme persistence. External project applications and their test suites were not executed.
+
+![Compact JSON/YAML editors](redesign/json.jpg)
+![Themed architecture case study](redesign/architecture.jpg)

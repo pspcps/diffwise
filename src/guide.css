@@ -45,7 +45,7 @@
   outline: 2px solid var(--user-accent);
   border-radius: 20px;
 }
-.character-button svg {
+.character-button > svg {
   display: block;
   width: 100%;
   height: auto;
@@ -172,7 +172,7 @@
   font-size: 9px;
   padding: 0 0 7px;
 }
-.guide-compact .character-button svg {
+.guide-compact .character-button > svg {
   height: 82px;
 }
 .portfolio-hero-art,
@@ -367,7 +367,7 @@
     width: 66px;
     border-radius: 12px;
   }
-  .guide-compact .character-button svg {
+  .guide-compact .character-button > svg {
     height: 58px;
   }
   .guide-compact .guide-speech {
@@ -385,5 +385,455 @@
   .character-guide * {
     animation: none !important;
     transition: none !important;
+  }
+}
+/* Semantic architecture case studies inherit the selected language theme. */
+.architecture-study {
+  --study-border: color-mix(in srgb, var(--user-accent) 22%, transparent);
+  color: #e4ebdd;
+  border: 1px solid var(--study-border);
+  background: #141c17;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 6px;
+}
+.architecture-study header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--study-border);
+  padding-bottom: 16px;
+}
+.architecture-study header > div {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--user-accent);
+}
+.architecture-study h3 {
+  font-size: 14px;
+  font-weight: 550;
+  margin: 0;
+}
+.architecture-study header > span {
+  font-size: 9px;
+  color: #aaba9f;
+  white-space: nowrap;
+}
+.architecture-intro {
+  font-size: 11px;
+  color: #aab9a0;
+  margin: 16px 0;
+}
+.architecture-stages {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+}
+.architecture-stages button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 12px;
+  padding: 15px;
+  background: #1b251e;
+  color: #bbcbb0;
+  border: 1px solid var(--study-border);
+  border-radius: 9px;
+  min-width: 0;
+  min-height: 120px;
+}
+.architecture-stages button.selected {
+  background: color-mix(in srgb, var(--user-accent) 10%, #17201a);
+  border-color: var(--user-accent);
+  color: #f0f5eb;
+}
+.architecture-stages strong {
+  font-size: 12px;
+  line-height: 1.6;
+  font-weight: 500;
+}
+.stage-number {
+  font:
+    11px ui-monospace,
+    monospace;
+  color: var(--user-accent);
+}
+.architecture-stages svg {
+  position: absolute;
+  top: 13px;
+  right: 12px;
+  color: var(--user-accent);
+}
+.architecture-inspector {
+  margin-top: 15px;
+  padding: 20px;
+  background: #1a251d;
+  border: 1px solid var(--study-border);
+  border-radius: 9px;
+}
+.architecture-study h4 {
+  font-size: 13px;
+  font-weight: 550;
+  color: #d8e6cf;
+  margin: 9px 0;
+}
+.architecture-study p {
+  font-size: 12px;
+  line-height: 1.85;
+  color: #b6c6ad;
+}
+.study-engineering {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--study-border);
+}
+.study-engineering h4 {
+  margin-top: 18px;
+}
+.study-sources {
+  padding-top: 15px;
+}
+.study-sources h4 {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.study-sources a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--user-accent);
+  font:
+    11px/1.8 ui-monospace,
+    monospace;
+  padding: 5px 0;
+  overflow-wrap: anywhere;
+}
+.study-sources a svg {
+  flex-shrink: 0;
+}
+.case-problem {
+  margin: 20px 0;
+  padding: 15px 18px;
+  border: 1px solid color-mix(in srgb, var(--user-accent) 22%, transparent);
+  border-radius: 9px;
+  background: #ffffff03;
+}
+.case-problem h3 {
+  font-size: 12px;
+  color: var(--user-accent);
+  margin: 0 0 7px;
+}
+.case-problem p,
+.private-source-label {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #bfceb4;
+  margin: 0;
+}
+.portfolio-space .hero-actions {
+  flex-wrap: wrap;
+}
+.project-space-card {
+  border-top-color: var(--user-accent);
+}
+.project-dialog {
+  border-color: color-mix(in srgb, var(--user-accent) 30%, transparent);
+  background: #18211b;
+}
+.project-tech span {
+  color: #c5d2bc;
+  border-color: color-mix(in srgb, var(--user-accent) 20%, transparent);
+}
+.skill-space-card,
+.experience-list details {
+  background: #18211b;
+  border-color: color-mix(in srgb, var(--user-accent) 14%, transparent);
+}
+/* Preserve wheel/swipe/keyboard navigation without a platform-sized scrollbar. */
+.tool-rail {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 14px 10px;
+  min-width: 0;
+}
+.tool-rail .toolbar-tools {
+  flex: 1;
+  min-width: 0;
+  padding: 2px 3px;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.tool-rail .toolbar-tools::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.rail-arrow {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 27px;
+  height: 30px;
+  border: 1px solid color-mix(in srgb, var(--user-accent) 20%, transparent);
+  border-radius: 7px;
+  color: var(--user-accent);
+  background: #1a251c;
+}
+.rail-arrow:hover {
+  background: #2a382c;
+}
+.space-app,
+.portfolio-space,
+.tool-toolbar,
+.workbench-frame,
+.project-dialog {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--user-accent) 35%, #29342b) #121a15;
+}
+.portfolio-space::-webkit-scrollbar,
+.project-dialog::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+.portfolio-space::-webkit-scrollbar-track,
+.project-dialog::-webkit-scrollbar-track {
+  background: #121a15;
+}
+.portfolio-space::-webkit-scrollbar-thumb,
+.project-dialog::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--user-accent) 30%, #29342b);
+  border-radius: 8px;
+  border: 2px solid #121a15;
+}
+@media (max-width: 700px) {
+  .architecture-stages {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .architecture-study {
+    padding: 14px;
+  }
+  .architecture-study header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .architecture-study h3 {
+    font-size: 13px;
+  }
+  .architecture-stages button {
+    min-height: 110px;
+    padding: 12px;
+  }
+  .architecture-inspector {
+    padding: 15px;
+  }
+  .tool-rail {
+    padding: 0 8px 8px;
+    gap: 3px;
+  }
+  .rail-arrow {
+    width: 22px;
+    height: 28px;
+  }
+}
+.compact-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+  height: 54px;
+  min-height: 54px;
+}
+.compact-toolbar .space-brand {
+  font-size: 16px !important;
+}
+.compact-toolbar .space-brand small {
+  display: none;
+}
+.compact-toolbar .brand-mark {
+  width: 30px;
+  height: 32px;
+  border-radius: 8px;
+}
+.compact-toolbar .brand-mark svg {
+  width: 20px;
+  height: 20px;
+}
+.toolbar-divider {
+  width: 1px;
+  height: 20px;
+  background: #ffffff15;
+}
+.tool-picker {
+  font: 12px system-ui;
+  color: #e1ebda;
+  background: #1b251e;
+  border: 1px solid color-mix(in srgb, var(--user-accent) 23%, transparent);
+  border-radius: 6px;
+  max-width: 220px;
+  padding: 7px 11px;
+  color-scheme: dark;
+}
+.compact-toolbar-actions {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-left: auto;
+}
+.compact-toolbar .toolbar-home {
+  padding: 5px;
+  border-radius: 5px;
+}
+.compact-toolbar kbd {
+  color: #8b9c82;
+  font:
+    9px ui-monospace,
+    monospace;
+}
+.compact-toolbar .theme-choice > span {
+  display: none;
+}
+.workbench-frame > div {
+  inset: 5px;
+  border-radius: 8px;
+  box-shadow: none;
+}
+.workbench-frame {
+  padding: 5px;
+  perspective: none;
+  background: #0f1611;
+}
+.workbench-frame > div > section > header,
+.workbench-frame > div > div > header {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+.workbench-frame header p {
+  max-width: 750px;
+}
+.guide-launch-label svg {
+  width: 12px !important;
+  height: 12px !important;
+  flex-shrink: 0;
+}
+.guide-compact {
+  width: 58px;
+  right: 12px;
+  bottom: 12px;
+}
+.guide-compact .character-button {
+  width: 54px;
+  border-radius: 12px;
+}
+.guide-compact .character-button > svg {
+  height: 51px;
+}
+.guide-launch-label {
+  font-size: 7px;
+}
+.guide-compact .guide-speech {
+  bottom: 83px;
+}
+.structured-editor {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  background: #141a16;
+}
+.structured-editor-body {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+.fold-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border-bottom: 1px solid #ffffff08;
+  flex-shrink: 0;
+  color: #a3b49a;
+  font:
+    9px ui-monospace,
+    monospace;
+}
+.fold-controls > span {
+  margin-right: auto;
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+.fold-controls button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  background: transparent;
+  color: #bccdb1;
+  font: 10px system-ui;
+  padding: 2px 5px;
+  min-height: 22px;
+}
+.fold-controls button:hover {
+  background: #ffffff08;
+  border-radius: 4px;
+}
+.structured-editor .monaco-editor {
+  outline: none;
+}
+.workbench-frame header p {
+  font-size: 11px !important;
+}
+.workbench-frame header h1 {
+  font-size: 14px !important;
+}
+@media (max-width: 700px) {
+  .compact-toolbar {
+    height: 49px;
+    min-height: 49px;
+    padding: 0 9px;
+    gap: 8px;
+  }
+  .compact-toolbar .space-brand > span:last-child {
+    display: none;
+  }
+  .compact-toolbar .toolbar-divider {
+    display: none;
+  }
+  .tool-picker {
+    max-width: 160px;
+    font-size: 11px;
+    padding: 6px;
+  }
+  .compact-toolbar-actions {
+    gap: 9px;
+  }
+  .compact-toolbar .toolbar-home span,
+  .compact-toolbar kbd,
+  .builder-action {
+    display: none;
+  }
+  .compact-toolbar .theme-choice select {
+    max-width: 85px;
+    padding: 5px;
+  }
+  .compact-toolbar .brand-mark {
+    width: 27px;
+    height: 29px;
+  }
+  .workbench-frame > div {
+    inset: 3px;
+  }
+  .fold-controls {
+    padding: 3px 8px;
+  }
+  .fold-controls button span {
+    display: none;
   }
 }

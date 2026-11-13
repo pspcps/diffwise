@@ -150,14 +150,14 @@ ${Object.entries(parsedData.context).map(([k, v]) => `  ${k}: ${typeof v === 'ob
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-sm font-bold text-white tracking-wide">
-                DebugFlow — Universal Log &amp; Stack Trace Analyzer
+                DebugFlow
               </h1>
               <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-[#b5dfa3]/15 text-[#b5dfa3] border border-[#b5dfa3]/30">
-                100% Deterministic Engine
+                Rule-based analysis
               </span>
             </div>
             <p className="text-[11px] text-[#b1bea8] mt-0.5">
-              Multi-language stack trace disassembler, root-cause synthesizer, and chronological call flow mapper (Zero-AI, Air-Gapped).
+              Inspect stack frames, errors, and extracted context.
             </p>
           </div>
         </div>
