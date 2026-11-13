@@ -1,3 +1,5 @@
+import { useCareerDuration } from "../../hooks/useCareerDuration";
+import RotatingRole from "./RotatingRole";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -17,12 +19,14 @@ export default function PortfolioHero({
   onExplore: () => void;
 }) {
   const { theme, change } = useLanguageTheme();
+  const experience = useCareerDuration();
   return (
     <section className="atelier-hero" aria-label="Meet Prakash Choudhary">
       <div className="atelier-hero-copy">
         <div className="hero-intro">
           <span /> SENIOR SOFTWARE ENGINEER{" "}
-          <span className="hero-intro-divider">/</span> 9+ YEARS
+          <span className="hero-intro-divider">/</span>
+          <span title={experience.description}>{experience.label} YEARS</span>
         </div>
         <p className="hero-greeting">Hi, I’m</p>
         <h1>
@@ -33,7 +37,7 @@ export default function PortfolioHero({
           </span>
         </h1>
         <p className="hero-position">
-          Backend engineer.
+          <RotatingRole />
           <br />
           <strong>Systems thinker. AI builder.</strong>
         </p>
@@ -66,8 +70,10 @@ export default function PortfolioHero({
         </button>
       </div>
       <div className="portrait-scene">
-        <div className="portrait-grid" aria-hidden="true" />
-        <div className="portrait-glow" aria-hidden="true" />
+        <div className="portrait-atmosphere" aria-hidden="true">
+          <div className="portrait-grid" />
+          <div className="portrait-glow" />
+        </div>
         <figure
           className="portrait-card"
           onPointerMove={tiltCard}

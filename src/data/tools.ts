@@ -17,6 +17,7 @@ import {
   Compass,
   Files,
   Link2,
+  Ruler,
 } from "lucide-react";
 import type { ViewMode } from "../types";
 
@@ -157,6 +158,14 @@ export const TOOLS = [
     description: "Calculate precise distances between coordinates.",
     icon: Compass,
     color: "#bdedb0",
+  },
+  {
+    id: "measure",
+    name: "Measure Lab",
+    category: "Utilities",
+    description: "Convert units in 3D. Explore geometry, algebra and formulas.",
+    icon: Ruler,
+    color: "#aacff0",
   },
   {
     id: "url",

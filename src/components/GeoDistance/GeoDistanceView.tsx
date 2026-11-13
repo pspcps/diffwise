@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   Compass,
   ArrowRightLeft,
@@ -244,6 +244,11 @@ export const GeoDistanceView: React.FC = () => {
     const base = window.location.origin + window.location.pathname;
     return `${base}#/distance?lat1=${pointA.lat}&lon1=${pointA.lon}&lat2=${pointB.lat}&lon2=${pointB.lon}&lbl1=${encodeURIComponent(pointA.label || '')}&lbl2=${encodeURIComponent(pointB.label || '')}`;
   };
+
+  const handleMapPointChange = useCallback((target: 'A' | 'B', lat: number, lon: number) => {
+    if (target === 'A') setPointA(prev => ({ ...prev, lat, lon }));
+    else setPointB(prev => ({ ...prev, lat, lon }));
+  }, []);
 
   // Export Batch to CSV
   const handleExportCsv = () => {
@@ -553,6 +558,16 @@ export const GeoDistanceView: React.FC = () => {
               </div>
             </div>
 
+            {/* INTERACTIVE VISUAL CANVAS */}
+            <div className="space-y-2">
+              <GeoMapCanvas
+                pointA={pointA}
+                pointB={pointB}
+                result={geodesic}
+                onPointChange={handleMapPointChange}
+              />
+            </div>
+
             {/* PRIMARY DISTANCE HERO CARD */}
             <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-[#171d19] via-[#171d19] to-[#243025] border border-[#344435] shadow-xl">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
@@ -798,22 +813,6 @@ export const GeoDistanceView: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* INTERACTIVE VISUAL CANVAS */}
-            <div className="space-y-2">
-              <GeoMapCanvas
-                pointA={pointA}
-                pointB={pointB}
-                result={geodesic}
-                onPointChange={(target, lat, lon) => {
-                  if (target === 'A') {
-                    setPointA(prev => ({ ...prev, lat, lon }));
-                  } else {
-                    setPointB(prev => ({ ...prev, lat, lon }));
-                  }
-                }}
-              />
             </div>
 
             {/* ALL UNIT CONVERSIONS & TRAVEL TIME ESTIMATES */}

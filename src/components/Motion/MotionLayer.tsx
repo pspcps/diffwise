@@ -5,7 +5,7 @@ import { LANGUAGE_THEMES } from "../Portfolio/LanguageThemes";
 const CARD_SELECTOR =
   ".tool-card,.project-space-card,.skill-space-card,.timeline-card,.portfolio-stats>div";
 const REVEAL_SELECTOR =
-  ".portfolio-section:not(#experience),.portfolio-stats>div,.builder-banner,.tool-section,.signal-playground";
+  ".portfolio-section:not(#experience),.portfolio-stats>div,.builder-banner,.tool-section";
 export default function MotionLayer() {
   const canvas = useRef<HTMLCanvasElement>(null);
   const { enabled } = useMotion();

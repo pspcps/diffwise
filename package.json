@@ -7,7 +7,8 @@
     "dev": "vite --host 0.0.0.0 --port 3000",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:measurements": "node scripts/check-measurements.cjs"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.12.2",
@@ -18,6 +19,7 @@
     "docx-preview": "^0.4.1",
     "html-to-image": "^1.11.13",
     "jszip": "^3.10.2",
+    "leaflet": "^1.9.4",
     "lucide-react": "^1.8.0",
     "mammoth": "^1.13.0",
     "mermaid": "^12.2.0",
@@ -33,6 +35,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@types/leaflet": "^1.9.22",
     "@types/node": "^24.12.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",

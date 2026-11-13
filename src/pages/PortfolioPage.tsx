@@ -1,4 +1,4 @@
-import SignalPlayground from "../components/Motion/SignalPlayground";
+import { useCareerDuration } from "../hooks/useCareerDuration";
 import ExperienceTimeline from "../components/Portfolio/ExperienceTimeline";
 import PortfolioHero from "../components/Portfolio/PortfolioHero";
 import "../portfolio.css";
@@ -35,6 +35,7 @@ type Project = (typeof RESUME.projects)[number];
 const FILTERS = ["All projects", "AI & agents", "Developer tools"];
 const DEV_PROJECTS = ["PSDevTool", "Kafbat UI", "ApiDesk Studio"];
 export default function PortfolioPage({ onBack }: { onBack: () => void }) {
+  useCareerDuration();
   const root = useRef<HTMLDivElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const [filter, setFilter] = useState("All projects");
@@ -103,7 +104,6 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             </div>
           ))}
         </section>
-        <SignalPlayground />
         <section className="portfolio-section" id="projects">
           <div className="section-heading">
             <div>

@@ -1,6 +1,10 @@
-import React, { useState, useMemo } from 'react';
-import type { GeoPoint, GeodesicResult } from './types';
-import { Compass, Navigation2 } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "./geo-map.css";
+import { LocateFixed, MapPinned } from "lucide-react";
+import type { GeoPoint, GeodesicResult } from "./types";
+import { geodesicPath } from "./geodesicPath";
 
 interface GeoMapCanvasProps {
   pointA: GeoPoint;
@@ -8,461 +12,431 @@ interface GeoMapCanvasProps {
   result: GeodesicResult;
   geofenceRadiusMeters?: number;
   showGeofence?: boolean;
-  onPointChange?: (point: 'A' | 'B', lat: number, lon: number) => void;
+  onPointChange?: (point: "A" | "B", lat: number, lon: number) => void;
 }
+const formatDistance = (n: number) =>
+  n.toLocaleString(undefined, { maximumFractionDigits: 2 });
+const coords = (p: GeoPoint) =>
+  `${p.lat.toFixed(5)}° lat, ${p.lon.toFixed(5)}° lon`;
+const valid = (p: GeoPoint) =>
+  Number.isFinite(p.lat) &&
+  Number.isFinite(p.lon) &&
+  Math.abs(p.lat) <= 90 &&
+  Math.abs(p.lon) <= 180;
+const textContent = (text: string) => {
+  const node = document.createElement("span");
+  node.textContent = text;
+  return node;
+};
 
-export const GeoMapCanvas: React.FC<GeoMapCanvasProps> = ({
+export function GeoMapCanvas({
   pointA,
   pointB,
   result,
   geofenceRadiusMeters = 5000,
   showGeofence = false,
   onPointChange,
-}) => {
-  const [viewMode, setViewMode] = useState<'world' | 'local'>('world');
-  const [showDeltaTriangle, setShowDeltaTriangle] = useState(true);
-
-  // SVG viewBox coordinates: width 900, height 460
-  const SVG_W = 900;
-  const SVG_H = 460;
-
-  // Converts Lat/Lon to SVG World coordinates (Equirectangular)
-  const worldLatLonToSvg = (lat: number, lon: number): [number, number] => {
-    // lon [-180..180] -> [0..SVG_W]
-    const x = ((lon + 180) / 360) * SVG_W;
-    // lat [90..-90] -> [0..SVG_H]
-    const y = ((90 - lat) / 180) * SVG_H;
-    return [x, y];
+}: GeoMapCanvasProps) {
+  const container = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<L.Map | null>(null);
+  const layerRef = useRef<L.LayerGroup | null>(null);
+  const boundsRef = useRef<L.LatLngBounds | null>(null);
+  const [target, setTarget] = useState<"A" | "B">("B");
+  const interaction = useRef({ target, onPointChange });
+  const [tileError, setTileError] = useState(false);
+  const [retry, setRetry] = useState(0);
+  const [unit, setUnit] = useState("km");
+  const routeKey = `${pointA.lat},${pointA.lon};${pointB.lat},${pointB.lon}`;
+  const [road, setRoad] = useState<{
+    key: string;
+    status: "loading" | "ready" | "error";
+    km?: number;
+    minutes?: number;
+    path?: [number, number][];
+    error?: string;
+  } | null>(null);
+  const requestRef = useRef<AbortController | null>(null);
+  const activeRoad = road?.key === routeKey ? road : null;
+  const factors: Record<string, number> = {
+    km: 1,
+    m: 1000,
+    mi: 0.621371192237334,
+    ft: 3280.83989501312,
+    nmi: 0.539956803455724,
   };
-
-  // Local zoomed coordinates bounding box
-  const localBounds = useMemo(() => {
-    const minLat = Math.min(pointA.lat, pointB.lat);
-    const maxLat = Math.max(pointA.lat, pointB.lat);
-    const minLon = Math.min(pointA.lon, pointB.lon);
-    const maxLon = Math.max(pointA.lon, pointB.lon);
-
-    const latSpan = Math.max(0.01, maxLat - minLat);
-    const lonSpan = Math.max(0.01, maxLon - minLon);
-
-    const padLat = Math.max(0.005, latSpan * 0.35);
-    const padLon = Math.max(0.005, lonSpan * 0.35);
-
-    return {
-      minLat: Math.max(-90, minLat - padLat),
-      maxLat: Math.min(90, maxLat + padLat),
-      minLon: Math.max(-180, minLon - padLon),
-      maxLon: Math.min(180, maxLon + padLon),
-    };
-  }, [pointA, pointB]);
-
-  const localLatLonToSvg = (lat: number, lon: number): [number, number] => {
-    const { minLat, maxLat, minLon, maxLon } = localBounds;
-    const x = ((lon - minLon) / (maxLon - minLon)) * (SVG_W - 120) + 60;
-    const y = ((maxLat - lat) / (maxLat - minLat)) * (SVG_H - 100) + 50;
-    return [x, y];
-  };
-
-  const projectPoint = viewMode === 'world' ? worldLatLonToSvg : localLatLonToSvg;
-
-  const [ax, ay] = projectPoint(pointA.lat, pointA.lon);
-  const [bx, by] = projectPoint(pointB.lat, pointB.lon);
-  const [midX, midY] = projectPoint(result.midpoint.lat, result.midpoint.lon);
-
-  // Delta triangle corner: (pointA.lat, pointB.lon) or (pointB.lat, pointA.lon)
-  const [cornerX, cornerY] = projectPoint(pointB.lat, pointA.lon);
-
-  // Geodesic path curve points (generate 24 intermediate points along great circle)
-  const pathD = useMemo(() => {
-    if (viewMode === 'local') {
-      return `M ${ax} ${ay} L ${bx} ${by}`;
-    }
-
-    // Great circle interpolation in world mode
-    const points: [number, number][] = [];
-    const steps = 30;
-    const radA = (pointA.lat * Math.PI) / 180;
-    const radB = (pointB.lat * Math.PI) / 180;
-    const lonA = (pointA.lon * Math.PI) / 180;
-    const lonB = (pointB.lon * Math.PI) / 180;
-    const dLon = lonB - lonA;
-
-    const d =
-      2 *
-      Math.asin(
-        Math.sqrt(
-          Math.sin((radB - radA) / 2) ** 2 +
-            Math.cos(radA) * Math.cos(radB) * Math.sin(dLon / 2) ** 2
-        )
+  const measured = (km: number) =>
+    `${formatDistance(km * factors[unit])} ${unit}`;
+  useEffect(() => () => requestRef.current?.abort(), []);
+  async function getDrivingRoute() {
+    requestRef.current?.abort();
+    const controller = new AbortController();
+    requestRef.current = controller;
+    const timeout = window.setTimeout(() => controller.abort(), 15000);
+    setRoad({ key: routeKey, status: "loading" });
+    try {
+      const response = await fetch(
+        `https://router.project-osrm.org/route/v1/driving/${pointA.lon},${pointA.lat};${pointB.lon},${pointB.lat}?overview=full&geometries=geojson&steps=false`,
+        { signal: controller.signal },
       );
-
-    if (d < 1e-6) {
-      return `M ${ax} ${ay} L ${bx} ${by}`;
-    }
-
-    for (let i = 0; i <= steps; i++) {
-      const f = i / steps;
-      const A = Math.sin((1 - f) * d) / Math.sin(d);
-      const B = Math.sin(f * d) / Math.sin(d);
-      const x = A * Math.cos(radA) * Math.cos(lonA) + B * Math.cos(radB) * Math.cos(lonB);
-      const y = A * Math.cos(radA) * Math.sin(lonA) + B * Math.cos(radB) * Math.sin(lonB);
-      const z = A * Math.sin(radA) + B * Math.sin(radB);
-      const lat = Math.atan2(z, Math.sqrt(x * x + y * y)) * (180 / Math.PI);
-      const lon = Math.atan2(y, x) * (180 / Math.PI);
-
-      const [sx, sy] = worldLatLonToSvg(lat, lon);
-      points.push([sx, sy]);
-    }
-
-    // Connect with M ... L ...
-    let dStr = `M ${points[0][0]} ${points[0][1]}`;
-    for (let i = 1; i < points.length; i++) {
-      // Check for 180 meridian wrap jump
-      if (Math.abs(points[i][0] - points[i - 1][0]) > SVG_W / 2) {
-        dStr += ` M ${points[i][0]} ${points[i][1]}`;
-      } else {
-        dStr += ` L ${points[i][0]} ${points[i][1]}`;
+      if (!response.ok)
+        throw new Error("The free routing service is temporarily unavailable.");
+      const data = await response.json();
+      const route = data.routes?.[0];
+      if (
+        data.code !== "Ok" ||
+        !route ||
+        !Number.isFinite(route.distance) ||
+        !Number.isFinite(route.duration) ||
+        route.distance < 0 ||
+        route.duration < 0 ||
+        !Array.isArray(route.geometry?.coordinates)
+      )
+        throw new Error(
+          "No driving route was found between these points. Try two points connected by roads.",
+        );
+      const path: [number, number][] = route.geometry.coordinates.map(
+        (p: number[]) => [p[1], p[0]],
+      );
+      if (
+        path.length < 2 ||
+        path.some(
+          (p) =>
+            !Number.isFinite(p[0]) ||
+            !Number.isFinite(p[1]) ||
+            Math.abs(p[0]) > 90 ||
+            Math.abs(p[1]) > 180,
+        )
+      )
+        throw new Error("The routing service returned an invalid path.");
+      let previousLongitude = pointA.lon;
+      for (const point of path) {
+        while (point[1] - previousLongitude > 180) point[1] -= 360;
+        while (point[1] - previousLongitude < -180) point[1] += 360;
+        previousLongitude = point[1];
       }
+      setRoad({
+        key: routeKey,
+        status: "ready",
+        km: route.distance / 1000,
+        minutes: route.duration / 60,
+        path,
+      });
+    } catch (error) {
+      if (requestRef.current !== controller) return;
+      setRoad({
+        key: routeKey,
+        status: "error",
+        error: controller.signal.aborted
+          ? "Routing timed out. Your direct-distance calculation is still available."
+          : error instanceof Error
+            ? error.message
+            : "Could not load the driving route.",
+      });
+    } finally {
+      clearTimeout(timeout);
     }
-    return dStr;
-  }, [ax, ay, bx, by, pointA, pointB, viewMode]);
+  }
+  useEffect(() => {
+    interaction.current = { target, onPointChange };
+  }, [target, onPointChange]);
 
-  // Click on canvas to adjust Point B (or Point A with shift key)
-  const handleSvgClick = (e: React.MouseEvent<SVGSVGElement>) => {
-    if (!onPointChange) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const clickX = ((e.clientX - rect.left) / rect.width) * SVG_W;
-    const clickY = ((e.clientY - rect.top) / rect.height) * SVG_H;
+  useEffect(() => {
+    if (!container.current) return;
+    const map = L.map(container.current, {
+      scrollWheelZoom: false,
+      worldCopyJump: true,
+      zoomAnimation: false,
+      fadeAnimation: false,
+      markerZoomAnimation: false,
+    }).setView([20, 0], 2);
+    mapRef.current = map;
+    layerRef.current = L.layerGroup().addTo(map);
+    const tiles = L.tileLayer(
+      "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors',
+        maxZoom: 19,
+        minZoom: 1,
+      },
+    ).addTo(map);
+    tiles.on("tileerror", () => setTileError(true));
+    map.on("click", (event: L.LeafletMouseEvent) => {
+      const { target: pin, onPointChange: change } = interaction.current;
+      change?.(
+        pin,
+        Number(event.latlng.lat.toFixed(5)),
+        Number(event.latlng.wrap().lng.toFixed(5)),
+      );
+    });
+    const observer = new ResizeObserver(() =>
+      map.invalidateSize({ animate: false }),
+    );
+    observer.observe(container.current);
+    return () => {
+      observer.disconnect();
+      map.remove();
+      mapRef.current = null;
+      layerRef.current = null;
+    };
+  }, []);
 
-    let targetLat = 0;
-    let targetLon = 0;
+  useEffect(() => {
+    const map = mapRef.current,
+      layers = layerRef.current;
+    if (!map || !layers) return;
+    layers.clearLayers();
+    if (!valid(pointA) || !valid(pointB)) return;
+    const route = geodesicPath(pointA, pointB);
+    const line = L.polyline(route, {
+      color: "#286774",
+      weight: 4,
+      opacity: 0.95,
+    }).addTo(layers);
+    if (activeRoad?.path)
+      L.polyline(activeRoad.path, {
+        color: "#b34b17",
+        weight: 5,
+        opacity: 0.95,
+      })
+        .bindTooltip("Driving route · OSRM")
+        .addTo(layers);
+    boundsRef.current = line.getBounds();
+    const middle = route[Math.floor(route.length / 2)];
+    L.marker(middle, {
+      interactive: false,
+      icon: L.divIcon({
+        className: "geo-distance-anchor",
+        html: "",
+        iconSize: [0, 0],
+      }),
+    })
+      .bindTooltip(
+        textContent(
+          `${formatDistance(result.haversine.km)} km · ${formatDistance(result.haversine.miles)} mi`,
+        ),
+        {
+          permanent: true,
+          direction: "top",
+          className: "geo-distance-label",
+          offset: [0, -12],
+        },
+      )
+      .addTo(layers);
+    (
+      [
+        ["A", pointA, route[0]],
+        ["B", pointB, route[route.length - 1]],
+      ] as const
+    ).forEach(([pin, point, position]) => {
+      const marker = L.marker(position, {
+        draggable: Boolean(onPointChange),
+        title: `Point ${pin}: ${coords(point)}${onPointChange ? ". Drag to move." : ""}`,
+        alt: `Point ${pin}`,
+        icon: L.divIcon({
+          className: `geo-pin geo-pin-${pin.toLowerCase()}`,
+          html: `<span>${pin}</span>`,
+          iconSize: [34, 42],
+          iconAnchor: [17, 42],
+        }),
+      }).addTo(layers);
+      marker.bindPopup(
+        textContent(
+          `Point ${pin}${point.label ? ` · ${point.label}` : ""}\n${coords(point)}`,
+        ),
+      );
+      marker.on("dragend", () => {
+        const position = marker.getLatLng().wrap();
+        interaction.current.onPointChange?.(
+          pin,
+          Number(Math.max(-90, Math.min(90, position.lat)).toFixed(5)),
+          Number(position.lng.toFixed(5)),
+        );
+      });
+    });
+    if (showGeofence)
+      L.circle(route[0], {
+        radius: geofenceRadiusMeters,
+        color: "#286774",
+        fillOpacity: 0.12,
+      }).addTo(layers);
+    if (activeRoad?.path)
+      boundsRef.current.extend(L.latLngBounds(activeRoad.path));
+    map.fitBounds(boundsRef.current, {
+      padding: [60, 65],
+      maxZoom: 16,
+      animate: false,
+    });
+  }, [
+    pointA,
+    pointB,
+    result,
+    geofenceRadiusMeters,
+    showGeofence,
+    onPointChange,
+    activeRoad,
+  ]);
 
-    if (viewMode === 'world') {
-      targetLon = (clickX / SVG_W) * 360 - 180;
-      targetLat = 90 - (clickY / SVG_H) * 180;
-    } else {
-      const { minLat, maxLat, minLon, maxLon } = localBounds;
-      targetLon = ((clickX - 60) / (SVG_W - 120)) * (maxLon - minLon) + minLon;
-      targetLat = maxLat - ((clickY - 50) / (SVG_H - 100)) * (maxLat - minLat);
-    }
+  useEffect(() => {
+    if (!retry) return;
+    mapRef.current?.eachLayer((layer) => {
+      if (layer instanceof L.TileLayer) layer.redraw();
+    });
+  }, [retry]);
 
-    const targetPoint = e.shiftKey ? 'A' : 'B';
-    onPointChange(targetPoint, Number(targetLat.toFixed(5)), Number(targetLon.toFixed(5)));
-  };
-
+  const validPoints = valid(pointA) && valid(pointB);
   return (
-    <div className="relative rounded-xl border border-[#344435] bg-[#0d120f] overflow-hidden shadow-2xl">
-      {/* Canvas Top Bar Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 bg-[#111612]/90 border-b border-[#344435] text-xs">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 font-medium text-[#e4ebdd]">
-            <Compass size={14} className="text-[#c8edb6]" />
-            <span>Geodesic Trajectory & Coordinate Delta Projection</span>
-          </div>
-
-          <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-[#344435] text-[#c3ceba]">
-            <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#b5dfa3]"></span> Point A
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#f19aa6]"></span> Point B
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#94e2d5]"></span> Midpoint
-            </span>
-          </div>
+    <section className="geo-map-panel" aria-label="Interactive distance map">
+      <div className="geo-map-toolbar">
+        <div>
+          <MapPinned size={18} />
+          <strong>Explore the distance</strong>
         </div>
-
-        <div className="flex items-center gap-2">
-          {/* Delta Triangle Toggle */}
+        <div className="geo-map-actions">
+          <label>
+            Distance unit{" "}
+            <select
+              aria-label="Map distance unit"
+              value={unit}
+              onChange={(e) => setUnit(e.target.value)}
+            >
+              {Object.keys(factors).map((u) => (
+                <option key={u}>{u}</option>
+              ))}
+            </select>
+          </label>
+          {onPointChange && (
+            <div role="group" aria-label="Choose a pin to place">
+              {(["A", "B"] as const).map((pin) => (
+                <button
+                  key={pin}
+                  type="button"
+                  aria-pressed={target === pin}
+                  onClick={() => setTarget(pin)}
+                >
+                  Place {pin}
+                </button>
+              ))}
+            </div>
+          )}
           <button
             type="button"
-            onClick={() => setShowDeltaTriangle(!showDeltaTriangle)}
-            className={`px-2.5 py-1 rounded text-[11px] font-medium transition-colors border ${
-              showDeltaTriangle
-                ? 'bg-[#ceb8f6]/15 border-[#ceb8f6]/40 text-[#ceb8f6]'
-                : 'bg-[#111612] border-[#344435] text-[#9eac96] hover:text-[#e4ebdd]'
-            }`}
+            onClick={() => {
+              if (boundsRef.current)
+                mapRef.current?.fitBounds(boundsRef.current, {
+                  padding: [60, 65],
+                  maxZoom: 16,
+                  animate: false,
+                });
+            }}
           >
-            Δ Lat/Lon Triangle: {showDeltaTriangle ? 'ON' : 'OFF'}
+            <LocateFixed size={15} /> Fit points
           </button>
-
-          {/* Mode Switcher */}
-          <div className="inline-flex rounded-lg bg-[#0d120f] p-0.5 border border-[#344435]">
-            <button
-              type="button"
-              onClick={() => setViewMode('world')}
-              className={`px-2.5 py-0.5 rounded text-[11px] font-medium transition-colors ${
-                viewMode === 'world' ? 'bg-[#344435] text-[#e4ebdd]' : 'text-[#9eac96] hover:text-[#c3ceba]'
-              }`}
-            >
-              World View
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode('local')}
-              className={`px-2.5 py-0.5 rounded text-[11px] font-medium transition-colors ${
-                viewMode === 'local' ? 'bg-[#344435] text-[#e4ebdd]' : 'text-[#9eac96] hover:text-[#c3ceba]'
-              }`}
-            >
-              Focus Path
-            </button>
-          </div>
         </div>
       </div>
-
-      {/* Main SVG Visualization */}
-      <div className="relative w-full aspect-[16/8] max-h-[440px] select-none bg-[#0d120f] cursor-crosshair">
-        <svg
-          viewBox={`0 0 ${SVG_W} ${SVG_H}`}
-          className="w-full h-full"
-          onClick={handleSvgClick}
+      <p className="geo-map-hint">
+        {onPointChange
+          ? `Click the map to place ${target}, or drag either pin. `
+          : ""}
+        Pan to explore; use + / − to zoom.
+      </p>
+      {!validPoints && (
+        <p className="geo-map-notice" role="status">
+          Enter latitude between −90 and 90 and longitude between −180 and 180
+          to show your points.
+        </p>
+      )}
+      {tileError && (
+        <p className="geo-map-notice" role="status">
+          Some map tiles could not load. Pins and distance still work.{" "}
+          <button
+            type="button"
+            onClick={() => {
+              setTileError(false);
+              setRetry((n) => n + 1);
+            }}
+          >
+            Retry map
+          </button>
+        </p>
+      )}
+      <div
+        ref={container}
+        className="geo-map-surface"
+        role="region"
+        aria-label="Map with draggable origin and destination pins"
+      />
+      <div className="geo-map-summary">
+        <div>
+          <span className="geo-point-badge">A</span>
+          <div>
+            <strong>{pointA.label || "Origin"}</strong>
+            <span>{coords(pointA)}</span>
+          </div>
+        </div>
+        <div>
+          <span className="geo-point-badge geo-point-badge-b">B</span>
+          <div>
+            <strong>{pointB.label || "Destination"}</strong>
+            <span>{coords(pointB)}</span>
+          </div>
+        </div>
+        <div className="geo-map-distance" aria-live="polite">
+          <strong>{validPoints ? measured(result.haversine.km) : "—"}</strong>
+          <span>
+            Direct distance ·{" "}
+            {validPoints ? formatDistance(result.haversine.miles) : "—"} mi
+          </span>
+        </div>
+      </div>
+      <div className="geo-road-controls">
+        <div>
+          <strong>Follow the roads</strong>
+          <p>
+            Optional driving route for points up to 500 km apart. Requests send
+            these coordinates to the free OSRM public service.
+          </p>
+        </div>
+        <button
+          type="button"
+          disabled={
+            !validPoints ||
+            result.haversine.km > 500 ||
+            result.haversine.km < 0.001 ||
+            activeRoad?.status === "loading"
+          }
+          onClick={getDrivingRoute}
         >
-          <defs>
-            {/* Gradients */}
-            <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#b5dfa3" />
-              <stop offset="50%" stopColor="#94e2d5" />
-              <stop offset="100%" stopColor="#f19aa6" />
-            </linearGradient>
-
-            <linearGradient id="deltaLatGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#f3c18e" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#f3c18e" stopOpacity="0.3" />
-            </linearGradient>
-
-            <linearGradient id="deltaLonGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#c8edb6" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#c8edb6" stopOpacity="0.3" />
-            </linearGradient>
-
-            <filter id="glowGreen" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="4" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-            <filter id="glowRose" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="4" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-            <filter id="glowCyan" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-          </defs>
-
-          {/* Grid Lines */}
-          <g className="opacity-20" stroke="#71836b" strokeDasharray="3,3">
-            {/* Equator & Tropics in World mode */}
-            {viewMode === 'world' ? (
-              <>
-                <line x1="0" y1={SVG_H / 2} x2={SVG_W} y2={SVG_H / 2} stroke="#c8edb6" strokeWidth="1.2" strokeDasharray="none" />
-                <line x1={SVG_W / 2} y1="0" x2={SVG_W / 2} y2={SVG_H} stroke="#c8edb6" strokeWidth="1.2" strokeDasharray="none" />
-                {/* 30 and 60 deg lat lines */}
-                <line x1="0" y1={SVG_H / 6} x2={SVG_W} y2={SVG_H / 6} />
-                <line x1="0" y1={SVG_H / 3} x2={SVG_W} y2={SVG_H / 3} />
-                <line x1="0" y1={(SVG_H * 2) / 3} x2={SVG_W} y2={(SVG_H * 2) / 3} />
-                <line x1="0" y1={(SVG_H * 5) / 6} x2={SVG_W} y2={(SVG_H * 5) / 6} />
-                {/* Longitude lines */}
-                <line x1={SVG_W / 4} y1="0" x2={SVG_W / 4} y2={SVG_H} />
-                <line x1={(SVG_W * 3) / 4} y1="0" x2={(SVG_W * 3) / 4} y2={SVG_H} />
-              </>
-            ) : (
-              /* Local Cartesian Grid */
-              Array.from({ length: 9 }).map((_, i) => (
-                <g key={i}>
-                  <line x1={(SVG_W / 8) * i} y1="0" x2={(SVG_W / 8) * i} y2={SVG_H} stroke="#344435" />
-                  <line x1="0" y1={(SVG_H / 8) * i} x2={SVG_W} y2={(SVG_H / 8) * i} stroke="#344435" />
-                </g>
-              ))
-            )}
-          </g>
-
-          {/* Labels for Equator & Prime Meridian in World view */}
-          {viewMode === 'world' && (
-            <g fill="#9eac96" fontSize="10" fontFamily="monospace">
-              <text x="12" y={SVG_H / 2 - 6}>0° Equator</text>
-              <text x={SVG_W / 2 + 8} y="20">0° Prime Meridian</text>
-              <text x="12" y="24">+90° N</text>
-              <text x="12" y={SVG_H - 10}>-90° S</text>
-              <text x={SVG_W - 60} y={SVG_H / 2 - 6}>+180° E</text>
-              <text x="12" y={SVG_H / 2 + 16}>-180° W</text>
-            </g>
+          {activeRoad?.status === "loading"
+            ? "Finding route…"
+            : "Get driving route"}
+        </button>
+        <div role="status" className="geo-road-result">
+          {activeRoad?.status === "ready" && (
+            <>
+              <strong>
+                Driving route: {measured(activeRoad.km!)} · about{" "}
+                {Math.round(activeRoad.minutes!)} min
+              </strong>
+              <span>
+                Orange: road route · Teal: direct great-circle path. Road
+                endpoints may snap to nearby roads. Time excludes live traffic.
+              </span>
+            </>
           )}
-
-          {/* Delta Triangle (Shows visual Lat diff and Lon diff legs) */}
-          {showDeltaTriangle && (
-            <g>
-              {/* Triangle shading */}
-              <polygon
-                points={`${ax},${ay} ${cornerX},${cornerY} ${bx},${by}`}
-                fill="#ceb8f6"
-                fillOpacity="0.06"
-                stroke="#ceb8f6"
-                strokeWidth="1"
-                strokeDasharray="4,4"
-              />
-
-              {/* Vertical ΔLat leg (from Point A to Corner) */}
-              <line
-                x1={ax}
-                y1={ay}
-                x2={cornerX}
-                y2={cornerY}
-                stroke="#f3c18e"
-                strokeWidth="2.5"
-                strokeDasharray="5,3"
-              />
-
-              {/* Horizontal ΔLon leg (from Corner to Point B) */}
-              <line
-                x1={cornerX}
-                y1={cornerY}
-                x2={bx}
-                y2={by}
-                stroke="#c8edb6"
-                strokeWidth="2.5"
-                strokeDasharray="5,3"
-              />
-
-              {/* ΔLat callout tag */}
-              <g transform={`translate(${(ax + cornerX) / 2 + 10}, ${(ay + cornerY) / 2})`}>
-                <rect x="-6" y="-12" width="130" height="22" rx="4" fill="#111612" stroke="#f3c18e" strokeWidth="1" />
-                <text x="4" y="2" fill="#f3c18e" fontSize="10" fontWeight="bold" fontFamily="monospace">
-                  ΔLat: {result.delta.distLatKm.toFixed(1)} km ({result.delta.latDirection})
-                </text>
-              </g>
-
-              {/* ΔLon callout tag */}
-              <g transform={`translate(${(cornerX + bx) / 2 - 60}, ${(cornerY + by) / 2 + 20})`}>
-                <rect x="-6" y="-12" width="130" height="22" rx="4" fill="#111612" stroke="#c8edb6" strokeWidth="1" />
-                <text x="4" y="2" fill="#c8edb6" fontSize="10" fontWeight="bold" fontFamily="monospace">
-                  ΔLon: {result.delta.distLonKm.toFixed(1)} km ({result.delta.lonDirection})
-                </text>
-              </g>
-            </g>
+          {activeRoad?.status === "error" && (
+            <span>{activeRoad.error} You can retry.</span>
           )}
-
-          {/* Geofence Perimeter Circle around Point A (if local or small radius) */}
-          {showGeofence && (
-            <g>
-              {/* Approximate radius in SVG pixels */}
-              <circle
-                cx={ax}
-                cy={ay}
-                r={Math.max(12, Math.min(180, (geofenceRadiusMeters / 1000 / result.haversine.km) * Math.hypot(bx - ax, by - ay)))}
-                fill="#c8edb6"
-                fillOpacity="0.12"
-                stroke="#c8edb6"
-                strokeWidth="1.5"
-                strokeDasharray="4,2"
-              />
-            </g>
+          {result.haversine.km > 500 && (
+            <span>Choose a closer pair of points to request a road route.</span>
           )}
-
-          {/* Geodesic Flight Path / Great Circle */}
-          <path
-            d={pathD}
-            fill="none"
-            stroke="url(#pathGradient)"
-            strokeWidth="3.5"
-            strokeLinecap="round"
-          />
-
-          {/* Directional Pulse or Line Markers */}
-          <path
-            d={pathD}
-            fill="none"
-            stroke="#ffffff"
-            strokeWidth="1"
-            strokeDasharray="6,18"
-            className="opacity-70"
-          />
-
-          {/* Midpoint Marker */}
-          <g filter="url(#glowCyan)">
-            <circle cx={midX} cy={midY} r="5" fill="#94e2d5" />
-            <circle cx={midX} cy={midY} r="9" fill="none" stroke="#94e2d5" strokeWidth="1.2" strokeDasharray="3,2" />
-          </g>
-
-          {/* Point A (Origin / Green Pin) */}
-          <g filter="url(#glowGreen)">
-            <circle cx={ax} cy={ay} r="14" fill="#b5dfa3" fillOpacity="0.2" />
-            <circle cx={ax} cy={ay} r="7" fill="#b5dfa3" />
-            <circle cx={ax} cy={ay} r="2.5" fill="#0d120f" />
-          </g>
-          <g transform={`translate(${ax + 12}, ${ay - 8})`}>
-            <rect x="0" y="-12" width="90" height="20" rx="4" fill="#111612" stroke="#b5dfa3" strokeWidth="1" />
-            <text x="6" y="2" fill="#b5dfa3" fontSize="10" fontWeight="bold">
-              {pointA.label || 'Point A'}
-            </text>
-          </g>
-
-          {/* Point B (Destination / Rose Pin) */}
-          <g filter="url(#glowRose)">
-            <circle cx={bx} cy={by} r="14" fill="#f19aa6" fillOpacity="0.2" />
-            <circle cx={bx} cy={by} r="7" fill="#f19aa6" />
-            <circle cx={bx} cy={by} r="2.5" fill="#0d120f" />
-          </g>
-          <g transform={`translate(${bx + 12}, ${by - 8})`}>
-            <rect x="0" y="-12" width="90" height="20" rx="4" fill="#111612" stroke="#f19aa6" strokeWidth="1" />
-            <text x="6" y="2" fill="#f19aa6" fontSize="10" fontWeight="bold">
-              {pointB.label || 'Point B'}
-            </text>
-          </g>
-
-          {/* Center Callout Pill: Total Great-Circle Distance */}
-          <g transform={`translate(${midX - 75}, ${midY - 26})`}>
-            <rect
-              x="0"
-              y="0"
-              width="150"
-              height="26"
-              rx="6"
-              fill="#111612"
-              fillOpacity="0.95"
-              stroke="#94e2d5"
-              strokeWidth="1.5"
-            />
-            <text x="75" y="17" fill="#e4ebdd" fontSize="11" fontWeight="bold" textAnchor="middle" fontFamily="monospace">
-              {result.haversine.km.toLocaleString(undefined, { maximumFractionDigits: 1 })} km / {result.haversine.miles.toLocaleString(undefined, { maximumFractionDigits: 1 })} mi
-            </text>
-          </g>
-        </svg>
-
-        {/* Floating Compass Rose (HUD overlay in bottom-right) */}
-        <div className="absolute bottom-3 right-3 p-2.5 rounded-xl bg-[#111612]/90 border border-[#344435] shadow-lg flex items-center gap-3 backdrop-blur-sm">
-          <div className="relative w-10 h-10 rounded-full border border-[#71836b] bg-[#0d120f] flex items-center justify-center">
-            {/* North marker */}
-            <span className="absolute top-0.5 text-[8px] font-bold text-[#f19aa6]">N</span>
-            <span className="absolute bottom-0.5 text-[8px] text-[#9eac96]">S</span>
-            <span className="absolute right-0.5 text-[8px] text-[#9eac96]">E</span>
-            <span className="absolute left-0.5 text-[8px] text-[#9eac96]">W</span>
-
-            {/* Rotating Heading Needle */}
-            <div
-              className="absolute inset-0 flex items-center justify-center transition-transform duration-500"
-              style={{ transform: `rotate(${result.bearing.initialBearingDeg}deg)` }}
-            >
-              <Navigation2 size={16} className="text-[#c8edb6] fill-[#c8edb6]" />
-            </div>
-          </div>
-
-          <div className="text-[11px] leading-tight">
-            <div className="text-[#c3ceba]">Initial Bearing</div>
-            <div className="font-mono font-bold text-[#e4ebdd]">
-              {result.bearing.initialBearingDeg.toFixed(1)}° ({result.bearing.cardinalInitial})
-            </div>
-            <div className="text-[10px] text-[#b1bea8]">
-              Final: {result.bearing.finalBearingDeg.toFixed(1)}°
-            </div>
-          </div>
-        </div>
-
-        {/* Tip pill in bottom-left */}
-        <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-md bg-[#111612]/80 border border-[#344435] text-[10px] text-[#c3ceba] pointer-events-none">
-          Click map to relocate <span className="text-[#f19aa6] font-bold">Point B</span> (Hold <kbd className="px-1 py-0.5 bg-[#344435] rounded text-[9px]">Shift</kbd> for <span className="text-[#b5dfa3] font-bold">Point A</span>)
         </div>
       </div>
-    </div>
+      <p className="geo-map-footnote">
+        OpenStreetMap basemap · OSRM routing · no API key. Map and routing
+        require internet; public services may be unavailable. Direct distances
+        and unit conversions run locally.
+      </p>
+    </section>
   );
-};
+}

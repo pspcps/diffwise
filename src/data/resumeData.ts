@@ -1,3 +1,4 @@
+import { getCareerDuration } from "../utils/careerDuration";
 export const RESUME = {
   name: "Prakash Choudhary",
   initials: "PC",
@@ -11,11 +12,14 @@ export const RESUME = {
   title: "Senior Software Engineer | Backend, Distributed Systems & Applied AI",
   focus:
     "Node.js · TypeScript · Apache Kafka · PostgreSQL · AWS · Google Cloud · AI Agents",
-  summary:
-    "Senior Software Engineer with 9+ years of experience building backend services, event-driven systems, and cloud-native applications. Specializes in Node.js, TypeScript, Apache Kafka, PostgreSQL, AWS, and Google Cloud. Led teams of 4–6 engineers and designed a reverse-geocoding platform with approximately $1M in annual cost savings. Personal projects span multi-agent fleet diagnostics, Kafka data replication, local retrieval-augmented generation (RAG), developer tools, and Android financial analytics.",
+  get summary() {
+    return `Senior Software Engineer with ${getCareerDuration().years}+ years of experience building backend services, event-driven systems, and cloud-native applications. Specializes in Node.js, TypeScript, Apache Kafka, PostgreSQL, AWS, and Google Cloud. Led teams of 4–6 engineers and designed a reverse-geocoding platform with approximately $1M in annual cost savings. Personal projects span multi-agent fleet diagnostics, Kafka data replication, local retrieval-augmented generation (RAG), developer tools, and Android financial analytics.`;
+  },
   stats: [
     {
-      value: "9+",
+      get value() {
+        return getCareerDuration().label;
+      },
       label: "Years Experience",
       color: "#4f8ef7",
     },
@@ -28,11 +32,6 @@ export const RESUME = {
       value: "4–6",
       label: "Team Size Led",
       color: "#8b5cf6",
-    },
-    {
-      value: "Liquibase",
-      label: "Merged upstream contribution",
-      color: "#c8edb6",
     },
   ],
   experience: [

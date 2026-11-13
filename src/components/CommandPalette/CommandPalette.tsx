@@ -20,6 +20,7 @@ import {
   Send,
   Bug,
   Compass,
+  Ruler,
 } from 'lucide-react';
 import type { ViewMode } from '../../types';
 
@@ -40,6 +41,7 @@ interface ToolItem {
 }
 
 const TOOLS: ToolItem[] = [
+  { id: 'measure', name: 'Measure Lab — 3D Units, Geometry & Algebra', category: 'Calculators & Converters', keywords: ['units', 'converter', 'height', 'weight', 'mass', 'liquid', 'volume', 'area', 'geometry', 'algebra', 'formula', 'length', 'temperature', 'measure'], icon: <Ruler size={16} />, color: '#aacff0' },
   {
     id: 'debug',
     name: 'DebugFlow (Universal Log & Stack Trace Analyzer)',

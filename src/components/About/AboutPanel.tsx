@@ -1,3 +1,4 @@
+import { useCareerDuration } from "../../hooks/useCareerDuration";
 import { useEffect, useRef } from "react";
 import { X, Link2, ExternalLink } from "lucide-react";
 import { RESUME } from "../../data/resumeData";
@@ -6,6 +7,7 @@ interface AboutPanelProps {
   onPortfolio: () => void;
 }
 export default function AboutPanel({ onClose, onPortfolio }: AboutPanelProps) {
+  useCareerDuration();
   const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const panel = dialog.current;

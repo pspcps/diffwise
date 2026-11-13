@@ -26,6 +26,7 @@ const JwtStudioView = lazy(() => import('./components/JwtStudio/JwtStudioView'))
 const UuidStudioView = lazy(() => import('./components/UuidStudio/UuidStudioView'));
 const ApiStudioView = lazy(() => import('./components/ApiStudio/ApiStudioView'));
 const ErrorDebuggerView = lazy(() => import('./components/ErrorDebugger/ErrorDebuggerView'));
+const MeasureLabView = lazy(() => import('./components/MeasureLab/MeasureLabView'));
 const GeoDistanceView = lazy(() => import('./components/GeoDistance/GeoDistanceView'));
 import CommandPalette from './components/CommandPalette/CommandPalette';
 
@@ -122,6 +123,10 @@ const HASH_TO_MODE: Record<string, ViewMode> = {
   '#/stacktrace': 'debug',
   '#/logs': 'debug',
 
+  '#/measure': 'measure',
+  '#/units': 'measure',
+  '#/unit-converter': 'measure',
+  '#/geometry': 'measure',
   '#/distance': 'distance',
   '#/geodistance': 'distance',
   '#/geo-distance': 'distance',
@@ -200,6 +205,10 @@ const MODE_SEO: Record<ViewMode, { title: string; desc: string }> = {
     title: 'DebugFlow — Universal Error & Stack Trace Debugger — PSDevTool',
     desc: 'Analyze logs, exceptions, and stack traces across C#, Java, Python, Node.js, and Go with deterministic root cause analysis and execution flow mapping.',
   },
+  measure: {
+    title: 'Measure Lab — 3D Unit Converter, Geometry & Algebra — PSDevTool',
+    desc: 'Convert length, mass, volume and more with interactive 3D illustrations. Calculate areas, volumes and algebra with visible formulas, locally in your browser.',
+  },
   distance: {
     title: 'Geo Distance & Coordinates Calculator (Lat/Lon Haversine & Vincenty) — PSDevTool',
     desc: 'Calculate distance between two GPS coordinates (latitude and longitude) with high precision using Vincenty WGS-84 and Haversine formulas, coordinate delta breakdown, and travel times.',
@@ -218,7 +227,7 @@ function useHashRoute() {
 
 export default function App() {
   const hash = useHashRoute();
-  const initialMode = HASH_TO_MODE[window.location.hash] || 'text';
+  const initialMode = HASH_TO_MODE[window.location.hash.split('?')[0]] || 'text';
   const [mode, setMode] = useState<ViewMode>(initialMode);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
@@ -235,10 +244,12 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleGlobalKey);
   }, []);
 
+  const routeHash = hash.split('?')[0];
+
   // Sync mode when URL hash changes externally
   useEffect(() => {
-    if (hash && HASH_TO_MODE[hash] && HASH_TO_MODE[hash] !== mode) {
-      setMode(HASH_TO_MODE[hash]);
+    if (routeHash && HASH_TO_MODE[routeHash] && HASH_TO_MODE[routeHash] !== mode) {
+      setMode(HASH_TO_MODE[routeHash]);
     }
   }, [hash]);
 
@@ -411,6 +422,14 @@ export default function App() {
           <div className="absolute inset-0 flex flex-col">
             <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading Geo Distance Calculator…</div>}>
               <GeoDistanceView />
+            </Suspense>
+          </div>
+        )}
+
+        {mode === 'measure' && (
+          <div className="absolute inset-0 flex flex-col">
+            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading Measure Lab…</div>}>
+              <MeasureLabView />
             </Suspense>
           </div>
         )}

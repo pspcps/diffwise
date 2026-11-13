@@ -1,4 +1,3 @@
-import SignalPlayground from "../components/Motion/SignalPlayground";
 import { useState, type CSSProperties } from "react";
 import {
   ArrowUpRight,
@@ -365,7 +364,6 @@ export default function HomePage({
                 </button>
               )}
           </section>
-          <SignalPlayground />
           <section className="builder-banner">
             <div className="builder-monogram">
               pc<span>↗</span>
