@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { DiffEditor as MonacoDiffEditor } from '@monaco-editor/react';
+import MonacoDiffEditor from '../Common/ManagedDiffEditor';
 import { FolderOpen, GitCompare, X, Save, FileText } from 'lucide-react';
 import DropZone from '../Common/DropZone';
 import { detectLanguage } from '../../utils/fileUtils';

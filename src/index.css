@@ -310,3 +310,5 @@ body {
   animation: spinSlow 8s linear infinite;
 }
 
+
+.space-loading { display: grid; place-items: center; height: 100dvh; background: #101211; color: #c8edb6; font: 13px system-ui, sans-serif; letter-spacing: .5px; }

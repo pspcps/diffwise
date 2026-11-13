@@ -12,7 +12,8 @@ import RegexLabView from './components/RegexLab/RegexLabView';
 import UrlToolsView from './components/UrlTools/UrlToolsView';
 import AdBanner from './components/Ads/AdBanner';
 import AboutPanel from './components/About/AboutPanel';
-import PortfolioPage from './pages/PortfolioPage';
+const PortfolioPage = lazy(() => import('./pages/PortfolioPage'));
+const HomePage = lazy(() => import('./pages/HomePage'));
 import type { ViewMode } from './types';
 
 const ArchitectureLabView = lazy(() => import('./components/ArchitectureLab/ArchitectureLabView'));
@@ -241,11 +242,12 @@ export default function App() {
 
   // Update dynamic document title and meta description for SEO
   useEffect(() => {
-    if (hash === '#/portfolio') {
-      document.title = 'Prakash Choudhary — Senior Full Stack & Software Engineer';
-      return;
-    }
-    const seo = MODE_SEO[mode];
+    const isHome = !hash || hash === '#/' || hash === '#/home';
+    const seo = hash === '#/portfolio'
+      ? { title: 'Prakash Choudhary — Senior Software Engineer', desc: 'Explore projects, experience, and the engineering work of Prakash Choudhary: cloud-native systems, real-time platforms, and AI products.' }
+      : isHome
+        ? { title: 'PSDevTool — Your Developer Space', desc: 'A thoughtfully crafted developer workspace. Compare code, create diagrams, format data, and explore tools that keep you in flow.' }
+        : MODE_SEO[mode];
     if (seo) {
       document.title = seo.title;
       const descEl = document.querySelector('meta[name="description"]');
@@ -276,7 +278,18 @@ export default function App() {
 
   // Portfolio is a full-page takeover
   if (hash === '#/portfolio') {
-    return <PortfolioPage onBack={goBack} />;
+    return <Suspense fallback={<div className="space-loading">Opening portfolio…</div>}><PortfolioPage onBack={goBack} /></Suspense>;
+  }
+
+  if (!hash || hash === '#/' || hash === '#/home') {
+    return (
+      <>
+        <Suspense fallback={<div className="space-loading">Opening your workspace…</div>}>
+          <HomePage onTool={handleModeChange} onPortfolio={goPortfolio} onSearch={() => setCommandPaletteOpen(true)} />
+        </Suspense>
+        <CommandPalette isOpen={commandPaletteOpen} onClose={() => setCommandPaletteOpen(false)} onSelectTool={handleModeChange} onPortfolio={goPortfolio} />
+      </>
+    );
   }
 
   return (
@@ -302,7 +315,7 @@ export default function App() {
       />
 
       {/* All views stay mounted or dynamically loaded */}
-      <div className="flex-1 min-h-0 relative">
+      <div className="flex-1 min-h-0 relative workbench-frame">
         <div className={`absolute inset-0 flex flex-col${mode !== 'text' ? ' invisible pointer-events-none' : ''}`}>
           <TextCompareView />
         </div>

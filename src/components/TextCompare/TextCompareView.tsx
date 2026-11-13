@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { DiffEditor as MonacoDiffEditor } from '@monaco-editor/react';
+import MonacoDiffEditor from '../Common/ManagedDiffEditor';
 import {
   Copy,
   Download,
