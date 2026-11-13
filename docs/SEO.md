@@ -1,6 +1,6 @@
 # Branding and search deployment
 
-PSDevTool has a PS monogram, matching app/favicons, and build-time HTML for 32 canonical pages: the homepage, 19 tool pages, the portfolio, a resume gallery and ten resume templates. A separate 404 document is excluded from the sitemap and marked noindex.
+PSDevTool has a PS monogram, matching app/favicons, and build-time HTML for 43 canonical pages: the homepage, 19 tool pages, the portfolio, two paper-specific resume galleries and twenty resume documents. A separate 404 document is excluded from the sitemap and marked noindex.
 
 ## What the build produces
 

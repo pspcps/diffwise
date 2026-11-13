@@ -178,7 +178,7 @@ export default function HomePage({
           <section className="space-hero">
             <div className="hero-copy">
               <div className="eyebrow">
-                <span /> 19 TOOLS. ONE WORKSPACE.
+                <span /> 20 TOOLS. ONE WORKSPACE.
               </div>
               <h1>
                 Your everyday

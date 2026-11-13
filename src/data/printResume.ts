@@ -81,7 +81,7 @@ export const PRINT_RESUME = {
       tech: "React, TypeScript, Monaco Editor, Web Workers",
       url: "https://github.com/pspcps/diffwise",
       detail:
-        "Built 19 browser tools for code comparison, structured-data inspection, API workflows and file processing, with searchable navigation and persistent themes.",
+        "Built 20 browser tools for code comparison, structured-data inspection, API workflows and file processing, with searchable navigation and persistent themes.",
     },
     {
       name: "Kafbat UI",
@@ -98,6 +98,36 @@ export const PRINT_RESUME = {
   education: RESUME.education,
   certification: "AWS Cloud Practitioner",
 };
+export const LEGAL_PROJECTS = [
+  ...PRINT_RESUME.projects,
+  {
+    name: "Project Drishti",
+    tech: "React, Firebase, Vertex AI Vision, Gemini",
+    url: "https://github.com/pspcps/project-drishti",
+    detail:
+      "Built camera-frame analysis and Firestore-backed incident, zone and responder workflows for an AI-assisted crowd-safety dashboard.",
+  },
+  {
+    name: "InkMind",
+    tech: "React, FastAPI, Ollama, ChromaDB",
+    url: "https://github.com/pspcps/inkMind",
+    detail:
+      "Built a local AI notebook with Markdown editing, document retrieval, streamed answers, diagram editing and traffic simulation.",
+  },
+  {
+    name: "ApiDesk Studio",
+    tech: "React, Node.js, Express, Electron",
+    url: "https://github.com/pspcps/ApiDesk-Studio",
+    detail:
+      "Built REST/GraphQL workflows, a local request proxy, Autocannon load testing and regression execution with streamed logs.",
+  },
+];
+export const ADDITIONAL_CONTRIBUTIONS = [
+  "FreeRADIUS: customized database behavior and functionality for Fair Usage Policy implementation.",
+  "Mikro-Node: fixed bugs and enhanced APIs for MikroTik device integration.",
+  "jQuery-Draggable: modified core drag-and-drop behavior for a custom use case.",
+];
+export type ResumePaper = "a4" | "legal";
 export type ResumeTemplate = {
   id: string;
   name: string;
@@ -162,7 +192,7 @@ export const RESUME_TEMPLATES: ResumeTemplate[] = [
     id: "sidebar",
     name: "Sidebar",
     description:
-      "A soft teal skills rail beside your experience and selected projects.",
+      "A soft teal skills rail beside your experience and engineering projects.",
     columns: 2,
     style: "sidebar",
     accent: "#14685b",

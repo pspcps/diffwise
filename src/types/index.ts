@@ -1,4 +1,24 @@
-export type ViewMode = 'text' | 'file' | 'case' | 'json' | 'time' | 'base64' | 'markup' | 'regex' | 'url' | 'architecture' | 'image_studio' | 'har' | 'jwt' | 'uuid' | 'api' | 'debug' | 'distance' | 'pdf' | 'measure';
+export type ViewMode =
+  | "text"
+  | "file"
+  | "case"
+  | "json"
+  | "time"
+  | "base64"
+  | "markup"
+  | "regex"
+  | "url"
+  | "architecture"
+  | "image_studio"
+  | "har"
+  | "jwt"
+  | "uuid"
+  | "api"
+  | "debug"
+  | "distance"
+  | "pdf"
+  | "measure"
+  | "resume";
 
 export interface FileEntry {
   name: string;
@@ -14,7 +34,7 @@ export interface FolderEntry {
   isDirectory: true;
 }
 
-export type DiffStatus = 'added' | 'removed' | 'modified' | 'identical';
+export type DiffStatus = "added" | "removed" | "modified" | "identical";
 
 export interface FolderDiffItem {
   path: string;
@@ -30,11 +50,11 @@ export interface CodeSelection {
   startLine: number;
   endLine: number;
   content: string;
-  sourceFile: 'left' | 'right';
+  sourceFile: "left" | "right";
 }
 
 export interface MoveOperation {
   selection: CodeSelection;
-  targetFile: 'left' | 'right';
+  targetFile: "left" | "right";
   targetLine: number;
 }

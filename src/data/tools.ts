@@ -18,12 +18,28 @@ import {
   Files,
   Link2,
   Ruler,
+  FileUser,
 } from "lucide-react";
 import type { ViewMode } from "../types";
 
-export const TOOL_CATEGORIES = ["Compare & format", "Inspect & debug", "Create & transform", "Calculate & convert"];
+export const TOOL_CATEGORIES = [
+  "Compare & format",
+  "Inspect & debug",
+  "Create & transform",
+  "Calculate & convert",
+];
 
 export const TOOLS = [
+  {
+    id: "resume",
+    name: "Resume Builder",
+    category: "Create & transform",
+    description:
+      "Edit your resume. Choose a template, customize colors and print a PDF.",
+    icon: FileUser,
+    color: "#c6b8f5",
+    badge: "NEW",
+  },
   {
     id: "text",
     name: "Diff Checker",

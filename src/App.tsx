@@ -50,7 +50,7 @@ export default function App() {
     if (route.legacy) navigateTo(page.path + route.search, true);
   }, [route.legacy, page.path, route.search]);
   useEffect(() => {
-    if (isTool) {
+    if (isTool || page.id === "resume") {
       rememberTool(page.id as ViewMode);
     }
   }, [isTool, page.id]);
@@ -68,6 +68,11 @@ export default function App() {
   }, [page]);
 
   const handleModeChange = (newMode: ViewMode) => {
+    if (newMode === "resume") {
+      rememberTool("resume");
+      navigateTo("/resume/");
+      return;
+    }
     setMode(newMode);
     navigateTo(toolPath(newMode));
   };
