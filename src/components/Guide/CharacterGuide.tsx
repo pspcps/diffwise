@@ -39,7 +39,7 @@ export default function CharacterGuide({
             <button onClick={() => setStep((s) => s + 1)}>
               Next {compact ? "tip" : "story"} <ArrowRight size={14} />
             </button>
-            {"speechSynthesis" in window && (
+            {typeof window !== "undefined" && "speechSynthesis" in window && (
               <button
                 aria-label="Read guide aloud"
                 onClick={() => {

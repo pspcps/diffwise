@@ -8,6 +8,7 @@ import MotionProvider from "./components/Motion/MotionProvider";
 import MotionLayer from "./components/Motion/MotionLayer";
 import "./motion.css";
 
+document.getElementById("root")!.removeAttribute("data-prerendered");
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider>

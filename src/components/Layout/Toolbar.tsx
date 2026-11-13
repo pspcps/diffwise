@@ -1,3 +1,4 @@
+import { navigateTo } from "../../seo/routes";
 import { Search, ArrowLeft, UserRound } from "lucide-react";
 import ThemeChoice from "../Guide/ThemeChoice";
 import ToolHelp from "../Workspace/ToolHelp";
@@ -21,7 +22,7 @@ export default function Toolbar({
     <header className="tool-toolbar compact-toolbar">
       <Brand
         onClick={() => {
-          window.location.hash = "#/";
+          navigateTo("/");
         }}
       />
       <span className="toolbar-divider" />
@@ -45,7 +46,7 @@ export default function Toolbar({
         <button
           className="toolbar-home tool-home-action"
           onClick={() => {
-            window.location.hash = "#/";
+            navigateTo("/");
           }}
           aria-label="All tools"
         >

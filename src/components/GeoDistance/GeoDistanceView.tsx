@@ -1,3 +1,5 @@
+import { resolveLocation } from "../../seo/routes";
+import { toolPath } from "../../seo/pages";
 import AdvancedSection from "../Workspace/AdvancedSection";
 import ToolHeader from "../Workspace/ToolHeader";
 import CoordinateInput from "./CoordinateInput";
@@ -38,8 +40,8 @@ import { GeoMapCanvas } from './GeoMapCanvas';
 function getInitialGeoState(): { a: GeoPoint; b: GeoPoint } {
   try {
     const hash = window.location.hash;
-    if (hash.includes('?')) {
-      const queryStr = hash.split('?')[1];
+    if (hash.includes('?') || window.location.search) {
+      const queryStr = hash.includes('?') ? hash.split('?')[1] : window.location.search.slice(1);
       const params = new URLSearchParams(queryStr);
       const l1 = params.get('lat1');
       const o1 = params.get('lon1');
@@ -180,11 +182,12 @@ export const GeoDistanceView: React.FC = () => {
   // Shared coordinate links also update a workspace that was already opened.
   useEffect(() => {
     const syncLink = () => {
-      if (!/^#\/(?:distance|geodistance|geo-distance|coordinates|lat-lon|latlon|haversine)\?/.test(window.location.hash)) return;
+      if (resolveLocation(window.location).page.id !== 'distance' || !(window.location.search || window.location.hash.includes('?'))) return;
       const points = getInitialGeoState(); setPointA(points.a); setPointB(points.b);
     };
     window.addEventListener('hashchange', syncLink);
-    return () => window.removeEventListener('hashchange', syncLink);
+    window.addEventListener('popstate', syncLink);
+    return () => {window.removeEventListener('hashchange', syncLink);window.removeEventListener('popstate', syncLink);};
   }, []);
 
   // Quick parser submit
@@ -254,8 +257,8 @@ export const GeoDistanceView: React.FC = () => {
 
   // Generate shareable permalink
   const getShareableUrl = () => {
-    const base = window.location.origin + window.location.pathname;
-    return `${base}#/distance?lat1=${pointA.lat}&lon1=${pointA.lon}&lat2=${pointB.lat}&lon2=${pointB.lon}&lbl1=${encodeURIComponent(pointA.label || '')}&lbl2=${encodeURIComponent(pointB.label || '')}`;
+    const base = window.location.origin + toolPath('distance');
+    return `${base}?lat1=${pointA.lat}&lon1=${pointA.lon}&lat2=${pointB.lat}&lon2=${pointB.lon}&lbl1=${encodeURIComponent(pointA.label || '')}&lbl2=${encodeURIComponent(pointB.label || '')}`;
   };
 
   const handleMapPointChange = useCallback((target: 'A' | 'B', lat: number, lon: number) => {

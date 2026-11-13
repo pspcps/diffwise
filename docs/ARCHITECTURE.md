@@ -78,10 +78,10 @@ graph TD
 PSDevTool adheres to a clean, modular 4-layer client architecture:
 
 ### Layer 1: Shell & Routing Layer
-- **Hash-Based Router (`App.tsx`)**: Utilizes URL hash routing (`#/diff-checker`, `#/har`, `#/jwt`, `#/api`, `#/pdf`, `#/portfolio`) to maintain deep-linkable URLs without requiring server-side fallback rules or Express rewrites.
-- **Dynamic SEO & Meta Sync**: Dynamically updates `document.title`, `meta[name="description"]`, `og:title`, and `og:description` as the user navigates between studio utilities or views the portfolio.
-- **Top Command Shell (`Toolbar.tsx`)**: Provides persistent mode navigation, responsive horizontal tab scrolling with auto-centering, and pinned action triggers (Search `⌘K`, About profile).
-- **Global Command Palette (`CommandPalette.tsx`)**: Intercepts `⌘K` / `Ctrl+K` keybindings globally, enabling fast fuzzy keyword search across all studio utilities and portfolio projects.
+- **Clean tool URLs (`src/seo/routes.ts`)**: Handles canonical `/tools/.../` and `/portfolio/` paths using browser history. All existing hash aliases remain supported and canonicalize client-side.
+- **Prerendered pages (`scripts/generate-seo.cjs`)**: The build writes route-specific HTML, metadata, structured data, sitemap and a 404 page. Visible guide content is shared with React. The homepage is statically rendered from the actual tool catalog.
+- **Top Command Shell (`Toolbar.tsx`)**: Compact grouped tool picker, theme/motion controls, contextual help and keyboard search.
+- **Global Command Palette (`CommandPalette.tsx`)**: Native modal search with task keywords, keyboard navigation and focus restoration.
 
 ### Layer 2: Domain Studio Engines (Feature Modules)
 Each studio utility operates as an isolated, self-contained functional domain with dedicated state, inputs, controls, and outputs:

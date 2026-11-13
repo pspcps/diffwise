@@ -1,118 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Main Home -->
-  <url>
-    <loc>https://psdevtool.online/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-
-  <!-- Diff & Code Comparison -->
-  <url>
-    <loc>https://psdevtool.online/#/diff-checker</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>https://psdevtool.online/#/code-compare</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- HAR File Viewer (Like Jam.dev) -->
-  <url>
-    <loc>https://psdevtool.online/#/har-viewer</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-
-  <!-- JWT Debugger & Token Parser -->
-  <url>
-    <loc>https://psdevtool.online/#/jwt-debugger</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-
-  <!-- YAML to JSON Converter -->
-  <url>
-    <loc>https://psdevtool.online/#/yaml-to-json</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>https://psdevtool.online/#/json-to-yaml</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- UUID & Unique ID Generator -->
-  <url>
-    <loc>https://psdevtool.online/#/uuid-generator</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>https://psdevtool.online/#/snowflake</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- JSON & Data Tools -->
-  <url>
-    <loc>https://psdevtool.online/#/json-converter</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>https://psdevtool.online/#/json-to-table</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-
-  <!-- Timezone & Epoch Tools -->
-  <url>
-    <loc>https://psdevtool.online/#/timezone-converter</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-
-  <!-- Word to PDF & Document Studio -->
-  <url>
-    <loc>https://psdevtool.online/#/word-to-pdf</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>https://psdevtool.online/#/pdf</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-
-  <!-- Regex Lab -->
-  <url>
-    <loc>https://psdevtool.online/#/regex-tester</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Diagrams & Architecture -->
-  <url>
-    <loc>https://psdevtool.online/#/database-diagram</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Image Studio -->
-  <url>
-    <loc>https://psdevtool.online/#/image-crop</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Portfolio -->
-  <url>
-    <loc>https://psdevtool.online/#/portfolio</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
+  <url><loc>https://psdevtool.online/</loc></url>
+  <url><loc>https://psdevtool.online/tools/diff-checker/</loc></url>
+  <url><loc>https://psdevtool.online/tools/json-formatter/</loc></url>
+  <url><loc>https://psdevtool.online/tools/file-folder-diff/</loc></url>
+  <url><loc>https://psdevtool.online/tools/api-client/</loc></url>
+  <url><loc>https://psdevtool.online/tools/har-viewer/</loc></url>
+  <url><loc>https://psdevtool.online/tools/jwt-debugger/</loc></url>
+  <url><loc>https://psdevtool.online/tools/uuid-generator/</loc></url>
+  <url><loc>https://psdevtool.online/tools/architecture-diagram/</loc></url>
+  <url><loc>https://psdevtool.online/tools/regex-tester/</loc></url>
+  <url><loc>https://psdevtool.online/tools/pdf-tools/</loc></url>
+  <url><loc>https://psdevtool.online/tools/image-tools/</loc></url>
+  <url><loc>https://psdevtool.online/tools/time-zone-converter/</loc></url>
+  <url><loc>https://psdevtool.online/tools/image-base64/</loc></url>
+  <url><loc>https://psdevtool.online/tools/html-xml-sql-formatter/</loc></url>
+  <url><loc>https://psdevtool.online/tools/text-case-converter/</loc></url>
+  <url><loc>https://psdevtool.online/tools/stack-trace-analyzer/</loc></url>
+  <url><loc>https://psdevtool.online/tools/distance-calculator/</loc></url>
+  <url><loc>https://psdevtool.online/tools/unit-converter/</loc></url>
+  <url><loc>https://psdevtool.online/tools/url-encoder-decoder/</loc></url>
+  <url><loc>https://psdevtool.online/portfolio/</loc></url>
 </urlset>

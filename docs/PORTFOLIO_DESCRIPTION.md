@@ -43,11 +43,13 @@
   - Restructured modal rendering through React Portals (`createPortal(..., document.body)`).
   - Paired with automated document scroll locking (`overflow: hidden`), Escape key listener, and `max-h-[88vh]` flexbox internal scrolling, ensuring dialogs always appear centered in the user's active screen viewport across mobile and desktop.
 
-### Challenge 4: Zero Layout Shift (CLS = 0) While Preserving High-Intent SEO
-- **Problem**: Single Page Applications often show raw fallback text or blank white screens before React hydration, hurting Cumulative Layout Shift (CLS) and user trust.
-- **Engineering Solution**: 
-  - Replaced raw fallback text with a dark `#11111b` styled preloader matching the exact production UI theme.
-  - Preserved 100% of rich semantic crawlability by placing SEO structured articles in `<noscript>` containers and screen-reader accessible DOM containers (`clip: rect(0,0,0,0)`), alongside complete JSON-LD `WebApplication` and `FAQPage` schemas in `<head>`.
+### Challenge 4: Crawlable tool pages with a usable loading state
+- **Problem**: Hash-only routes and client-updated metadata do not provide a distinct initial HTML document for each tool.
+- **Engineering solution**:
+  - Generate clean tool URLs with unique metadata, structured data and visible guide content at build time.
+  - Render the actual homepage catalog and reserve a dark tool viewport before interactive controls load.
+  - Keep old hash aliases working and include only canonical clean URLs in the sitemap.
+  - Measure real Core Web Vitals after deployment. No zero-CLS score or search-ranking position has been established by these implementation checks.
 
 ---
 

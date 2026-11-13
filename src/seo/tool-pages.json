@@ -1,0 +1,553 @@
+[
+  {
+    "id": "text",
+    "path": "/tools/diff-checker/",
+    "name": "Diff Checker",
+    "title": "Free Diff Checker & Text Comparison | PSDevTool",
+    "description": "Compare two versions of text or code online. Inspect highlighted additions, deletions and edits with a side-by-side diff in PSDevTool.",
+    "intro": "Find what changed between an original document and a revised version. Diff Checker provides editable comparison panes, highlighted changes and formatting controls for code and structured text.",
+    "features": [
+      "Compare original and modified text side by side.",
+      "Inspect added, removed and changed content with syntax highlighting.",
+      "Adjust whitespace, wrapping and comparison settings for your task."
+    ],
+    "steps": [
+      "Paste the original text into the left pane and the modified text into the right.",
+      "Choose formatting or comparison settings when needed, then select Compare.",
+      "Review highlighted differences and navigate between changes."
+    ],
+    "faq": [
+      {
+        "question": "What can I compare?",
+        "answer": "Use plain text, source code, JSON, XML or YAML. For local files and directory contents, use File & Folder Diff."
+      },
+      {
+        "question": "Does formatting change a comparison?",
+        "answer": "Yes. Whitespace and formatting can create differences. Review the formatting and whitespace options before deciding whether a change is meaningful."
+      }
+    ],
+    "related": ["file", "json", "markup"]
+  },
+  {
+    "id": "json",
+    "path": "/tools/json-formatter/",
+    "name": "JSON & YAML",
+    "title": "JSON Formatter, Validator & YAML Converter | PSDevTool",
+    "description": "Format and validate JSON, inspect nested data and array lengths, and convert JSON to XML or YAML. Explore tree, table and graph views online.",
+    "intro": "Make nested JSON easier to read, validate and explore. JSON Studio combines a syntax-colored source editor with parsed views, code folding and array-length hints. Conversion modes help move between JSON, XML, YAML and environment text.",
+    "features": [
+      "Format or minify valid JSON and inspect parsing errors.",
+      "Expand nested objects, view arrays as tables, and inspect array item counts.",
+      "Convert JSON and XML/YAML in either direction using the conversion controls."
+    ],
+    "steps": [
+      "Paste JSON into the source editor and check the validation status.",
+      "Select Format, or switch to Tree, Table or Graph to explore the structure.",
+      "Open a conversion mode when needed and copy or export the result."
+    ],
+    "faq": [
+      {
+        "question": "Can I see the length of nested JSON arrays?",
+        "answer": "Yes. Valid arrays have non-editable item-count hints, including nested and empty arrays. The hints do not become part of copied JSON."
+      },
+      {
+        "question": "Can I expand and collapse code?",
+        "answer": "Use the gutter arrows or Fold/Unfold controls. Parsed tree nodes also expand independently. Invalid JSON needs to be corrected before parsed views and counts can update."
+      }
+    ],
+    "related": ["text", "markup", "case"]
+  },
+  {
+    "id": "file",
+    "path": "/tools/file-folder-diff/",
+    "name": "File & Folder Diff",
+    "title": "Compare Files & Folders Online | PSDevTool",
+    "description": "Compare local files or folder contents and inspect additions, deletions and changed files. Open individual text differences in PSDevTool.",
+    "intro": "Review local versions without manually checking every file. File & Folder Diff compares two sets of files and lets you inspect changed text content in a comparison view.",
+    "features": [
+      "Choose files or folder contents from both versions.",
+      "Identify additions, removals and modified files.",
+      "Inspect supported text-file differences in the editor."
+    ],
+    "steps": [
+      "Select the original files or directory contents.",
+      "Select the modified files or directory contents.",
+      "Open a changed file to inspect its comparison and review the result."
+    ],
+    "faq": [
+      {
+        "question": "Can every binary file be compared as text?",
+        "answer": "No. Text differences are useful for readable source and text documents. Binary files may not have a meaningful line-by-line comparison."
+      },
+      {
+        "question": "Are local files uploaded for comparison?",
+        "answer": "The comparison is processed in your browser. The page can still make external requests for application resources, analytics or advertising."
+      }
+    ],
+    "related": ["text", "json", "pdf"]
+  },
+  {
+    "id": "api",
+    "path": "/tools/api-client/",
+    "name": "API Desk",
+    "title": "Online API Client & OpenAPI Explorer | PSDevTool",
+    "description": "Build HTTP requests, inspect API responses, import cURL and explore OpenAPI specifications. Choose direct requests or an explicit optional proxy.",
+    "intro": "Build and inspect HTTP requests from a browser-based workspace. API Desk includes request methods, parameters, headers, bodies and authentication controls, plus cURL and OpenAPI workflows.",
+    "features": [
+      "Configure a request and inspect status, timing, headers and response data.",
+      "Import cURL commands and work with saved collections and history.",
+      "Explore OpenAPI specifications and send endpoints to the API client."
+    ],
+    "steps": [
+      "Enter the request URL and choose its HTTP method.",
+      "Configure parameters, headers, authentication and body as required.",
+      "Select Send and inspect the response or the connection error."
+    ],
+    "faq": [
+      {
+        "question": "Why can a browser request fail while cURL works?",
+        "answer": "Browsers enforce CORS rules. Check the endpoint and its CORS configuration. The optional corsproxy.io setting forwards the request through that third-party service."
+      },
+      {
+        "question": "Where are collections and history stored?",
+        "answer": "API Desk stores collections and request history locally in this browser. Requests contact your chosen endpoint, or the optional proxy when you enable it."
+      }
+    ],
+    "related": ["har", "jwt", "url"]
+  },
+  {
+    "id": "har",
+    "path": "/tools/har-viewer/",
+    "name": "HAR Viewer",
+    "title": "HAR File Viewer & Network Waterfall | PSDevTool",
+    "description": "Inspect HTTP Archive files with a network waterfall, request timing, headers and payloads. Analyze browser network captures locally in PSDevTool.",
+    "intro": "Explore a browser network capture to understand requests and timing. HAR Viewer turns an HTTP Archive into an inspectable request list and waterfall rather than a large raw JSON document.",
+    "features": [
+      "Open an HTTP Archive exported from browser developer tools.",
+      "Inspect request and response details, headers and timing.",
+      "Use the waterfall to investigate request ordering and delays."
+    ],
+    "steps": [
+      "Export a HAR file from your browser network panel.",
+      "Open the file in HAR Viewer.",
+      "Select a request and inspect the relevant timing, headers and payload."
+    ],
+    "faq": [
+      {
+        "question": "What is a HAR file?",
+        "answer": "HAR is an HTTP Archive format used to record browser network activity. A capture can include request URLs, headers and response content, depending on how it was exported."
+      },
+      {
+        "question": "Does the viewer resend recorded requests?",
+        "answer": "Opening and inspecting a HAR capture does not replay its requests. Use API Desk when you intentionally want to send an HTTP request."
+      }
+    ],
+    "related": ["api", "json", "debug"]
+  },
+  {
+    "id": "jwt",
+    "path": "/tools/jwt-debugger/",
+    "name": "JWT Debugger",
+    "title": "JWT Decoder & HS256 Signature Inspector | PSDevTool",
+    "description": "Decode JWT headers and claims, inspect expiration, and verify supported HS256 signatures locally. Unsupported algorithms remain explicitly unverified.",
+    "intro": "Inspect a JSON Web Token and understand what it contains. JWT Debugger separates the encoded segments, decoded header and payload, expiration information and supported signature checks.",
+    "features": [
+      "Decode and inspect JWT header and payload JSON.",
+      "Review time claims and expiration status.",
+      "Check HS256 signatures with a secret; other algorithms remain unverified."
+    ],
+    "steps": [
+      "Paste the JWT into the token input.",
+      "Inspect the decoded header, claims and parsing status.",
+      "For an HS256 token, provide the intended secret and review its verification result."
+    ],
+    "faq": [
+      {
+        "question": "Does decoding a JWT prove it is trustworthy?",
+        "answer": "No. Decoding reveals content; it does not establish authenticity. Signature checks and your application’s issuer, audience and authorization rules are separate concerns."
+      },
+      {
+        "question": "Which signature algorithms are supported?",
+        "answer": "This inspector supports HS256 verification. Tokens using another algorithm are labeled unsupported and are not marked verified."
+      }
+    ],
+    "related": ["api", "json", "uuid"]
+  },
+  {
+    "id": "uuid",
+    "path": "/tools/uuid-generator/",
+    "name": "ID Generator",
+    "title": "UUID & Unique ID Generator Online | PSDevTool",
+    "description": "Generate UUIDs and other supported identifiers in your browser. Explore UUID v4/v7, ULID, NanoID, Snowflake-style and MongoDB ObjectId formats.",
+    "intro": "Create identifiers for examples, development and data workflows. Choose a supported format and review the generated values before using them in your application.",
+    "features": [
+      "Generate supported UUID and identifier formats.",
+      "Choose quantities for batch generation.",
+      "Copy generated results for your workflow."
+    ],
+    "steps": [
+      "Choose the identifier format.",
+      "Set the available generation options and quantity.",
+      "Generate the values, then copy the results."
+    ],
+    "faq": [
+      {
+        "question": "Are all identifier formats interchangeable?",
+        "answer": "No. Formats differ in length, ordering, timestamp content and intended use. Choose the format your database or application expects."
+      },
+      {
+        "question": "Are generated IDs authentication secrets?",
+        "answer": "Identifiers and authentication credentials serve different purposes. Do not assume a sortable or timestamp-based identifier is a secure secret."
+      }
+    ],
+    "related": ["jwt", "json", "time"]
+  },
+  {
+    "id": "architecture",
+    "path": "/tools/architecture-diagram/",
+    "name": "Architecture Lab",
+    "title": "Mermaid, Architecture & Database Diagram Tools | PSDevTool",
+    "description": "Create Mermaid diagrams, explore a local system-design simulator and model database relationships. Inspect connected systems in Architecture Lab.",
+    "intro": "Explain a connected system with diagrams rather than scattered notes. Architecture Lab offers Mermaid source and preview, an interactive system-design model, and database relationship editing.",
+    "features": [
+      "Edit Mermaid code and inspect the rendered diagram.",
+      "Explore traffic and failure settings in a local system-design simulation.",
+      "Model database tables and relationships using the ERD workspace."
+    ],
+    "steps": [
+      "Choose Mermaid, System simulator or Database ERD.",
+      "Enter diagram source or configure the nodes and connections.",
+      "Inspect the result and use the export controls available for that mode."
+    ],
+    "faq": [
+      {
+        "question": "Are simulator metrics real production measurements?",
+        "answer": "No. They describe the local model and its input parameters. Use real monitoring and load testing to assess a deployed system."
+      },
+      {
+        "question": "Can I edit the source of a Mermaid diagram?",
+        "answer": "Yes. The Mermaid mode provides a source editor and rendered preview, with controls for inspecting and exporting the diagram."
+      }
+    ],
+    "related": ["json", "api", "debug"]
+  },
+  {
+    "id": "regex",
+    "path": "/tools/regex-tester/",
+    "name": "Regex Lab",
+    "title": "Regex Tester & Capture Group Inspector | PSDevTool",
+    "description": "Test regular expressions online with match highlighting, capture groups and pattern presets. Inspect JavaScript regex behavior in PSDevTool.",
+    "intro": "Check a regular expression against representative text before using it in code. Regex Lab highlights matches and exposes groups so you can understand what the pattern captures.",
+    "features": [
+      "Validate pattern syntax and inspect highlighted matches.",
+      "Review capture groups and matching details.",
+      "Start with presets and adjust the pattern and flags."
+    ],
+    "steps": [
+      "Enter a pattern and choose the relevant flags.",
+      "Paste sample text, including matching and non-matching cases.",
+      "Inspect highlighted matches and capture groups, then refine the pattern."
+    ],
+    "faq": [
+      {
+        "question": "Will a pattern behave identically in every language?",
+        "answer": "Not necessarily. Regex engines differ. This browser tool tests JavaScript regex behavior, so check the target language’s rules before copying a pattern."
+      },
+      {
+        "question": "Why does a pattern match more than expected?",
+        "answer": "Check flags, greedy quantifiers, anchors and your test text. Capture-group output can help reveal which section of the pattern consumed the text."
+      }
+    ],
+    "related": ["text", "markup", "case"]
+  },
+  {
+    "id": "pdf",
+    "path": "/tools/pdf-tools/",
+    "name": "PDF Studio",
+    "title": "PDF Tools & Word to PDF Converter | PSDevTool",
+    "description": "Merge and split PDF files, convert images or Word documents to PDF, and use browser-based document workflows in PSDevTool PDF Studio.",
+    "intro": "Prepare documents using the available PDF workflows. PDF Studio combines merging, splitting and conversion tools so you can select an operation and work with local documents.",
+    "features": [
+      "Merge PDF files and review their order.",
+      "Extract pages or split documents using the available options.",
+      "Convert images or Word documents to PDF in the browser."
+    ],
+    "steps": [
+      "Choose the document operation.",
+      "Add your files and review the operation’s settings.",
+      "Run the operation, inspect the result and download the output."
+    ],
+    "faq": [
+      {
+        "question": "Will every Word document keep exactly the same layout?",
+        "answer": "Complex fonts, pagination and document features can render differently in a browser. Review the converted output before sharing or printing it."
+      },
+      {
+        "question": "Do file operations require a PSDevTool upload server?",
+        "answer": "Local document processing runs in your browser. Some document resources may load externally, and the hosted page includes other third-party requests."
+      }
+    ],
+    "related": ["image_studio", "file", "markup"]
+  },
+  {
+    "id": "image_studio",
+    "path": "/tools/image-tools/",
+    "name": "Image Studio",
+    "title": "Image Crop, Resize & Compression Tools | PSDevTool",
+    "description": "Crop, resize, rotate, flip, compress and convert images in your browser. Preview your changes and export the result with PSDevTool Image Studio.",
+    "intro": "Prepare an image for the size and format you need. Image Studio brings crop, dimensions, transforms and export controls into a single browser workspace.",
+    "features": [
+      "Crop images using an interactive selection and aspect-ratio options.",
+      "Resize, rotate or flip the image.",
+      "Adjust export format and compression settings."
+    ],
+    "steps": [
+      "Add an image from your device.",
+      "Adjust crop, dimensions or transforms and inspect the preview.",
+      "Choose export settings and download the output."
+    ],
+    "faq": [
+      {
+        "question": "Can compression change image quality?",
+        "answer": "Yes. Lossy formats trade image detail for smaller files. Inspect the preview and exported result when changing quality settings."
+      },
+      {
+        "question": "How is Base64 different from image compression?",
+        "answer": "Base64 is a text representation of binary data and can increase its size. Use Image Studio to change dimensions or compression, and Image Base64 when you need a data URL."
+      }
+    ],
+    "related": ["base64", "pdf", "file"]
+  },
+  {
+    "id": "time",
+    "path": "/tools/time-zone-converter/",
+    "name": "Time Zones",
+    "title": "Time Zone & Unix Timestamp Converter | PSDevTool",
+    "description": "Convert Unix timestamps, inspect dates and compare times across time zones. Check seconds versus milliseconds with PSDevTool’s time utilities.",
+    "intro": "Translate machine timestamps into readable dates and compare times between locations. Check the timestamp unit and selected zone to avoid confusing the same instant with different local clock times.",
+    "features": [
+      "Work with Unix epoch timestamps and readable dates.",
+      "Compare selected time zones.",
+      "Inspect UTC and local-time representations."
+    ],
+    "steps": [
+      "Enter a timestamp or choose the relevant time workflow.",
+      "Confirm whether the timestamp uses seconds or milliseconds.",
+      "Select time zones and review the converted dates."
+    ],
+    "faq": [
+      {
+        "question": "Why is my timestamp producing an unexpected date?",
+        "answer": "One common cause is mixing seconds and milliseconds. Also check the selected time zone and whether the input represents UTC or local time."
+      },
+      {
+        "question": "Do daylight-saving changes matter?",
+        "answer": "Yes. A location’s UTC offset can vary by date. Use a named time zone and the intended date rather than assuming a fixed offset for the entire year."
+      }
+    ],
+    "related": ["uuid", "json", "distance"]
+  },
+  {
+    "id": "base64",
+    "path": "/tools/image-base64/",
+    "name": "Image Base64",
+    "title": "Image to Base64 & Base64 to Image Converter | PSDevTool",
+    "description": "Convert an image to a Base64 data URL or decode image data in your browser. Copy a data URL and preview the decoded image with PSDevTool.",
+    "intro": "Move between an image file and its text representation. Image Base64 helps create data URLs for development and inspect encoded image content.",
+    "features": [
+      "Encode an image file into Base64 or a data URL.",
+      "Decode supported Base64 image data for preview.",
+      "Copy the representation needed for your development workflow."
+    ],
+    "steps": [
+      "Choose whether to encode an image or decode text.",
+      "Add the image or paste the encoded input.",
+      "Inspect the preview and copy or download the available output."
+    ],
+    "faq": [
+      {
+        "question": "Does Base64 make an image smaller?",
+        "answer": "No. Base64 represents binary data as text and typically adds overhead. Resize or compress the image first if you need a smaller asset."
+      },
+      {
+        "question": "Why might encoded text fail to decode as an image?",
+        "answer": "Check that the input is complete, correctly encoded and actually contains supported image data. A data URL’s media type should match the content."
+      }
+    ],
+    "related": ["image_studio", "url", "markup"]
+  },
+  {
+    "id": "markup",
+    "path": "/tools/html-xml-sql-formatter/",
+    "name": "Markup Studio",
+    "title": "HTML, XML, Markdown & SQL Formatter | PSDevTool",
+    "description": "Preview HTML and Markdown, format XML and SQL, and inspect structured markup in your browser with PSDevTool Markup Studio.",
+    "intro": "Improve the readability of markup and queries before copying them into another workflow. Markup Studio combines source editing with formatting and the preview modes available for each language.",
+    "features": [
+      "Preview HTML in an isolated browser frame.",
+      "Work with Markdown and formatted XML.",
+      "Format SQL using the supported dialect settings."
+    ],
+    "steps": [
+      "Choose the source language or preview mode.",
+      "Paste your markup or query and select the relevant formatting options.",
+      "Inspect the output and copy the result."
+    ],
+    "faq": [
+      {
+        "question": "Does formatting SQL prove the query is correct?",
+        "answer": "No. Formatting improves layout; it does not validate your schema, permissions or query results. Test queries against the intended database safely."
+      },
+      {
+        "question": "Is a preview identical to my production website?",
+        "answer": "Not necessarily. A preview runs in its own context and may not include your site’s styles, resources or runtime behavior."
+      }
+    ],
+    "related": ["json", "regex", "text"]
+  },
+  {
+    "id": "case",
+    "path": "/tools/text-case-converter/",
+    "name": "Case Converter",
+    "title": "Text Case & Naming Convention Converter | PSDevTool",
+    "description": "Convert text to camelCase, snake_case, kebab-case, PascalCase, uppercase or title case. Compare naming styles with PSDevTool Case Converter.",
+    "intro": "Change text into the case or naming style your workflow expects. Case Converter is useful for labels, identifiers and consistently formatted text.",
+    "features": [
+      "Convert common programming identifier styles.",
+      "Change prose capitalization such as upper, lower or title case.",
+      "Review and copy the converted text."
+    ],
+    "steps": [
+      "Paste or type the input text.",
+      "Choose the target case or naming convention.",
+      "Review the result and copy it into your workflow."
+    ],
+    "faq": [
+      {
+        "question": "Will changing case rename symbols safely across a project?",
+        "answer": "No. This tool transforms text. Use your editor’s refactoring tools to rename code symbols and references throughout a project."
+      },
+      {
+        "question": "Can punctuation and spacing affect the result?",
+        "answer": "Yes. Word boundaries and punctuation affect naming conversions. Review the output, especially for acronyms, numbers and mixed-language text."
+      }
+    ],
+    "related": ["regex", "text", "markup"]
+  },
+  {
+    "id": "debug",
+    "path": "/tools/stack-trace-analyzer/",
+    "name": "DebugFlow",
+    "title": "Stack Trace & Log Analyzer Online | PSDevTool",
+    "description": "Inspect supported logs and stack traces, explore frames and context, and review rule-based investigation suggestions with PSDevTool DebugFlow.",
+    "intro": "Turn a long log or stack trace into a more inspectable structure. DebugFlow extracts supported frames and context and offers rule-based suggestions for further investigation.",
+    "features": [
+      "Explore supported C#/.NET, Java, Python and Node.js examples.",
+      "Inspect frames, extracted context and an inferred call chain.",
+      "Copy a report or download the analysis as JSON."
+    ],
+    "steps": [
+      "Paste your log or choose a sample.",
+      "Inspect the detected information and switch between analysis views.",
+      "Review suggested checks against your code and runtime evidence before exporting the report."
+    ],
+    "faq": [
+      {
+        "question": "Does the tool prove the root cause of an incident?",
+        "answer": "No. Suggestions are derived from the supplied text and parsing rules. Verify them against application code, configuration and runtime observations."
+      },
+      {
+        "question": "Is the displayed call flow a complete execution trace?",
+        "answer": "No. It is inferred from the stack trace. Async work, concurrent requests and omitted frames can make actual execution differ."
+      }
+    ],
+    "related": ["json", "har", "api"]
+  },
+  {
+    "id": "distance",
+    "path": "/tools/distance-calculator/",
+    "name": "Geo Distance",
+    "title": "Latitude & Longitude Distance Calculator | PSDevTool",
+    "description": "Calculate distance between coordinates, place map pins and compare direct and optional driving-route distances. Convert kilometers, miles and more.",
+    "intro": "Compare two geographic points using latitude and longitude. Geo Distance shows coordinate pins, a direct great-circle path and an optional driving route when the public routing service can provide one.",
+    "features": [
+      "Enter coordinates, place pins on the map or drag either point.",
+      "Compare direct distance, bearings and optional road-route distance.",
+      "Explore unit equivalents, batch pairs and geofence calculations."
+    ],
+    "steps": [
+      "Enter valid latitude and longitude for points A and B.",
+      "Inspect the pins and direct distance on the map.",
+      "For points up to 500 km apart, optionally request a driving route and compare its result separately."
+    ],
+    "faq": [
+      {
+        "question": "Why is road distance different from direct distance?",
+        "answer": "Direct distance follows a geographic path across Earth’s surface. Roads follow available connections and may detour; route endpoints may snap to nearby roads."
+      },
+      {
+        "question": "Are maps and routing free to use?",
+        "answer": "The tool uses OpenStreetMap tiles and an optional OSRM public routing service without a paid API key. Those services require internet and may be unavailable; direct calculations run locally."
+      }
+    ],
+    "related": ["measure", "time", "api"]
+  },
+  {
+    "id": "measure",
+    "path": "/tools/unit-converter/",
+    "name": "Measure Lab",
+    "title": "Unit Converter, Geometry & Algebra Calculator | PSDevTool",
+    "description": "Convert 119 units across 17 measurement categories with optional 3D illustrations. Explore geometry, algebra and visible formulas in PSDevTool.",
+    "intro": "Make a measurement easier to understand and convert. Measure Lab pairs numeric results with optional 3D illustrations, and includes geometry and algebra workspaces with formulas you can inspect.",
+    "features": [
+      "Convert compatible units across 17 measurement categories.",
+      "Explore 15 geometry shapes and six algebra tools.",
+      "Use an optional interactive 3D illustration and inspect the applicable formulas."
+    ],
+    "steps": [
+      "Choose a measurement category, then enter a value and select source and target units.",
+      "Read the conversion and inspect its formula or equivalent units.",
+      "Switch to Geometry or Algebra for the relevant calculation, or hide 3D to focus on the numbers."
+    ],
+    "faq": [
+      {
+        "question": "Can kilograms be converted directly to liters?",
+        "answer": "Not without knowing the material’s density. Mass and volume are different dimensions. Choose compatible units within a category for direct conversions."
+      },
+      {
+        "question": "Do the 3D illustrations limit the result?",
+        "answer": "No. Each illustration has a stated display range. Numeric conversions can exceed that range; the illustration may reach its visual limit. Results use floating-point arithmetic and are rounded for display."
+      }
+    ],
+    "related": ["distance", "time", "json"]
+  },
+  {
+    "id": "url",
+    "path": "/tools/url-encoder-decoder/",
+    "name": "URL Tools",
+    "title": "URL Encoder, Decoder & Query Parser | PSDevTool",
+    "description": "Encode or decode URL text and inspect query parameters in your browser. Work with URL components using PSDevTool URL Tools.",
+    "intro": "Inspect and transform a URL without manually reading every escaped character. URL Tools helps encode or decode text and understand query-string parameters.",
+    "features": [
+      "Encode and decode URL text.",
+      "Inspect URL components and query parameters.",
+      "Copy transformed values for your workflow."
+    ],
+    "steps": [
+      "Choose the encoding, decoding or query-inspection workflow.",
+      "Paste the URL or relevant text component.",
+      "Review escaped characters and parameters before copying the output."
+    ],
+    "faq": [
+      {
+        "question": "Why do some characters appear as percent codes?",
+        "answer": "URLs use percent encoding for certain characters and bytes. Encoding a whole URL and encoding an individual parameter can require different handling."
+      },
+      {
+        "question": "Does decoding a URL make its destination safe?",
+        "answer": "No. Decoding makes text readable. Inspect the destination and parameter values separately before visiting or sending a URL."
+      }
+    ],
+    "related": ["api", "base64", "regex"]
+  }
+]

@@ -1,5 +1,7 @@
 # PSDevTool
 
+<img src="public/brand/logo.svg" alt="PSDevTool PS monogram" width="64" height="64" />
+
 **A developer workspace for comparing code, inspecting data, debugging requests, and making measurements tangible.**
 
 [Open PSDevTool](https://psdevtool.online/) · [Explore the tools](#tools) · [Screenshots](#screenshots) · [Run locally](#run-locally)
@@ -117,6 +119,7 @@ The repository also includes `bun.lock`. With Bun installed, you can use `bun in
 npm run build
 npm run test:measurements
 npm run test:catalog
+npm run test:seo
 ```
 
 The build runs TypeScript checks and produces `dist/`. The measurement checks exercise conversions, geometry, algebra, coordinate-path edge cases, invalid inputs, and career-date boundaries. Catalog checks protect all 19 tool IDs, shared search metadata, and recent-history validation.
@@ -127,7 +130,7 @@ To serve the production build locally:
 npm run preview -- --host 0.0.0.0 --port 4173
 ```
 
-Open **http://localhost:4173**. Deploy `dist/` to a static host such as Vercel. Tool navigation uses hash routes such as `/#/json`, `/#/distance`, and `/#/measure`.
+Open **http://localhost:4173**. Deploy `dist/` to a static host such as Vercel. Tool pages use clean URLs such as `/tools/json-formatter/`, `/tools/distance-calculator/`, and `/tools/unit-converter/`. Old `/#/...` links still open the corresponding tool and update to its canonical URL. The production build generates static HTML for all 19 tools, the homepage, the portfolio, and a 404 page. Serve the generated directories directly; do not rewrite every URL to the homepage.
 
 ## How data and network access work
 
@@ -151,3 +154,11 @@ Numerical results use JavaScript floating-point arithmetic and are rounded for d
 | Documents and images | `pdf-lib`, `docx-preview`, JSZip, `html-to-image` |
 
 Technology-logo assets include source and license information in [public/technology](public/technology). Detailed implementation and validation notes are in [docs/3d-redesign.md](docs/3d-redesign.md).
+
+## Branding and search visibility
+
+The PS monogram is an editable vector in [public/brand/logo.svg](public/brand/logo.svg). The app uses a theme-aware version of the same mark. PNG app icons, a multi-size ICO favicon, an Apple touch icon, a web manifest and a 1200 × 630 sharing image are included. The manifest does not promise offline operation.
+
+Each tool has a unique title, description, canonical URL, visible guide, questions and related links. The build renders that content into HTML before JavaScript runs. The sitemap lists clean URLs rather than fragments. Structured data describes the site, tool applications, navigation and the profile without invented ratings. Preview builds use `noindex`; production builds are indexable.
+
+After deploying to `psdevtool.online`, verify the site in Google Search Console and submit `https://psdevtool.online/sitemap.xml`. Optionally set `GOOGLE_SITE_VERIFICATION` in the hosting build environment for HTML-tag verification. Indexing and positions are determined by Google; this implementation does not guarantee a first-page or number-one ranking. See [the SEO deployment checklist](docs/SEO.md).

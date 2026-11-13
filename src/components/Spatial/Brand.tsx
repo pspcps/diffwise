@@ -1,4 +1,4 @@
-import { Command } from "lucide-react";
+import BrandMark from "./BrandMark";
 export default function Brand({ onClick }: { onClick: () => void }) {
   return (
     <button
@@ -7,7 +7,7 @@ export default function Brand({ onClick }: { onClick: () => void }) {
       aria-label="PSDevTool home"
     >
       <span className="brand-mark">
-        <Command size={23} strokeWidth={1.8} />
+        <BrandMark />
       </span>
       <span>
         PSDevTool<span className="brand-period">.</span>

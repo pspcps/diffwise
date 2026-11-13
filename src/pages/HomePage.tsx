@@ -1,3 +1,5 @@
+import SearchContent from "../seo/SearchContent";
+import { toolPath } from "../seo/pages";
 import { useState, type CSSProperties } from "react";
 import {
   ArrowUpRight,
@@ -303,9 +305,10 @@ export default function HomePage({
                       <Star size={15} />
                     </button>
                   </div>
-                  <button
+                  <a
+                    href={toolPath(t.id)}
                     className="tool-card-link"
-                    onClick={() => onTool(t.id)}
+                    onClick={event => {if(!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey&&event.button===0){event.preventDefault();onTool(t.id);}}}
                   >
                     <h3>
                       {t.name}
@@ -316,7 +319,7 @@ export default function HomePage({
                       {t.category}
                       <ArrowRight size={14} />
                     </span>
-                  </button>
+                  </a>
                 </article>
               ))}
             </div>
@@ -345,6 +348,7 @@ export default function HomePage({
               </div>
             )}
           </section>
+          <SearchContent/>
           <section className="builder-banner">
             <div className="builder-monogram">
               pc<span>↗</span>
