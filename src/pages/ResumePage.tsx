@@ -1,7 +1,11 @@
 import { ArrowUpRight } from "lucide-react";
 import { useCareerDuration } from "../hooks/useCareerDuration";
 import type { CSSProperties } from "react";
-import { PRINT_RESUME as resume, RESUME_TEMPLATES } from "../data/printResume";
+import {
+  PRINT_RESUME as resume,
+  RESUME_TEMPLATES,
+  estimateResumeFormatting,
+} from "../data/printResume";
 import type { ResumeTemplate } from "../data/printResume";
 import { navigateTo } from "../seo/routes";
 const short = (url: string) =>
@@ -146,6 +150,36 @@ function Gallery() {
           order. Two-column layouts offer a visual alternative for sharing
           directly; parsing varies by system.
         </aside>
+        <details className="resume-score-explanation" id="ats-estimate">
+          <summary>
+            How the approximate ATS formatting score is estimated
+          </summary>
+          <p>
+            This is a transparent layout heuristic, not a score from an ATS
+            vendor. It does not assess keywords, qualifications or match to a
+            job description, and has not been calibrated against employer
+            screening systems.
+          </p>
+          <ul>
+            {estimateResumeFormatting(RESUME_TEMPLATES[0]).checks.map(
+              (check) => (
+                <li key={check.label}>
+                  {check.label}:{" "}
+                  {check.label === "Reading order"
+                    ? "20/25 for single column; 5/25 for two columns"
+                    : `${check.points}/${check.maximum}`}
+                </li>
+              ),
+            )}
+          </ul>
+          <p>
+            The reading-order allowance is deliberately conservative: even a
+            single-column PDF can be interpreted differently by different
+            parsers. Two-column designs carry more reading-order uncertainty.
+            Use the score to compare layouts, not to predict an application
+            outcome.
+          </p>
+        </details>
         <div className="resume-template-grid">
           {RESUME_TEMPLATES.map((t) => (
             <a
@@ -191,6 +225,13 @@ function Gallery() {
                   <ArrowUpRight size={19} aria-hidden="true" />
                 </h2>
                 <p>{t.description}</p>
+                <p className="resume-format-score">
+                  Approx. ATS formatting{" "}
+                  <b>{estimateResumeFormatting(t).score}/100</b>
+                </p>
+                <small className="resume-score-caption">
+                  Layout estimate · not a job-match score
+                </small>
                 <strong>Open resume →</strong>
               </div>
             </a>
@@ -232,6 +273,10 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
             {template.name} ·{" "}
             {template.columns === 1 ? "Single column" : "Two columns"}
           </span>
+          <a className="resume-control-score" href="/resume/#ats-estimate">
+            Approx. ATS formatting: {estimateResumeFormatting(template).score}
+            /100
+          </a>
           <button type="button" onClick={() => window.print()}>
             Print / Save PDF
           </button>

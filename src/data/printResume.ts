@@ -195,3 +195,23 @@ export const RESUME_TEMPLATES: ResumeTemplate[] = [
     accent: "#674264",
   },
 ];
+
+/** An editorial formatting heuristic, never an ATS vendor result or job-match score. */
+export function estimateResumeFormatting(template: ResumeTemplate) {
+  const checks = [
+    { label: "Selectable text", points: 25, maximum: 25 },
+    { label: "Standard section headings", points: 20, maximum: 20 },
+    { label: "Visible contact links", points: 10, maximum: 10 },
+    { label: "Conventional typography", points: 10, maximum: 10 },
+    {
+      label: "Reading order",
+      points: template.columns === 1 ? 20 : 5,
+      maximum: 25,
+    },
+    { label: "Text and links in PDF export", points: 10, maximum: 10 },
+  ];
+  return {
+    score: checks.reduce((sum, check) => sum + check.points, 0),
+    checks,
+  };
+}

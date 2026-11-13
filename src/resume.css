@@ -773,3 +773,63 @@
     padding-bottom: 1px;
   }
 }
+
+.resume-score-explanation {
+  margin: -16px 0 30px;
+  border: 1px solid #344c3d;
+  border-radius: 10px;
+  padding: 16px 20px;
+  color: #c0d1c5;
+  font-size: 13px;
+  line-height: 1.7;
+  scroll-margin-top: 20px;
+}
+.resume-score-explanation summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: #e8eee9;
+}
+.resume-score-explanation p {
+  margin: 12px 0 0;
+  max-width: 850px;
+}
+.resume-score-explanation ul {
+  list-style: disc;
+  margin: 12px 0 0;
+  padding-left: 20px;
+}
+.resume-template-info .resume-format-score {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 0;
+  border-top: 1px solid #344c3d;
+  margin-top: 16px;
+  padding-top: 12px;
+  color: #d0dfd4;
+  font-size: 12px;
+}
+.resume-format-score b {
+  font-size: 18px;
+  color: #bfdda9;
+}
+.resume-score-caption {
+  display: block;
+  font-size: 10px;
+  color: #a9beae;
+  margin-top: 3px;
+}
+.resume-controls a.resume-control-score {
+  font-size: 10px;
+  font-weight: 400;
+  text-decoration: underline;
+  color: #4e6056;
+}
+@media (max-width: 900px) {
+  .resume-controls > div {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+}

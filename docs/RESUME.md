@@ -11,7 +11,7 @@ The portfolio’s Resume links point to the gallery. Old external resume-downloa
 
 Open a template and choose **Print / Save PDF**, or use Chrome’s print command. Select **Save as PDF**, **A4**, **100% scale**, default margins, and disable browser headers and footers. The stylesheet sets a 10 mm page margin, removes screen controls and prints selectable text with explicit link text. Enable background graphics to preserve the shaded two-column designs; content remains readable without it.
 
-Start with Classic, Modern or Minimal for ATS applications. Every layout uses real text and standard headings, but two-column PDF reading order varies across parsers. No numerical ATS score is claimed: job relevance, employer requirements and the actual parser matter. The two-column layouts are an optional direct-sharing presentation.
+Start with Classic, Modern or Minimal for ATS applications. Every layout uses real text and standard headings, but two-column PDF reading order varies across parsers. Template cards and screen-only controls show a deliberately approximate formatting heuristic (95/100 for single column; 80/100 for two columns). Its full points breakdown is available in the gallery. It is not an ATS vendor result or a job-match score, has not been calibrated against screening systems, and does not appear in the PDF. Job relevance, employer requirements and the actual parser matter. The two-column layouts are an optional direct-sharing presentation.
 
 ## Content and sources
 
