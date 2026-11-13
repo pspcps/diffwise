@@ -80,9 +80,9 @@ Validation: build, focused ESLint, and nine Chromium scenarios cover event deliv
 
 ## Rotating engineering focus
 
-The hero role line cycles through Backend Engineer, Cloud Engineer, Applied AI Engineer, Full-Stack Developer, and Software Architect at a readable 3.2-second cadence with a short slide/fade. It follows the site's motion control, skips updates in hidden tabs, and stays static with reduced motion. A stable screen-reader summary exposes all roles without repeated live announcements; fixed line height prevents layout jumps. The primary career title and historical job titles are unchanged.
+The hero types Backend Engineer, Cloud Engineer, Applied AI Engineer, Full-Stack Developer, and Software Architect character by character (75 ms), holds each complete title for 1.8 seconds, deletes it (35 ms per character), and pauses briefly before the next title. The caret blinks independently without fading the whole title. Pausing or system reduced motion displays a complete title; hidden tabs suspend the timer. A dedicated visually hidden summary exposes all roles to screen readers without repeated live announcements or duplicated visible text. Reserved line height prevents vertical jumps. Historical job titles are unchanged.
 
-Validation: build, focused ESLint, and four Chromium checks cover all roles in sequence, pause behavior, stable accessible text, and reduced motion / 320px layout, with no uncaught browser errors.
+Validation: production build, focused ESLint and Chromium checks cover typing, the complete-title hold, deletion, next-role typing, pause/resume, reduced motion, hidden summary and 320px layout.
 
 ## Live experience and distance map
 
