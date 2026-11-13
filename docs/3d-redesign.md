@@ -65,3 +65,15 @@ The portrait-card arrow links directly to Prakash's LinkedIn profile in a new ta
 Validation: production build, focused ESLint, and four Chromium checks for sequential role reveal, LinkedIn click/new-tab navigation, reduced motion, and mobile overflow pass without uncaught browser errors.
 
 ![Career timeline](redesign/timeline.jpg)
+
+## Interactive motion layer
+
+Site-wide effects now include theme-colored pointer trails and click ripples, pointer lighting and subtle tilt on cards, section entrances, button feedback and sheen, logo reactions, drawer/dialog entrances, and smooth theme-color transitions. Text editors and inputs do not emit pointer effects while being edited. Decorative canvas work is bounded and skips rendering when the document is hidden; event listeners and animation frames are cleaned up on teardown.
+
+The home page and portfolio include a playable event-flow model: visitors send local simulated events through Browser → API → Kafka → Worker, follow animated packets, inspect sent/delivered counts, and reset. These counters describe only the local model, not production system performance.
+
+A compact motion control beside the theme selector pauses effects across the site and remembers the choice. System reduced-motion preferences disable automatic effects; content stays visible, and the event demo still works without movement.
+
+Validation: build, focused ESLint, and nine Chromium scenarios cover event delivery/reset, persistent pause/resume, pointer lighting, JSON editing with effects active, 320px/390px tool and home layouts, and system reduced motion. No uncaught browser errors in these completed flows.
+
+![Interactive event-flow model](redesign/motion.jpg)

@@ -1,3 +1,4 @@
+import SignalPlayground from "../components/Motion/SignalPlayground";
 import { useState, type CSSProperties } from "react";
 import {
   ArrowUpRight,
@@ -162,7 +163,8 @@ export default function HomePage({
             Workspace <ChevronRight size={13} />
             <span>Overview</span>
           </div>
-          <div className="topbar-actions"><ThemeChoice/>
+          <div className="topbar-actions">
+            <ThemeChoice />
             <span className="local-status">
               <span className="live-dot" /> Built for your browser
             </span>
@@ -216,10 +218,13 @@ export default function HomePage({
               </div>
             </div>
             <div className="hero-art">
-              <CharacterGuide stories={["Welcome to PSDevTool, built by Prakash Choudhary. Pick a tool below, or tap me for a starting point.", "Comparing two versions? Open Diff Checker and try its JSON example. Keys, values, and nested brackets have distinct colors.", "Need structured data? JSON & YAML includes source, tree, table, and graph views. Your theme choice follows you between tools."]}/>
-
-
-
+              <CharacterGuide
+                stories={[
+                  "Welcome to PSDevTool, built by Prakash Choudhary. Pick a tool below, or tap me for a starting point.",
+                  "Comparing two versions? Open Diff Checker and try its JSON example. Keys, values, and nested brackets have distinct colors.",
+                  "Need structured data? JSON & YAML includes source, tree, table, and graph views. Your theme choice follows you between tools.",
+                ]}
+              />
             </div>
           </section>
           <section className="tool-section" id="tools">
@@ -360,6 +365,7 @@ export default function HomePage({
                 </button>
               )}
           </section>
+          <SignalPlayground />
           <section className="builder-banner">
             <div className="builder-monogram">
               pc<span>↗</span>

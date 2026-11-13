@@ -1,12 +1,20 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-import { ThemeProvider } from './components/Guide/ThemeChoice'
-import './guide.css'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import App from "./App.tsx";
+import { ThemeProvider } from "./components/Guide/ThemeChoice";
+import "./guide.css";
+import MotionProvider from "./components/Motion/MotionProvider";
+import MotionLayer from "./components/Motion/MotionLayer";
+import "./motion.css";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider><App /></ThemeProvider>
+    <ThemeProvider>
+      <MotionProvider>
+        <MotionLayer />
+        <App />
+      </MotionProvider>
+    </ThemeProvider>
   </StrictMode>,
-)
+);

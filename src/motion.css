@@ -1,0 +1,549 @@
+@property --user-accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #c8edb6;
+}
+@property --theme-vivid {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #22c55e;
+}
+html.motion-enabled {
+  transition:
+    --user-accent 0.55s ease,
+    --theme-vivid 0.55s ease;
+}
+.site-motion-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 60;
+  pointer-events: none;
+  contain: strict;
+}
+.theme-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.portfolio-nav > .theme-controls {
+  order: 2;
+}
+.motion-toggle {
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--user-accent) 23%, transparent);
+  border-radius: 7px;
+  background: #ffffff03;
+  color: var(--user-accent);
+  cursor: pointer;
+}
+.motion-toggle[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--user-accent) 8%, transparent);
+}
+.motion-toggle:focus-visible {
+  outline: 2px solid var(--user-accent);
+  outline-offset: 3px;
+}
+.motion-toggle:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.motion-enabled .motion-toggle:hover svg {
+  animation: motion-twinkle 0.65s ease;
+}
+.motion-enabled .space-app,
+.motion-enabled .portfolio-space {
+  animation: motion-page 0.4s ease both;
+}
+.motion-enabled .motion-reveal-pending {
+  opacity: 0;
+  transform: translateY(22px);
+}
+.motion-enabled .motion-revealed {
+  animation: motion-section 0.7s cubic-bezier(0.2, 0.75, 0.2, 1) both;
+}
+.motion-enabled .skill-space-card,
+.motion-enabled .timeline-card,
+.motion-enabled .portfolio-stats > div {
+  transform: perspective(1000px) rotateX(var(--motion-rx, 0deg))
+    rotateY(var(--motion-ry, 0deg));
+  transition:
+    transform 0.2s,
+    box-shadow 0.25s,
+    border-color 0.25s;
+}
+.motion-enabled .tool-card,
+.motion-enabled .project-space-card,
+.motion-enabled .skill-space-card,
+.motion-enabled .timeline-card,
+.motion-enabled .portfolio-stats > div {
+  isolation: isolate;
+  position: relative;
+}
+.motion-enabled .tool-card:after,
+.motion-enabled .project-space-card:after,
+.motion-enabled .skill-space-card:after,
+.motion-enabled .timeline-card:after,
+.motion-enabled .portfolio-stats > div:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    220px circle at var(--glow-x, 50%) var(--glow-y, 50%),
+    color-mix(in srgb, var(--user-accent) 11%, transparent),
+    transparent 75%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: -1;
+}
+.motion-enabled .tool-card:hover:after,
+.motion-enabled .project-space-card:hover:after,
+.motion-enabled .skill-space-card:hover:after,
+.motion-enabled .timeline-card:hover:after,
+.motion-enabled .portfolio-stats > div:hover:after {
+  opacity: 1;
+}
+.motion-enabled .primary-button {
+  position: relative;
+  overflow: hidden;
+}
+.motion-enabled .primary-button:after {
+  content: "";
+  position: absolute;
+  inset: -100% -150%;
+  pointer-events: none;
+  background: linear-gradient(
+    110deg,
+    transparent 40%,
+    #ffffff50 50%,
+    transparent 60%
+  );
+  transform: translateX(-60%);
+}
+.motion-enabled .primary-button:hover:after {
+  animation: motion-sheen 0.8s ease;
+}
+.motion-enabled button:active:not(:disabled) {
+  scale: 0.97;
+}
+.motion-enabled button {
+  transition:
+    scale 0.16s,
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+.motion-enabled .technology-chip:hover .technology-icon {
+  transform: translateY(-2px) rotate(-7deg) scale(1.12);
+}
+.technology-icon {
+  transition: transform 0.25s;
+}
+.motion-enabled .language-dock button.selected .technology-icon {
+  animation: motion-mark 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.motion-enabled .character-button:active .character-body {
+  transform: translateY(-5px);
+}
+.character-body {
+  transition: transform 0.25s;
+}
+.motion-enabled .portrait-glow {
+  animation: motion-breathe 8s ease-in-out infinite;
+}
+.motion-enabled .brand-mark:hover {
+  transform: rotate(8deg) scale(1.05);
+}
+.signal-playground {
+  margin: 35px 0 0;
+  padding: 23px 26px 15px;
+  border: 1px solid color-mix(in srgb, var(--user-accent) 20%, transparent);
+  border-radius: 13px;
+  background:
+    radial-gradient(
+      ellipse at 50% 120%,
+      color-mix(in srgb, var(--theme-vivid) 10%, transparent),
+      transparent 65%
+    ),
+    #131d17;
+  color: #e3eddb;
+  font-family: Inter, system-ui, sans-serif;
+  overflow: hidden;
+}
+.space-app .signal-playground {
+  margin: 5px 0 27px;
+}
+.signal-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.signal-heading .eyebrow {
+  font-size: 7px;
+  letter-spacing: 1.5px;
+}
+.signal-heading h3 {
+  margin: 8px 0 0;
+  font-size: 18px;
+  letter-spacing: -0.5px;
+  font-weight: 500;
+}
+.signal-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.signal-controls button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 8px 12px;
+  font: 10px system-ui;
+  cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--user-accent) 30%, transparent);
+  border-radius: 6px;
+  color: var(--user-accent);
+  background: color-mix(in srgb, var(--user-accent) 6%, transparent);
+  white-space: nowrap;
+}
+.signal-controls button:focus-visible {
+  outline: 2px solid var(--user-accent);
+  outline-offset: 3px;
+}
+.signal-controls button:disabled {
+  opacity: 0.4;
+  cursor: wait;
+}
+.signal-controls .signal-reset {
+  padding: 8px;
+}
+.signal-track {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  align-items: start;
+  padding: 28px 0 21px;
+}
+.signal-wire {
+  position: absolute;
+  left: 12.5%;
+  right: 12.5%;
+  height: 1px;
+  top: 47px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--user-accent) 15%, transparent),
+    color-mix(in srgb, var(--user-accent) 40%, transparent),
+    color-mix(in srgb, var(--user-accent) 15%, transparent)
+  );
+}
+.signal-node {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  z-index: 2;
+}
+.signal-node > span {
+  display: grid;
+  place-items: center;
+  width: 39px;
+  height: 39px;
+  background: #19271e;
+  border: 1px solid color-mix(in srgb, var(--user-accent) 25%, transparent);
+  border-radius: 11px;
+  box-shadow: 0 0 0 5px #131d17;
+}
+.signal-node .technology-icon {
+  width: 19px;
+  height: 19px;
+}
+.signal-node strong {
+  font-size: 10px;
+  font-weight: 500;
+  color: #c4d6bb;
+  margin-top: 10px;
+}
+.signal-node small {
+  font-size: 8px;
+  color: #77916d;
+  margin-top: 4px;
+}
+.signal-packet {
+  position: absolute;
+  top: 44px;
+  left: 12.5%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--user-accent);
+  box-shadow: 0 0 12px var(--theme-vivid);
+  z-index: 3;
+  animation: signal-travel 1.8s linear forwards;
+  pointer-events: none;
+}
+.motion-enabled .signal-active .signal-node > span {
+  animation: signal-node-pulse 1.8s ease;
+  animation-delay: calc(var(--stage) * 0.35s);
+}
+.signal-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  border-top: 1px solid #ffffff09;
+  padding-top: 11px;
+  color: #7f9875;
+  font-size: 8px;
+  letter-spacing: 0.3px;
+}
+.signal-status b {
+  font:
+    10px ui-monospace,
+    monospace;
+  color: var(--user-accent);
+  padding-left: 4px;
+}
+.signal-status-divider {
+  padding: 0 10px;
+  color: #4a6445;
+}
+@keyframes signal-travel {
+  0% {
+    left: 12.5%;
+    opacity: 0;
+  }
+  7% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    left: 87.5%;
+    opacity: 0;
+  }
+}
+@keyframes signal-node-pulse {
+  0%,
+  70%,
+  100% {
+    box-shadow: 0 0 0 5px #131d17;
+    border-color: color-mix(in srgb, var(--user-accent) 25%, transparent);
+  }
+  25% {
+    border-color: var(--user-accent);
+    box-shadow: 0 0 25px color-mix(in srgb, var(--theme-vivid) 35%, transparent);
+  }
+}
+@keyframes motion-section {
+  from {
+    opacity: 0;
+    translate: 0 22px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes motion-page {
+  from {
+    opacity: 0.65;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes motion-sheen {
+  from {
+    transform: translateX(-60%);
+  }
+  to {
+    transform: translateX(60%);
+  }
+}
+@keyframes motion-mark {
+  0% {
+    transform: scale(0.75) rotate(-12deg);
+  }
+  65% {
+    transform: scale(1.18) rotate(5deg);
+  }
+  100% {
+    transform: none;
+  }
+}
+@keyframes motion-twinkle {
+  50% {
+    transform: rotate(20deg) scale(1.15);
+  }
+}
+@keyframes motion-breathe {
+  50% {
+    scale: 1.13;
+    opacity: 0.7;
+  }
+}
+.motion-paused *,
+.motion-paused *:before,
+.motion-paused *:after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+.motion-paused .motion-reveal-pending,
+.motion-paused .timeline-ready .timeline-entry:not(.timeline-visible) {
+  opacity: 1 !important;
+  transform: none !important;
+}
+.motion-paused .tool-card,
+.motion-paused .project-space-card,
+.motion-paused .skill-space-card,
+.motion-paused .timeline-card,
+.motion-paused .portfolio-stats > div {
+  transform: none !important;
+}
+.motion-paused .portrait-card {
+  transform: rotate(-4deg) !important;
+}
+.motion-paused .signal-packet {
+  display: none;
+}
+@media (max-width: 700px) {
+  .theme-controls {
+    gap: 5px;
+  }
+  .motion-toggle {
+    width: 25px;
+    height: 27px;
+  }
+  .portfolio-nav > .theme-controls {
+    gap: 5px;
+  }
+  .signal-playground {
+    padding: 19px 16px 13px;
+    margin-top: 26px;
+  }
+  .signal-heading {
+    gap: 12px;
+  }
+  .signal-heading h3 {
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  .signal-heading .eyebrow {
+    font-size: 6px;
+    letter-spacing: 1px;
+  }
+  .signal-controls {
+    gap: 5px;
+  }
+  .signal-controls button {
+    padding: 7px 9px;
+    font-size: 9px;
+  }
+  .signal-controls .signal-reset {
+    padding: 7px;
+  }
+  .signal-track {
+    gap: 8px;
+    padding: 25px 0 18px;
+  }
+  .signal-wire {
+    top: 44px;
+  }
+  .signal-packet {
+    top: 41px;
+  }
+  .signal-node strong {
+    font-size: 9px;
+  }
+  .signal-node small {
+    font-size: 7px;
+  }
+  .signal-status {
+    font-size: 7px;
+    gap: 10px;
+  }
+  .signal-status-divider {
+    padding: 0 6px;
+  }
+  .compact-toolbar .tool-picker {
+    max-width: 130px;
+  }
+  .space-topbar {
+    padding-left: 15px;
+    padding-right: 15px;
+    gap: 8px;
+  }
+  .space-topbar .theme-choice select {
+    max-width: 73px;
+  }
+  .space-topbar .topbar-actions {
+    gap: 7px;
+  }
+  .space-topbar .profile-button {
+    width: 26px;
+    height: 26px;
+  }
+  .space-topbar .search-shortcut {
+    padding: 4px;
+  }
+  .space-topbar .space-brand small {
+    letter-spacing: 1px;
+    font-size: 6px;
+  }
+}
+@media (max-width: 360px) {
+  .space-topbar .profile-button {
+    display: none;
+  }
+  .compact-toolbar-actions {
+    gap: 6px;
+  }
+  .compact-toolbar .tool-picker {
+    max-width: 107px;
+  }
+  .compact-toolbar .theme-choice select {
+    max-width: 72px;
+  }
+  .signal-controls .signal-send {
+    gap: 4px;
+    padding: 7px;
+  }
+  .signal-heading h3 {
+    font-size: 13px;
+  }
+  .signal-heading .eyebrow {
+    font-size: 5px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    transition: none !important;
+  }
+  .site-motion-canvas {
+    display: none;
+  }
+  .motion-reveal-pending {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .signal-packet {
+    display: none;
+  }
+}
+@media(max-width:360px){.compact-toolbar .toolbar-home[aria-label="All tools"]{display:none}}
+.motion-enabled .builder-panel[open]{animation:motion-panel .35s cubic-bezier(.2,.75,.2,1)}.motion-enabled .project-dialog[open],.motion-enabled .animate-fade-in{animation:motion-dialog .3s ease both}@keyframes motion-panel{from{opacity:.4;translate:28px 0}to{opacity:1;translate:0 0}}@keyframes motion-dialog{from{opacity:.4;scale:.97}to{opacity:1;scale:1}}

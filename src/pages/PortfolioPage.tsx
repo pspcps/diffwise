@@ -1,3 +1,4 @@
+import SignalPlayground from "../components/Motion/SignalPlayground";
 import ExperienceTimeline from "../components/Portfolio/ExperienceTimeline";
 import PortfolioHero from "../components/Portfolio/PortfolioHero";
 import "../portfolio.css";
@@ -102,6 +103,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             </div>
           ))}
         </section>
+        <SignalPlayground />
         <section className="portfolio-section" id="projects">
           <div className="section-heading">
             <div>

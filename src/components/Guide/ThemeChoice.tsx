@@ -1,3 +1,4 @@
+import MotionToggle from "../Motion/MotionToggle";
 import { useEffect, useState, type ReactNode } from "react";
 import {
   LANGUAGE_THEMES,
@@ -27,7 +28,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   });
   useEffect(() => {
     document.documentElement.style.setProperty("--user-accent", accents[theme]);
-    document.documentElement.style.setProperty("--theme-vivid", LANGUAGE_THEMES[theme].primaryHex);
+    document.documentElement.style.setProperty(
+      "--theme-vivid",
+      LANGUAGE_THEMES[theme].primaryHex,
+    );
     document.documentElement.dataset.languageTheme = theme;
     try {
       localStorage.setItem("psdev-language-theme", theme);
@@ -44,19 +48,22 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 export default function ThemeChoice() {
   const { theme, change } = useLanguageTheme();
   return (
-    <label className="theme-choice">
-      <span>Theme</span>
-      <select
-        aria-label="Language theme"
-        value={theme}
-        onChange={(e) => change(e.target.value as LanguageThemeKey)}
-      >
-        {Object.values(LANGUAGE_THEMES).map((t) => (
-          <option key={t.id} value={t.id}>
-            {t.shortName}
-          </option>
-        ))}
-      </select>
-    </label>
+    <div className="theme-controls">
+      <label className="theme-choice">
+        <span>Theme</span>
+        <select
+          aria-label="Language theme"
+          value={theme}
+          onChange={(e) => change(e.target.value as LanguageThemeKey)}
+        >
+          {Object.values(LANGUAGE_THEMES).map((t) => (
+            <option key={t.id} value={t.id}>
+              {t.shortName}
+            </option>
+          ))}
+        </select>
+      </label>
+      <MotionToggle />
+    </div>
   );
 }
