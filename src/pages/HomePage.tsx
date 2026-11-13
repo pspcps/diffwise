@@ -16,20 +16,16 @@ import {
   X,
 } from "lucide-react";
 import type { ViewMode } from "../types";
-import { TOOLS } from "../data/tools";
+import { TOOLS, TOOL_CATEGORIES } from "../data/tools";
+import { TOOL_KEYWORDS } from "../data/toolSearch";
+import RecentTools from "../components/Workspace/RecentTools";
 import Brand from "../components/Spatial/Brand";
 import CharacterGuide from "../components/Guide/CharacterGuide";
 import ThemeChoice from "../components/Guide/ThemeChoice";
 import { tiltCard, resetTilt } from "../components/Spatial/cardMotion";
 import "../spatial.css";
 
-const categories = [
-  "All tools",
-  "Code & data",
-  "Network",
-  "Create",
-  "Utilities",
-];
+const categories = ["All tools", ...TOOL_CATEGORIES];
 const categoryIcons = [LayoutGrid, Code2, Globe, Shapes, SlidersHorizontal];
 export default function HomePage({
   onTool,
@@ -42,7 +38,6 @@ export default function HomePage({
 }) {
   const [category, setCategory] = useState("All tools");
   const [search, setSearch] = useState("");
-  const [showAll, setShowAll] = useState(false);
   const [favoritesOnly, setFavoritesOnly] = useState(false);
   const [favorites, setFavorites] = useState<string[]>(() => {
     try {
@@ -58,14 +53,11 @@ export default function HomePage({
     (t) =>
       (category === "All tools" || t.category === category) &&
       (!favoritesOnly || favorites.includes(t.id)) &&
-      `${t.name} ${t.description} ${t.category}`
+      `${t.name} ${t.description} ${t.category} ${TOOL_KEYWORDS[t.id].join(" ")}`
         .toLowerCase()
         .includes(search.toLowerCase()),
   );
-  const displayed =
-    showAll || search || category !== "All tools" || favoritesOnly
-      ? filtered
-      : filtered.slice(0, 6);
+  const displayed = filtered;
   const selectCategory = (c: string) => {
     setCategory(c);
     setFavoritesOnly(false);
@@ -88,7 +80,6 @@ export default function HomePage({
           onClick={() => {
             selectCategory("All tools");
             setSearch("");
-            setShowAll(false);
           }}
         />
         <p className="nav-label">WORKSPACE</p>
@@ -185,16 +176,16 @@ export default function HomePage({
           <section className="space-hero">
             <div className="hero-copy">
               <div className="eyebrow">
-                <span /> BIG IDEAS. SMALL TOOLS.
+                <span /> 19 TOOLS. ONE WORKSPACE.
               </div>
               <h1>
-                Your flow.
-                <br />A new <em>dimension.</em>
+                Your everyday
+                <br />
+                <em>developer toolkit.</em>
               </h1>
               <p>
-                A thoughtfully crafted space to compare, create,
-                <br className="desktop-break" /> and build. All your everyday
-                dev tools, together.
+                Compare code, inspect data, debug requests, and convert
+                measurements. Find the right tool and get back to building.
               </p>
               <div className="hero-actions">
                 <button
@@ -203,8 +194,8 @@ export default function HomePage({
                 >
                   Start comparing <ArrowUpRight size={18} />
                 </button>
-                <button className="text-button" onClick={onPortfolio}>
-                  Explore my work <ArrowRight size={16} />
+                <button className="text-button" onClick={onSearch}>
+                  Find a tool <Search size={16} />
                 </button>
               </div>
               <div className="hero-benefits">
@@ -219,7 +210,7 @@ export default function HomePage({
             <div className="hero-art">
               <CharacterGuide
                 stories={[
-                  "Welcome to PSDevTool, built by Prakash Choudhary. Pick a tool below, or tap me for a starting point.",
+                  "Pick a tool below, or tap me for a tip. Every tool is here; search by name, format, or task.",
                   "Comparing two versions? Open Diff Checker and try its JSON example. Keys, values, and nested brackets have distinct colors.",
                   "Need structured data? JSON & YAML includes source, tree, table, and graph views. Your theme choice follows you between tools.",
                 ]}
@@ -231,9 +222,7 @@ export default function HomePage({
               <div>
                 <div className="eyebrow muted">THE TOOLKIT</div>
                 <h2>
-                  {favoritesOnly
-                    ? "Your favorites."
-                    : "A tool for every thought."}
+                  {favoritesOnly ? "Your favorites." : "All your tools."}
                   <span>{filtered.length.toString().padStart(2, "0")}</span>
                 </h2>
               </div>
@@ -281,6 +270,9 @@ export default function HomePage({
                 Favorites · {favorites.length}
               </button>
             </div>
+            {!search && !favoritesOnly && category === "All tools" && (
+              <RecentTools onTool={onTool} />
+            )}
             <div className="tools-grid">
               {displayed.map((t, i) => (
                 <article
@@ -352,17 +344,6 @@ export default function HomePage({
                 </button>
               </div>
             )}
-            {!showAll &&
-              !search &&
-              category === "All tools" &&
-              !favoritesOnly && (
-                <button
-                  className="all-tools-button"
-                  onClick={() => setShowAll(true)}
-                >
-                  Explore all {TOOLS.length} tools <ArrowRight size={15} />
-                </button>
-              )}
           </section>
           <section className="builder-banner">
             <div className="builder-monogram">

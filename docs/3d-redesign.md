@@ -106,3 +106,22 @@ Validation: production build and focused ESLint; `npm run test:measurements` exe
 ![OpenStreetMap and driving versus direct distance](redesign/distance.jpg)
 
 Additional Chromium checks verify animated liquid edits, direct orbit interaction, stable paused rendering, and command-palette discovery.
+
+## Workspace usability refinement
+
+All 19 tools and their route IDs remain. The catalog now shows every tool, with four shared task groups used by navigation and keyboard search. The overview is shorter and keeps the interactive guide. Recent history stores only tool IDs.
+
+Tool views are lazy-loaded on first use and retained while switching within the workspace; inactive panes are hidden and inert. This preserves edited inputs without mounting every editor at startup. Three.js resources are released while their tool is inactive; architecture simulation and JWT clocks pause when inactive. Architecture simulation starts only when requested. Pointer trails and click ripples stay on presentation pages, preserving direct 3D/map interaction inside tools. A tool-level error boundary offers retry, reload and a return to the catalog. Reload explicitly resets unsaved input.
+
+Shared styles improve surface separation, muted-text contrast, control sizes, keyboard focus and header hierarchy. Search uses a native modal dialog, a combobox/listbox, task keywords, arrow/Enter/Escape navigation, empty-result recovery and focus restoration. Contextual tool help explains workflows and data/network behavior.
+
+JSON, JWT, API Desk, DebugFlow, Measure Lab and Geo Distance use consistent headers or header styling. DebugFlow has a clear empty state, one sample selector, shorter analysis labels, expandable metadata, and separate mobile input/analysis panes. Its inferred call flow and rule-based suggestions are labeled accordingly. Geo Distance hides advanced breakdowns and estimates behind disclosures and validates coordinate drafts without silently converting empty/invalid input into zero. Measure Lab offers a remembered 3D toggle and on-demand conversion formulas; all 119 units, 15 shapes and six algebra tools remain. Clipboard-denied messages provide manual-copy recovery in JSON, JWT, DebugFlow and Measure Lab.
+
+JWT verification resets immediately on input changes, only marks supported HS256 tokens verified, and ignores outdated asynchronous verification results. Unsupported algorithms are labeled explicitly. Secrets are concealed until revealed. API request proxies stay available as explicit choices; new/sample/imported requests default to direct connections, and OpenAPI spec failures no longer silently fall back through corsproxy.io. Existing saved proxy choices are preserved and disclosed beside the request configuration.
+
+The initial minified app entry was approximately 599 KiB before this pass and approximately 273 KiB after initial lazy-loading changes; this measures the entry bundle, not total downloaded application size or real-world load time. Large diagram/document chunks still exist and load for their respective tools.
+
+Validation for this pass: production build, focused ESLint, `test:measurements` and `test:catalog` pass. Ten Chromium workflow scenarios cover lazy opening, all 19 routes, retained input, search/empty recovery, modal focus, the 3D toggle/formulas, coordinate drafts, DebugFlow samples, all 19 mobile tool pickers, and recent tools. Seven reliability scenarios cover supported/unsupported/malformed JWTs, wrong secrets, late verification races, denied clipboard access, and explicit OpenAPI proxy use. Six additional checks cover the 19-card catalog, 320px overview, mobile analysis space, live coordinate-link changes, focus outlines and reduced motion. Four editor checks cover JSON copy integrity after tool switching, folding, retained architecture simulation and mobile reopening. Two intentional download-failure checks cover the tool error boundary and reload recovery. The six README tool screenshots were refreshed from the production build. No uncaught application errors occurred in the completed normal workflows. These checks do not substitute for independent usability research or exhaustive testing of every tool.
+
+![Refined tool overview](redesign/workspace.jpg)
+[Mobile overview](redesign/workspace-mobile.jpg)

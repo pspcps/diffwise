@@ -1,4 +1,7 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import AdvancedSection from "../Workspace/AdvancedSection";
+import ToolHeader from "../Workspace/ToolHeader";
+import CoordinateInput from "./CoordinateInput";
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
   Compass,
   ArrowRightLeft,
@@ -47,7 +50,7 @@ function getInitialGeoState(): { a: GeoPoint; b: GeoPoint } {
         const lon1Num = parseFloat(o1);
         const lat2Num = parseFloat(l2);
         const lon2Num = parseFloat(o2);
-        if (!isNaN(lat1Num) && !isNaN(lon1Num) && !isNaN(lat2Num) && !isNaN(lon2Num)) {
+        if (Number.isFinite(lat1Num) && Math.abs(lat1Num) <= 90 && Number.isFinite(lon1Num) && Math.abs(lon1Num) <= 180 && Number.isFinite(lat2Num) && Math.abs(lat2Num) <= 90 && Number.isFinite(lon2Num) && Math.abs(lon2Num) <= 180) {
           return {
             a: { lat: lat1Num, lon: lon1Num, label: params.get('lbl1') || 'Point A' },
             b: { lat: lat2Num, lon: lon2Num, label: params.get('lbl2') || 'Point B' },
@@ -174,6 +177,16 @@ export const GeoDistanceView: React.FC = () => {
     setPointB({ ...prevA, label: prevB.label });
   };
 
+  // Shared coordinate links also update a workspace that was already opened.
+  useEffect(() => {
+    const syncLink = () => {
+      if (!/^#\/(?:distance|geodistance|geo-distance|coordinates|lat-lon|latlon|haversine)\?/.test(window.location.hash)) return;
+      const points = getInitialGeoState(); setPointA(points.a); setPointB(points.b);
+    };
+    window.addEventListener('hashchange', syncLink);
+    return () => window.removeEventListener('hashchange', syncLink);
+  }, []);
+
   // Quick parser submit
   const handleQuickParse = (e: React.FormEvent) => {
     e.preventDefault();
@@ -268,25 +281,7 @@ export const GeoDistanceView: React.FC = () => {
   return (
     <div className="flex-1 overflow-y-auto bg-[#111612] text-[#e4ebdd] p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header Title & Intro Banner */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#344435]">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-lg bg-[#c8edb6]/15 text-[#c8edb6] border border-[#c8edb6]/30">
-                <Compass size={22} />
-              </div>
-              <div>
-                <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#e4ebdd]">
-                  Geo Distance & Coordinate Difference Calculator
-                </h1>
-                <p className="text-xs sm:text-sm text-[#c3ceba]">
-                  Calculate high-precision geodetic distances (Vincenty WGS-84 & Haversine), North/South and East/West coordinate deltas, initial bearings, and travel times.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Action Toolbar Buttons */}
+        <ToolHeader title="Geo Distance" description="Choose two points to compare direct distance and an optional driving route." actions={
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -307,8 +302,7 @@ export const GeoDistanceView: React.FC = () => {
               <ArrowRightLeft size={14} />
               <span>Swap A ⇄ B</span>
             </button>
-          </div>
-        </div>
+          </div>        }/>
 
         {/* Tab Navigation */}
         <div className="flex flex-wrap items-center gap-2 border-b border-[#344435] pb-2 text-xs font-medium">
@@ -322,7 +316,7 @@ export const GeoDistanceView: React.FC = () => {
             }`}
           >
             <Compass size={14} />
-            <span>Dual Coordinate Explorer</span>
+            <span>Map & distance</span>
           </button>
 
           <button
@@ -335,7 +329,7 @@ export const GeoDistanceView: React.FC = () => {
             }`}
           >
             <FileSpreadsheet size={14} />
-            <span>Batch Multi-Pair Matrix ({batchItems.length})</span>
+            <span>Batch pairs ({batchItems.length})</span>
           </button>
 
           <button
@@ -348,7 +342,7 @@ export const GeoDistanceView: React.FC = () => {
             }`}
           >
             <ShieldCheck size={14} />
-            <span>Geofence Proximity Tester</span>
+            <span>Geofence</span>
           </button>
 
           <button
@@ -361,7 +355,7 @@ export const GeoDistanceView: React.FC = () => {
             }`}
           >
             <Code size={14} />
-            <span>Developer Code Snippets</span>
+            <span>Code examples</span>
           </button>
         </div>
 
@@ -370,6 +364,7 @@ export const GeoDistanceView: React.FC = () => {
         {/* ========================================================================= */}
         {activeTab === 'single' && (
           <div className="space-y-6">
+            <AdvancedSection title="Paste coordinates or try an example" description="Decimal degrees, DMS and GeoJSON are supported.">
             {/* Quick Parser Bar & Benchmark Presets */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
               {/* Universal Parser Input */}
@@ -378,7 +373,7 @@ export const GeoDistanceView: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <label className="text-[11px] font-semibold uppercase tracking-wider text-[#c3ceba] flex items-center gap-1">
                       <Sparkles size={12} className="text-[#c8edb6]" />
-                      <span>Universal Paste & Auto-Parser</span>
+                      <span>Paste coordinates</span>
                     </label>
                     <span className="text-[10px] text-[#9eac96]">
                       Accepts DD, DMS, GeoJSON, or &quot;lat1, lon1 to lat2, lon2&quot;
@@ -412,7 +407,7 @@ export const GeoDistanceView: React.FC = () => {
               {/* Benchmark Presets Selector */}
               <div className="lg:col-span-4 p-3 rounded-xl bg-[#171d19] border border-[#344435] shadow-sm flex flex-col justify-between">
                 <label className="text-[11px] font-semibold uppercase tracking-wider text-[#c3ceba]">
-                  Benchmark Routes & Tests
+                  Example coordinates
                 </label>
                 <select
                   onChange={e => handleSelectPreset(e.target.value)}
@@ -430,6 +425,8 @@ export const GeoDistanceView: React.FC = () => {
                 </select>
               </div>
             </div>
+
+            </AdvancedSection>
 
             {/* Point A and Point B Input Panels */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -452,32 +449,14 @@ export const GeoDistanceView: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[11px] text-[#c3ceba] mb-1">Latitude (°N / °S)</label>
-                    <input
-                      type="number"
-                      step="any"
-                      min="-90"
-                      max="90"
-                      value={pointA.lat}
-                      onChange={e => setPointA({ ...pointA, lat: parseFloat(e.target.value) || 0 })}
-                      className="w-full px-3 py-1.5 rounded-lg bg-[#0d120f] border border-[#344435] focus:border-[#b5dfa3] text-xs font-mono text-[#e4ebdd] outline-none"
-                    />
+                    <CoordinateInput point="A" axis="latitude" value={pointA.lat} onChange={value => setPointA(prev => ({...prev, lat: value}))}/>
                     <span className="text-[10px] text-[#b1bea8] mt-0.5 block">
                       {toDmsString(pointA.lat, pointA.lat >= 0 ? 'N' : 'S')}
                     </span>
                   </div>
 
                   <div>
-                    <label className="block text-[11px] text-[#c3ceba] mb-1">Longitude (°E / °W)</label>
-                    <input
-                      type="number"
-                      step="any"
-                      min="-180"
-                      max="180"
-                      value={pointA.lon}
-                      onChange={e => setPointA({ ...pointA, lon: parseFloat(e.target.value) || 0 })}
-                      className="w-full px-3 py-1.5 rounded-lg bg-[#0d120f] border border-[#344435] focus:border-[#b5dfa3] text-xs font-mono text-[#e4ebdd] outline-none"
-                    />
+                    <CoordinateInput point="A" axis="longitude" value={pointA.lon} onChange={value => setPointA(prev => ({...prev, lon: value}))}/>
                     <span className="text-[10px] text-[#b1bea8] mt-0.5 block">
                       {toDmsString(pointA.lon, pointA.lon >= 0 ? 'E' : 'W')}
                     </span>
@@ -514,32 +493,14 @@ export const GeoDistanceView: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[11px] text-[#c3ceba] mb-1">Latitude (°N / °S)</label>
-                    <input
-                      type="number"
-                      step="any"
-                      min="-90"
-                      max="90"
-                      value={pointB.lat}
-                      onChange={e => setPointB({ ...pointB, lat: parseFloat(e.target.value) || 0 })}
-                      className="w-full px-3 py-1.5 rounded-lg bg-[#0d120f] border border-[#344435] focus:border-[#f19aa6] text-xs font-mono text-[#e4ebdd] outline-none"
-                    />
+                    <CoordinateInput point="B" axis="latitude" value={pointB.lat} onChange={value => setPointB(prev => ({...prev, lat: value}))}/>
                     <span className="text-[10px] text-[#b1bea8] mt-0.5 block">
                       {toDmsString(pointB.lat, pointB.lat >= 0 ? 'N' : 'S')}
                     </span>
                   </div>
 
                   <div>
-                    <label className="block text-[11px] text-[#c3ceba] mb-1">Longitude (°E / °W)</label>
-                    <input
-                      type="number"
-                      step="any"
-                      min="-180"
-                      max="180"
-                      value={pointB.lon}
-                      onChange={e => setPointB({ ...pointB, lon: parseFloat(e.target.value) || 0 })}
-                      className="w-full px-3 py-1.5 rounded-lg bg-[#0d120f] border border-[#344435] focus:border-[#f19aa6] text-xs font-mono text-[#e4ebdd] outline-none"
-                    />
+                    <CoordinateInput point="B" axis="longitude" value={pointB.lon} onChange={value => setPointB(prev => ({...prev, lon: value}))}/>
                     <span className="text-[10px] text-[#b1bea8] mt-0.5 block">
                       {toDmsString(pointB.lon, pointB.lon >= 0 ? 'E' : 'W')}
                     </span>
@@ -568,6 +529,7 @@ export const GeoDistanceView: React.FC = () => {
               />
             </div>
 
+            <AdvancedSection title="Distance breakdown & bearings" description="Compare formulas, coordinate deltas and the geographic midpoint.">
             {/* PRIMARY DISTANCE HERO CARD */}
             <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-[#171d19] via-[#171d19] to-[#243025] border border-[#344435] shadow-xl">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
@@ -815,6 +777,9 @@ export const GeoDistanceView: React.FC = () => {
               </div>
             </div>
 
+            </AdvancedSection>
+
+            <AdvancedSection title="More units & travel estimates" description="Unit equivalents and fixed-speed estimates; these are separate from driving-route time.">
             {/* ALL UNIT CONVERSIONS & TRAVEL TIME ESTIMATES */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Unit Conversions Grid */}
@@ -927,6 +892,7 @@ export const GeoDistanceView: React.FC = () => {
                 </div>
               </div>
             </div>
+            </AdvancedSection>
           </div>
         )}
 

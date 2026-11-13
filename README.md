@@ -6,7 +6,7 @@
 
 PSDevTool brings 19 tools into one React and TypeScript application. Compare text and files, work with JSON/XML/YAML, inspect network data, create diagrams, process documents and images, and explore unit conversions with interactive 3D illustrations.
 
-A compact tool picker and keyboard search keep navigation close at hand. Choose a Node.js, Python, TypeScript, Go, or Rust theme; your theme and motion preference are remembered in your browser.
+All 19 tools are visible in the catalog, grouped by task. A compact tool picker, recent-tool shortcuts, and keyboard search keep navigation close at hand. Choose a Node.js, Python, TypeScript, Go, or Rust theme; your theme and motion preference are remembered in your browser.
 
 ![Diff Checker showing a syntax-highlighted comparison and changed lines](docs/screenshots/diff-checker.jpg)
 
@@ -51,7 +51,7 @@ A compact tool picker and keyboard search keep navigation close at hand. Choose 
 | **Case Converter** | Convert text between common prose and programming naming styles. |
 | **URL Tools** | Encode/decode URLs and inspect query parameters. |
 
-Press **Ctrl+K** or **⌘K** to find a tool by name or keyword. Use the motion control beside the theme selector to pause effects. System reduced-motion preferences are respected.
+Press **Ctrl+K** or **⌘K** to find a tool by name, format, or task. Search supports arrow keys, Enter, and Escape. Use the help button for the current tool’s workflow and network behavior. Tools load when first opened and retain their inputs while switching within the workspace; reloading or leaving the workspace may reset unsaved inputs. Advanced formulas and distance statistics expand on demand. Measure Lab’s 3D view can be hidden without losing calculations. Use the motion control beside the theme selector to pause effects. System reduced-motion preferences are respected.
 
 ## Screenshots
 
@@ -116,9 +116,10 @@ The repository also includes `bun.lock`. With Bun installed, you can use `bun in
 ```sh
 npm run build
 npm run test:measurements
+npm run test:catalog
 ```
 
-The build runs TypeScript checks and produces `dist/`. The measurement checks exercise conversions, geometry, algebra, coordinate-path edge cases, invalid inputs, and career-date boundaries.
+The build runs TypeScript checks and produces `dist/`. The measurement checks exercise conversions, geometry, algebra, coordinate-path edge cases, invalid inputs, and career-date boundaries. Catalog checks protect all 19 tool IDs, shared search metadata, and recent-history validation.
 
 To serve the production build locally:
 
@@ -131,10 +132,10 @@ Open **http://localhost:4173**. Deploy `dist/` to a static host such as Vercel. 
 ## How data and network access work
 
 - Text/file comparisons, structured-data formatting, log parsing, unit conversions, geometry, algebra, and 3D rendering run in your browser. Local file processing does not require a PSDevTool upload service.
-- **API Desk** contacts the endpoint you choose. Browser CORS restrictions apply.
+- **API Desk** contacts the endpoint you choose. Browser CORS restrictions apply. The optional corsproxy.io proxy forwards requests through that third-party service; spec loading no longer enables it automatically after a failure. Collections and request history are saved locally by API Desk.
 - **Geo Distance** requests basemap tiles from OpenStreetMap. Clicking **Get driving route** sends the selected coordinates to OSRM. Public map/routing services require internet access and have no availability guarantee; direct-distance calculations remain local.
 - Monaco and some document-processing resources can load from external CDNs. The hosted app also includes Google Analytics and advertising scripts, so the application is not completely offline or free of third-party network requests.
-- Language theme, motion, and tool-favorite preferences are stored locally in your browser.
+- Language theme, motion, tool favorites, recent tool IDs, and the Measure Lab 3D-view preference are stored locally in your browser. Recent-tool history stores IDs rather than input contents.
 
 Numerical results use JavaScript floating-point arithmetic and are rounded for display. 3D measurement scenes are explanatory illustrations with stated ranges; their visual limits do not cap the conversion result. A WebGL-capable browser enables the 3D scenes; calculations and formulas remain available without WebGL.
 

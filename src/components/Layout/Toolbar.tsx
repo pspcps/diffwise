@@ -1,7 +1,8 @@
 import { Search, ArrowLeft, UserRound } from "lucide-react";
 import ThemeChoice from "../Guide/ThemeChoice";
+import ToolHelp from "../Workspace/ToolHelp";
 import Brand from "../Spatial/Brand";
-import { TOOLS } from "../../data/tools";
+import { TOOLS, TOOL_CATEGORIES } from "../../data/tools";
 import type { ViewMode } from "../../types";
 import "../../spatial.css";
 interface ToolbarProps {
@@ -30,7 +31,7 @@ export default function Toolbar({
         value={mode}
         onChange={(e) => onModeChange(e.target.value as ViewMode)}
       >
-        {["Code & data", "Network", "Create", "Utilities"].map((category) => (
+        {TOOL_CATEGORIES.map((category) => (
           <optgroup key={category} label={category}>
             {TOOLS.filter((t) => t.category === category).map((t) => (
               <option key={t.id} value={t.id}>
@@ -42,7 +43,7 @@ export default function Toolbar({
       </select>
       <div className="compact-toolbar-actions">
         <button
-          className="toolbar-home"
+          className="toolbar-home tool-home-action"
           onClick={() => {
             window.location.hash = "#/";
           }}
@@ -57,9 +58,12 @@ export default function Toolbar({
           aria-label="Quick search tools"
         >
           <Search size={16} />
-          <kbd>⌘ K</kbd>
+          <kbd>
+            {/Mac|iPhone|iPad/.test(navigator.platform) ? "⌘ K" : "Ctrl K"}
+          </kbd>
         </button>
         <ThemeChoice />
+        <ToolHelp mode={mode} />
         <button
           className="toolbar-home builder-action"
           onClick={onAbout}

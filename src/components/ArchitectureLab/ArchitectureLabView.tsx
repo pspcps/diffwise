@@ -1,3 +1,4 @@
+import { useToolActive } from "../Workspace/ToolActivity";
 import React, { useMemo, useRef, useState, useEffect, type DragEvent } from 'react';
 import MonacoEditor from '../Common/CodeEditor';
 import {
@@ -696,12 +697,13 @@ const INITIAL_SERVICE_EDGES: Edge[] = [
 ];
 
 function SystemDesignCanvas() {
+  const toolActive = useToolActive();
   const [nodes, setNodes, onNodesChange] = useNodesState<ServiceNodeType>(INITIAL_SERVICE_NODES);
   const [edges, setEdges, onEdgesChange] = useEdgesState(INITIAL_SERVICE_EDGES);
   const [selectedId, setSelectedId] = useState('compute');
   const [ingressRps, setIngressRps] = useState(2500);
   const [simSpeed, setSimSpeed] = useState<number>(1);
-  const [isSimulating, setIsSimulating] = useState(true);
+  const [isSimulating, setIsSimulating] = useState(false);
   const [incidentLog, setIncidentLog] = useState<string[]>([]);
   const [forcedDownNodes, setForcedDownNodes] = useState<Set<string>>(new Set());
 
@@ -904,11 +906,11 @@ function SystemDesignCanvas() {
 
   // Run simulation tick
   useEffect(() => {
-    if (!isSimulating) return;
+    if (!isSimulating || !toolActive) return;
     runSimulationStep();
     const interval = setInterval(runSimulationStep, 2000 / simSpeed);
     return () => clearInterval(interval);
-  }, [ingressRps, nodes.length, edges.length, isSimulating, simSpeed, forcedDownNodes]);
+  }, [ingressRps, nodes.length, edges.length, isSimulating, simSpeed, forcedDownNodes, toolActive]);
 
   // Failure Injection Shortcuts
   const triggerTrafficSpike = () => {
@@ -940,7 +942,7 @@ function SystemDesignCanvas() {
               }`}
             >
               {isSimulating ? <Pause size={12} /> : <Play size={12} />}
-              {isSimulating ? 'Simulating' : 'Paused'}
+              {isSimulating ? 'Pause simulation' : 'Run simulation'}
             </button>
             <div className="flex items-center gap-1 text-[9px] text-[#b1bea8] border border-[#344435] rounded bg-[#0d120f] px-1.5 py-0.5">
               <span>Speed:</span>
@@ -2381,7 +2383,7 @@ export default function ArchitectureLabView() {
   return (
     <section className="flex h-full min-h-0 flex-col bg-[#171d19] text-[#e4ebdd]">
       {/* Top Header / Mode Switcher */}
-      <header className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#344435] bg-[#111612] px-3 sm:px-4 py-1.5 sm:py-2">
+      <header className="workspace-tool-header flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#344435] bg-[#111612] px-3 sm:px-4 py-1.5 sm:py-2">
         <div>
           <h1 className="text-xs sm:text-sm font-bold text-[#e4ebdd]">Architecture Lab</h1>
           <p className="mt-0.5 text-[9px] sm:text-[10px] text-[#9eac96] hidden sm:block">
@@ -2392,8 +2394,8 @@ export default function ArchitectureLabView() {
         <div className="flex gap-1 rounded-md border border-[#344435] bg-[#0d120f] p-0.5 overflow-x-auto no-scrollbar max-w-full" role="tablist">
           {(
             [
-              ['mermaid', 'Mermaid Studio', <Workflow size={12} key="m" />],
-              ['system', 'System Design Simulator', <Network size={12} key="s" />],
+              ['mermaid', 'Mermaid', <Workflow size={12} key="m" />],
+              ['system', 'System simulator', <Network size={12} key="s" />],
               ['database', 'Database ERD', <Database size={12} key="d" />],
             ] as const
           ).map(([id, label, icon]) => (

@@ -85,7 +85,9 @@ export default function MotionLayer() {
           'input,textarea,select,.monaco-editor,[contenteditable="true"]',
         ),
       );
+    const isPresentation = () => !location.hash || ["#/", "#/home", "#/portfolio"].includes(location.hash.split("?")[0]);
     const move = (e: PointerEvent) => {
+      if (!isPresentation()) return;
       if (!fine || e.pointerType === "touch") return;
       const card =
         e.target instanceof Element
@@ -125,7 +127,7 @@ export default function MotionLayer() {
       });
     };
     const click = (e: PointerEvent) => {
-      if (isEditing(e.target)) return;
+      if (!isPresentation() || isEditing(e.target)) return;
       rings.push({ x: e.clientX, y: e.clientY, life: 1 });
       if (rings.length > 4) rings.shift();
       for (let i = 0; i < 10 && particles.length < 60; i++) {
@@ -141,6 +143,8 @@ export default function MotionLayer() {
       }
     };
     const draw = (now: number) => {
+      frame = 0;
+      if (!isPresentation() || document.hidden) return;
       frame = requestAnimationFrame(draw);
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
@@ -197,12 +201,22 @@ export default function MotionLayer() {
       }
       ctx.globalAlpha = 1;
     };
-    frame = requestAnimationFrame(draw);
+    const wake = () => {
+      cancelAnimationFrame(frame);
+      ctx.clearRect(0, 0, width, height);
+      particles.length = 0; rings.length = 0;
+      if (isPresentation() && !document.hidden) { last = performance.now(); frame = requestAnimationFrame(draw); }
+    };
+    wake();
+    window.addEventListener('hashchange', wake);
+    document.addEventListener('visibilitychange', wake);
     window.addEventListener("resize", resize);
     window.addEventListener("pointermove", move, { passive: true });
     window.addEventListener("pointerdown", click, { passive: true });
     return () => {
       cancelAnimationFrame(frame);
+      window.removeEventListener("hashchange", wake);
+      document.removeEventListener("visibilitychange", wake);
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerdown", click);
