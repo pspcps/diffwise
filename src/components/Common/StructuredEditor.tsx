@@ -1,6 +1,7 @@
 import { useRef, type TextareaHTMLAttributes } from "react";
 import type { OnMount } from "@monaco-editor/react";
 import { ChevronsDownUp, ChevronsUpDown } from "lucide-react";
+import { jsonArrayLengths } from "../../utils/jsonArrayLengths";
 import CodeEditor from "./CodeEditor";
 type Props = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "onChange"> & {
   onChange: (value: string) => void;
@@ -37,8 +38,51 @@ export default function StructuredEditor({
           value={String(value ?? "")}
           language={language}
           onChange={(v) => onChange(v ?? "")}
-          onMount={(e) => {
+          onMount={(e, monaco) => {
             editor.current = e;
+            if (language !== "json") return;
+            const decorations = e.createDecorationsCollection();
+            let timer: ReturnType<typeof setTimeout> | undefined;
+            const update = () => {
+              const model = e.getModel();
+              if (!model || model.isDisposed()) return;
+              const text = model.getValue();
+              const counts =
+                text.length <= 2000000 ? jsonArrayLengths(text) : [];
+              decorations.set(
+                counts.map(({ offset, length }) => {
+                  const p = model.getPositionAt(offset + 1);
+                  return {
+                    range: new monaco.Range(
+                      p.lineNumber,
+                      p.column,
+                      p.lineNumber,
+                      p.column,
+                    ),
+                    options: {
+                      showIfCollapsed: true,
+                      after: {
+                        content: `  ${length} ${length === 1 ? "item" : "items"}  `,
+                        inlineClassName: "json-array-length",
+                        cursorStops: monaco.editor.InjectedTextCursorStops.None,
+                      },
+                      hoverMessage: {
+                        value: `Array length: **${length}** ${length === 1 ? "item" : "items"}`,
+                      },
+                    },
+                  };
+                }),
+              );
+            };
+            update();
+            const changes = e.onDidChangeModelContent(() => {
+              clearTimeout(timer);
+              timer = setTimeout(update, 180);
+            });
+            e.onDidDispose(() => {
+              clearTimeout(timer);
+              changes.dispose();
+            });
           }}
           options={{
             ariaLabel: label,

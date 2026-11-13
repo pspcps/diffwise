@@ -1,3 +1,5 @@
+import { useLanguageTheme } from "./LanguageThemeContext";
+import { LANGUAGE_THEMES } from "../Portfolio/LanguageThemes";
 import { useEffect, useState } from "react";
 import { ArrowRight, MessageCircle, X, Volume2 } from "lucide-react";
 export default function CharacterGuide({
@@ -7,6 +9,8 @@ export default function CharacterGuide({
   stories: string[];
   compact?: boolean;
 }) {
+  const { theme } = useLanguageTheme();
+  const laptopIcon = theme === "golang" ? "go" : theme;
   const [step, setStep] = useState(0);
   const [open, setOpen] = useState(!compact);
   const story = stories[step % stories.length];
@@ -172,16 +176,21 @@ export default function CharacterGuide({
               strokeWidth="2"
             />
             <path d="M75 278 L215 278 L223 285 L70 285Z" fill="#6d7e6e" />
-            <text
-              x="145"
-              y="258"
-              textAnchor="middle"
-              fontFamily="monospace"
-              fontSize="20"
-              fill="var(--user-accent,#c8edb6)"
+            <g
+              className="laptop-language-logo"
+              role="img"
+              aria-label={`${LANGUAGE_THEMES[theme].shortName} laptop logo`}
+              data-language={theme}
             >
-              {"</>"}
-            </text>
+              <title>{LANGUAGE_THEMES[theme].shortName}</title>
+              <image
+                x="131"
+                y="237"
+                width="28"
+                height="28"
+                href={`/technology/${laptopIcon}.svg`}
+              />
+            </g>
           </g>
         </svg>
         {compact && (

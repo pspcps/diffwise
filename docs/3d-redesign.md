@@ -41,3 +41,17 @@ JSON/XML/YAML inputs use Monaco with visible gutter folding arrows, Fold/Unfold 
 
 ![Compact JSON/YAML editors](redesign/json.jpg)
 ![Themed architecture case study](redesign/architecture.jpg)
+
+## Portrait-led portfolio, technology marks, and array counts
+
+The portfolio now leads with Prakash's name and portrait, a layered card with pointer tilt, stronger language-theme lighting, a theme-logo dock, a direct Liquibase contribution link, and more expressive project/experience/skill surfaces. The optional cartoon guide remains available and uses the selected language logo on its laptop. Technology chips use local Simple Icons / Devicon marks where available, with readable text badges for unsupported marks; sources and licenses live under `public/technology`.
+
+The builder drawer now inherits the theme, displays the complete summary in a scrollable body, keeps its action available, and uses native dialog focus/Escape behavior.
+
+Valid JSON arrays show non-editable inline item counts, including nested and empty arrays. Counts follow edits, remain on visible folded-array opening lines, and do not enter copied JSON. Invalid input clears them. Count analysis is debounced and omitted above 2 MB to limit editor work.
+
+Validation: build, focused ESLint, eight array-scanner boundary cases, and seven Chromium interaction checks covering nested/folded counts, editing and copy integrity, invalid-input clearing, themed drawer/Escape, all five laptop logos, toolkit icons/case study access, and mobile portfolio navigation. Reduced-motion preferences disable the new decorative animation.
+
+![Array counts](redesign/json.jpg)
+![Themed builder drawer](redesign/builder.jpg)
+![Technology marks](redesign/toolkit.jpg)

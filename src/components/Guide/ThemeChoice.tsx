@@ -1,18 +1,12 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   LANGUAGE_THEMES,
   type LanguageThemeKey,
 } from "../Portfolio/LanguageThemes";
-const ThemeContext = createContext({
-  theme: "nodejs" as LanguageThemeKey,
-  change: (_value: LanguageThemeKey) => { void _value; },
-});
+import {
+  LanguageThemeContext as ThemeContext,
+  useLanguageTheme,
+} from "./LanguageThemeContext";
 const accents = {
   nodejs: "#c8edb6",
   python: "#f2d483",
@@ -33,6 +27,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   });
   useEffect(() => {
     document.documentElement.style.setProperty("--user-accent", accents[theme]);
+    document.documentElement.style.setProperty("--theme-vivid", LANGUAGE_THEMES[theme].primaryHex);
     document.documentElement.dataset.languageTheme = theme;
     try {
       localStorage.setItem("psdev-language-theme", theme);
@@ -47,7 +42,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   );
 }
 export default function ThemeChoice() {
-  const { theme, change } = useContext(ThemeContext);
+  const { theme, change } = useLanguageTheme();
   return (
     <label className="theme-choice">
       <span>Theme</span>

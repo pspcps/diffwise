@@ -837,3 +837,187 @@
     display: none;
   }
 }
+.json-array-length {
+  color: var(--user-accent, #c8edb6);
+  font:
+    10px ui-monospace,
+    monospace;
+  opacity: 0.85;
+  background: color-mix(in srgb, var(--user-accent, #c8edb6) 9%, transparent);
+  border-radius: 4px;
+  pointer-events: none;
+}
+.builder-panel {
+  position: fixed;
+  inset: 0 0 0 auto;
+  margin: 0 0 0 auto;
+  width: 380px;
+  max-width: calc(100vw - 16px);
+  height: 100dvh;
+  max-height: 100dvh;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid color-mix(in srgb, var(--user-accent) 28%, transparent);
+  background: linear-gradient(155deg, #202c23, #121a15 55%);
+  color: #e4ebdd;
+  box-shadow: -20px 0 60px #0006;
+  overflow: hidden;
+  font-family: Inter, system-ui, sans-serif;
+}
+.builder-panel[open] {
+  display: flex;
+  flex-direction: column;
+}
+.builder-panel::backdrop {
+  background: #050a07a6;
+  backdrop-filter: blur(3px);
+}
+.builder-panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  flex-shrink: 0;
+}
+.builder-panel header > span {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #afc0a5;
+}
+.builder-panel header button {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ffffff15;
+  border-radius: 8px;
+  background: #ffffff04;
+  color: #c6d5bb;
+  cursor: pointer;
+}
+.builder-panel button:focus-visible,
+.builder-panel a:focus-visible {
+  outline: 2px solid var(--user-accent);
+  outline-offset: 3px;
+}
+.builder-panel-body {
+  padding: 10px 25px 24px;
+  overflow: auto;
+  min-height: 0;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: var(--user-accent) #18211a;
+}
+.builder-portrait {
+  display: block;
+  margin: 0 auto 20px;
+  width: 86px;
+  height: 86px;
+  border-radius: 20px;
+  object-fit: cover;
+  object-position: top;
+  border: 2px solid color-mix(in srgb, var(--user-accent) 50%, transparent);
+  box-shadow: 0 12px 35px #0003;
+}
+.builder-panel h2 {
+  font-size: 23px;
+  font-weight: 550;
+  letter-spacing: -0.6px;
+  text-align: center;
+  margin: 0 0 10px;
+}
+.builder-role {
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--user-accent);
+  margin: 0 0 10px;
+}
+.builder-focus {
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.8;
+  color: #a9bba0;
+  margin: 0;
+}
+.builder-panel hr {
+  border: 0;
+  border-top: 1px solid #ffffff12;
+  margin: 25px 0;
+}
+.builder-bio {
+  font-size: 12px;
+  color: #bcccb2;
+  line-height: 1.9;
+  margin: 0 0 22px;
+}
+.builder-social {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px;
+  color: var(--user-accent);
+  text-decoration: none;
+  font-size: 11px;
+  border: 1px solid color-mix(in srgb, var(--user-accent) 20%, transparent);
+  border-radius: 9px;
+  background: #ffffff02;
+}
+.builder-social svg:last-child {
+  margin-left: auto;
+}
+.builder-panel footer {
+  padding: 18px 25px 24px;
+  border-top: 1px solid #ffffff0c;
+  flex-shrink: 0;
+  background: #141e17;
+}
+.builder-panel .primary-button {
+  display: flex;
+  width: 100%;
+  background: var(--user-accent);
+  border-color: var(--user-accent);
+  cursor: pointer;
+}
+.laptop-language-logo image {
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+.project-tech .technology-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 9px;
+  line-height: 1.5;
+}
+.technology-icon {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  background: var(--user-accent, #c8edb6);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+.technology-monogram {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  color: var(--user-accent);
+  background: #ffffff08;
+  font:
+    8px ui-monospace,
+    monospace;
+}
+.project-tech .technology-chip > .technology-icon,
+.project-tech .technology-chip > .technology-monogram {
+  padding: 0;
+  border: 0;
+}

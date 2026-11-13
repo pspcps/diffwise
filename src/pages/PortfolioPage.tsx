@@ -1,3 +1,6 @@
+import PortfolioHero from "../components/Portfolio/PortfolioHero";
+import "../portfolio.css";
+import TechnologyIcon from "../components/Common/TechnologyIcon";
 import {
   lazy,
   Suspense,
@@ -13,7 +16,6 @@ import {
   ChevronDown,
   X,
   Mail,
-  Download,
   GitFork,
 } from "lucide-react";
 import { RESUME } from "../data/resumeData";
@@ -26,7 +28,6 @@ const InteractiveArchitectureDiagram = lazy(
 );
 
 import { PROJECT_CASE_STUDIES } from "../data/projectCaseStudies";
-import { downloadProfile } from "../utils/downloadProfile";
 
 type Project = (typeof RESUME.projects)[number];
 const FILTERS = ["All projects", "AI & agents", "Developer tools"];
@@ -57,7 +58,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
   const projects =
     expanded || filter !== "All projects" ? filtered : filtered.slice(0, 6);
   return (
-    <div className="portfolio-space" ref={root}>
+    <div className="portfolio-space portfolio-atelier" ref={root}>
       <header className="portfolio-nav">
         <ThemeChoice />
         <button
@@ -79,57 +80,19 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
           <ArrowLeft size={14} /> Back to tools
         </button>
       </header>
+      {!selected && (
+        <CharacterGuide
+          compact
+          stories={[
+            "Hi! I’m your guide to Prakash’s work. He builds cloud-native systems, real-time platforms, and AI products. Tap me for the story behind a build.",
+            "At Lytx, Prakash architected a reverse-geocoding system using OpenStreetMap and Redis, saving approximately $1M each year.",
+            "FleetMind connects AWS Bedrock, Claude, and MCP to help operators investigate fleet data. Open a case study to see how the pieces fit together.",
+            "Prakash’s merged Liquibase contribution fixes PostgreSQL generated-column SQL. The contribution link takes you directly to the upstream pull request.",
+          ]}
+        />
+      )}
       <main className="portfolio-body">
-        <section className="portfolio-hero">
-          <div className="portfolio-hero-copy">
-            <div className="eyebrow">
-              <span /> SENIOR SOFTWARE ENGINEER · 9+ YEARS
-            </div>
-            <h1>
-              Hi, I’m Prakash.
-              <br />
-              <em>I build for scale.</em>
-            </h1>
-            <p>
-              I’m Prakash Choudhary, a senior software engineer turning backend
-              services, distributed systems, and applied AI into practical
-              products.
-            </p>
-            <div className="portfolio-role">
-              <span className="live-dot" />
-              {RESUME.focus}
-            </div>
-            <div className="hero-actions">
-              <button
-                className="primary-button"
-                onClick={() => scrollTo("projects")}
-              >
-                Explore my work <ArrowUpRight size={17} />
-              </button>
-              <a
-                className="text-button"
-                href={RESUME.resumeUrl}
-                target="_blank"
-                rel="noreferrer"
-              >
-                View résumé <Download size={15} />
-              </a>
-              <button className="text-button" onClick={downloadProfile}>
-                Download text profile <Download size={15} />
-              </button>
-            </div>
-          </div>
-          <div className="portfolio-hero-art">
-            <CharacterGuide
-              stories={[
-                "Hi! I’m your guide to Prakash’s work. He builds cloud-native systems, real-time platforms, and AI products. Tap me to explore his story.",
-                "At Lytx, Prakash architected a reverse-geocoding system using OpenStreetMap and Redis, saving approximately $1M each year.",
-                "Project Drishti connects camera feeds, Vertex AI Vision, and Gemini to help teams assess crowd safety and respond to incidents.",
-                "PSDevTool is the workspace you’re using: code comparison, data tools, document processing, and more. Explore a project below for the details.",
-              ]}
-            />
-          </div>
-        </section>
+        <PortfolioHero onExplore={() => scrollTo("projects")} />
         <section className="portfolio-stats" aria-label="Career highlights">
           {RESUME.stats.map((s) => (
             <div key={s.label}>
@@ -175,19 +138,34 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
                 onPointerLeave={resetTilt}
               >
                 <div className="project-space-content">
+                  <div className="project-card-overline">
+                    <span>
+                      {DEV_PROJECTS.includes(p.title)
+                        ? "DEVELOPER PLATFORMS"
+                        : p.tech.includes("Kotlin")
+                          ? "NATIVE ANDROID"
+                          : "APPLIED AI"}
+                    </span>
+                    <span>
+                      {String(RESUME.projects.indexOf(p) + 1).padStart(2, "0")}
+                    </span>
+                  </div>
                   <h3>{p.title}</h3>
                   <p>{p.subtitle}</p>
                   <p className="project-real-summary">{p.bullets[0]}</p>
                   <div className="project-tech">
                     {p.tech.slice(0, 4).map((t) => (
-                      <span key={t}>{t}</span>
+                      <span className="technology-chip" key={t}>
+                        <TechnologyIcon name={t} />
+                        {t}
+                      </span>
                     ))}
                   </div>
                   <button
                     className="project-details-button"
                     onClick={() => setSelected(p)}
                   >
-                    Project details <ArrowUpRight size={17} />
+                    View case study <ArrowUpRight size={17} />
                   </button>
                 </div>
               </article>
@@ -244,7 +222,10 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
                 <h3>{name}</h3>
                 <div className="project-tech">
                   {skill.items.map((t) => (
-                    <span key={t}>{t}</span>
+                    <span className="technology-chip" key={t}>
+                      <TechnologyIcon name={t} />
+                      {t}
+                    </span>
                   ))}
                 </div>
               </div>
@@ -373,7 +354,10 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             </div>
             <div className="project-tech">
               {selected.tech.map((t) => (
-                <span key={t}>{t}</span>
+                <span className="technology-chip" key={t}>
+                  <TechnologyIcon name={t} />
+                  {t}
+                </span>
               ))}
             </div>
             <ul>
