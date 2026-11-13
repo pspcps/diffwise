@@ -10,7 +10,7 @@ export const PRINT_RESUME = {
   github: "https://github.com/pspcps",
   portfolio: PORTFOLIO_URL,
   summary(years = getCareerDuration().years) {
-    return `Senior Software Engineer with ${years}+ years building backend microservices and event-driven systems. Specializes in Node.js, TypeScript, Kafka and PostgreSQL on AWS and Google Cloud. Led 4–6 engineers; designed a platform saving ~$1M annually. Builds multi-agent AI and retrieval-augmented generation (RAG) solutions.`;
+    return `Senior Software Engineer with ${years}+ years building full-stack applications, backend microservices and event-driven systems. Specializes in React, Node.js, TypeScript, Kafka and PostgreSQL on AWS and Google Cloud. Led 4–6 engineers; designed a platform saving ~$1M annually. Builds multi-agent AI and retrieval-augmented generation (RAG) solutions.`;
   },
   skills: [
     [
