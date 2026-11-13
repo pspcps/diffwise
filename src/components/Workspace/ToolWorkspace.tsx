@@ -53,7 +53,7 @@ class ToolErrorBoundary extends Component<
         <button type="button" onClick={() => window.location.reload()}>
           Reload application
         </button>
-        <a href="#/">Back to all tools</a>
+        <a href="/">Back to all tools</a>
       </div>
     ) : (
       <div className="tool-boundary-content" key={this.state.attempt}>

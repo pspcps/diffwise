@@ -70,7 +70,7 @@ Because PSDevTool is a 100% client-side Single Page Application with hash routin
    - **Build Command**: `npm run build`
    - **Output Directory**: `dist`
    - **Install Command**: `npm install`
-3. Deploy. Hash-based routing ensures all deep links (`https://psdevtool.online/#/har`, `https://psdevtool.online/#/portfolio`) load immediately without requiring server rewrite configuration.
+3. Deploy all of `dist/`, including generated tool directories, `portfolio/index.html`, `404.html` and the sitemap. Serve directory index files directly; avoid a catch-all rewrite to the homepage. Existing hash links remain supported by the client. See [SEO.md](SEO.md) for indexing and Search Console setup.
 
 ### Option B: Docker Containerization (Nginx Alpine)
 For enterprise on-premises or containerized environments (Kubernetes, AWS ECS, GCP Cloud Run):
@@ -138,4 +138,4 @@ docker run -d -p 8080:80 psdevtool:latest
 
 ### Issue: Dev Server Flash or Pop-Up on Load
 - **Symptom**: Visible text pop-up before React loads.
-- **Solution**: Verified resolved in latest release: `#root` utilizes a dark `#11111b` styled placeholder and SEO content is isolated in `<noscript>` and screen-reader accessible DOM containers (`clip: rect(0,0,0,0)`).
+- **Solution**: Production output includes visible prerendered content and a dark workspace shell that reserves the tool viewport before React opens the interactive controls. SEO content is not placed in clipped containers. Check real layout shifts with browser performance tools; no zero-CLS result is guaranteed.

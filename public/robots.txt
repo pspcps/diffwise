@@ -1,11 +1,4 @@
 User-agent: *
 Allow: /
 
-# Fast crawl for major search bots
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
 Sitemap: https://psdevtool.online/sitemap.xml

@@ -655,7 +655,7 @@ export default function MeasureLabView() {
       <footer className="measure-footer">
         17 measurement categories · 15 shapes · 6 algebra tools · Runs locally ·
         Open-source Three.js visuals{" "}
-        <a href="#/distance">Explore coordinates & maps ↗</a>
+        <a href="/tools/distance-calculator/">Explore coordinates & maps ↗</a>
       </footer>
     </div>
   );

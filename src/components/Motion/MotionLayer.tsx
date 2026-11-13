@@ -1,3 +1,4 @@
+import { resolveLocation } from "../../seo/routes";
 import { useEffect, useRef } from "react";
 import { useMotion } from "./MotionContext";
 import { useLanguageTheme } from "../Guide/LanguageThemeContext";
@@ -85,7 +86,7 @@ export default function MotionLayer() {
           'input,textarea,select,.monaco-editor,[contenteditable="true"]',
         ),
       );
-    const isPresentation = () => !location.hash || ["#/", "#/home", "#/portfolio"].includes(location.hash.split("?")[0]);
+    const isPresentation = () => ["home", "portfolio"].includes(resolveLocation(window.location).page.id);
     const move = (e: PointerEvent) => {
       if (!isPresentation()) return;
       if (!fine || e.pointerType === "touch") return;
@@ -152,11 +153,7 @@ export default function MotionLayer() {
       clock += dt;
       ctx.clearRect(0, 0, width, height);
       // Slow ambient points appear only on presentation pages, away from editor work.
-      if (
-        location.hash === "#/portfolio" ||
-        !location.hash ||
-        location.hash === "#/"
-      )
+      if (isPresentation())
         for (let i = 0; i < (fine ? 18 : 8); i++) {
           const x =
             (((i * 173 + 71) % 997) / 997) * width +
@@ -209,6 +206,7 @@ export default function MotionLayer() {
     };
     wake();
     window.addEventListener('hashchange', wake);
+    window.addEventListener('popstate', wake);
     document.addEventListener('visibilitychange', wake);
     window.addEventListener("resize", resize);
     window.addEventListener("pointermove", move, { passive: true });
@@ -216,6 +214,7 @@ export default function MotionLayer() {
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("hashchange", wake);
+      window.removeEventListener("popstate", wake);
       document.removeEventListener("visibilitychange", wake);
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", move);

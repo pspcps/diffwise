@@ -8,7 +8,7 @@ This guide provides a comprehensive map of the PSDevTool repository, outlining d
 
 ```
 psdevtool/
-├── index.html                   # HTML entry point, SEO meta, JSON-LD schemas, dark preloader
+├── index.html                   # HTML template; build injects page metadata and prerendered content
 ├── package.json                 # Dependencies, npm scripts, and build targets
 ├── vite.config.ts               # Vite configuration, React plugin, dev server host & port
 ├── tsconfig.json                # TypeScript compiler configuration & strict rules
@@ -25,7 +25,7 @@ psdevtool/
 ├── docs/                        # Complete technical & architecture documentation
 └── src/
     ├── main.tsx                 # React DOM mount point (`createRoot(root).render(<App />)`)
-    ├── App.tsx                  # Root application router, hash listener, view mode switch
+    ├── App.tsx                  # Root application shell, clean routes and legacy hash compatibility
     ├── index.css                # Global Tailwind CSS imports and utility classes
     ├── types/
     │   ├── index.ts             # Core domain types (ViewMode, FileEntry, MoveOperation)
