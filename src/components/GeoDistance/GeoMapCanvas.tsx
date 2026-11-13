@@ -1,3 +1,4 @@
+import { useToolActive } from "../Workspace/ToolActivity";
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -37,6 +38,7 @@ export function GeoMapCanvas({
   showGeofence = false,
   onPointChange,
 }: GeoMapCanvasProps) {
+  const active = useToolActive();
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const layerRef = useRef<L.LayerGroup | null>(null);
@@ -184,7 +186,7 @@ export function GeoMapCanvas({
   useEffect(() => {
     const map = mapRef.current,
       layers = layerRef.current;
-    if (!map || !layers) return;
+    if (!map || !layers || !active) return;
     layers.clearLayers();
     if (!valid(pointA) || !valid(pointB)) return;
     const route = geodesicPath(pointA, pointB);
@@ -275,6 +277,7 @@ export function GeoMapCanvas({
     showGeofence,
     onPointChange,
     activeRoad,
+    active,
   ]);
 
   useEffect(() => {

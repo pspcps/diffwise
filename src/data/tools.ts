@@ -21,11 +21,13 @@ import {
 } from "lucide-react";
 import type { ViewMode } from "../types";
 
+export const TOOL_CATEGORIES = ["Compare & format", "Inspect & debug", "Create & transform", "Calculate & convert"];
+
 export const TOOLS = [
   {
     id: "text",
     name: "Diff Checker",
-    category: "Code & data",
+    category: "Compare & format",
     description: "Spot every change. Compare code and text, side by side.",
     icon: GitCompareArrows,
     color: "#bdedb0",
@@ -34,7 +36,7 @@ export const TOOLS = [
   {
     id: "json",
     name: "JSON & YAML",
-    category: "Code & data",
+    category: "Compare & format",
     description: "Give your data structure. Format, validate and explore.",
     icon: Braces,
     color: "#c6b8f5",
@@ -42,7 +44,7 @@ export const TOOLS = [
   {
     id: "api",
     name: "API Desk",
-    category: "Network",
+    category: "Inspect & debug",
     description: "Build requests. Explore responses. Find your flow.",
     icon: Send,
     color: "#eec5a2",
@@ -50,7 +52,7 @@ export const TOOLS = [
   {
     id: "architecture",
     name: "Architecture Lab",
-    category: "Create",
+    category: "Create & transform",
     description: "Turn complex systems into clear, connected diagrams.",
     icon: Network,
     color: "#aacff0",
@@ -58,7 +60,7 @@ export const TOOLS = [
   {
     id: "regex",
     name: "Regex Lab",
-    category: "Code & data",
+    category: "Compare & format",
     description: "Test patterns in real time. Make every match count.",
     icon: Regex,
     color: "#e5b5d0",
@@ -66,7 +68,7 @@ export const TOOLS = [
   {
     id: "pdf",
     name: "PDF Studio",
-    category: "Create",
+    category: "Create & transform",
     description: "Merge, split and convert documents in your browser.",
     icon: Files,
     color: "#e9d99d",
@@ -74,7 +76,7 @@ export const TOOLS = [
   {
     id: "file",
     name: "File & Folder Diff",
-    category: "Code & data",
+    category: "Compare & format",
     description: "Explore the differences across your local files.",
     icon: FolderGit2,
     color: "#bdedb0",
@@ -82,7 +84,7 @@ export const TOOLS = [
   {
     id: "har",
     name: "HAR Viewer",
-    category: "Network",
+    category: "Inspect & debug",
     description: "Follow every request with a network waterfall.",
     icon: Globe,
     color: "#aacff0",
@@ -90,7 +92,7 @@ export const TOOLS = [
   {
     id: "jwt",
     name: "JWT Debugger",
-    category: "Network",
+    category: "Inspect & debug",
     description: "Decode tokens and inspect their claims.",
     icon: KeyRound,
     color: "#e5b5d0",
@@ -98,7 +100,7 @@ export const TOOLS = [
   {
     id: "uuid",
     name: "ID Generator",
-    category: "Utilities",
+    category: "Calculate & convert",
     description: "Generate UUIDs, ULIDs and unique identifiers.",
     icon: Fingerprint,
     color: "#c6b8f5",
@@ -106,7 +108,7 @@ export const TOOLS = [
   {
     id: "image_studio",
     name: "Image Studio",
-    category: "Create",
+    category: "Create & transform",
     description: "Crop, compress and transform your next visual.",
     icon: Image,
     color: "#eec5a2",
@@ -114,7 +116,7 @@ export const TOOLS = [
   {
     id: "time",
     name: "Time Zones",
-    category: "Utilities",
+    category: "Calculate & convert",
     description: "Make sense of time zones and Unix timestamps.",
     icon: Clock3,
     color: "#aacff0",
@@ -122,7 +124,7 @@ export const TOOLS = [
   {
     id: "base64",
     name: "Image Base64",
-    category: "Utilities",
+    category: "Create & transform",
     description: "Move effortlessly between images and data URLs.",
     icon: Binary,
     color: "#bdedb0",
@@ -130,7 +132,7 @@ export const TOOLS = [
   {
     id: "markup",
     name: "Markup Studio",
-    category: "Code & data",
+    category: "Compare & format",
     description: "Preview HTML. Format XML, Markdown and SQL.",
     icon: Code2,
     color: "#c6b8f5",
@@ -138,7 +140,7 @@ export const TOOLS = [
   {
     id: "case",
     name: "Case Converter",
-    category: "Utilities",
+    category: "Compare & format",
     description: "The right text case, without the busywork.",
     icon: CaseSensitive,
     color: "#e9d99d",
@@ -146,7 +148,7 @@ export const TOOLS = [
   {
     id: "debug",
     name: "DebugFlow",
-    category: "Network",
+    category: "Inspect & debug",
     description: "Untangle errors, logs and stack traces.",
     icon: Bug,
     color: "#eec5a2",
@@ -154,7 +156,7 @@ export const TOOLS = [
   {
     id: "distance",
     name: "Geo Distance",
-    category: "Utilities",
+    category: "Calculate & convert",
     description: "Calculate precise distances between coordinates.",
     icon: Compass,
     color: "#bdedb0",
@@ -162,7 +164,7 @@ export const TOOLS = [
   {
     id: "measure",
     name: "Measure Lab",
-    category: "Utilities",
+    category: "Calculate & convert",
     description: "Convert units in 3D. Explore geometry, algebra and formulas.",
     icon: Ruler,
     color: "#aacff0",
@@ -170,7 +172,7 @@ export const TOOLS = [
   {
     id: "url",
     name: "URL Tools",
-    category: "Utilities",
+    category: "Calculate & convert",
     description: "Encode, decode and explore URL query parameters.",
     icon: Link2,
     color: "#e5b5d0",

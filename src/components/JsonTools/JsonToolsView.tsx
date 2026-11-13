@@ -508,6 +508,7 @@ export default function JsonToolsView() {
   const [sort, setSort] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
   const [expandedRows, setExpandedRows] = useState<Set<number>>(() => new Set());
   const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState(false);
   const [envSource, setEnvSource] = useState(DEFAULT_ENV_SAMPLE);
   const [envJsonOutput, setEnvJsonOutput] = useState(() => {
     try {
@@ -625,16 +626,18 @@ export default function JsonToolsView() {
   const copySource = async () => {
     try {
       await navigator.clipboard.writeText(source);
+      setCopyError(false);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1200);
     } catch {
+      setCopyError(true);
       setCopied(false);
     }
   };
 
   return (
     <section className="flex h-full min-h-0 flex-col bg-[#171d19] text-[#e4ebdd]">
-      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#344435] bg-[#111612] px-4 py-2.5">
+      <header className="workspace-tool-header flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#344435] bg-[#111612] px-4 py-2.5">
         <div>
           <h1 className="text-sm font-semibold">JSON Studio</h1>
           <p className="mt-0.5 text-[11px] text-[#9eac96]">Validate, format, search, and export nested JSON data.</p>
@@ -648,6 +651,7 @@ export default function JsonToolsView() {
         </div>
       </header>
 
+      {copyError && <p className="workspace-feedback" role="status">Clipboard access is blocked. Select the JSON in the editor and copy it manually.</p>}
       <div className="flex shrink-0 items-center justify-between gap-3 border-b border-[#344435] px-4 py-2">
         <div className="flex max-w-full items-center gap-1 overflow-x-auto rounded-md border border-[#344435] p-0.5" role="tablist" aria-label="JSON view">
           {([

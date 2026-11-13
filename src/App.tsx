@@ -3,31 +3,15 @@ import './index.css';
 import Toolbar from './components/Layout/Toolbar';
 import WorkbenchHeading from './components/Layout/WorkbenchHeading';
 import './workbench.css';
-import TextCompareView from './components/TextCompare/TextCompareView';
-import FileCompareView from './components/FileCompare/FileCompareView';
-import CaseConverterView from './components/CaseConverter/CaseConverterView';
-import JsonToolsView from './components/JsonTools/JsonToolsView';
-import TimeZoneView from './components/TimeZone/TimeZoneView';
-import Base64ImageView from './components/Base64Image/Base64ImageView';
-import MarkupStudioView from './components/MarkupStudio/MarkupStudioView';
-import RegexLabView from './components/RegexLab/RegexLabView';
-import UrlToolsView from './components/UrlTools/UrlToolsView';
+import './workspace.css';
+import { rememberTool } from './utils/toolHistory';
+import ToolWorkspace from './components/Workspace/ToolWorkspace';
 import AdBanner from './components/Ads/AdBanner';
 import AboutPanel from './components/About/AboutPanel';
 const PortfolioPage = lazy(() => import('./pages/PortfolioPage'));
 const HomePage = lazy(() => import('./pages/HomePage'));
 import type { ViewMode } from './types';
 
-const ArchitectureLabView = lazy(() => import('./components/ArchitectureLab/ArchitectureLabView'));
-const PdfStudioView = lazy(() => import('./components/PdfStudio/PdfStudioView'));
-const ImageStudioView = lazy(() => import('./components/ImageStudio/ImageStudioView'));
-const HarViewerView = lazy(() => import('./components/HarViewer/HarViewerView'));
-const JwtStudioView = lazy(() => import('./components/JwtStudio/JwtStudioView'));
-const UuidStudioView = lazy(() => import('./components/UuidStudio/UuidStudioView'));
-const ApiStudioView = lazy(() => import('./components/ApiStudio/ApiStudioView'));
-const ErrorDebuggerView = lazy(() => import('./components/ErrorDebugger/ErrorDebuggerView'));
-const MeasureLabView = lazy(() => import('./components/MeasureLab/MeasureLabView'));
-const GeoDistanceView = lazy(() => import('./components/GeoDistance/GeoDistanceView'));
 import CommandPalette from './components/CommandPalette/CommandPalette';
 
 const HASH_TO_MODE: Record<string, ViewMode> = {
@@ -245,6 +229,7 @@ export default function App() {
   }, []);
 
   const routeHash = hash.split('?')[0];
+  useEffect(() => { if (HASH_TO_MODE[routeHash]) rememberTool(HASH_TO_MODE[routeHash]); }, [routeHash]);
 
   // Sync mode when URL hash changes externally
   useEffect(() => {
@@ -320,6 +305,7 @@ export default function App() {
         onPortfolio={goPortfolio}
       />
 
+      <a className="workspace-skip" href="#tool-workspace" onClick={e => { e.preventDefault(); document.getElementById('tool-workspace')?.focus(); }}>Skip to workspace</a>
       <Toolbar
         mode={mode}
         onModeChange={handleModeChange}
@@ -328,121 +314,7 @@ export default function App() {
       />
 
       <WorkbenchHeading mode={mode} />
-      {/* All views stay mounted or dynamically loaded */}
-      <div className="flex-1 min-h-0 relative workbench-frame">
-        <div className={`absolute inset-0 flex flex-col${mode !== 'text' ? ' invisible pointer-events-none' : ''}`}>
-          <TextCompareView />
-        </div>
-        <div className={`absolute inset-0 flex flex-col${mode !== 'file' ? ' invisible pointer-events-none' : ''}`}>
-          <FileCompareView />
-        </div>
-        <div className={`absolute inset-0 flex flex-col${mode !== 'case' ? ' invisible pointer-events-none' : ''}`}>
-          <CaseConverterView />
-        </div>
-        <div className={`absolute inset-0 flex flex-col${mode !== 'json' ? ' invisible pointer-events-none' : ''}`}>
-          <JsonToolsView />
-        </div>
-        <div className={`absolute inset-0 flex flex-col${mode !== 'time' ? ' invisible pointer-events-none' : ''}`}>
-          <TimeZoneView />
-        </div>
-        <div className={`absolute inset-0 flex flex-col${mode !== 'base64' ? ' invisible pointer-events-none' : ''}`}>
-          <Base64ImageView />
-        </div>
-        <div className={`absolute inset-0 flex flex-col${mode !== 'markup' ? ' invisible pointer-events-none' : ''}`}>
-          <MarkupStudioView />
-        </div>
-        <div className={`absolute inset-0 flex flex-col${mode !== 'regex' ? ' invisible pointer-events-none' : ''}`}>
-          <RegexLabView />
-        </div>
-        <div className={`absolute inset-0 flex flex-col${mode !== 'url' ? ' invisible pointer-events-none' : ''}`}>
-          <UrlToolsView />
-        </div>
-
-        {/* Dynamic Heavy Views */}
-        {mode === 'har' && (
-          <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading HAR Viewer…</div>}>
-              <HarViewerView />
-            </Suspense>
-          </div>
-        )}
-
-        {mode === 'api' && (
-          <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading ApiDesk Studio…</div>}>
-              <ApiStudioView />
-            </Suspense>
-          </div>
-        )}
-
-        {mode === 'jwt' && (
-          <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading JWT Debugger…</div>}>
-              <JwtStudioView />
-            </Suspense>
-          </div>
-        )}
-
-
-        {mode === 'uuid' && (
-          <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading UUID Generator…</div>}>
-              <UuidStudioView />
-            </Suspense>
-          </div>
-        )}
-
-        {mode === 'architecture' && (
-          <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading Architecture Lab…</div>}>
-              <ArchitectureLabView />
-            </Suspense>
-          </div>
-        )}
-
-        {mode === 'image_studio' && (
-          <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading Image Studio…</div>}>
-              <ImageStudioView />
-            </Suspense>
-          </div>
-        )}
-
-        {/* DebugFlow Universal Debugger */}
-        {mode === 'debug' && (
-          <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading DebugFlow…</div>}>
-              <ErrorDebuggerView />
-            </Suspense>
-          </div>
-        )}
-
-        {/* Geo Distance & Coordinates Calculator */}
-        {mode === 'distance' && (
-          <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading Geo Distance Calculator…</div>}>
-              <GeoDistanceView />
-            </Suspense>
-          </div>
-        )}
-
-        {mode === 'measure' && (
-          <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading Measure Lab…</div>}>
-              <MeasureLabView />
-            </Suspense>
-          </div>
-        )}
-
-        {/* PDF Studio */}
-        {mode === 'pdf' && (
-          <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading PDF Studio…</div>}>
-              <PdfStudioView />
-            </Suspense>
-          </div>
-        )}
-      </div>
+      <ToolWorkspace mode={mode} />
       <AdBanner />
     </div>
   );

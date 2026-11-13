@@ -1,3 +1,5 @@
+import AdvancedSection from "../Workspace/AdvancedSection";
+import ToolHeader from "../Workspace/ToolHeader";
 import { useMemo, useState } from "react";
 import {
   ArrowLeftRight,
@@ -47,6 +49,23 @@ function equivalent(
   }
 }
 export default function MeasureLabView() {
+  const [showVisual, setShowVisual] = useState(() => {
+    try {
+      return localStorage.getItem("psdev-measure-visual") !== "off";
+    } catch {
+      return true;
+    }
+  });
+  const toggleVisual = () =>
+    setShowVisual((value) => {
+      const next = !value;
+      try {
+        localStorage.setItem("psdev-measure-visual", next ? "on" : "off");
+      } catch {
+        /* Optional preference. */
+      }
+      return next;
+    });
   const [tab, setTab] = useState<"convert" | "geometry" | "algebra">("convert");
   const [category, setCategory] = useState("length");
   const quantity = QUANTITIES.find((q) => q.id === category)!;
@@ -54,6 +73,7 @@ export default function MeasureLabView() {
     [to, setTo] = useState("ft"),
     [input, setInput] = useState("175");
   const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState(false);
   const calculation = useMemo(() => {
     try {
       return {
@@ -153,24 +173,30 @@ export default function MeasureLabView() {
         `${numberText(calculation.data.result)} ${to}`,
       );
       setCopied(true);
+      setCopyError(false);
       window.setTimeout(() => setCopied(false), 1800);
     } catch {
+      setCopyError(true);
       setCopied(false);
     }
   }
   const base = calculation.data?.base || 0;
   return (
     <div className="measure-lab">
-      <div className="measure-intro">
-        <span className="measure-eyebrow">MEASURE. UNDERSTAND. EXPLORE.</span>
-        <h1>
-          Make numbers tangible<span>.</span>
-        </h1>
-        <p>
-          Convert everyday measurements, explore shapes, and solve
-          equations—with formulas you can follow.
-        </p>
-      </div>
+      <ToolHeader
+        title="Measure Lab"
+        description="Convert units, explore shapes, and solve equations with formulas you can follow."
+        actions={
+          <button
+            type="button"
+            className="workspace-secondary"
+            aria-pressed={showVisual}
+            onClick={toggleVisual}
+          >
+            <Cuboid size={16} /> 3D view: {showVisual ? "on" : "off"}
+          </button>
+        }
+      />
       <nav className="measure-tabs" aria-label="Measurement workspace">
         <button
           type="button"
@@ -213,7 +239,7 @@ export default function MeasureLabView() {
               {quantity.units.length} compatible units · calculated locally
             </span>
           </div>
-          <div className="measure-workspace">
+          <div className="measure-workspace" data-visual={showVisual}>
             <section className="measure-card">
               <span className="measure-eyebrow">YOUR MEASUREMENT</span>
               <label className="measure-input-label" htmlFor="measurement">
@@ -286,78 +312,88 @@ export default function MeasureLabView() {
                     <Copy size={14} />
                     {copied ? "Copied" : "Copy result"}
                   </button>
+                  {copyError && (
+                    <p className="measure-note" role="status">
+                      Clipboard access is blocked. Select the result above and
+                      copy it manually.
+                    </p>
+                  )}
                 </div>
               )}
-              <div className="measure-formula">
-                <strong>How it converts</strong>
-                <code>
-                  base = value × source factor + source offset
-                  <br />
-                  result = (base − target offset) / target factor
-                </code>
-                {calculation.data && (
-                  <p>
-                    ({input} × {numberText(calculation.data.from.factor)} +{" "}
-                    {numberText(calculation.data.from.offset || 0)} −{" "}
-                    {numberText(calculation.data.to.offset || 0)}) ÷{" "}
-                    {numberText(calculation.data.to.factor)} ={" "}
-                    {numberText(calculation.data.result)} {to}
-                  </p>
-                )}
-                <small>
-                  Base unit: {quantity.base}. Floating-point results are rounded
-                  for display. All units follow the definitions named in the
-                  selector.
-                </small>
-              </div>
-            </section>
-            <section className="measure-visual-card">
-              <div className="visual-caption">
-                <span>LIVE 3D · {quantity.name.toUpperCase()}</span>
-                <span>Drag to orbit · scroll to zoom</span>
-              </div>
-              <MeasurementScene
-                kind={quantity.scene}
-                fraction={base / quantity.reference}
-                description={quantity.context}
-              />
-              <p>{quantity.context}</p>
-              <label className="visual-slider">
-                Explore the scale{" "}
-                <input
-                  aria-label="Explore measurement scale"
-                  type="range"
-                  min="0"
-                  max="1000"
-                  value={Math.max(
-                    0,
-                    Math.min(1000, (base / quantity.reference) * 1000),
+              <AdvancedSection title="How this conversion works">
+                <div className="measure-formula">
+                  <strong>How it converts</strong>
+                  <code>
+                    base = value × source factor + source offset
+                    <br />
+                    result = (base − target offset) / target factor
+                  </code>
+                  {calculation.data && (
+                    <p>
+                      ({input} × {numberText(calculation.data.from.factor)} +{" "}
+                      {numberText(calculation.data.from.offset || 0)} −{" "}
+                      {numberText(calculation.data.to.offset || 0)}) ÷{" "}
+                      {numberText(calculation.data.to.factor)} ={" "}
+                      {numberText(calculation.data.result)} {to}
+                    </p>
                   )}
-                  onChange={(e) => {
-                    const unit = quantity.units.find((u) => u.id === from)!;
-                    setInput(
-                      String(
-                        Number(
-                          (
-                            ((Number(e.target.value) / 1000) *
-                              quantity.reference -
-                              (unit.offset || 0)) /
-                            unit.factor
-                          ).toPrecision(10),
-                        ),
-                      ),
-                    );
-                  }}
-                />
-              </label>
-              <small>
-                Illustration range: 0–{numberText(quantity.reference)}{" "}
-                {quantity.base}.
-                {Math.abs(base) > quantity.reference
-                  ? " Visual is capped; the numeric conversion above is unchanged."
-                  : ""}
-              </small>
+                  <small>
+                    Base unit: {quantity.base}. Floating-point results are
+                    rounded for display. All units follow the definitions named
+                    in the selector.
+                  </small>
+                </div>
+              </AdvancedSection>
             </section>
+            {showVisual && (
+              <section className="measure-visual-card">
+                <div className="visual-caption">
+                  <span>LIVE 3D · {quantity.name.toUpperCase()}</span>
+                  <span>Drag to orbit · scroll to zoom</span>
+                </div>
+                <MeasurementScene
+                  kind={quantity.scene}
+                  fraction={base / quantity.reference}
+                  description={quantity.context}
+                />
+                <p>{quantity.context}</p>
+                <label className="visual-slider">
+                  Explore the scale{" "}
+                  <input
+                    aria-label="Explore measurement scale"
+                    type="range"
+                    min="0"
+                    max="1000"
+                    value={Math.max(
+                      0,
+                      Math.min(1000, (base / quantity.reference) * 1000),
+                    )}
+                    onChange={(e) => {
+                      const unit = quantity.units.find((u) => u.id === from)!;
+                      setInput(
+                        String(
+                          Number(
+                            (
+                              ((Number(e.target.value) / 1000) *
+                                quantity.reference -
+                                (unit.offset || 0)) /
+                              unit.factor
+                            ).toPrecision(10),
+                          ),
+                        ),
+                      );
+                    }}
+                  />
+                </label>
+                <small>
+                  Illustration range: 0–{numberText(quantity.reference)}{" "}
+                  {quantity.base}.
+                  {Math.abs(base) > quantity.reference
+                    ? " Visual is capped; the numeric conversion above is unchanged."
+                    : ""}
+                </small>
+              </section>
+            )}
           </div>
           <section className="measure-card equivalents">
             <h2>One measurement. Every compatible unit.</h2>
@@ -413,7 +449,7 @@ export default function MeasureLabView() {
               </select>
             </label>
           </div>
-          <div className="measure-workspace">
+          <div className="measure-workspace" data-visual={showVisual}>
             <section className="measure-card">
               <span className="measure-eyebrow">
                 {shape.name.toUpperCase()} DIMENSIONS
@@ -474,24 +510,26 @@ export default function MeasureLabView() {
                 </small>
               </div>
             </section>
-            <section className="measure-visual-card">
-              <div className="visual-caption">
-                <span>LIVE 3D · {shape.name.toUpperCase()}</span>
-                <span>Drag to orbit</span>
-              </div>
-              <MeasurementScene
-                kind="geometry"
-                fraction={1}
-                shape={shapeId}
-                dimensions={geometry.dimensions}
-                description={`Interactive ${shape.name} model; proportions follow the entered dimensions.`}
-              />
-              <p>
-                {geometry.error
-                  ? "Correct the dimensions to calculate this shape. A sample model is displayed."
-                  : "Change a dimension to reshape the model. Thin surfaces represent plane shapes."}
-              </p>
-            </section>
+            {showVisual && (
+              <section className="measure-visual-card">
+                <div className="visual-caption">
+                  <span>LIVE 3D · {shape.name.toUpperCase()}</span>
+                  <span>Drag to orbit</span>
+                </div>
+                <MeasurementScene
+                  kind="geometry"
+                  fraction={1}
+                  shape={shapeId}
+                  dimensions={geometry.dimensions}
+                  description={`Interactive ${shape.name} model; proportions follow the entered dimensions.`}
+                />
+                <p>
+                  {geometry.error
+                    ? "Correct the dimensions to calculate this shape. A sample model is displayed."
+                    : "Change a dimension to reshape the model. Thin surfaces represent plane shapes."}
+                </p>
+              </section>
+            )}
           </div>
         </>
       )}
@@ -522,7 +560,7 @@ export default function MeasureLabView() {
               ))}
             </select>
           </div>
-          <div className="measure-workspace">
+          <div className="measure-workspace" data-visual={showVisual}>
             <section className="measure-card">
               <span className="measure-eyebrow">
                 {algebra.name.toUpperCase()}
@@ -577,38 +615,40 @@ export default function MeasureLabView() {
                 <RotateCcw size={14} /> Reset example
               </button>
             </section>
-            <section className="measure-visual-card">
-              {solution.data?.plot.length ? (
-                <>
-                  <div className="visual-caption">
-                    <span>INTERACTIVE GRAPH</span>
-                    <span>Drag to inspect</span>
+            {showVisual && (
+              <section className="measure-visual-card">
+                {solution.data?.plot.length ? (
+                  <>
+                    <div className="visual-caption">
+                      <span>INTERACTIVE GRAPH</span>
+                      <span>Drag to inspect</span>
+                    </div>
+                    <MeasurementScene
+                      kind="algebra"
+                      fraction={1}
+                      plot={solution.data.plot}
+                      description="A plot of the equation or sequence. Each axis is scaled independently to fit the stage."
+                    />
+                    <p>{solution.data.note}</p>
+                    <small>
+                      Axes are scaled independently to fit the curve. Use the
+                      numerical solutions for exact values.
+                    </small>
+                  </>
+                ) : (
+                  <div className="formula-poster">
+                    <Calculator size={48} />
+                    <span>THE RELATIONSHIP</span>
+                    <h2>{algebra.name}</h2>
+                    <code>{algebra.formula}</code>
+                    <p>
+                      {solution.data?.note ||
+                        "Enter values to follow the calculation."}
+                    </p>
                   </div>
-                  <MeasurementScene
-                    kind="algebra"
-                    fraction={1}
-                    plot={solution.data.plot}
-                    description="A plot of the equation or sequence. Each axis is scaled independently to fit the stage."
-                  />
-                  <p>{solution.data.note}</p>
-                  <small>
-                    Axes are scaled independently to fit the curve. Use the
-                    numerical solutions for exact values.
-                  </small>
-                </>
-              ) : (
-                <div className="formula-poster">
-                  <Calculator size={48} />
-                  <span>THE RELATIONSHIP</span>
-                  <h2>{algebra.name}</h2>
-                  <code>{algebra.formula}</code>
-                  <p>
-                    {solution.data?.note ||
-                      "Enter values to follow the calculation."}
-                  </p>
-                </div>
-              )}
-            </section>
+                )}
+              </section>
+            )}
           </div>
         </>
       )}

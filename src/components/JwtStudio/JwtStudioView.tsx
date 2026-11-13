@@ -1,6 +1,7 @@
-import { useState, useEffect, useMemo } from 'react';
+import ToolHeader from "../Workspace/ToolHeader";
+import { useToolActive } from "../Workspace/ToolActivity";
+import { useState, useEffect, useMemo, useRef } from "react";
 import {
-  KeyRound,
   ShieldCheck,
   ShieldAlert,
   Copy,
@@ -12,134 +13,158 @@ import {
   Terminal,
   Edit3,
   ClipboardPaste,
-} from 'lucide-react';
+} from "lucide-react";
 
 function base64UrlEncode(str: string): string {
   try {
     return btoa(unescape(encodeURIComponent(str)))
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '');
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
   } catch {
-    return '';
+    return "";
   }
 }
 
 function base64UrlDecode(str: string): string {
   try {
-    let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+    let base64 = str.replace(/-/g, "+").replace(/_/g, "/");
     while (base64.length % 4) {
-      base64 += '=';
+      base64 += "=";
     }
     return decodeURIComponent(escape(atob(base64)));
   } catch {
-    return '';
+    return "";
   }
 }
 
 const STANDARD_CLAIM_LABELS: Record<string, string> = {
-  iss: 'Issuer',
-  sub: 'Subject',
-  aud: 'Audience',
-  exp: 'Expiration Time',
-  nbf: 'Not Before',
-  iat: 'Issued At',
-  jti: 'JWT ID',
+  iss: "Issuer",
+  sub: "Subject",
+  aud: "Audience",
+  exp: "Expiration Time",
+  nbf: "Not Before",
+  iat: "Issued At",
+  jti: "JWT ID",
 };
 
 // Native Web Cryptography HMAC-SHA256 signature verification and creation
-async function computeHmacSha256(data: string, secret: string): Promise<string> {
+async function computeHmacSha256(
+  data: string,
+  secret: string,
+): Promise<string> {
   try {
     const enc = new TextEncoder();
     const key = await crypto.subtle.importKey(
-      'raw',
+      "raw",
       enc.encode(secret),
-      { name: 'HMAC', hash: 'SHA-256' },
+      { name: "HMAC", hash: "SHA-256" },
       false,
-      ['sign']
+      ["sign"],
     );
-    const signature = await crypto.subtle.sign('HMAC', key, enc.encode(data));
+    const signature = await crypto.subtle.sign("HMAC", key, enc.encode(data));
     const base64 = btoa(String.fromCharCode(...new Uint8Array(signature)))
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '');
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
     return base64;
   } catch {
-    return '';
+    return "";
   }
 }
 
 const SAMPLE_TOKENS = {
   valid: {
-    label: 'Standard User (Valid)',
-    header: { alg: 'HS256', typ: 'JWT' },
+    label: "Standard User (Valid)",
+    header: { alg: "HS256", typ: "JWT" },
     payload: {
-      sub: 'usr_8829104',
-      name: 'Sarah Connor',
-      email: 'sarah.connor@psdevtool.online',
-      role: 'developer',
-      tier: 'pro',
+      sub: "usr_8829104",
+      name: "Sarah Connor",
+      email: "sarah.connor@psdevtool.online",
+      role: "developer",
+      tier: "pro",
       iat: Math.floor(Date.now() / 1000) - 300,
       exp: Math.floor(Date.now() / 1000) + 7200, // 2 hours in future
-      iss: 'https://auth.psdevtool.online',
+      iss: "https://auth.psdevtool.online",
     },
-    secret: 'your-256-bit-secret',
+    secret: "your-256-bit-secret",
   },
   admin: {
-    label: 'Admin Role (RBAC)',
-    header: { alg: 'HS256', typ: 'JWT' },
+    label: "Admin Role (RBAC)",
+    header: { alg: "HS256", typ: "JWT" },
     payload: {
-      sub: 'adm_9918231',
-      name: 'Alexander Pierce',
-      email: 'admin@company.internal',
-      role: 'super_admin',
-      permissions: ['users.read', 'users.write', 'billing.manage', 'db.admin'],
+      sub: "adm_9918231",
+      name: "Alexander Pierce",
+      email: "admin@company.internal",
+      role: "super_admin",
+      permissions: ["users.read", "users.write", "billing.manage", "db.admin"],
       iat: Math.floor(Date.now() / 1000) - 600,
       exp: Math.floor(Date.now() / 1000) + 86400, // 24 hours
-      iss: 'https://security.company.com',
-      aud: 'https://api.company.com',
+      iss: "https://security.company.com",
+      aud: "https://api.company.com",
     },
-    secret: 'super-secret-admin-key',
+    secret: "super-secret-admin-key",
   },
   expired: {
-    label: 'Expired Token',
-    header: { alg: 'HS256', typ: 'JWT' },
+    label: "Expired Token",
+    header: { alg: "HS256", typ: "JWT" },
     payload: {
-      sub: 'usr_expired_331',
-      name: 'Expired Session',
+      sub: "usr_expired_331",
+      name: "Expired Session",
       iat: 1672531199, // 2023
       exp: 1672534799,
-      iss: 'https://auth.psdevtool.online',
+      iss: "https://auth.psdevtool.online",
     },
-    secret: 'secret-key-123',
+    secret: "secret-key-123",
   },
 };
 
 export default function JwtStudioView() {
-  const [tokenInput, setTokenInput] = useState('');
-  const [headerJson, setHeaderJson] = useState('{\n  "alg": "HS256",\n  "typ": "JWT"\n}');
-  const [payloadJson, setPayloadJson] = useState('{\n  "sub": "1234567890",\n  "name": "John Doe",\n  "iat": 1516239022\n}');
-  const [secretKey, setSecretKey] = useState('your-256-bit-secret');
-  const [signatureStatus, setSignatureStatus] = useState<'valid' | 'invalid' | 'unchecked'>('unchecked');
+  const toolActive = useToolActive();
+  const verificationVersion = useRef(0);
+  const [copyError, setCopyError] = useState(false);
+  const [tokenInput, setTokenInput] = useState("");
+  const [headerJson, setHeaderJson] = useState(
+    '{\n  "alg": "HS256",\n  "typ": "JWT"\n}',
+  );
+  const [payloadJson, setPayloadJson] = useState(
+    '{\n  "sub": "1234567890",\n  "name": "John Doe",\n  "iat": 1516239022\n}',
+  );
+  const [showSecret, setShowSecret] = useState(false);
+  const [secretKey, setSecretKey] = useState("your-256-bit-secret");
+  const [signatureStatus, setSignatureStatus] = useState<
+    "valid" | "invalid" | "unchecked" | "unsupported"
+  >("unchecked");
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
-  const [currentTimestamp, setCurrentTimestamp] = useState(() => Math.floor(Date.now() / 1000));
+  const [currentTimestamp, setCurrentTimestamp] = useState(() =>
+    Math.floor(Date.now() / 1000),
+  );
 
   useEffect(() => {
+    if (!toolActive) return;
     const timer = setInterval(() => {
-      setCurrentTimestamp(Math.floor(Date.now() / 1000));
+      if (!document.hidden) setCurrentTimestamp(Math.floor(Date.now() / 1000));
     }, 15000);
     return () => clearInterval(timer);
-  }, []);
+  }, [toolActive]);
   const [parseError, setParseError] = useState<string | null>(null);
   const [isEditingToken, setIsEditingToken] = useState(false);
 
-  const handleCopy = (text: string, key: string) => {
-    navigator.clipboard.writeText(text);
+  const handleCopy = async (text: string, key: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopyError(false);
+    } catch {
+      setCopyError(true);
+      return;
+    }
     setCopiedKey(key);
     setTimeout(() => setCopiedKey(null), 2000);
   };
 
   const loadSample = async (type: keyof typeof SAMPLE_TOKENS) => {
+    const generation = ++verificationVersion.current;
+    setSignatureStatus("unchecked");
     const s = SAMPLE_TOKENS[type];
     const hStr = JSON.stringify(s.header, null, 2);
     const pStr = JSON.stringify(s.payload, null, 2);
@@ -150,29 +175,38 @@ export default function JwtStudioView() {
     const hB64 = base64UrlEncode(JSON.stringify(s.header));
     const pB64 = base64UrlEncode(JSON.stringify(s.payload));
     const sig = await computeHmacSha256(`${hB64}.${pB64}`, s.secret);
+    if (generation !== verificationVersion.current) return;
     setTokenInput(`${hB64}.${pB64}.${sig}`);
-    setSignatureStatus('valid');
+    setSignatureStatus("valid");
     setParseError(null);
   };
 
   // Initialize with sample token on first load
   useEffect(() => {
-    loadSample('valid');
+    loadSample("valid");
   }, []);
 
   // When user edits the raw token input string:
   const handleTokenChange = async (rawToken: string) => {
+    const generation = ++verificationVersion.current;
+    setSignatureStatus("unchecked");
     const trimmed = rawToken.trim();
     setTokenInput(trimmed);
     if (!trimmed) {
+      setHeaderJson("");
+      setPayloadJson("");
       setParseError(null);
-      setSignatureStatus('unchecked');
+      setSignatureStatus("unchecked");
       return;
     }
 
-    const parts = trimmed.split('.');
-    if (parts.length < 2) {
-      setParseError('A valid JWT must contain at least 2 dot-separated segments (Header and Payload).');
+    const parts = trimmed.split(".");
+    if (parts.length !== 3) {
+      setHeaderJson("");
+      setPayloadJson("");
+      setParseError(
+        "Enter three dot-separated JWT segments: header.payload.signature.",
+      );
       return;
     }
 
@@ -188,20 +222,34 @@ export default function JwtStudioView() {
       }
       setParseError(null);
 
-      // Verify signature if secret provided and algorithm is HS256
+      // This inspector supports HS256 only. Other algorithms are never marked verified.
+      const header = JSON.parse(decodedHeader);
+      if (header?.alg !== "HS256") {
+        setSignatureStatus("unsupported");
+        return;
+      }
       if (parts.length === 3 && secretKey) {
-        const expectedSig = await computeHmacSha256(`${parts[0]}.${parts[1]}`, secretKey);
-        setSignatureStatus(expectedSig === parts[2] ? 'valid' : 'invalid');
+        const expectedSig = await computeHmacSha256(
+          `${parts[0]}.${parts[1]}`,
+          secretKey,
+        );
+        if (generation === verificationVersion.current)
+          setSignatureStatus(expectedSig === parts[2] ? "valid" : "invalid");
       } else {
-        setSignatureStatus('unchecked');
+        setSignatureStatus("unchecked");
       }
     } catch {
-      setParseError('Unable to parse token segments as valid JSON.');
+      if (generation !== verificationVersion.current) return;
+      setHeaderJson("");
+      setPayloadJson("");
+      setParseError("Unable to parse token segments as valid JSON.");
     }
   };
 
   // When user edits JSON in the Header or Payload boxes, recalculate the token:
   const handleJsonEdit = async (newHeader: string, newPayload: string) => {
+    const generation = ++verificationVersion.current;
+    setSignatureStatus("unchecked");
     setHeaderJson(newHeader);
     setPayloadJson(newPayload);
     try {
@@ -209,9 +257,15 @@ export default function JwtStudioView() {
       const parsedP = JSON.parse(newPayload);
       const hB64 = base64UrlEncode(JSON.stringify(parsedH));
       const pB64 = base64UrlEncode(JSON.stringify(parsedP));
+      if (parsedH?.alg !== "HS256") {
+        setTokenInput(`${hB64}.${pB64}.`);
+        setSignatureStatus("unsupported");
+        return;
+      }
       const sig = await computeHmacSha256(`${hB64}.${pB64}`, secretKey);
+      if (generation !== verificationVersion.current) return;
       setTokenInput(`${hB64}.${pB64}.${sig}`);
-      setSignatureStatus('valid');
+      setSignatureStatus("valid");
       setParseError(null);
     } catch {
       // User is mid-edit of JSON
@@ -220,13 +274,25 @@ export default function JwtStudioView() {
 
   // Verify signature when secret changes
   const handleSecretChange = async (newSecret: string) => {
+    const generation = ++verificationVersion.current;
     setSecretKey(newSecret);
-    const parts = tokenInput.trim().split('.');
-    if (parts.length === 3 && newSecret) {
-      const expectedSig = await computeHmacSha256(`${parts[0]}.${parts[1]}`, newSecret);
-      setSignatureStatus(expectedSig === parts[2] ? 'valid' : 'invalid');
-    } else {
-      setSignatureStatus('unchecked');
+    setSignatureStatus("unchecked");
+    try {
+      const parts = tokenInput.trim().split(".");
+      if (parts.length !== 3 || !newSecret) return;
+      const header = JSON.parse(base64UrlDecode(parts[0]));
+      if (header?.alg !== "HS256") {
+        setSignatureStatus("unsupported");
+        return;
+      }
+      const expected = await computeHmacSha256(
+        `${parts[0]}.${parts[1]}`,
+        newSecret,
+      );
+      if (generation === verificationVersion.current)
+        setSignatureStatus(expected === parts[2] ? "valid" : "invalid");
+    } catch {
+      /* Incomplete tokens stay unverified. */
     }
   };
 
@@ -242,7 +308,7 @@ export default function JwtStudioView() {
 
   // Expiration calculation
   const expStatus = useMemo(() => {
-    if (!claims || typeof claims.exp !== 'number') return null;
+    if (!claims || typeof claims.exp !== "number") return null;
     const diff = claims.exp - currentTimestamp;
     const expDate = new Date(claims.exp * 1000);
 
@@ -278,49 +344,46 @@ export default function JwtStudioView() {
 
   // Split token into visual chunks for display
   const tokenParts = useMemo(() => {
-    const parts = tokenInput.trim().split('.');
+    const parts = tokenInput.trim().split(".");
     return {
-      header: parts[0] || '',
-      payload: parts[1] || '',
-      signature: parts[2] || '',
+      header: parts[0] || "",
+      payload: parts[1] || "",
+      signature: parts[2] || "",
     };
   }, [tokenInput]);
 
   return (
     <div className="flex-1 flex flex-col h-full bg-[#111612] text-[#e4ebdd] overflow-hidden">
-      {/* Top Bar */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-[#171d19] border-b border-[#344435] gap-3 shrink-0 flex-wrap">
-        <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-[#f19aa6]/10 text-[#f19aa6] border border-[#f19aa6]/20">
-            <KeyRound size={16} />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-[#e4ebdd]">JWT Inspector</h2>
-              <span className="px-2 py-0.5 text-[10px] rounded-full bg-[#b5dfa3]/15 text-[#b5dfa3] font-semibold border border-[#b5dfa3]/30">
-                Local token analysis
-              </span>
-            </div>
-            <p className="text-[11px] text-[#b1bea8]">
-              Decode tokens, inspect claims, verify HMAC-SHA256 signatures, and calculate expiration timestamps locally
-            </p>
-          </div>
-        </div>
+      <ToolHeader
+        title="JWT Debugger"
+        description="Inspect claims and expiry. HS256 verification runs locally; decoding alone does not verify a token."
+        actions={
+          <select
+            aria-label="Load a sample JWT"
+            value=""
+            onChange={(e) => {
+              if (e.target.value)
+                loadSample(e.target.value as keyof typeof SAMPLE_TOKENS);
+            }}
+          >
+            <option value="" disabled>
+              Try a sample…
+            </option>
+            {(["valid", "admin", "expired"] as const).map((type) => (
+              <option key={type} value={type}>
+                {SAMPLE_TOKENS[type].label}
+              </option>
+            ))}
+          </select>
+        }
+      />
 
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[11px] text-[#b1bea8]">Samples:</span>
-          {(['valid', 'admin', 'expired'] as const).map(type => (
-            <button
-              key={type}
-              onClick={() => loadSample(type)}
-              className="px-2.5 py-1 rounded-lg bg-[#344435] hover:bg-[#71836b] text-xs font-medium text-[#e4ebdd] border border-[#71836b] transition-all"
-            >
-              {SAMPLE_TOKENS[type].label}
-            </button>
-          ))}
-        </div>
-      </div>
-
+      {copyError && (
+        <p className="workspace-feedback" role="status">
+          Clipboard access is blocked. Select the token or decoded JSON and copy
+          it manually.
+        </p>
+      )}
       {/* Main Grid: Encoded Token (Left) vs Decoded JSON (Right) */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-[#344435] min-h-0 overflow-y-auto">
         {/* LEFT COLUMN: ENCODED TOKEN */}
@@ -328,13 +391,17 @@ export default function JwtStudioView() {
           {/* Unified Single Box Header */}
           <div className="flex items-center justify-between gap-2 flex-wrap">
             <div className="flex items-center gap-2">
-              <label className="text-xs font-bold text-[#e4ebdd]">Input or Replace JWT String:</label>
+              <label className="text-xs font-bold text-[#e4ebdd]">
+                Input or Replace JWT String:
+              </label>
               <div className="flex items-center rounded-lg bg-[#0d120f] border border-[#344435] p-0.5 text-[10px]">
                 <button
                   type="button"
                   onClick={() => setIsEditingToken(false)}
                   className={`px-2 py-0.5 rounded font-medium transition-colors ${
-                    !isEditingToken ? 'bg-[#c8edb6]/20 text-[#c8edb6] font-bold' : 'text-[#9eac96] hover:text-[#e4ebdd]'
+                    !isEditingToken
+                      ? "bg-[#c8edb6]/20 text-[#c8edb6] font-bold"
+                      : "text-[#9eac96] hover:text-[#e4ebdd]"
                   }`}
                 >
                   Color-Coded
@@ -343,7 +410,9 @@ export default function JwtStudioView() {
                   type="button"
                   onClick={() => setIsEditingToken(true)}
                   className={`px-2 py-0.5 rounded font-medium transition-colors ${
-                    isEditingToken ? 'bg-[#c8edb6]/20 text-[#c8edb6] font-bold' : 'text-[#9eac96] hover:text-[#e4ebdd]'
+                    isEditingToken
+                      ? "bg-[#c8edb6]/20 text-[#c8edb6] font-bold"
+                      : "text-[#9eac96] hover:text-[#e4ebdd]"
                   }`}
                 >
                   Edit / Paste
@@ -371,19 +440,29 @@ export default function JwtStudioView() {
               </button>
               <button
                 type="button"
-                onClick={() => handleCopy(tokenInput, 'token')}
+                onClick={() => handleCopy(tokenInput, "token")}
                 className="flex items-center gap-1 text-[11px] text-[#c8edb6] hover:underline"
               >
-                {copiedKey === 'token' ? <Check size={12} /> : <Copy size={12} />}
+                {copiedKey === "token" ? (
+                  <Check size={12} />
+                ) : (
+                  <Copy size={12} />
+                )}
                 Copy Token
               </button>
               <button
                 type="button"
-                onClick={() => handleCopy(`Authorization: Bearer ${tokenInput}`, 'curl')}
+                onClick={() =>
+                  handleCopy(`Authorization: Bearer ${tokenInput}`, "curl")
+                }
                 className="flex items-center gap-1 text-[11px] text-[#ceb8f6] hover:underline"
                 title="Copy Authorization: Bearer header"
               >
-                {copiedKey === 'curl' ? <Check size={12} /> : <Terminal size={12} />}
+                {copiedKey === "curl" ? (
+                  <Check size={12} />
+                ) : (
+                  <Terminal size={12} />
+                )}
                 Copy cURL
               </button>
             </div>
@@ -400,14 +479,21 @@ export default function JwtStudioView() {
                 {tokenInput.trim() ? (
                   <>
                     <span className="text-[#f19aa6]">{tokenParts.header}</span>
-                    {tokenParts.payload && <span className="text-[#e4ebdd]">.</span>}
+                    {tokenParts.payload && (
+                      <span className="text-[#e4ebdd]">.</span>
+                    )}
                     <span className="text-[#ceb8f6]">{tokenParts.payload}</span>
-                    {tokenParts.signature && <span className="text-[#e4ebdd]">.</span>}
-                    <span className="text-[#c8edb6]">{tokenParts.signature}</span>
+                    {tokenParts.signature && (
+                      <span className="text-[#e4ebdd]">.</span>
+                    )}
+                    <span className="text-[#c8edb6]">
+                      {tokenParts.signature}
+                    </span>
                   </>
                 ) : (
                   <span className="text-[#899980] italic">
-                    Paste or enter your JWT string here (e.g. eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...)...
+                    Paste or enter your JWT string here (e.g.
+                    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...)...
                   </span>
                 )}
 
@@ -420,13 +506,16 @@ export default function JwtStudioView() {
               <div className="space-y-1.5">
                 <textarea
                   autoFocus
+                  aria-label="JWT token"
                   value={tokenInput}
                   onChange={(e) => handleTokenChange(e.target.value)}
                   placeholder="Paste or enter your JWT string here (eyJhbGciOi...)..."
                   className="w-full h-36 p-3 bg-[#0d120f] border border-[#c8edb6] rounded-xl font-mono text-xs text-[#e4ebdd] focus:outline-none resize-none leading-relaxed break-all"
                 />
                 <div className="flex justify-between items-center">
-                  <span className="text-[10px] text-[#9eac96]">Press Done when finished to view color breakdown</span>
+                  <span className="text-[10px] text-[#9eac96]">
+                    Press Done when finished to view color breakdown
+                  </span>
                   <button
                     type="button"
                     onClick={() => setIsEditingToken(false)}
@@ -441,13 +530,16 @@ export default function JwtStudioView() {
             {/* Token segment color legend */}
             <div className="flex items-center gap-3 text-[10px] text-[#b1bea8]">
               <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#f19aa6]" /> Header
+                <span className="w-2.5 h-2.5 rounded-full bg-[#f19aa6]" />{" "}
+                Header
               </span>
               <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#ceb8f6]" /> Payload
+                <span className="w-2.5 h-2.5 rounded-full bg-[#ceb8f6]" />{" "}
+                Payload
               </span>
               <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#c8edb6]" /> Signature
+                <span className="w-2.5 h-2.5 rounded-full bg-[#c8edb6]" />{" "}
+                Signature
               </span>
             </div>
           </div>
@@ -467,12 +559,20 @@ export default function JwtStudioView() {
                 HMAC-SHA256 (HS256) Signature Check
               </span>
 
-              {signatureStatus === 'valid' && (
+              {signatureStatus === "valid" && (
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#b5dfa3]/15 text-[#b5dfa3] border border-[#b5dfa3]/30 flex items-center gap-1">
                   <ShieldCheck size={12} /> Signature Verified
                 </span>
               )}
-              {signatureStatus === 'invalid' && (
+              {signatureStatus === "unsupported" && (
+                <span className="text-xs text-[#f3c18e]">
+                  Unsupported algorithm · HS256 only
+                </span>
+              )}
+              {signatureStatus === "unchecked" && (
+                <span className="text-xs text-[#b1bea8]">Not verified</span>
+              )}
+              {signatureStatus === "invalid" && (
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#f19aa6]/15 text-[#f19aa6] border border-[#f19aa6]/30 flex items-center gap-1">
                   <ShieldAlert size={12} /> Invalid Signature
                 </span>
@@ -480,14 +580,27 @@ export default function JwtStudioView() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-[11px] text-[#b1bea8]">Secret Key / Passphrase:</label>
-              <input
-                type="text"
-                value={secretKey}
-                onChange={(e) => handleSecretChange(e.target.value)}
-                placeholder="your-256-bit-secret"
-                className="w-full px-3 py-1.5 bg-[#111612] border border-[#344435] rounded-lg font-mono text-xs text-[#e4ebdd] focus:outline-none focus:border-[#c8edb6]"
-              />
+              <label className="text-[11px] text-[#b1bea8]">
+                Secret Key / Passphrase:
+              </label>
+              <div className="jwt-secret-field">
+                <input
+                  type={showSecret ? "text" : "password"}
+                  aria-label="JWT secret key"
+                  autoComplete="off"
+                  value={secretKey}
+                  onChange={(e) => handleSecretChange(e.target.value)}
+                  placeholder="your-256-bit-secret"
+                  className="w-full px-3 py-1.5 bg-[#111612] border border-[#344435] rounded-lg font-mono text-xs text-[#e4ebdd] focus:outline-none focus:border-[#c8edb6]"
+                />
+                <button
+                  type="button"
+                  aria-pressed={showSecret}
+                  onClick={() => setShowSecret((v) => !v)}
+                >
+                  {showSecret ? "Hide secret" : "Show secret"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -499,15 +612,17 @@ export default function JwtStudioView() {
             <div
               className={`p-3 rounded-xl border flex items-center justify-between text-xs ${
                 expStatus.isExpired
-                  ? 'bg-[#f19aa6]/10 border-[#f19aa6]/30 text-[#f19aa6]'
-                  : 'bg-[#b5dfa3]/10 border-[#b5dfa3]/30 text-[#b5dfa3]'
+                  ? "bg-[#f19aa6]/10 border-[#f19aa6]/30 text-[#f19aa6]"
+                  : "bg-[#b5dfa3]/10 border-[#b5dfa3]/30 text-[#b5dfa3]"
               }`}
             >
               <div className="flex items-center gap-2">
                 <Clock size={15} />
                 <span className="font-bold">{expStatus.text}</span>
               </div>
-              <span className="font-mono text-[11px] text-[#b1bea8]">{expStatus.formatted}</span>
+              <span className="font-mono text-[11px] text-[#b1bea8]">
+                {expStatus.formatted}
+              </span>
             </div>
           )}
 
@@ -518,13 +633,19 @@ export default function JwtStudioView() {
                 <FileCode size={13} /> Header: Algorithm &amp; Token Type
               </span>
               <button
-                onClick={() => handleCopy(headerJson, 'header')}
+                onClick={() => handleCopy(headerJson, "header")}
                 className="text-[10px] text-[#c8edb6] hover:underline flex items-center gap-1"
               >
-                {copiedKey === 'header' ? <Check size={10} /> : <Copy size={10} />} Copy
+                {copiedKey === "header" ? (
+                  <Check size={10} />
+                ) : (
+                  <Copy size={10} />
+                )}{" "}
+                Copy
               </button>
             </div>
             <textarea
+              aria-label="JWT header JSON"
               value={headerJson}
               onChange={(e) => handleJsonEdit(e.target.value, payloadJson)}
               className="w-full h-24 p-3 bg-[#0d120f] border border-[#f19aa6]/30 rounded-xl font-mono text-xs text-[#f19aa6] focus:outline-none focus:border-[#f19aa6] resize-none"
@@ -538,13 +659,19 @@ export default function JwtStudioView() {
                 <FileCode size={13} /> Payload: Data &amp; Claims
               </span>
               <button
-                onClick={() => handleCopy(payloadJson, 'payload')}
+                onClick={() => handleCopy(payloadJson, "payload")}
                 className="text-[10px] text-[#c8edb6] hover:underline flex items-center gap-1"
               >
-                {copiedKey === 'payload' ? <Check size={10} /> : <Copy size={10} />} Copy JSON
+                {copiedKey === "payload" ? (
+                  <Check size={10} />
+                ) : (
+                  <Copy size={10} />
+                )}{" "}
+                Copy JSON
               </button>
             </div>
             <textarea
+              aria-label="JWT payload JSON"
               value={payloadJson}
               onChange={(e) => handleJsonEdit(headerJson, e.target.value)}
               className="w-full h-56 p-3 bg-[#0d120f] border border-[#ceb8f6]/30 rounded-xl font-mono text-xs text-[#ceb8f6] focus:outline-none focus:border-[#ceb8f6] resize-none"
@@ -552,58 +679,93 @@ export default function JwtStudioView() {
           </div>
 
           {/* Claims & Payload Values Inspector */}
-          {claims && typeof claims === 'object' && Object.keys(claims).length > 0 && (
-            <div className="bg-[#171d19] rounded-xl border border-[#344435] p-3 space-y-2.5">
-              <div className="flex items-center justify-between">
-                <div className="text-[11px] font-bold text-[#c8edb6] uppercase tracking-wider flex items-center gap-1.5">
-                  <span>Claims &amp; Payload Values</span>
-                  <span className="text-[10px] font-normal text-[#9eac96]">({Object.keys(claims).length} claims)</span>
+          {claims &&
+            typeof claims === "object" &&
+            Object.keys(claims).length > 0 && (
+              <div className="bg-[#171d19] rounded-xl border border-[#344435] p-3 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <div className="text-[11px] font-bold text-[#c8edb6] uppercase tracking-wider flex items-center gap-1.5">
+                    <span>Claims &amp; Payload Values</span>
+                    <span className="text-[10px] font-normal text-[#9eac96]">
+                      ({Object.keys(claims).length} claims)
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-[#9eac96]">
+                    Click copy icon in front of any value
+                  </span>
                 </div>
-                <span className="text-[10px] text-[#9eac96]">Click copy icon in front of any value</span>
-              </div>
 
-              <div className="space-y-1.5 text-xs divide-y divide-[#2b382c]">
-                {Object.entries(claims).map(([key, val]) => {
-                  const isTime = (key === 'exp' || key === 'iat' || key === 'nbf') && typeof val === 'number';
-                  const rawValString = typeof val === 'object' && val !== null ? JSON.stringify(val) : String(val);
-                  const humanTime = isTime ? new Date((val as number) * 1000).toLocaleString() : null;
-                  const label = STANDARD_CLAIM_LABELS[key];
-                  const isCopied = copiedKey === `val-${key}`;
+                <div className="space-y-1.5 text-xs divide-y divide-[#2b382c]">
+                  {Object.entries(claims).map(([key, val]) => {
+                    const isTime =
+                      (key === "exp" || key === "iat" || key === "nbf") &&
+                      typeof val === "number";
+                    const rawValString =
+                      typeof val === "object" && val !== null
+                        ? JSON.stringify(val)
+                        : String(val);
+                    const humanTime = isTime
+                      ? new Date((val as number) * 1000).toLocaleString()
+                      : null;
+                    const label = STANDARD_CLAIM_LABELS[key];
+                    const isCopied = copiedKey === `val-${key}`;
 
-                  return (
-                    <div key={key} className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 pt-1.5 first:pt-0">
-                      <div className="flex items-center gap-1.5 text-[#b1bea8] shrink-0 min-w-[130px]">
-                        <span className="font-mono text-[#ceb8f6] font-semibold">{key}</span>
-                        {label && <span className="text-[10px] text-[#9eac96]">({label})</span>}
-                      </div>
+                    return (
+                      <div
+                        key={key}
+                        className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 pt-1.5 first:pt-0"
+                      >
+                        <div className="flex items-center gap-1.5 text-[#b1bea8] shrink-0 min-w-[130px]">
+                          <span className="font-mono text-[#ceb8f6] font-semibold">
+                            {key}
+                          </span>
+                          {label && (
+                            <span className="text-[10px] text-[#9eac96]">
+                              ({label})
+                            </span>
+                          )}
+                        </div>
 
-                      <div className="flex items-center gap-1.5 min-w-0 max-w-full overflow-hidden">
-                        {/* Copy icon button in front of value */}
-                        <button
-                          type="button"
-                          onClick={() => handleCopy(rawValString, `val-${key}`)}
-                          className={`flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono border transition-all shrink-0 ${
-                            isCopied
-                              ? 'bg-[#b5dfa3]/20 border-[#b5dfa3]/40 text-[#b5dfa3]'
-                              : 'bg-[#111612] border-[#344435] text-[#c8edb6] hover:text-[#e4ebdd] hover:border-[#c8edb6]/50'
-                          }`}
-                          title={`Copy ${key} value`}
-                        >
-                          {isCopied ? <Check size={11} className="text-[#b5dfa3]" /> : <Copy size={11} />}
-                          <span>{isCopied ? 'Copied' : 'Copy'}</span>
-                        </button>
+                        <div className="flex items-center gap-1.5 min-w-0 max-w-full overflow-hidden">
+                          {/* Copy icon button in front of value */}
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleCopy(rawValString, `val-${key}`)
+                            }
+                            className={`flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono border transition-all shrink-0 ${
+                              isCopied
+                                ? "bg-[#b5dfa3]/20 border-[#b5dfa3]/40 text-[#b5dfa3]"
+                                : "bg-[#111612] border-[#344435] text-[#c8edb6] hover:text-[#e4ebdd] hover:border-[#c8edb6]/50"
+                            }`}
+                            title={`Copy ${key} value`}
+                          >
+                            {isCopied ? (
+                              <Check size={11} className="text-[#b5dfa3]" />
+                            ) : (
+                              <Copy size={11} />
+                            )}
+                            <span>{isCopied ? "Copied" : "Copy"}</span>
+                          </button>
 
-                        <div className="font-mono text-[#e4ebdd] text-xs truncate" title={rawValString}>
-                          <span>{rawValString}</span>
-                          {humanTime && <span className="ml-1.5 text-[10px] text-[#b1bea8]">({humanTime})</span>}
+                          <div
+                            className="font-mono text-[#e4ebdd] text-xs truncate"
+                            title={rawValString}
+                          >
+                            <span>{rawValString}</span>
+                            {humanTime && (
+                              <span className="ml-1.5 text-[10px] text-[#b1bea8]">
+                                ({humanTime})
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
       </div>
     </div>

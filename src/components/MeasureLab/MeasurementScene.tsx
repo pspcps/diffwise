@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { useToolActive } from "../Workspace/ToolActivity";
 import { useMotion } from "../Motion/MotionContext";
 
 interface SceneProps {
@@ -24,13 +25,14 @@ export default function MeasurementScene({
   const values = useRef({ fraction, shape, dimensions, plot });
   const redraw = useRef<(() => void) | null>(null);
   const { enabled } = useMotion();
+  const active = useToolActive();
   useEffect(() => {
     values.current = { fraction, shape, dimensions, plot };
     redraw.current?.();
   }, [fraction, shape, dimensions, plot]);
   useEffect(() => {
     const element = host.current;
-    if (!element) return;
+    if (!element || !active) return;
     let renderer: THREE.WebGLRenderer;
     try {
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -602,7 +604,7 @@ export default function MeasurementScene({
       renderer.dispose();
       renderer.domElement.remove();
     };
-  }, [kind, enabled, description]);
+  }, [kind, enabled, description, active]);
   return (
     <div className="measurement-scene" ref={host}>
       <p className="scene-fallback">

@@ -1,3 +1,4 @@
+import ToolHeader from "../Workspace/ToolHeader";
 import { useState, useEffect, useMemo, useRef } from 'react';
 import YAML from 'yaml';
 import { ApiResponseViewer } from './ApiResponseViewer';
@@ -167,7 +168,7 @@ const DEFAULT_COLLECTIONS: ApiCollection[] = [
         graphqlQuery: `query GetCountries {\n  countries(filter: { continent: { eq: "EU" } }) {\n    code\n    name\n    capital\n    emoji\n    currency\n  }\n}`,
         graphqlVariables: '{\n}',
         authType: 'none',
-        useCorsProxy: true,
+        useCorsProxy: false,
       },
       {
         id: 'req-echo-test',
@@ -179,7 +180,7 @@ const DEFAULT_COLLECTIONS: ApiCollection[] = [
         bodyType: 'json',
         bodyContent: JSON.stringify({ message: 'Hello from PSDevTool ApiDesk!' }, null, 2),
         authType: 'none',
-        useCorsProxy: true,
+        useCorsProxy: false,
       },
     ],
   },
@@ -487,6 +488,7 @@ export default function ApiStudioView() {
   const [swaggerUrlInput, setSwaggerUrlInput] = useState('https://petstore.swagger.io/v2/swagger.json');
   const [swaggerRawText, setSwaggerRawText] = useState(() => JSON.stringify(DEFAULT_SAMPLE_SWAGGER, null, 2));
   const [swaggerFormat, setSwaggerFormat] = useState<'json' | 'yaml'>('json');
+  const [swaggerUseProxy, setSwaggerUseProxy] = useState(false);
   const [swaggerLoading, setSwaggerLoading] = useState(false);
   const [swaggerError, setSwaggerError] = useState<string | null>(null);
   const [swaggerRouteFilter, setSwaggerRouteFilter] = useState('');
@@ -736,7 +738,7 @@ export default function ApiStudioView() {
       } else {
         const msg = err instanceof Error ? err.message : 'Network request failed';
         setErrorMessage(
-          `${msg}. Note: If testing external APIs without CORS headers, enable "Use CORS Proxy" in Settings tab!`
+          `${msg}. Check the URL, connection, and the server’s CORS configuration. A third-party proxy is available as an explicit option in Settings.`
         );
       }
     } finally {
@@ -1021,17 +1023,9 @@ export default function ApiStudioView() {
     setSwaggerError(null);
 
     try {
-      let fetchUrl = target;
-      // Try direct fetch first
-      let res: Response;
-      try {
-        res = await fetch(fetchUrl);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      } catch {
-        // Fallback to CORS proxy
-        fetchUrl = `https://corsproxy.io/?url=${encodeURIComponent(target)}`;
-        res = await fetch(fetchUrl);
-      }
+      const fetchUrl = swaggerUseProxy ? `https://corsproxy.io/?url=${encodeURIComponent(target)}` : target;
+      const res = await fetch(fetchUrl);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const text = await res.text();
       setSwaggerRawText(text);
@@ -1170,7 +1164,7 @@ export default function ApiStudioView() {
       bodyType,
       bodyContent,
       authType: 'none',
-      useCorsProxy: true,
+      useCorsProxy: false,
     };
 
     setActiveRequest(newReq);
@@ -1207,7 +1201,7 @@ export default function ApiStudioView() {
         bodyType: ['POST', 'PUT', 'PATCH'].includes(route.method) ? 'json' : 'none',
         bodyContent: ['POST', 'PUT', 'PATCH'].includes(route.method) ? '{\n  "test": true\n}' : '',
         authType: 'none',
-        useCorsProxy: true,
+        useCorsProxy: false,
       };
     });
 
@@ -1226,32 +1220,13 @@ export default function ApiStudioView() {
 
   return (
     <div className="flex-1 flex flex-col h-full bg-[#111612] text-[#e4ebdd] overflow-hidden">
-      {/* Top Header: Title & Studio Mode Switcher */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-[#171d19] border-b border-[#344435] gap-3 shrink-0 flex-wrap">
-        <div className="flex items-center gap-3">
-          <div className="p-1.5 rounded-lg bg-[#b5dfa3]/10 text-[#b5dfa3] border border-[#b5dfa3]/20">
-            <Send size={16} />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-[#e4ebdd]">ApiDesk Studio</h2>
-              <span className="px-2 py-0.5 text-[10px] rounded-full bg-[#c8edb6]/15 text-[#c8edb6] font-semibold border border-[#c8edb6]/30">
-                Postman &amp; Swagger Hub
-              </span>
-            </div>
-            <p className="text-[11px] text-[#b1bea8]">
-              {studioMode === 'client'
-                ? 'Send API requests, test endpoints, inspect latency & headers, and organize collections'
-                : 'Inspect all Swagger/OpenAPI routes, convert between JSON and YAML, and test in client'}
-            </p>
-          </div>
-        </div>
-
+      <ToolHeader title="API Desk" description={studioMode==='client'?'Build a request and inspect its response.':'Explore an OpenAPI specification and send endpoints to the client.'} actions={<>
         {/* View Mode Toggle: API Client vs Swagger Explorer */}
         <div className="flex items-center gap-2">
           <div className="flex rounded-xl bg-[#0d120f] border border-[#344435] p-1">
             <button
               onClick={() => setStudioMode('client')}
+              aria-pressed={studioMode === 'client'}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 studioMode === 'client'
                   ? 'bg-[#c8edb6] text-[#0d120f] shadow-sm'
@@ -1259,11 +1234,12 @@ export default function ApiStudioView() {
               }`}
             >
               <Send size={13} />
-              <span>API Client (Postman)</span>
+              <span>API client</span>
             </button>
 
             <button
               onClick={() => setStudioMode('swagger')}
+              aria-pressed={studioMode === 'swagger'}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 studioMode === 'swagger'
                   ? 'bg-[#ceb8f6] text-[#0d120f] shadow-sm'
@@ -1271,7 +1247,7 @@ export default function ApiStudioView() {
               }`}
             >
               <BookOpen size={13} />
-              <span>Swagger &amp; OpenAPI Hub</span>
+              <span>OpenAPI specs</span>
             </button>
           </div>
 
@@ -1305,7 +1281,7 @@ export default function ApiStudioView() {
             </div>
           )}
         </div>
-      </div>
+      </>}/>
 
       {/* ============================================================== */}
       {/* 1. API CLIENT MODE (Postman Request Runner & Collections)     */}
@@ -1506,6 +1482,7 @@ export default function ApiStudioView() {
                   onKeyDown={e => {
                     if (e.key === "Enter") handleSend();
                   }}
+                  aria-label="Request URL"
                   placeholder="Paste URL or full cURL command (e.g. curl -X POST https://api... -H ... -d ...)"
                   className="w-full px-3 py-2 bg-[#0d120f] border border-[#344435] rounded-xl font-mono text-xs text-[#e4ebdd] placeholder-[#899980] focus:outline-none focus:border-[#c8edb6]"
                 />
@@ -1878,9 +1855,9 @@ export default function ApiStudioView() {
                       className="rounded border-[#344435] text-[#c8edb6] focus:ring-0"
                     />
                     <div>
-                      <span className="font-bold text-[#e4ebdd]">Use Browser CORS Proxy</span>
+                      <span className="font-bold text-[#e4ebdd]">Use third-party proxy (corsproxy.io)</span>
                       <p className="text-[11px] text-[#b1bea8]">
-                        Bypasses browser &quot;CORS Missing Allow Origin&quot; restrictions when testing third-party APIs
+                        Routes this request, including its URL, headers and body, through corsproxy.io. Enable only when you intend to share the request with that service.
                       </p>
                     </div>
                   </label>
@@ -1888,6 +1865,7 @@ export default function ApiStudioView() {
               )}
             </div>
 
+              {activeRequest.useCorsProxy && <div className="workspace-feedback" role="status">Proxy enabled: this request will pass through corsproxy.io. <button type="button" className="text-[#c8edb6] underline" onClick={()=>setActiveRequest(prev=>({...prev,useCorsProxy:false}))}>Use a direct connection</button></div>}
             {/* RESPONSE SECTION */}
             <div className="flex-1 flex flex-col min-h-0 bg-[#0d120f]">
               {/* Response Top Bar */}
@@ -1936,10 +1914,10 @@ export default function ApiStudioView() {
                 <div className="p-3 bg-[#f19aa6]/10 border-b border-[#f19aa6]/30 text-xs text-[#f19aa6] flex items-center justify-between">
                   <span>{errorMessage}</span>
                   <button
-                    onClick={() => setActiveRequest(prev => ({ ...prev, useCorsProxy: true }))}
+                    onClick={() => setRequestTab('settings')}
                     className="px-2 py-0.5 rounded bg-[#f19aa6]/20 font-bold hover:underline"
                   >
-                    Enable CORS Proxy
+                    Review settings
                   </button>
                 </div>
               )}
@@ -2048,6 +2026,7 @@ export default function ApiStudioView() {
             <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
               <input
                 type="text"
+                aria-label="OpenAPI specification URL"
                 placeholder="Enter Swagger / OpenAPI JSON or YAML URL (e.g. https://petstore.swagger.io/v2/swagger.json)"
                 value={swaggerUrlInput}
                 onChange={e => setSwaggerUrlInput(e.target.value)}
@@ -2081,6 +2060,9 @@ export default function ApiStudioView() {
                 className="hidden"
               />
             </div>
+
+            <label className="api-proxy-choice"><input type="checkbox" checked={swaggerUseProxy} onChange={e=>setSwaggerUseProxy(e.target.checked)}/> Fetch spec through corsproxy.io (optional)</label>
+            {swaggerUseProxy && <p className="api-proxy-note">The spec URL and response pass through this third-party service. Direct fetching is the default.</p>}
 
             {/* Sample URLs quick select */}
             <div className="flex items-center gap-2 text-xs text-[#b1bea8] flex-wrap">

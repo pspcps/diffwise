@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test:measurements": "node scripts/check-measurements.cjs"
+    "test:measurements": "node scripts/check-measurements.cjs",
+    "test:catalog": "node scripts/check-tool-catalog.cjs"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.12.2",
