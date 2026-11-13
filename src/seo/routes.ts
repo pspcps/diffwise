@@ -5,6 +5,8 @@ import {
   NOT_FOUND,
   PORTFOLIO_PAGE,
   TOOL_PAGES,
+  RESUME_PAGE,
+  RESUME_PAGES,
   pageForId,
 } from "./pages";
 import type { SearchPage } from "./pages";
@@ -25,6 +27,7 @@ export function resolveLocation(
       return { page: HOME_PAGE, legacy: true, search };
     if (key === "#/portfolio")
       return { page: PORTFOLIO_PAGE, legacy: true, search };
+    if (key === "#/resume") return { page: RESUME_PAGE, legacy: true, search };
     if (HASH_TO_MODE[key])
       return { page: pageForId(HASH_TO_MODE[key]), legacy: true, search };
     return { page: NOT_FOUND, legacy: false, search: "" };
@@ -35,7 +38,9 @@ export function resolveLocation(
       ? HOME_PAGE
       : path === "/portfolio/"
         ? PORTFOLIO_PAGE
-        : TOOL_PAGES.find((p) => p.path === path) || NOT_FOUND;
+        : [RESUME_PAGE, ...RESUME_PAGES, ...TOOL_PAGES].find(
+            (p) => p.path === path,
+          ) || NOT_FOUND;
   return { page, legacy: false, search: location.search };
 }
 function subscribe(callback: () => void) {

@@ -35,7 +35,11 @@ export function structuredData(page: SearchPage) {
         url: SITE_ORIGIN + p.path,
       })),
     });
-  else if (page.id === "portfolio")
+  else if (
+    page.id === "portfolio" ||
+    page.id === "resume" ||
+    page.id.startsWith("resume-")
+  )
     graph.push({
       "@type": "ProfilePage",
       "@id": SITE_ORIGIN + page.path,

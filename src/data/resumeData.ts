@@ -5,8 +5,7 @@ export const RESUME = {
   email: "prakash.seervi9460@gmail.com",
   phone: "+91-8440944580",
   linkedin: "https://linkedin.com/in/prakashseervi63",
-  resumeUrl:
-    "https://drive.google.com/file/d/16lvAhHCQe8zniP1_wrmYbEmXkVAjRzb9/view?usp=drivesdk",
+  resumeUrl: "/resume/",
   resumeDownloadUrl:
     "https://drive.google.com/uc?export=download&id=16lvAhHCQe8zniP1_wrmYbEmXkVAjRzb9",
   title: "Senior Software Engineer | Backend, Distributed Systems & Applied AI",

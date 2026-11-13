@@ -1,7 +1,14 @@
 import data from "./tool-pages.json";
+import { RESUME_TEMPLATES } from "../data/printResume";
 import type { ViewMode } from "../types";
 export interface SearchPage {
-  id: ViewMode | "home" | "portfolio" | "notfound";
+  id:
+    | ViewMode
+    | "home"
+    | "portfolio"
+    | "resume"
+    | `resume-${string}`
+    | "notfound";
   path: string;
   name: string;
   title: string;
@@ -69,6 +76,23 @@ export const PORTFOLIO_PAGE: SearchPage = {
   faq: [],
   related: ["text", "json", "measure"],
 };
+export const RESUME_PAGE: SearchPage = {
+  ...PORTFOLIO_PAGE,
+  id: "resume",
+  path: "/resume/",
+  name: "Resume templates",
+  title: "Prakash Choudhary — Resume Templates",
+  description:
+    "Choose from ten print-ready resume layouts for Prakash Choudhary, Senior Software Engineer. Explore single-column and two-column HTML resumes and save as PDF.",
+};
+export const RESUME_PAGES: SearchPage[] = RESUME_TEMPLATES.map((t) => ({
+  ...RESUME_PAGE,
+  id: `resume-${t.id}`,
+  path: `/resume/${t.id}/`,
+  name: `${t.name} resume`,
+  title: `Prakash Choudhary — Senior Software Engineer Resume (${t.name})`,
+  description: `Prakash Choudhary’s ${t.name.toLowerCase()} resume: backend engineering, distributed systems, cloud and applied AI experience, selected projects, skills and education.`,
+}));
 export const NOT_FOUND: SearchPage = {
   id: "notfound",
   path: "/404/",
@@ -88,7 +112,10 @@ export function pageForId(id: SearchPage["id"]) {
     ? HOME_PAGE
     : id === "portfolio"
       ? PORTFOLIO_PAGE
-      : TOOL_PAGES.find((p) => p.id === id) || NOT_FOUND;
+      : id === "resume"
+        ? RESUME_PAGE
+        : [...RESUME_PAGES, ...TOOL_PAGES].find((p) => p.id === id) ||
+          NOT_FOUND;
 }
 export function toolPath(id: ViewMode) {
   return pageForId(id).path;

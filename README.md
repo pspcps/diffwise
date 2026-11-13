@@ -162,3 +162,7 @@ The PS monogram is an editable vector in [public/brand/logo.svg](public/brand/lo
 Each tool has a unique title, description, canonical URL, visible guide, questions and related links. The build renders that content into HTML before JavaScript runs. The sitemap lists clean URLs rather than fragments. Structured data describes the site, tool applications, navigation and the profile without invented ratings. Preview builds use `noindex`; production builds are indexable.
 
 After deploying to `psdevtool.online`, verify the site in Google Search Console and submit `https://psdevtool.online/sitemap.xml`. Optionally set `GOOGLE_SITE_VERIFICATION` in the hosting build environment for HTML-tag verification. Indexing and positions are determined by Google; this implementation does not guarantee a first-page or number-one ranking. See [the SEO deployment checklist](docs/SEO.md).
+
+### Printable resume
+
+The optional [`/resume/`](https://psdevtool.online/resume/) page offers ten standalone HTML resume layouts (six single-column and four two-column), with a portfolio QR code and Chrome PDF printing. See [resume documentation](docs/RESUME.md). The developer tools remain the focus of this project.
