@@ -1,6 +1,13 @@
 import { RESUME } from "./resumeData";
 import { getCareerDuration } from "../utils/careerDuration";
 export const PORTFOLIO_URL = "https://psdevtool.online/portfolio/";
+const DRISHTI_PROJECT = {
+  name: "Project Drishti",
+  tech: "React, Firebase, Vertex AI Vision, Gemini",
+  url: "https://github.com/pspcps/project-drishti",
+  detail:
+    "Built camera-frame analysis and Firestore-backed incident, zone and responder workflows for an AI-assisted crowd-safety dashboard.",
+};
 export const PRINT_RESUME = {
   name: RESUME.name,
   title: "Senior Software Engineer | Backend, Distributed Systems & Applied AI",
@@ -76,6 +83,7 @@ export const PRINT_RESUME = {
       detail:
         "Built a Claude orchestrator and MCP-connected agents for read-only DynamoDB, MySQL and New Relic queries, with a React dashboard and CLI.",
     },
+    DRISHTI_PROJECT,
     {
       name: "PSDevTool",
       tech: "React, TypeScript, Monaco Editor, Web Workers",
@@ -100,20 +108,6 @@ export const PRINT_RESUME = {
 };
 export const LEGAL_PROJECTS = [
   ...PRINT_RESUME.projects,
-  {
-    name: "Project Drishti",
-    tech: "React, Firebase, Vertex AI Vision, Gemini",
-    url: "https://github.com/pspcps/project-drishti",
-    detail:
-      "Built camera-frame analysis and Firestore-backed incident, zone and responder workflows for an AI-assisted crowd-safety dashboard.",
-  },
-  {
-    name: "InkMind",
-    tech: "React, FastAPI, Ollama, ChromaDB",
-    url: "https://github.com/pspcps/inkMind",
-    detail:
-      "Built a local AI notebook with Markdown editing, document retrieval, streamed answers, diagram editing and traffic simulation.",
-  },
   {
     name: "ApiDesk Studio",
     tech: "React, Node.js, Express, Electron",

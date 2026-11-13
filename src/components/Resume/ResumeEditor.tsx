@@ -13,6 +13,7 @@ import {
 } from "../../data/resumeDraft";
 type Props = {
   content: ResumeContent;
+  exampleProjects: ResumeContent["projects"];
   appearance: ResumeAppearance;
   accent: string;
   onContent: (v: ResumeContent) => void;
@@ -345,6 +346,18 @@ export default function ResumeEditor(p: Props) {
             </button>
           </div>
         ))}
+        <p>
+          Restore this paper’s example projects without changing your other
+          details.
+        </p>
+        <button
+          type="button"
+          onClick={() =>
+            p.onContent({ ...c, projects: structuredClone(p.exampleProjects) })
+          }
+        >
+          Use example projects
+        </button>
         <button
           type="button"
           onClick={() =>
@@ -362,6 +375,10 @@ export default function ResumeEditor(p: Props) {
       </details>
       <details>
         <summary>Education & certification</summary>
+        <p>
+          Education and certification appear in Legal. The focused A4 edition
+          hides this section.
+        </p>
         {(["degree", "institution", "location", "period"] as const).map(
           (key) => (
             <Field
@@ -378,6 +395,7 @@ export default function ResumeEditor(p: Props) {
       </details>
       <details>
         <summary>Open-source contributions</summary>
+        <p>A4 prints the first contribution; Legal prints all entries.</p>
         {c.contributions.map((item, i) => (
           <div className="resume-edit-item" key={i}>
             <Field

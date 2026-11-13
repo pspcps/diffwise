@@ -1140,3 +1140,23 @@
     display: none !important;
   }
 }
+/* A4 uses the same readable full-width project area as the expanded layouts. */
+.resume-page[data-paper="a4"] .resume-columns-2 .resume-projects {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  background: var(--resume-background, #fff);
+}
+.resume-page[data-paper="a4"] .resume-columns-2 .resume-project h3 > span {
+  display: inline;
+}
+.resume-page[data-paper="a4"] .resume-columns-2 .resume-body:before {
+  display: none;
+}
+.resume-page[data-paper="a4"] .resume-columns-2 .resume-skills {
+  background: color-mix(
+    in srgb,
+    var(--resume-accent) 6%,
+    var(--resume-background, #fff)
+  );
+  padding: 0 6px;
+}

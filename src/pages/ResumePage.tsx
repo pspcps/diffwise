@@ -29,10 +29,12 @@ function ResumeDocument({
   template,
   content: resume,
   appearance,
+  paper,
 }: {
   template: ResumeTemplate;
   content: ResumeContent;
   appearance: ResumeAppearance;
+  paper: ResumePaper;
 }) {
   const portfolioUrl = safeResumeUrl(resume.portfolio);
   const qrSource = useMemo(() => {
@@ -176,25 +178,30 @@ function ResumeDocument({
             </section>
           ))}
         </section>
-        <section className="resume-education">
-          <h2>Education & Certification</h2>
-          <p>
-            <strong>{resume.education.degree}</strong> ·{" "}
-            {resume.education.period}
-          </p>
-          <p>
-            {resume.education.institution}, {resume.education.location}
-          </p>
-          {resume.certification && (
+        {paper === "legal" && (
+          <section className="resume-education">
+            <h2>Education & Certification</h2>
             <p>
-              <strong>Certification:</strong> {resume.certification}
+              <strong>{resume.education.degree}</strong> ·{" "}
+              {resume.education.period}
             </p>
-          )}
-        </section>
+            <p>
+              {resume.education.institution}, {resume.education.location}
+            </p>
+            {resume.certification && (
+              <p>
+                <strong>Certification:</strong> {resume.certification}
+              </p>
+            )}
+          </section>
+        )}
       </div>
       <section className="resume-open-source">
         <h2>Open-Source Contributions</h2>
-        {resume.contributions.map((item, i) => (
+        {(paper === "a4"
+          ? resume.contributions.slice(0, 1)
+          : resume.contributions
+        ).map((item, i) => (
           <p className="resume-extra-contribution" key={i}>
             {item.text}
             {item.url && (
@@ -244,8 +251,8 @@ function Gallery({
         </nav>
         <p className="resume-paper-description">
           {paper === "legal"
-            ? "Legal (8.5 × 14 in): six engineering projects and all four open-source contributions / customizations."
-            : "A4 (210 × 297 mm): three engineering projects and the linked Liquibase contribution. Choose Legal for the expanded version."}
+            ? "Legal (8.5 × 14 in): five engineering projects and all four open-source contributions / customizations."
+            : "A4 (210 × 297 mm): four engineering projects, one open-source contribution and no education section. Choose Legal for the expanded version."}
         </p>
         <aside className="resume-gallery-note">
           <strong>Applying through an ATS?</strong> Start with Classic, Modern
@@ -521,6 +528,7 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
       >
         <ResumeEditor
           content={current}
+          exampleProjects={createResumeContent(paper, duration.years).projects}
           appearance={appearance}
           accent={template.accent}
           onContent={changeContent}
@@ -538,6 +546,7 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
         template={template}
         content={current}
         appearance={appearance}
+        paper={paper}
       />
     </main>
   );

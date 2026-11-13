@@ -9,7 +9,7 @@ The portfolio’s Resume links point to the gallery. PDF export uses the browser
 
 ## Expanded Legal edition
 
-Choose **Legal · Expanded** in the gallery at `/resume/legal/`, or use the Paper selector on any template. Each Legal resume also has its own static URL, for example `/resume/modern/legal/`. These pages include six engineering projects (FleetMind, PSDevTool, Kafbat UI, Project Drishti, InkMind and ApiDesk Studio) and all four reported open-source contributions/customizations. The focused A4 version retains three projects and the source-linked Liquibase contribution. All headings now use **Engineering Projects** rather than **Selected Projects**. Expanded two-column editions use a full-width project section below the skills/experience columns so the additional content stays readable.
+Choose **Legal · Expanded** in the gallery at `/resume/legal/`, or use the Paper selector on any template. Each Legal resume also has its own static URL, for example `/resume/modern/legal/`. These pages include five engineering projects (FleetMind, Project Drishti, PSDevTool, Kafbat UI and ApiDesk Studio) and all four reported open-source contributions/customizations. The focused A4 version includes FleetMind, Project Drishti, PSDevTool and Kafbat UI, and shows only the first open-source contribution (Liquibase in the example). Education/certification is omitted from A4, while Legal retains that section. All headings now use **Engineering Projects** rather than **Selected Projects**. Expanded two-column editions use a full-width project section below the skills/experience columns so the additional content stays readable.
 
 FreeRADIUS, Mikro-Node and jQuery-Draggable are described as the customizations/fixes reported in the owner’s original resume. They are not presented as verified merged upstream PRs, and no nonexistent source links are added.
 
@@ -21,7 +21,7 @@ Start with Classic, Modern or Minimal for ATS applications. Every layout uses re
 
 ## Content and sources
 
-`src/data/printResume.ts` holds the focused resume, shared by all ten templates. It combines the owner-provided resume PDF with the repository-reviewed portfolio data in `src/data/resumeData.ts`. Company metrics are owner-supplied career claims, not independently audited benchmarks. No new metrics, employers, dates or credentials are invented. The focused resume uses all four employers and three projects; Legal expands to six projects and four contributions; the portfolio carries the fuller project catalog. The Liquibase fix is described from the supplied merged PR, rather than implying general PostgreSQL feature authorship. FleetMind has no public repository link, so none is invented.
+`src/data/printResume.ts` holds the focused resume, shared by all ten templates. It combines the owner-provided resume PDF with the repository-reviewed portfolio data in `src/data/resumeData.ts`. Company metrics are owner-supplied career claims, not independently audited benchmarks. No new metrics, employers, dates or credentials are invented. The focused resume uses all four employers and four projects; Legal expands to five projects and four contributions; the portfolio carries the fuller project catalog. The Liquibase fix is described from the supplied merged PR, rather than implying general PostgreSQL feature authorship. FleetMind has no public repository link, so none is invented.
 
 Experience is calculated from 2 January 2017 using the existing career utility and updates when the page remains open across a date boundary. Build-time HTML reflects the build date; the live page recalculates on load.
 
@@ -46,3 +46,5 @@ Turning saving off removes the stored draft while retaining edits in the open pa
 Run `node scripts/check-resume-draft.cjs` for draft validation, source-isolation and URL checks.
 
 The example phone number is intentionally blank. Add a phone number manually in Edit mode; it is only stored on the device if device saving is enabled. Clearing a previously saved draft restores the blank default.
+
+A4 shows at most one open-source contribution and omits education/certification without deleting those fields from a custom draft; they remain editable and available in Legal. Updated example projects remove InkMind and place Project Drishti directly after FleetMind. Existing customized drafts preserve their project lists; use **Edit resume → Engineering projects → Use example projects** to adopt the new list without changing other details.
