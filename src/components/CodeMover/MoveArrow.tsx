@@ -8,7 +8,7 @@ interface MoveArrowProps {
   label?: string;
 }
 
-export default function MoveArrow({ fromX, fromY, toX, toY, color = '#89b4fa', animated = true, label }: MoveArrowProps) {
+export default function MoveArrow({ fromX, fromY, toX, toY, color = '#c8edb6', animated = true, label }: MoveArrowProps) {
   const dx = toX - fromX;
 
   // Cubic bezier control points — curve through the middle
@@ -68,7 +68,7 @@ export default function MoveArrow({ fromX, fromY, toX, toY, color = '#89b4fa', a
             width={label.length * 7 + 8}
             height={18}
             rx={3}
-            fill="#1e1e2e"
+            fill="#171d19"
             stroke={color}
             strokeWidth={1}
           />

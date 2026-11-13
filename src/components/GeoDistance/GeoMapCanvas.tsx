@@ -151,21 +151,21 @@ export const GeoMapCanvas: React.FC<GeoMapCanvasProps> = ({
   };
 
   return (
-    <div className="relative rounded-xl border border-[#313244] bg-[#11111b] overflow-hidden shadow-2xl">
+    <div className="relative rounded-xl border border-[#344435] bg-[#0d120f] overflow-hidden shadow-2xl">
       {/* Canvas Top Bar Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 bg-[#181825]/90 border-b border-[#313244] text-xs">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 bg-[#111612]/90 border-b border-[#344435] text-xs">
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 font-medium text-[#cdd6f4]">
-            <Compass size={14} className="text-[#89b4fa]" />
+          <div className="flex items-center gap-1.5 font-medium text-[#e4ebdd]">
+            <Compass size={14} className="text-[#c8edb6]" />
             <span>Geodesic Trajectory & Coordinate Delta Projection</span>
           </div>
 
-          <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-[#313244] text-[#a6adc8]">
+          <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-[#344435] text-[#c3ceba]">
             <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#a6e3a1]"></span> Point A
+              <span className="w-2.5 h-2.5 rounded-full bg-[#b5dfa3]"></span> Point A
             </span>
             <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#f38ba8]"></span> Point B
+              <span className="w-2.5 h-2.5 rounded-full bg-[#f19aa6]"></span> Point B
             </span>
             <span className="flex items-center gap-1">
               <span className="w-2.5 h-2.5 rounded-full bg-[#94e2d5]"></span> Midpoint
@@ -180,20 +180,20 @@ export const GeoMapCanvas: React.FC<GeoMapCanvasProps> = ({
             onClick={() => setShowDeltaTriangle(!showDeltaTriangle)}
             className={`px-2.5 py-1 rounded text-[11px] font-medium transition-colors border ${
               showDeltaTriangle
-                ? 'bg-[#cba6f7]/15 border-[#cba6f7]/40 text-[#cba6f7]'
-                : 'bg-[#181825] border-[#313244] text-[#6c7086] hover:text-[#cdd6f4]'
+                ? 'bg-[#ceb8f6]/15 border-[#ceb8f6]/40 text-[#ceb8f6]'
+                : 'bg-[#111612] border-[#344435] text-[#9eac96] hover:text-[#e4ebdd]'
             }`}
           >
             Δ Lat/Lon Triangle: {showDeltaTriangle ? 'ON' : 'OFF'}
           </button>
 
           {/* Mode Switcher */}
-          <div className="inline-flex rounded-lg bg-[#11111b] p-0.5 border border-[#313244]">
+          <div className="inline-flex rounded-lg bg-[#0d120f] p-0.5 border border-[#344435]">
             <button
               type="button"
               onClick={() => setViewMode('world')}
               className={`px-2.5 py-0.5 rounded text-[11px] font-medium transition-colors ${
-                viewMode === 'world' ? 'bg-[#313244] text-[#cdd6f4]' : 'text-[#6c7086] hover:text-[#a6adc8]'
+                viewMode === 'world' ? 'bg-[#344435] text-[#e4ebdd]' : 'text-[#9eac96] hover:text-[#c3ceba]'
               }`}
             >
               World View
@@ -202,7 +202,7 @@ export const GeoMapCanvas: React.FC<GeoMapCanvasProps> = ({
               type="button"
               onClick={() => setViewMode('local')}
               className={`px-2.5 py-0.5 rounded text-[11px] font-medium transition-colors ${
-                viewMode === 'local' ? 'bg-[#313244] text-[#cdd6f4]' : 'text-[#6c7086] hover:text-[#a6adc8]'
+                viewMode === 'local' ? 'bg-[#344435] text-[#e4ebdd]' : 'text-[#9eac96] hover:text-[#c3ceba]'
               }`}
             >
               Focus Path
@@ -212,7 +212,7 @@ export const GeoMapCanvas: React.FC<GeoMapCanvasProps> = ({
       </div>
 
       {/* Main SVG Visualization */}
-      <div className="relative w-full aspect-[16/8] max-h-[440px] select-none bg-[#11111b] cursor-crosshair">
+      <div className="relative w-full aspect-[16/8] max-h-[440px] select-none bg-[#0d120f] cursor-crosshair">
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
           className="w-full h-full"
@@ -221,19 +221,19 @@ export const GeoMapCanvas: React.FC<GeoMapCanvasProps> = ({
           <defs>
             {/* Gradients */}
             <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#a6e3a1" />
+              <stop offset="0%" stopColor="#b5dfa3" />
               <stop offset="50%" stopColor="#94e2d5" />
-              <stop offset="100%" stopColor="#f38ba8" />
+              <stop offset="100%" stopColor="#f19aa6" />
             </linearGradient>
 
             <linearGradient id="deltaLatGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#fab387" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#fab387" stopOpacity="0.3" />
+              <stop offset="0%" stopColor="#f3c18e" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#f3c18e" stopOpacity="0.3" />
             </linearGradient>
 
             <linearGradient id="deltaLonGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#89b4fa" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#89b4fa" stopOpacity="0.3" />
+              <stop offset="0%" stopColor="#c8edb6" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#c8edb6" stopOpacity="0.3" />
             </linearGradient>
 
             <filter id="glowGreen" x="-20%" y="-20%" width="140%" height="140%">
@@ -251,12 +251,12 @@ export const GeoMapCanvas: React.FC<GeoMapCanvasProps> = ({
           </defs>
 
           {/* Grid Lines */}
-          <g className="opacity-20" stroke="#45475a" strokeDasharray="3,3">
+          <g className="opacity-20" stroke="#71836b" strokeDasharray="3,3">
             {/* Equator & Tropics in World mode */}
             {viewMode === 'world' ? (
               <>
-                <line x1="0" y1={SVG_H / 2} x2={SVG_W} y2={SVG_H / 2} stroke="#89b4fa" strokeWidth="1.2" strokeDasharray="none" />
-                <line x1={SVG_W / 2} y1="0" x2={SVG_W / 2} y2={SVG_H} stroke="#89b4fa" strokeWidth="1.2" strokeDasharray="none" />
+                <line x1="0" y1={SVG_H / 2} x2={SVG_W} y2={SVG_H / 2} stroke="#c8edb6" strokeWidth="1.2" strokeDasharray="none" />
+                <line x1={SVG_W / 2} y1="0" x2={SVG_W / 2} y2={SVG_H} stroke="#c8edb6" strokeWidth="1.2" strokeDasharray="none" />
                 {/* 30 and 60 deg lat lines */}
                 <line x1="0" y1={SVG_H / 6} x2={SVG_W} y2={SVG_H / 6} />
                 <line x1="0" y1={SVG_H / 3} x2={SVG_W} y2={SVG_H / 3} />
@@ -270,8 +270,8 @@ export const GeoMapCanvas: React.FC<GeoMapCanvasProps> = ({
               /* Local Cartesian Grid */
               Array.from({ length: 9 }).map((_, i) => (
                 <g key={i}>
-                  <line x1={(SVG_W / 8) * i} y1="0" x2={(SVG_W / 8) * i} y2={SVG_H} stroke="#313244" />
-                  <line x1="0" y1={(SVG_H / 8) * i} x2={SVG_W} y2={(SVG_H / 8) * i} stroke="#313244" />
+                  <line x1={(SVG_W / 8) * i} y1="0" x2={(SVG_W / 8) * i} y2={SVG_H} stroke="#344435" />
+                  <line x1="0" y1={(SVG_H / 8) * i} x2={SVG_W} y2={(SVG_H / 8) * i} stroke="#344435" />
                 </g>
               ))
             )}
@@ -279,7 +279,7 @@ export const GeoMapCanvas: React.FC<GeoMapCanvasProps> = ({
 
           {/* Labels for Equator & Prime Meridian in World view */}
           {viewMode === 'world' && (
-            <g fill="#6c7086" fontSize="10" fontFamily="monospace">
+            <g fill="#9eac96" fontSize="10" fontFamily="monospace">
               <text x="12" y={SVG_H / 2 - 6}>0° Equator</text>
               <text x={SVG_W / 2 + 8} y="20">0° Prime Meridian</text>
               <text x="12" y="24">+90° N</text>
@@ -295,9 +295,9 @@ export const GeoMapCanvas: React.FC<GeoMapCanvasProps> = ({
               {/* Triangle shading */}
               <polygon
                 points={`${ax},${ay} ${cornerX},${cornerY} ${bx},${by}`}
-                fill="#cba6f7"
+                fill="#ceb8f6"
                 fillOpacity="0.06"
-                stroke="#cba6f7"
+                stroke="#ceb8f6"
                 strokeWidth="1"
                 strokeDasharray="4,4"
               />
@@ -308,7 +308,7 @@ export const GeoMapCanvas: React.FC<GeoMapCanvasProps> = ({
                 y1={ay}
                 x2={cornerX}
                 y2={cornerY}
-                stroke="#fab387"
+                stroke="#f3c18e"
                 strokeWidth="2.5"
                 strokeDasharray="5,3"
               />
@@ -319,23 +319,23 @@ export const GeoMapCanvas: React.FC<GeoMapCanvasProps> = ({
                 y1={cornerY}
                 x2={bx}
                 y2={by}
-                stroke="#89b4fa"
+                stroke="#c8edb6"
                 strokeWidth="2.5"
                 strokeDasharray="5,3"
               />
 
               {/* ΔLat callout tag */}
               <g transform={`translate(${(ax + cornerX) / 2 + 10}, ${(ay + cornerY) / 2})`}>
-                <rect x="-6" y="-12" width="130" height="22" rx="4" fill="#181825" stroke="#fab387" strokeWidth="1" />
-                <text x="4" y="2" fill="#fab387" fontSize="10" fontWeight="bold" fontFamily="monospace">
+                <rect x="-6" y="-12" width="130" height="22" rx="4" fill="#111612" stroke="#f3c18e" strokeWidth="1" />
+                <text x="4" y="2" fill="#f3c18e" fontSize="10" fontWeight="bold" fontFamily="monospace">
                   ΔLat: {result.delta.distLatKm.toFixed(1)} km ({result.delta.latDirection})
                 </text>
               </g>
 
               {/* ΔLon callout tag */}
               <g transform={`translate(${(cornerX + bx) / 2 - 60}, ${(cornerY + by) / 2 + 20})`}>
-                <rect x="-6" y="-12" width="130" height="22" rx="4" fill="#181825" stroke="#89b4fa" strokeWidth="1" />
-                <text x="4" y="2" fill="#89b4fa" fontSize="10" fontWeight="bold" fontFamily="monospace">
+                <rect x="-6" y="-12" width="130" height="22" rx="4" fill="#111612" stroke="#c8edb6" strokeWidth="1" />
+                <text x="4" y="2" fill="#c8edb6" fontSize="10" fontWeight="bold" fontFamily="monospace">
                   ΔLon: {result.delta.distLonKm.toFixed(1)} km ({result.delta.lonDirection})
                 </text>
               </g>
@@ -350,9 +350,9 @@ export const GeoMapCanvas: React.FC<GeoMapCanvasProps> = ({
                 cx={ax}
                 cy={ay}
                 r={Math.max(12, Math.min(180, (geofenceRadiusMeters / 1000 / result.haversine.km) * Math.hypot(bx - ax, by - ay)))}
-                fill="#89b4fa"
+                fill="#c8edb6"
                 fillOpacity="0.12"
-                stroke="#89b4fa"
+                stroke="#c8edb6"
                 strokeWidth="1.5"
                 strokeDasharray="4,2"
               />
@@ -386,26 +386,26 @@ export const GeoMapCanvas: React.FC<GeoMapCanvasProps> = ({
 
           {/* Point A (Origin / Green Pin) */}
           <g filter="url(#glowGreen)">
-            <circle cx={ax} cy={ay} r="14" fill="#a6e3a1" fillOpacity="0.2" />
-            <circle cx={ax} cy={ay} r="7" fill="#a6e3a1" />
-            <circle cx={ax} cy={ay} r="2.5" fill="#11111b" />
+            <circle cx={ax} cy={ay} r="14" fill="#b5dfa3" fillOpacity="0.2" />
+            <circle cx={ax} cy={ay} r="7" fill="#b5dfa3" />
+            <circle cx={ax} cy={ay} r="2.5" fill="#0d120f" />
           </g>
           <g transform={`translate(${ax + 12}, ${ay - 8})`}>
-            <rect x="0" y="-12" width="90" height="20" rx="4" fill="#181825" stroke="#a6e3a1" strokeWidth="1" />
-            <text x="6" y="2" fill="#a6e3a1" fontSize="10" fontWeight="bold">
+            <rect x="0" y="-12" width="90" height="20" rx="4" fill="#111612" stroke="#b5dfa3" strokeWidth="1" />
+            <text x="6" y="2" fill="#b5dfa3" fontSize="10" fontWeight="bold">
               {pointA.label || 'Point A'}
             </text>
           </g>
 
           {/* Point B (Destination / Rose Pin) */}
           <g filter="url(#glowRose)">
-            <circle cx={bx} cy={by} r="14" fill="#f38ba8" fillOpacity="0.2" />
-            <circle cx={bx} cy={by} r="7" fill="#f38ba8" />
-            <circle cx={bx} cy={by} r="2.5" fill="#11111b" />
+            <circle cx={bx} cy={by} r="14" fill="#f19aa6" fillOpacity="0.2" />
+            <circle cx={bx} cy={by} r="7" fill="#f19aa6" />
+            <circle cx={bx} cy={by} r="2.5" fill="#0d120f" />
           </g>
           <g transform={`translate(${bx + 12}, ${by - 8})`}>
-            <rect x="0" y="-12" width="90" height="20" rx="4" fill="#181825" stroke="#f38ba8" strokeWidth="1" />
-            <text x="6" y="2" fill="#f38ba8" fontSize="10" fontWeight="bold">
+            <rect x="0" y="-12" width="90" height="20" rx="4" fill="#111612" stroke="#f19aa6" strokeWidth="1" />
+            <text x="6" y="2" fill="#f19aa6" fontSize="10" fontWeight="bold">
               {pointB.label || 'Point B'}
             </text>
           </g>
@@ -418,49 +418,49 @@ export const GeoMapCanvas: React.FC<GeoMapCanvasProps> = ({
               width="150"
               height="26"
               rx="6"
-              fill="#181825"
+              fill="#111612"
               fillOpacity="0.95"
               stroke="#94e2d5"
               strokeWidth="1.5"
             />
-            <text x="75" y="17" fill="#cdd6f4" fontSize="11" fontWeight="bold" textAnchor="middle" fontFamily="monospace">
+            <text x="75" y="17" fill="#e4ebdd" fontSize="11" fontWeight="bold" textAnchor="middle" fontFamily="monospace">
               {result.haversine.km.toLocaleString(undefined, { maximumFractionDigits: 1 })} km / {result.haversine.miles.toLocaleString(undefined, { maximumFractionDigits: 1 })} mi
             </text>
           </g>
         </svg>
 
         {/* Floating Compass Rose (HUD overlay in bottom-right) */}
-        <div className="absolute bottom-3 right-3 p-2.5 rounded-xl bg-[#181825]/90 border border-[#313244] shadow-lg flex items-center gap-3 backdrop-blur-sm">
-          <div className="relative w-10 h-10 rounded-full border border-[#45475a] bg-[#11111b] flex items-center justify-center">
+        <div className="absolute bottom-3 right-3 p-2.5 rounded-xl bg-[#111612]/90 border border-[#344435] shadow-lg flex items-center gap-3 backdrop-blur-sm">
+          <div className="relative w-10 h-10 rounded-full border border-[#71836b] bg-[#0d120f] flex items-center justify-center">
             {/* North marker */}
-            <span className="absolute top-0.5 text-[8px] font-bold text-[#f38ba8]">N</span>
-            <span className="absolute bottom-0.5 text-[8px] text-[#6c7086]">S</span>
-            <span className="absolute right-0.5 text-[8px] text-[#6c7086]">E</span>
-            <span className="absolute left-0.5 text-[8px] text-[#6c7086]">W</span>
+            <span className="absolute top-0.5 text-[8px] font-bold text-[#f19aa6]">N</span>
+            <span className="absolute bottom-0.5 text-[8px] text-[#9eac96]">S</span>
+            <span className="absolute right-0.5 text-[8px] text-[#9eac96]">E</span>
+            <span className="absolute left-0.5 text-[8px] text-[#9eac96]">W</span>
 
             {/* Rotating Heading Needle */}
             <div
               className="absolute inset-0 flex items-center justify-center transition-transform duration-500"
               style={{ transform: `rotate(${result.bearing.initialBearingDeg}deg)` }}
             >
-              <Navigation2 size={16} className="text-[#89b4fa] fill-[#89b4fa]" />
+              <Navigation2 size={16} className="text-[#c8edb6] fill-[#c8edb6]" />
             </div>
           </div>
 
           <div className="text-[11px] leading-tight">
-            <div className="text-[#a6adc8]">Initial Bearing</div>
-            <div className="font-mono font-bold text-[#cdd6f4]">
+            <div className="text-[#c3ceba]">Initial Bearing</div>
+            <div className="font-mono font-bold text-[#e4ebdd]">
               {result.bearing.initialBearingDeg.toFixed(1)}° ({result.bearing.cardinalInitial})
             </div>
-            <div className="text-[10px] text-[#9399b2]">
+            <div className="text-[10px] text-[#b1bea8]">
               Final: {result.bearing.finalBearingDeg.toFixed(1)}°
             </div>
           </div>
         </div>
 
         {/* Tip pill in bottom-left */}
-        <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-md bg-[#181825]/80 border border-[#313244] text-[10px] text-[#a6adc8] pointer-events-none">
-          Click map to relocate <span className="text-[#f38ba8] font-bold">Point B</span> (Hold <kbd className="px-1 py-0.5 bg-[#313244] rounded text-[9px]">Shift</kbd> for <span className="text-[#a6e3a1] font-bold">Point A</span>)
+        <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-md bg-[#111612]/80 border border-[#344435] text-[10px] text-[#c3ceba] pointer-events-none">
+          Click map to relocate <span className="text-[#f19aa6] font-bold">Point B</span> (Hold <kbd className="px-1 py-0.5 bg-[#344435] rounded text-[9px]">Shift</kbd> for <span className="text-[#b5dfa3] font-bold">Point A</span>)
         </div>
       </div>
     </div>

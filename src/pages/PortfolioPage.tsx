@@ -15,10 +15,10 @@ import {
   Mail,
   Download,
   GitFork,
-  Code2,
 } from "lucide-react";
 import { RESUME } from "../data/resumeData";
-import SpatialScene from "../components/Spatial/SpatialScene";
+import CharacterGuide from "../components/Guide/CharacterGuide";
+import ThemeChoice from "../components/Guide/ThemeChoice";
 import { tiltCard, resetTilt } from "../components/Spatial/cardMotion";
 import "../spatial.css";
 const InteractiveArchitectureDiagram = lazy(
@@ -52,10 +52,10 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
         : p.tech.some((t) => /ai|gemini|ollama|agents/i.test(t))),
   );
   const projects =
-    expanded || filter !== "All projects" ? filtered : filtered.slice(0, 4);
+    expanded || filter !== "All projects" ? filtered : filtered.slice(0, 6);
   return (
     <div className="portfolio-space" ref={root}>
-      <header className="portfolio-nav">
+      <header className="portfolio-nav"><ThemeChoice/>
         <button
           className="portfolio-identity"
           onClick={() => root.current?.scrollTo({ top: 0, behavior: "smooth" })}
@@ -79,12 +79,12 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
         <section className="portfolio-hero">
           <div className="portfolio-hero-copy">
             <div className="eyebrow">
-              <span /> ENGINEER. BUILDER. CURIOUS HUMAN.
+              <span /> SENIOR SOFTWARE ENGINEER · 9+ YEARS
             </div>
             <h1>
-              Complex systems.
+              Hi, I’m Prakash.
               <br />
-              <em>Simple experiences.</em>
+              <em>I build for scale.</em>
             </h1>
             <p>
               I’m Prakash Choudhary, a senior software engineer turning
@@ -111,17 +111,12 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
               </a>
             </div>
           </div>
-          <div className="portfolio-hero-art">
-            <SpatialScene variant="portfolio" />
-            <div className="portfolio-code-note">
-              const approach = {"{"}
-              <br />
-              &nbsp; curiosity: <b>Infinity</b>,<br />
-              &nbsp; craft: <b>"every detail"</b>
-              <br />
-              {"}"};
-            </div>
-          </div>
+          <div className="portfolio-hero-art"><CharacterGuide stories={[
+            "Hi! I’m your guide to Prakash’s work. He builds cloud-native systems, real-time platforms, and AI products. Tap me to explore his story.",
+            "At Lytx, Prakash architected a reverse-geocoding system using OpenStreetMap and Redis, saving approximately $1M each year.",
+            "Project Drishti connects camera feeds, Vertex AI Vision, and Gemini to help teams assess crowd safety and respond to incidents.",
+            "PSDevTool is the workspace you’re using: code comparison, data tools, document processing, and more. Explore a project below for the details.",
+          ]}/></div>
         </section>
         <section className="portfolio-stats" aria-label="Career highlights">
           {RESUME.stats.map((s) => (
@@ -159,7 +154,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             ))}
           </div>
           <div className="portfolio-projects">
-            {projects.map((p, i) => (
+            {projects.map((p) => (
               <article
                 className="project-space-card"
                 key={p.title}
@@ -167,26 +162,9 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
                 onPointerMove={tiltCard}
                 onPointerLeave={resetTilt}
               >
-                <div className="project-visual">
-                  <span className="project-visual-label">
-                    {DEV_PROJECTS.includes(p.title)
-                      ? "DEVELOPER EXPERIENCE"
-                      : "INTELLIGENT SYSTEMS"}
-                  </span>
-                  <div className="project-cube" aria-hidden="true">
-                    <span>{["✳", ">_", "{ }", "↗"][i % 4]}</span>
-                    <span>
-                      <Code2 size={27} />
-                    </span>
-                    <span>+</span>
-                  </div>
-                  <span className="project-number">
-                    {String(RESUME.projects.indexOf(p) + 1).padStart(2, "0")}
-                  </span>
-                </div>
                 <div className="project-space-content">
                   <h3>{p.title}</h3>
-                  <p>{p.subtitle}</p>
+                  <p>{p.subtitle}</p><p className="project-real-summary">{p.bullets[0]}</p>
                   <div className="project-tech">
                     {p.tech.slice(0, 4).map((t) => (
                       <span key={t}>{t}</span>
@@ -196,7 +174,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
                     className="project-details-button"
                     onClick={() => setSelected(p)}
                   >
-                    Explore project <ArrowUpRight size={17} />
+                    Project details <ArrowUpRight size={17} />
                   </button>
                 </div>
               </article>
@@ -362,6 +340,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
       >
         {selected && (
           <>
+            <CharacterGuide compact key={selected.title} stories={[`${selected.title}: ${selected.subtitle}`, ...selected.bullets]}/>
             <button
               className="dialog-close"
               aria-label="Close project"

@@ -46,7 +46,7 @@ const TOOLS: ToolItem[] = [
     category: 'Network & Debugging',
     keywords: ['debug', 'debugflow', 'stacktrace', 'error', 'log', 'exception', 'stack', 'trace', 'crash', 'debugger', 'csharp', 'dotnet', 'java', 'python'],
     icon: <Bug size={16} />,
-    color: '#fab387',
+    color: '#f3c18e',
   },
   {
     id: 'distance',
@@ -54,7 +54,7 @@ const TOOLS: ToolItem[] = [
     category: 'Calculators & Converters',
     keywords: ['distance', 'lat', 'lon', 'latitude', 'longitude', 'coordinates', 'haversine', 'vincenty', 'geodesic', 'geofence', 'gps', 'bearing', 'heading', 'miles', 'km'],
     icon: <Compass size={16} />,
-    color: '#89b4fa',
+    color: '#c8edb6',
   },
   {
     id: 'har',
@@ -62,7 +62,7 @@ const TOOLS: ToolItem[] = [
     category: 'Network & Debugging',
     keywords: ['har', 'http', 'archive', 'network', 'waterfall', 'ttfb', 'jam', 'payload', 'requests', 'cookies'],
     icon: <Globe size={16} />,
-    color: '#89b4fa',
+    color: '#c8edb6',
   },
   {
     id: 'api',
@@ -70,7 +70,7 @@ const TOOLS: ToolItem[] = [
     category: 'Network & Debugging',
     keywords: ['postman', 'swagger', 'graphql', 'query', 'mutation', 'api', 'openapi', 'rest', 'http', 'request', 'fetch', 'curl', 'endpoints'],
     icon: <Send size={16} />,
-    color: '#a6e3a1',
+    color: '#b5dfa3',
   },
   {
     id: 'jwt',
@@ -78,7 +78,7 @@ const TOOLS: ToolItem[] = [
     category: 'Security & Auth',
     keywords: ['jwt', 'token', 'bearer', 'auth', 'claims', 'decode', 'signature', 'hmac', 'sha256', 'exp'],
     icon: <KeyRound size={16} />,
-    color: '#f38ba8',
+    color: '#f19aa6',
   },
   {
     id: 'pdf',
@@ -86,7 +86,7 @@ const TOOLS: ToolItem[] = [
     category: 'Document Studio',
     keywords: ['pdf', 'word', 'docx', 'convert', 'merge', 'split', 'compress', 'print', 'vector'],
     icon: <Layers size={16} />,
-    color: '#f38ba8',
+    color: '#f19aa6',
   },
   {
     id: 'text',
@@ -94,7 +94,7 @@ const TOOLS: ToolItem[] = [
     category: 'Code & Comparison',
     keywords: ['diff', 'compare', 'code', 'text', 'merge', 'monaco', 'syntax', 'changes'],
     icon: <FileText size={16} />,
-    color: '#89b4fa',
+    color: '#c8edb6',
   },
   {
     id: 'file',
@@ -102,7 +102,7 @@ const TOOLS: ToolItem[] = [
     category: 'Code & Comparison',
     keywords: ['folder', 'directory', 'file', 'diff', 'compare', 'tree'],
     icon: <FileCode2 size={16} />,
-    color: '#a6e3a1',
+    color: '#b5dfa3',
   },
   {
     id: 'uuid',
@@ -110,7 +110,7 @@ const TOOLS: ToolItem[] = [
     category: 'Security & IDs',
     keywords: ['uuid', 'uuidv4', 'uuidv7', 'snowflake', 'ulid', 'nanoid', 'objectid', 'random', 'id'],
     icon: <Fingerprint size={16} />,
-    color: '#89b4fa',
+    color: '#c8edb6',
   },
   {
     id: 'json',
@@ -118,7 +118,7 @@ const TOOLS: ToolItem[] = [
     category: 'Data & Formatters',
     keywords: ['json', 'yaml', 'yml', 'format', 'table', 'xml', 'validator', 'minify', 'pretty', 'tree'],
     icon: <Braces size={16} />,
-    color: '#a6e3a1',
+    color: '#b5dfa3',
   },
   {
     id: 'time',
@@ -126,7 +126,7 @@ const TOOLS: ToolItem[] = [
     category: 'Calculators & Converters',
     keywords: ['time', 'timezone', 'epoch', 'unix', 'timestamp', 'utc', 'clock', 'date', 'iso'],
     icon: <Clock3 size={16} />,
-    color: '#f9e2af',
+    color: '#f3d58c',
   },
   {
     id: 'regex',
@@ -134,7 +134,7 @@ const TOOLS: ToolItem[] = [
     category: 'Code & Comparison',
     keywords: ['regex', 'regexp', 'regular expression', 'test', 'match', 'pattern'],
     icon: <Regex size={16} />,
-    color: '#fab387',
+    color: '#f3c18e',
   },
   {
     id: 'architecture',
@@ -142,7 +142,7 @@ const TOOLS: ToolItem[] = [
     category: 'Diagrams & Design',
     keywords: ['architecture', 'diagram', 'database', 'erd', 'flowchart', 'schema', 'mermaid'],
     icon: <Network size={16} />,
-    color: '#cba6f7',
+    color: '#ceb8f6',
   },
   {
     id: 'image_studio',
@@ -158,7 +158,7 @@ const TOOLS: ToolItem[] = [
     category: 'Media & Graphics',
     keywords: ['base64', 'image', 'encode', 'decode', 'data uri'],
     icon: <ImageIcon size={16} />,
-    color: '#89dceb',
+    color: '#8ddacb',
   },
   {
     id: 'case',
@@ -166,7 +166,7 @@ const TOOLS: ToolItem[] = [
     category: 'Utilities',
     keywords: ['case', 'camelcase', 'snake_case', 'kebab', 'pascal', 'uppercase'],
     icon: <CaseSensitive size={16} />,
-    color: '#b4befe',
+    color: '#d9f6ca',
   },
   {
     id: 'markup',
@@ -174,7 +174,7 @@ const TOOLS: ToolItem[] = [
     category: 'Data & Formatters',
     keywords: ['html', 'markdown', 'xml', 'sql', 'format', 'preview', 'sandbox'],
     icon: <FileCode2 size={16} />,
-    color: '#cba6f7',
+    color: '#ceb8f6',
   },
   {
     id: 'url',
@@ -190,7 +190,7 @@ const TOOLS: ToolItem[] = [
     category: 'About',
     keywords: ['about', 'portfolio', 'architecture', 'languages', 'creator', 'prakash', 'contact', 'resume', 'projects', 'experience', 'kafka'],
     icon: <UserRound size={16} />,
-    color: '#89b4fa',
+    color: '#c8edb6',
   },
 ];
 
@@ -262,12 +262,12 @@ export default function CommandPalette({ isOpen, onClose, onSelectTool, onPortfo
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/60 backdrop-blur-sm animate-fade-in">
       <div
-        className="w-full max-w-xl bg-[#1e1e2e] border border-[#313244] rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+        className="w-full max-w-xl bg-[#171d19] border border-[#344435] rounded-2xl shadow-2xl overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Input */}
-        <div className="flex items-center px-4 py-3 border-b border-[#313244] gap-3">
-          <Search size={18} className="text-[#89b4fa]" />
+        <div className="flex items-center px-4 py-3 border-b border-[#344435] gap-3">
+          <Search size={18} className="text-[#c8edb6]" />
           <input
             ref={inputRef}
             type="text"
@@ -277,20 +277,20 @@ export default function CommandPalette({ isOpen, onClose, onSelectTool, onPortfo
               setQuery(e.target.value);
               setSelectedIndex(0);
             }}
-            className="flex-1 bg-transparent text-sm text-[#cdd6f4] placeholder-[#6c7086] focus:outline-none"
+            className="flex-1 bg-transparent text-sm text-[#e4ebdd] placeholder-[#9eac96] focus:outline-none"
           />
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-[#6c7086] hover:text-[#cdd6f4] hover:bg-[#313244]"
+            className="p-1 rounded-lg text-[#9eac96] hover:text-[#e4ebdd] hover:bg-[#344435]"
           >
             <X size={16} />
           </button>
         </div>
 
         {/* Results */}
-        <div className="max-h-80 overflow-y-auto p-2 divide-y divide-[#252535]">
+        <div className="max-h-80 overflow-y-auto p-2 divide-y divide-[#2b382c]">
           {filtered.length === 0 ? (
-            <div className="p-8 text-center text-xs text-[#6c7086]">
+            <div className="p-8 text-center text-xs text-[#9eac96]">
               No tools matching &quot;{query}&quot;
             </div>
           ) : (
@@ -302,7 +302,7 @@ export default function CommandPalette({ isOpen, onClose, onSelectTool, onPortfo
                   onClick={() => handleSelect(tool)}
                   onMouseEnter={() => setSelectedIndex(idx)}
                   className={`flex items-center px-3 py-2.5 rounded-xl cursor-pointer transition-colors ${
-                    isSelected ? 'bg-[#89b4fa]/15 text-[#cdd6f4]' : 'hover:bg-[#181825]'
+                    isSelected ? 'bg-[#c8edb6]/15 text-[#e4ebdd]' : 'hover:bg-[#111612]'
                   }`}
                 >
                   <div
@@ -312,10 +312,10 @@ export default function CommandPalette({ isOpen, onClose, onSelectTool, onPortfo
                     {tool.icon}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-xs font-bold text-[#cdd6f4] truncate">{tool.name}</div>
-                    <div className="text-[10px] text-[#6c7086] truncate">{tool.category}</div>
+                    <div className="text-xs font-bold text-[#e4ebdd] truncate">{tool.name}</div>
+                    <div className="text-[10px] text-[#9eac96] truncate">{tool.category}</div>
                   </div>
-                  <span className="text-[10px] text-[#585b70] font-mono">Jump ↵</span>
+                  <span className="text-[10px] text-[#899980] font-mono">Jump ↵</span>
                 </div>
               );
             })
@@ -323,7 +323,7 @@ export default function CommandPalette({ isOpen, onClose, onSelectTool, onPortfo
         </div>
 
         {/* Footer shortcuts */}
-        <div className="flex items-center justify-between px-4 py-2 bg-[#181825] border-t border-[#313244] text-[10px] text-[#6c7086]">
+        <div className="flex items-center justify-between px-4 py-2 bg-[#111612] border-t border-[#344435] text-[10px] text-[#9eac96]">
           <span>Navigation: ↑ ↓ arrows to select, Enter to open</span>
           <span>Esc to close</span>
         </div>

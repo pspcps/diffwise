@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import MonacoEditor from '@monaco-editor/react';
+import MonacoEditor from '../Common/CodeEditor';
 import { Scissors, Check, X, ArrowRight, Trash2, ArrowLeftRight } from 'lucide-react';
 import * as monaco from 'monaco-editor';
 import DropZone from '../Common/DropZone';
@@ -192,7 +192,7 @@ export default function CodeMoverView() {
   if (!left || !right) {
     const renderSide = (side: 'left' | 'right') => {
       const file: FileInfo | null = side === 'left' ? left : right;
-      const color = side === 'left' ? 'bg-[#f38ba8]' : 'bg-[#a6e3a1]';
+      const color = side === 'left' ? 'bg-[#f19aa6]' : 'bg-[#b5dfa3]';
       const label = side === 'left' ? 'Source File' : 'Target File';
       const setFile = side === 'left'
         ? (name: string, content: string) => setLeft({ name, content })
@@ -200,11 +200,11 @@ export default function CodeMoverView() {
 
       if (file) {
         return (
-          <div className="flex flex-col h-full border border-[#45475a] rounded-lg overflow-hidden">
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-[#181825] border-b border-[#45475a] shrink-0">
+          <div className="flex flex-col h-full border border-[#71836b] rounded-lg overflow-hidden">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-[#111612] border-b border-[#71836b] shrink-0">
               <span className={`w-2 h-2 rounded-full shrink-0 ${color}`} />
-              <span className="text-xs text-[#cdd6f4] font-medium truncate">{file.name}</span>
-              <span className="ml-auto text-xs text-[#6c7086]">Waiting for {side === 'left' ? 'right' : 'left'} file…</span>
+              <span className="text-xs text-[#e4ebdd] font-medium truncate">{file.name}</span>
+              <span className="ml-auto text-xs text-[#9eac96]">Waiting for {side === 'left' ? 'right' : 'left'} file…</span>
             </div>
             <div className="flex-1 min-h-0">
               <MonacoEditor
@@ -246,9 +246,9 @@ export default function CodeMoverView() {
   return (
     <div className="flex flex-col h-full relative">
       {/* Toolbar */}
-      <div className="flex items-center gap-2 px-3 py-1.5 bg-[#181825] border-b border-[#45475a] shrink-0">
-        <ArrowLeftRight size={13} className="text-[#89b4fa]" />
-        <span className="text-xs text-[#6c7086]">
+      <div className="flex items-center gap-2 px-3 py-1.5 bg-[#111612] border-b border-[#71836b] shrink-0">
+        <ArrowLeftRight size={13} className="text-[#c8edb6]" />
+        <span className="text-xs text-[#9eac96]">
           {selecting && selection
             ? `Selected from ${selection.source === 'left' ? 'left' : 'right'} — click a line in the ${selection.source === 'left' ? 'right' : 'left'} panel to place`
             : 'Select code in either panel, then cut it to move to the other side'}
@@ -258,21 +258,21 @@ export default function CodeMoverView() {
           <button
             onMouseDown={e => { e.preventDefault(); captureSelection('left'); }}
             disabled={selecting}
-            className="flex items-center gap-1 px-2 py-1 rounded text-xs bg-[#313244] text-[#cdd6f4] hover:bg-[#45475a] disabled:opacity-40 transition-colors"
+            className="flex items-center gap-1 px-2 py-1 rounded text-xs bg-[#344435] text-[#e4ebdd] hover:bg-[#71836b] disabled:opacity-40 transition-colors"
           >
             <Scissors size={11} /> Cut Left →
           </button>
           <button
             onMouseDown={e => { e.preventDefault(); captureSelection('right'); }}
             disabled={selecting}
-            className="flex items-center gap-1 px-2 py-1 rounded text-xs bg-[#313244] text-[#cdd6f4] hover:bg-[#45475a] disabled:opacity-40 transition-colors"
+            className="flex items-center gap-1 px-2 py-1 rounded text-xs bg-[#344435] text-[#e4ebdd] hover:bg-[#71836b] disabled:opacity-40 transition-colors"
           >
             ← Cut Right <Scissors size={11} />
           </button>
           {selecting && (
             <button
               onClick={() => { setSelecting(false); setSelection(null); }}
-              className="flex items-center gap-1 px-2 py-1 rounded text-xs bg-[rgba(243,139,168,0.15)] text-[#f38ba8] hover:bg-[rgba(243,139,168,0.25)] transition-colors"
+              className="flex items-center gap-1 px-2 py-1 rounded text-xs bg-[rgba(243,139,168,0.15)] text-[#f19aa6] hover:bg-[rgba(243,139,168,0.25)] transition-colors"
             >
               <X size={11} /> Cancel
             </button>
@@ -282,21 +282,21 @@ export default function CodeMoverView() {
 
       {/* Move queue */}
       {moves.filter(m => !m.applied).length > 0 && (
-        <div className="flex items-center gap-2 px-3 py-1.5 bg-[#24273a] border-b border-[#45475a] shrink-0 overflow-x-auto">
-          <span className="text-xs text-[#6c7086] shrink-0">Pending moves:</span>
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-[#24273a] border-b border-[#71836b] shrink-0 overflow-x-auto">
+          <span className="text-xs text-[#9eac96] shrink-0">Pending moves:</span>
           {moves.filter(m => !m.applied).map(move => (
-            <div key={move.id} className="flex items-center gap-1 bg-[#313244] rounded px-2 py-0.5 text-xs shrink-0">
-              <span className="text-[#cdd6f4]">{move.source}</span>
-              <span className="text-[#6c7086]">L{move.startLine}–{move.endLine}</span>
-              <ArrowRight size={10} className="text-[#89b4fa]" />
-              <span className="text-[#cdd6f4]">{move.target}</span>
-              <span className="text-[#6c7086]">@{move.targetLine}</span>
+            <div key={move.id} className="flex items-center gap-1 bg-[#344435] rounded px-2 py-0.5 text-xs shrink-0">
+              <span className="text-[#e4ebdd]">{move.source}</span>
+              <span className="text-[#9eac96]">L{move.startLine}–{move.endLine}</span>
+              <ArrowRight size={10} className="text-[#c8edb6]" />
+              <span className="text-[#e4ebdd]">{move.target}</span>
+              <span className="text-[#9eac96]">@{move.targetLine}</span>
               <button onClick={() => applyMove(move)}
-                className="ml-1 p-0.5 rounded hover:bg-[#a6e3a1] hover:text-[#1e1e2e] text-[#a6e3a1] transition-colors">
+                className="ml-1 p-0.5 rounded hover:bg-[#b5dfa3] hover:text-[#171d19] text-[#b5dfa3] transition-colors">
                 <Check size={10} />
               </button>
               <button onClick={() => discardMove(move.id)}
-                className="p-0.5 rounded hover:bg-[#f38ba8] hover:text-[#1e1e2e] text-[#f38ba8] transition-colors">
+                className="p-0.5 rounded hover:bg-[#f19aa6] hover:text-[#171d19] text-[#f19aa6] transition-colors">
                 <Trash2 size={10} />
               </button>
             </div>
@@ -334,15 +334,15 @@ export default function CodeMoverView() {
         {/* Left panel */}
         <div
           ref={leftContainerRef}
-          className={`flex-1 flex flex-col min-w-0 border-r border-[#45475a] ${
-            selecting && selection?.source !== 'left' ? 'ring-2 ring-inset ring-[#89b4fa]/30' : ''
+          className={`flex-1 flex flex-col min-w-0 border-r border-[#71836b] ${
+            selecting && selection?.source !== 'left' ? 'ring-2 ring-inset ring-[#c8edb6]/30' : ''
           }`}
         >
-          <div className="flex items-center gap-2 px-3 py-1 bg-[#181825] border-b border-[#45475a] shrink-0">
-            <span className="w-2 h-2 rounded-full bg-[#f38ba8] shrink-0" />
-            <span className="text-xs text-[#cdd6f4] font-medium truncate">{left.name}</span>
+          <div className="flex items-center gap-2 px-3 py-1 bg-[#111612] border-b border-[#71836b] shrink-0">
+            <span className="w-2 h-2 rounded-full bg-[#f19aa6] shrink-0" />
+            <span className="text-xs text-[#e4ebdd] font-medium truncate">{left.name}</span>
             {selecting && selection?.source !== 'left' && (
-              <span className="ml-auto text-xs text-[#89b4fa] animate-pulse">Click target line</span>
+              <span className="ml-auto text-xs text-[#c8edb6] animate-pulse">Click target line</span>
             )}
           </div>
           <div className="flex-1 min-h-0">
@@ -374,14 +374,14 @@ export default function CodeMoverView() {
         <div
           ref={rightContainerRef}
           className={`flex-1 flex flex-col min-w-0 ${
-            selecting && selection?.source !== 'right' ? 'ring-2 ring-inset ring-[#89b4fa]/30' : ''
+            selecting && selection?.source !== 'right' ? 'ring-2 ring-inset ring-[#c8edb6]/30' : ''
           }`}
         >
-          <div className="flex items-center gap-2 px-3 py-1 bg-[#181825] border-b border-[#45475a] shrink-0">
-            <span className="w-2 h-2 rounded-full bg-[#a6e3a1] shrink-0" />
-            <span className="text-xs text-[#cdd6f4] font-medium truncate">{right.name}</span>
+          <div className="flex items-center gap-2 px-3 py-1 bg-[#111612] border-b border-[#71836b] shrink-0">
+            <span className="w-2 h-2 rounded-full bg-[#b5dfa3] shrink-0" />
+            <span className="text-xs text-[#e4ebdd] font-medium truncate">{right.name}</span>
             {selecting && selection?.source !== 'right' && (
-              <span className="ml-auto text-xs text-[#89b4fa] animate-pulse">Click target line</span>
+              <span className="ml-auto text-xs text-[#c8edb6] animate-pulse">Click target line</span>
             )}
           </div>
           <div className="flex-1 min-h-0">
@@ -411,7 +411,7 @@ export default function CodeMoverView() {
 
       {/* Notification */}
       {notification && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 bg-[#313244] border border-[#45475a] rounded-lg px-4 py-2 text-xs text-[#cdd6f4] shadow-lg max-w-md text-center">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 bg-[#344435] border border-[#71836b] rounded-lg px-4 py-2 text-xs text-[#e4ebdd] shadow-lg max-w-md text-center">
           {notification}
         </div>
       )}

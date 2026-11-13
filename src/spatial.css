@@ -4,7 +4,7 @@
   --surface: #141716;
   --border: #ffffff12;
   --muted: #979c98;
-  --mint: #c8edb6;
+  --mint: var(--user-accent, #c8edb6);
   font-family: "Inter", "Segoe UI", sans-serif;
   color: #f0f1e9;
   background: #101211;
@@ -36,7 +36,7 @@
 .portfolio-space button:focus-visible,
 .portfolio-space a:focus-visible,
 .tool-toolbar button:focus-visible {
-  outline: 2px solid #c8edb6;
+  outline: 2px solid var(--user-accent, #c8edb6);
   outline-offset: 5px;
 }
 .space-app {
@@ -72,7 +72,7 @@
   place-items: center;
   width: 37px;
   height: 39px;
-  background: #c8edb6;
+  background: var(--user-accent, #c8edb6);
   color: #1e2b19;
   border-radius: 11px;
   box-shadow: inset 0 0 0 1px #eaffda60;
@@ -87,7 +87,7 @@
   margin-top: 4px;
 }
 .brand-period {
-  color: var(--mint, #c8edb6);
+  color: var(--mint, var(--user-accent, #c8edb6));
 }
 .nav-label {
   font-size: 9px;
@@ -113,9 +113,9 @@
   font-size: 12px;
 }
 .space-sidebar nav button.active {
-  background: #c8edb60d;
-  color: #c8edb6;
-  border-color: #c8edb61b;
+  background: color-mix(in srgb,var(--user-accent, #c8edb6) 5%,transparent);
+  color: var(--user-accent, #c8edb6);
+  border-color: color-mix(in srgb,var(--user-accent, #c8edb6) 11%,transparent);
 }
 .space-sidebar nav button:hover {
   background: #ffffff07;
@@ -123,7 +123,7 @@
 }
 .space-sidebar nav small {
   margin-left: auto;
-  background: #c8edb613;
+  background: color-mix(in srgb,var(--user-accent, #c8edb6) 7%,transparent);
   color: #a3b59b;
   padding: 1px 6px;
   border-radius: 4px;
@@ -132,13 +132,13 @@
 .sidebar-note {
   margin: 40px 8px 30px;
   padding: 18px 15px;
-  border: 1px solid #c8edb61a;
+  border: 1px solid color-mix(in srgb,var(--user-accent, #c8edb6) 10%,transparent);
   border-radius: 8px;
-  background: radial-gradient(ellipse at 100% 0%, #c8edb60b, transparent);
+  background: radial-gradient(ellipse at 100% 0%, color-mix(in srgb,var(--user-accent, #c8edb6) 4%,transparent), transparent);
 }
 .note-symbol {
   font-size: 31px;
-  color: #c8edb6;
+  color: var(--user-accent, #c8edb6);
   line-height: 1;
 }
 .sidebar-note h3 {
@@ -161,7 +161,7 @@
   background: none;
   border: 0;
   padding: 15px 0 0;
-  color: #c8edb6;
+  color: var(--user-accent, #c8edb6);
 }
 .sidebar-bottom {
   margin-top: auto;
@@ -272,7 +272,7 @@
   width: 29px;
   height: 29px;
   padding: 0;
-  border: 1px solid #c8edb640;
+  border: 1px solid color-mix(in srgb,var(--user-accent, #c8edb6) 25%,transparent);
   border-radius: 50%;
   overflow: hidden;
   background: none;
@@ -316,7 +316,7 @@
 .eyebrow > span {
   width: 5px;
   height: 5px;
-  border: 1px solid #c8edb6;
+  border: 1px solid var(--user-accent, #c8edb6);
   border-radius: 50%;
 }
 .eyebrow.muted {
@@ -333,7 +333,7 @@
 }
 .hero-copy h1 em {
   font-family: Georgia, serif;
-  color: #c8edb6;
+  color: var(--user-accent, #c8edb6);
   font-weight: 400;
 }
 .hero-copy > p {
@@ -354,9 +354,9 @@
   align-items: center;
   justify-content: center;
   gap: 17px;
-  border: 1px solid #c8edb6;
+  border: 1px solid var(--user-accent, #c8edb6);
   border-radius: 6px;
-  background: #c8edb6;
+  background: var(--user-accent, #c8edb6);
   color: #1b2915 !important;
   padding: 12px 16px;
   font-size: 11px !important;
@@ -366,7 +366,7 @@
 .primary-button:hover {
   background: #e1ffce;
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px #c8edb61b;
+  box-shadow: 0 8px 25px color-mix(in srgb,var(--user-accent, #c8edb6) 11%,transparent);
 }
 .text-button {
   background: none;
@@ -455,7 +455,7 @@
   margin-right: 6px;
 }
 .spatial-controls button {
-  border: 1px solid #c8edb623;
+  border: 1px solid color-mix(in srgb,var(--user-accent, #c8edb6) 14%,transparent);
   border-radius: 50%;
   width: 24px;
   height: 24px;
@@ -494,7 +494,7 @@
   animation: levitate 6s ease-in-out infinite;
 }
 .orbit-tag:hover {
-  border-color: #c8edb68c;
+  border-color: color-mix(in srgb,var(--user-accent, #c8edb6) 55%,transparent);
   animation-play-state: paused;
 }
 .tag-code {
@@ -533,7 +533,7 @@
 }
 .tag-diff b {
   font-weight: 400;
-  color: #c8edb6;
+  color: var(--user-accent, #c8edb6);
 }
 @keyframes levitate {
   0%,
@@ -579,7 +579,7 @@
   width: 211px;
 }
 .tool-search:focus-within {
-  border-color: #c8edb677;
+  border-color: color-mix(in srgb,var(--user-accent, #c8edb6) 47%,transparent);
 }
 .tool-search input {
   width: 100%;
@@ -613,7 +613,7 @@
 }
 .category-tabs button.selected {
   border-color: #bfdbad22;
-  background: #c8edb60e;
+  background: color-mix(in srgb,var(--user-accent, #c8edb6) 5%,transparent);
   color: #c9dfbb;
 }
 .category-tabs button:hover {
@@ -759,7 +759,7 @@
 .empty-tools {
   padding: 45px;
   text-align: center;
-  border: 1px dashed #c8edb62a;
+  border: 1px dashed color-mix(in srgb,var(--user-accent, #c8edb6) 16%,transparent);
   border-radius: 10px;
   color: #8f9a87;
 }
@@ -778,10 +778,10 @@
   display: flex;
   align-items: center;
   gap: 22px;
-  border: 1px solid #c8edb61a;
+  border: 1px solid color-mix(in srgb,var(--user-accent, #c8edb6) 10%,transparent);
   border-radius: 9px;
   padding: 23px;
-  background: linear-gradient(100deg, #c8edb608, transparent);
+  background: linear-gradient(100deg, color-mix(in srgb,var(--user-accent, #c8edb6) 3%,transparent), transparent);
   margin: 4px 0 28px;
 }
 .builder-monogram {
@@ -791,11 +791,11 @@
   letter-spacing: -2px;
   width: 65px;
   height: 65px;
-  border: 1px solid #c8edb627;
+  border: 1px solid color-mix(in srgb,var(--user-accent, #c8edb6) 15%,transparent);
   border-radius: 50%;
   display: grid;
   place-content: center;
-  color: #c8edb6;
+  color: var(--user-accent, #c8edb6);
   position: relative;
   flex-shrink: 0;
 }
@@ -825,16 +825,16 @@
 }
 .secondary-button {
   color: #d2e0c7 !important;
-  border: 1px solid #c8edb633;
-  background: #c8edb606;
+  border: 1px solid color-mix(in srgb,var(--user-accent, #c8edb6) 20%,transparent);
+  background: color-mix(in srgb,var(--user-accent, #c8edb6) 2%,transparent);
   white-space: nowrap;
   margin-left: auto;
   font-size: 9px !important;
   padding: 11px 13px;
 }
 .secondary-button:hover {
-  background: #c8edb616;
-  border-color: #c8edb666;
+  background: color-mix(in srgb,var(--user-accent, #c8edb6) 9%,transparent);
+  border-color: color-mix(in srgb,var(--user-accent, #c8edb6) 40%,transparent);
 }
 .space-footer {
   display: flex;
@@ -876,7 +876,7 @@
   z-index: 30;
   flex-shrink: 0;
   background: #121612;
-  border-bottom: 1px solid #c8edb61a;
+  border-bottom: 1px solid color-mix(in srgb,var(--user-accent, #c8edb6) 10%,transparent);
   color: #d7e4cc;
   position: relative;
 }
@@ -926,16 +926,16 @@
   font-size: 10px !important;
 }
 .toolbar-tools button.active {
-  background: #c8edb612;
-  border-color: #c8edb62b;
-  color: #c8edb6;
+  background: color-mix(in srgb,var(--user-accent, #c8edb6) 7%,transparent);
+  border-color: color-mix(in srgb,var(--user-accent, #c8edb6) 17%,transparent);
+  color: var(--user-accent, #c8edb6);
 }
 .toolbar-tools button:hover {
-  background: #c8edb609;
+  background: color-mix(in srgb,var(--user-accent, #c8edb6) 4%,transparent);
   color: #e2f6d4;
 }
 .workbench-frame {
-  box-shadow: inset 0 1px 0 #c8edb611;
+  box-shadow: inset 0 1px 0 color-mix(in srgb,var(--user-accent, #c8edb6) 7%,transparent);
 }
 /* Portfolio */
 .portfolio-space {
@@ -1223,7 +1223,7 @@
 .project-tech span {
   font-size: 8px;
   padding: 4px 7px;
-  border: 1px solid #c8edb614;
+  border: 1px solid color-mix(in srgb,var(--user-accent, #c8edb6) 8%,transparent);
   color: #a9b49e;
   border-radius: 3px;
 }
@@ -1367,8 +1367,8 @@
   line-height: 1.8;
 }
 .portfolio-contact {
-  border: 1px solid #c8edb625;
-  background: radial-gradient(ellipse at 50% 120%, #c8edb614, transparent 70%);
+  border: 1px solid color-mix(in srgb,var(--user-accent, #c8edb6) 15%,transparent);
+  background: radial-gradient(ellipse at 50% 120%, color-mix(in srgb,var(--user-accent, #c8edb6) 8%,transparent), transparent 70%);
   border-radius: 12px;
   text-align: center;
   padding: 58px 20px;
@@ -1385,7 +1385,7 @@
 }
 .portfolio-contact h2 em {
   font-family: Georgia, serif;
-  color: #c8edb6;
+  color: var(--user-accent, #c8edb6);
 }
 .portfolio-contact p {
   color: #9ca98f;
@@ -1403,7 +1403,7 @@
 .project-dialog {
   background: #1a2018;
   color: #e8f1e1;
-  border: 1px solid #c8edb63b;
+  border: 1px solid color-mix(in srgb,var(--user-accent, #c8edb6) 23%,transparent);
   border-radius: 14px;
   padding: 32px;
   width: min(580px, calc(100% - 32px));

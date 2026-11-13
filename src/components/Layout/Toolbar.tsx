@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { ArrowLeft, Search, ArrowUpRight } from "lucide-react";
+import ThemeChoice from "../Guide/ThemeChoice";
 import Brand from "../Spatial/Brand";
 import { TOOLS } from "../../data/tools";
 import type { ViewMode } from "../../types";
@@ -34,7 +35,7 @@ export default function Toolbar({
             window.location.hash = "#/";
           }}
         />
-        <div className="tool-toolbar-actions">
+        <div className="tool-toolbar-actions"><ThemeChoice/>
           <button
             className="toolbar-home"
             onClick={() => {

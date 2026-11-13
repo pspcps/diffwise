@@ -77,42 +77,42 @@ export default function Base64ImageView() {
   };
 
   return (
-    <section className="flex h-full min-h-0 flex-col bg-[#1e1e2e] text-[#cdd6f4]">
-      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#313244] bg-[#181825] px-4 py-3">
+    <section className="flex h-full min-h-0 flex-col bg-[#171d19] text-[#e4ebdd]">
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#344435] bg-[#111612] px-4 py-3">
         <div>
           <h1 className="text-sm font-semibold">Image Base64 Converter</h1>
-          <p className="mt-0.5 text-[11px] text-[#6c7086]">Choose an image to encode, or paste Base64 to preview it.</p>
+          <p className="mt-0.5 text-[11px] text-[#9eac96]">Choose an image to encode, or paste Base64 to preview it.</p>
         </div>
-        <button onClick={() => fileInputRef.current?.click()} className="flex items-center gap-1.5 rounded-md border border-[#89b4fa]/30 bg-[#89b4fa]/10 px-3 py-1.5 text-[11px] text-[#89b4fa] hover:bg-[#89b4fa]/15"><Upload size={12} />Choose image</button>
+        <button onClick={() => fileInputRef.current?.click()} className="flex items-center gap-1.5 rounded-md border border-[#c8edb6]/30 bg-[#c8edb6]/10 px-3 py-1.5 text-[11px] text-[#c8edb6] hover:bg-[#c8edb6]/15"><Upload size={12} />Choose image</button>
         <input ref={fileInputRef} type="file" accept="image/*" onChange={event => onSelectImage(event.target.files?.[0])} className="sr-only" />
       </header>
 
       <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-2">
-        <div className="flex min-h-0 flex-col border-b border-[#313244] md:border-b-0 md:border-r">
+        <div className="flex min-h-0 flex-col border-b border-[#344435] md:border-b-0 md:border-r">
           <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 px-4 py-2">
-            <span className="text-[11px] font-medium text-[#9399b2]">{uploadedDataUrl ? 'Selected image' : 'Paste image Base64'}</span>
-            {!dataUrlMatch && !uploadedDataUrl && <select value={mimeType} onChange={event => setMimeType(event.target.value as (typeof MIME_TYPES)[number])} aria-label="Image type for raw Base64" className="rounded border border-[#313244] bg-[#1a1a2c] px-2 py-1 text-[10px] text-[#cdd6f4]">{MIME_TYPES.map(type => <option key={type} value={type}>{type.replace('image/', '')}</option>)}</select>}
-            {fileName && <span className="max-w-48 truncate text-[10px] text-[#6c7086]">{fileName}</span>}
+            <span className="text-[11px] font-medium text-[#b1bea8]">{uploadedDataUrl ? 'Selected image' : 'Paste image Base64'}</span>
+            {!dataUrlMatch && !uploadedDataUrl && <select value={mimeType} onChange={event => setMimeType(event.target.value as (typeof MIME_TYPES)[number])} aria-label="Image type for raw Base64" className="rounded border border-[#344435] bg-[#141a16] px-2 py-1 text-[10px] text-[#e4ebdd]">{MIME_TYPES.map(type => <option key={type} value={type}>{type.replace('image/', '')}</option>)}</select>}
+            {fileName && <span className="max-w-48 truncate text-[10px] text-[#9eac96]">{fileName}</span>}
           </div>
-          {uploadedDataUrl ? <div className="flex min-h-36 flex-1 items-center justify-center bg-[#1a1a2c] p-4"><div className="text-center"><ImagePlus size={24} className="mx-auto text-[#89b4fa]" /><p className="mt-2 text-xs text-[#cdd6f4]">{fileName}</p><p className="mt-1 text-[10px] text-[#6c7086]">{Math.max(1, Math.round((uploadedBase64.length * 3) / 4 / 1024))} KB · ready to encode</p><img src={uploadedDataUrl} alt="Selected image" className="mx-auto mt-4 max-h-48 max-w-full object-contain" /></div></div>
+          {uploadedDataUrl ? <div className="flex min-h-36 flex-1 items-center justify-center bg-[#141a16] p-4"><div className="text-center"><ImagePlus size={24} className="mx-auto text-[#c8edb6]" /><p className="mt-2 text-xs text-[#e4ebdd]">{fileName}</p><p className="mt-1 text-[10px] text-[#9eac96]">{Math.max(1, Math.round((uploadedBase64.length * 3) / 4 / 1024))} KB · ready to encode</p><img src={uploadedDataUrl} alt="Selected image" className="mx-auto mt-4 max-h-48 max-w-full object-contain" /></div></div>
             : <textarea value={base64Input} onChange={event => { setBase64Input(event.target.value); setUploadedDataUrl(''); setUploadedBase64(''); setFileName(''); setError(''); }} placeholder="Paste raw Base64 or a data:image/...;base64,... URL" spellCheck={false} aria-label="Image or Base64 input"
-              className="min-h-0 flex-1 resize-none bg-[#1a1a2c] px-4 py-3 font-mono text-[11px] leading-5 text-[#cdd6f4] outline-none placeholder:text-[#585b70] focus:ring-1 focus:ring-inset focus:ring-[#89b4fa]/20" />}
-          {error && <p role="alert" className="shrink-0 px-4 py-2 text-[10px] text-[#f38ba8]">{error}</p>}
-          {inputError && !error && <p role="status" className="shrink-0 px-4 py-2 text-[10px] text-[#f38ba8]">{inputError}</p>}
+              className="min-h-0 flex-1 resize-none bg-[#141a16] px-4 py-3 font-mono text-[11px] leading-5 text-[#e4ebdd] outline-none placeholder:text-[#899980] focus:ring-1 focus:ring-inset focus:ring-[#c8edb6]/20" />}
+          {error && <p role="alert" className="shrink-0 px-4 py-2 text-[10px] text-[#f19aa6]">{error}</p>}
+          {inputError && !error && <p role="status" className="shrink-0 px-4 py-2 text-[10px] text-[#f19aa6]">{inputError}</p>}
         </div>
 
         <div className="flex min-h-0 flex-col">
           <div className="flex shrink-0 items-center justify-between gap-2 px-4 py-2">
-            <span className="text-[11px] font-medium text-[#9399b2]">{isShowingBase64 ? 'Base64 output' : 'Image preview'}</span>
+            <span className="text-[11px] font-medium text-[#b1bea8]">{isShowingBase64 ? 'Base64 output' : 'Image preview'}</span>
             <div className="flex items-center gap-1.5">
-              {outputBase64 && <span className="text-[10px] text-[#6c7086]">{Math.max(1, Math.round((outputBase64.length * 3) / 4 / 1024))} KB</span>}
-              {preview && <button onClick={downloadImage} title="Download image" aria-label="Download image" className="rounded-md border border-[#313244] p-1.5 text-[#9399b2] hover:text-[#cdd6f4]"><Download size={13} /></button>}
-              <button onClick={() => void copyText('base64')} disabled={!outputBase64} title={copied === 'base64' ? 'Base64 copied' : 'Copy Base64'} aria-label="Copy Base64" className="rounded-md border border-[#313244] p-1.5 text-[#9399b2] hover:text-[#cdd6f4] disabled:opacity-40"><Copy size={13} /></button>
-              <button onClick={() => void copyText('data-url')} disabled={!outputDataUrl} title={copied === 'data-url' ? 'Data URL copied' : 'Copy data URL'} aria-label="Copy data URL" className="rounded-md border border-[#313244] p-1.5 text-[#9399b2] hover:text-[#cdd6f4] disabled:opacity-40"><Copy size={13} /></button>
+              {outputBase64 && <span className="text-[10px] text-[#9eac96]">{Math.max(1, Math.round((outputBase64.length * 3) / 4 / 1024))} KB</span>}
+              {preview && <button onClick={downloadImage} title="Download image" aria-label="Download image" className="rounded-md border border-[#344435] p-1.5 text-[#b1bea8] hover:text-[#e4ebdd]"><Download size={13} /></button>}
+              <button onClick={() => void copyText('base64')} disabled={!outputBase64} title={copied === 'base64' ? 'Base64 copied' : 'Copy Base64'} aria-label="Copy Base64" className="rounded-md border border-[#344435] p-1.5 text-[#b1bea8] hover:text-[#e4ebdd] disabled:opacity-40"><Copy size={13} /></button>
+              <button onClick={() => void copyText('data-url')} disabled={!outputDataUrl} title={copied === 'data-url' ? 'Data URL copied' : 'Copy data URL'} aria-label="Copy data URL" className="rounded-md border border-[#344435] p-1.5 text-[#b1bea8] hover:text-[#e4ebdd] disabled:opacity-40"><Copy size={13} /></button>
             </div>
           </div>
-          {isShowingBase64 ? <textarea readOnly value={uploadedBase64} aria-label="Generated Base64 output" placeholder="Encoded image data will appear here..." className="min-h-0 flex-1 resize-none bg-[#1a1a2c] px-4 py-3 font-mono text-[11px] leading-5 text-[#a6e3a1] outline-none" />
-            : <div className="flex min-h-0 flex-1 items-center justify-center overflow-auto bg-[#1a1a2c] p-4">{preview ? <img src={preview} alt="Base64 image preview" onError={() => setError('The Base64 data is not a valid image.')} className="max-h-full max-w-full object-contain" /> : <div className="flex flex-col items-center gap-2 text-center text-xs text-[#585b70]"><ImagePlus size={22} />{inputError || 'Choose an image or paste Base64 to see the result.'}</div>}</div>}
+          {isShowingBase64 ? <textarea readOnly value={uploadedBase64} aria-label="Generated Base64 output" placeholder="Encoded image data will appear here..." className="min-h-0 flex-1 resize-none bg-[#141a16] px-4 py-3 font-mono text-[11px] leading-5 text-[#b5dfa3] outline-none" />
+            : <div className="flex min-h-0 flex-1 items-center justify-center overflow-auto bg-[#141a16] p-4">{preview ? <img src={preview} alt="Base64 image preview" onError={() => setError('The Base64 data is not a valid image.')} className="max-h-full max-w-full object-contain" /> : <div className="flex flex-col items-center gap-2 text-center text-xs text-[#899980]"><ImagePlus size={22} />{inputError || 'Choose an image or paste Base64 to see the result.'}</div>}</div>}
         </div>
       </div>
     </section>

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import MonacoEditor from '@monaco-editor/react';
+import MonacoEditor from '../Common/CodeEditor';
 import {
   Copy, Save, RotateCcw, ChevronUp, ChevronDown, Settings, ArrowRight, ArrowLeft,
 } from 'lucide-react';
@@ -350,7 +350,7 @@ export default function FileCompareView() {
   if (!left || !right) {
     const renderSide = (side: 'left' | 'right') => {
       const file = side === 'left' ? left : right;
-      const color = side === 'left' ? 'bg-[#f38ba8]' : 'bg-[#a6e3a1]';
+      const color = side === 'left' ? 'bg-[#f19aa6]' : 'bg-[#b5dfa3]';
       const role = side === 'left' ? 'original' : 'modified';
       const label = side === 'left' ? 'Left File (Original)' : 'Right File (Modified)';
       const setFile = side === 'left'
@@ -360,20 +360,20 @@ export default function FileCompareView() {
 
       if (file) {
         return (
-          <div className="flex flex-col h-full border border-[#45475a] rounded-lg overflow-hidden">
-            <div className="flex items-center justify-between px-3 py-1.5 bg-[#181825] border-b border-[#45475a] shrink-0">
+          <div className="flex flex-col h-full border border-[#71836b] rounded-lg overflow-hidden">
+            <div className="flex items-center justify-between px-3 py-1.5 bg-[#111612] border-b border-[#71836b] shrink-0">
               <div className="flex items-center gap-2">
                 <span className={`w-2 h-2 rounded-full ${color}`} />
-                <span className="text-xs text-[#cdd6f4] font-medium truncate max-w-[180px]" title={file.name}>{file.name}</span>
-                <span className="text-xs text-[#6c7086]">{role}</span>
+                <span className="text-xs text-[#e4ebdd] font-medium truncate max-w-[180px]" title={file.name}>{file.name}</span>
+                <span className="text-xs text-[#9eac96]">{role}</span>
               </div>
               <div className="flex items-center gap-1">
                 <button onClick={() => navigator.clipboard.writeText(file.content)} title="Copy"
-                  className="p-1 rounded hover:bg-[#313244] text-[#6c7086] hover:text-[#cdd6f4] transition-colors">
+                  className="p-1 rounded hover:bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd] transition-colors">
                   <Copy size={12} />
                 </button>
                 <button onClick={clearFile} title="Close"
-                  className="p-1 rounded hover:bg-[#313244] text-[#6c7086] hover:text-[#f38ba8] transition-colors">
+                  className="p-1 rounded hover:bg-[#344435] text-[#9eac96] hover:text-[#f19aa6] transition-colors">
                   <RotateCcw size={12} />
                 </button>
               </div>
@@ -401,39 +401,39 @@ export default function FileCompareView() {
     <div className="flex flex-col h-full">
 
       {/* Panel headers */}
-      <div className="flex shrink-0 bg-[#181825] border-b border-[#45475a]">
+      <div className="flex shrink-0 bg-[#111612] border-b border-[#71836b]">
 
         {/* Left header */}
-        <div className="flex-1 flex items-center justify-between px-3 py-1.5 border-r border-[#45475a] min-w-0">
+        <div className="flex-1 flex items-center justify-between px-3 py-1.5 border-r border-[#71836b] min-w-0">
           <div className="flex items-center gap-2 min-w-0">
-            <span className="w-2 h-2 rounded-full bg-[#f38ba8] shrink-0" />
-            <span className="text-xs text-[#cdd6f4] font-medium truncate max-w-[150px]" title={left.name}>{left.name}</span>
-            <span className="text-xs text-[#6c7086] shrink-0">original</span>
+            <span className="w-2 h-2 rounded-full bg-[#f19aa6] shrink-0" />
+            <span className="text-xs text-[#e4ebdd] font-medium truncate max-w-[150px]" title={left.name}>{left.name}</span>
+            <span className="text-xs text-[#9eac96] shrink-0">original</span>
           </div>
           <div className="flex items-center gap-1 shrink-0">
             <button onClick={() => handleCopy('left')} title="Copy to clipboard"
-              className="p-1 rounded hover:bg-[#313244] text-[#6c7086] hover:text-[#cdd6f4] transition-colors">
+              className="p-1 rounded hover:bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd] transition-colors">
               <Copy size={12} />
             </button>
             <button onClick={() => handleSave('left')} title="Save to disk"
-              className="flex items-center gap-1 px-2 py-0.5 rounded text-xs hover:bg-[#313244] text-[#6c7086] hover:text-[#a6e3a1] transition-colors">
+              className="flex items-center gap-1 px-2 py-0.5 rounded text-xs hover:bg-[#344435] text-[#9eac96] hover:text-[#b5dfa3] transition-colors">
               <Save size={11} /><span>Save</span>
             </button>
             <button onClick={() => setLeft(null)} title="Close"
-              className="p-1 rounded hover:bg-[#313244] text-[#6c7086] hover:text-[#f38ba8] transition-colors">
+              className="p-1 rounded hover:bg-[#344435] text-[#9eac96] hover:text-[#f19aa6] transition-colors">
               <RotateCcw size={12} />
             </button>
           </div>
         </div>
 
         {/* Center header — same width as center strip */}
-        <div className="w-9 shrink-0 flex flex-col items-center justify-center gap-0.5 border-r border-[#45475a] py-1 bg-[#181825]">
+        <div className="w-9 shrink-0 flex flex-col items-center justify-center gap-0.5 border-r border-[#71836b] py-1 bg-[#111612]">
           <button onClick={copyLeftToRight} title="Copy all left → right"
-            className="w-7 h-4 flex items-center justify-center rounded hover:bg-[#313244] text-[#a6e3a1] transition-colors">
+            className="w-7 h-4 flex items-center justify-center rounded hover:bg-[#344435] text-[#b5dfa3] transition-colors">
             <ArrowRight size={10} />
           </button>
           <button onClick={copyRightToLeft} title="Copy all right → left"
-            className="w-7 h-4 flex items-center justify-center rounded hover:bg-[#313244] text-[#89b4fa] transition-colors">
+            className="w-7 h-4 flex items-center justify-center rounded hover:bg-[#344435] text-[#c8edb6] transition-colors">
             <ArrowLeft size={10} />
           </button>
         </div>
@@ -441,33 +441,33 @@ export default function FileCompareView() {
         {/* Right header */}
         <div className="flex-1 flex items-center justify-between px-3 py-1.5 min-w-0">
           <div className="flex items-center gap-2 min-w-0">
-            <span className="w-2 h-2 rounded-full bg-[#a6e3a1] shrink-0" />
-            <span className="text-xs text-[#cdd6f4] font-medium truncate max-w-[150px]" title={right.name}>{right.name}</span>
-            <span className="text-xs text-[#6c7086] shrink-0">modified</span>
+            <span className="w-2 h-2 rounded-full bg-[#b5dfa3] shrink-0" />
+            <span className="text-xs text-[#e4ebdd] font-medium truncate max-w-[150px]" title={right.name}>{right.name}</span>
+            <span className="text-xs text-[#9eac96] shrink-0">modified</span>
           </div>
           <div className="flex items-center gap-1 shrink-0">
             <button onClick={() => navigateDiff('prev')} title="Prev diff"
-              className="p-1 rounded hover:bg-[#313244] text-[#6c7086] hover:text-[#cdd6f4] transition-colors">
+              className="p-1 rounded hover:bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd] transition-colors">
               <ChevronUp size={12} />
             </button>
             <button onClick={() => navigateDiff('next')} title="Next diff"
-              className="p-1 rounded hover:bg-[#313244] text-[#6c7086] hover:text-[#cdd6f4] transition-colors">
+              className="p-1 rounded hover:bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd] transition-colors">
               <ChevronDown size={12} />
             </button>
             <button onClick={() => handleCopy('right')} title="Copy to clipboard"
-              className="p-1 rounded hover:bg-[#313244] text-[#6c7086] hover:text-[#cdd6f4] transition-colors">
+              className="p-1 rounded hover:bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd] transition-colors">
               <Copy size={12} />
             </button>
             <button onClick={() => handleSave('right')} title="Save to disk"
-              className="flex items-center gap-1 px-2 py-0.5 rounded text-xs hover:bg-[#313244] text-[#6c7086] hover:text-[#a6e3a1] transition-colors">
+              className="flex items-center gap-1 px-2 py-0.5 rounded text-xs hover:bg-[#344435] text-[#9eac96] hover:text-[#b5dfa3] transition-colors">
               <Save size={11} /><span>Save</span>
             </button>
             <button onClick={() => setRight(null)} title="Close"
-              className="p-1 rounded hover:bg-[#313244] text-[#6c7086] hover:text-[#f38ba8] transition-colors">
+              className="p-1 rounded hover:bg-[#344435] text-[#9eac96] hover:text-[#f19aa6] transition-colors">
               <RotateCcw size={12} />
             </button>
             <button onClick={() => setSettingsOpen(v => !v)} title="Settings"
-              className={`p-1 rounded transition-colors ${settingsOpen ? 'bg-[#89b4fa] text-[#1e1e2e]' : 'hover:bg-[#313244] text-[#6c7086] hover:text-[#cdd6f4]'}`}>
+              className={`p-1 rounded transition-colors ${settingsOpen ? 'bg-[#c8edb6] text-[#171d19]' : 'hover:bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd]'}`}>
               <Settings size={12} />
             </button>
           </div>
@@ -476,17 +476,17 @@ export default function FileCompareView() {
 
       {/* Settings panel */}
       {settingsOpen && (
-        <div className="shrink-0 bg-[#24273a] border-b border-[#45475a] px-4 py-2.5">
+        <div className="shrink-0 bg-[#24273a] border-b border-[#71836b] px-4 py-2.5">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            <span className="text-xs text-[#6c7086] font-medium shrink-0">Settings:</span>
-            <label className="flex items-center gap-1.5 text-xs text-[#cdd6f4] cursor-pointer select-none">
+            <span className="text-xs text-[#9eac96] font-medium shrink-0">Settings:</span>
+            <label className="flex items-center gap-1.5 text-xs text-[#e4ebdd] cursor-pointer select-none">
               <input type="checkbox" checked={settings.ignoreTrimWhitespace}
-                onChange={e => setSetting('ignoreTrimWhitespace', e.target.checked)} className="accent-[#89b4fa]" />
+                onChange={e => setSetting('ignoreTrimWhitespace', e.target.checked)} className="accent-[#c8edb6]" />
               Ignore trailing whitespace
             </label>
-            <label className="flex items-center gap-1.5 text-xs text-[#cdd6f4] cursor-pointer select-none">
+            <label className="flex items-center gap-1.5 text-xs text-[#e4ebdd] cursor-pointer select-none">
               <input type="checkbox" checked={settings.showWhitespace}
-                onChange={e => setSetting('showWhitespace', e.target.checked)} className="accent-[#89b4fa]" />
+                onChange={e => setSetting('showWhitespace', e.target.checked)} className="accent-[#c8edb6]" />
               Show whitespace
             </label>
           </div>
@@ -509,7 +509,7 @@ export default function FileCompareView() {
         </div>
 
         {/* Center strip — left half: → arrows, right half: ← arrows */}
-        <div className="w-9 shrink-0 bg-[#181825] border-x border-[#45475a] relative overflow-hidden select-none">
+        <div className="w-9 shrink-0 bg-[#111612] border-x border-[#71836b] relative overflow-hidden select-none">
           {arrows.map((arrow, i) => (
             <button
               key={`${arrow.dir}-${arrow.line}-${i}`}
@@ -519,7 +519,7 @@ export default function FileCompareView() {
                 top: Math.max(0, arrow.y + 1),
                 left: arrow.dir === 'ltr' ? 1 : 19,
                 width: 17,
-                color: arrow.dir === 'ltr' ? '#a6e3a1' : '#89b4fa',
+                color: arrow.dir === 'ltr' ? '#b5dfa3' : '#c8edb6',
                 background: arrow.dir === 'ltr' ? 'rgba(166,227,161,0.08)' : 'rgba(137,180,250,0.08)',
               }}
               onClick={() => arrow.dir === 'rtl'

@@ -1,3 +1,4 @@
+import SyntaxInput from '../Common/SyntaxInput';
 import YAML from 'yaml';
 import { Fragment, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type WheelEvent as ReactWheelEvent } from 'react';
 import { ArrowLeftRight, Braces, Check, ChevronRight, ChevronsUpDown, Copy, Download, GitBranch, ListFilter, Minus, Network, Plus, RotateCcw, SlidersHorizontal, Sparkles, Table2 } from 'lucide-react';
@@ -72,13 +73,13 @@ function JsonTreeNode({
     <div>
       <div className="flex min-h-7 items-center gap-1.5 font-mono text-[11px]" style={{ paddingLeft: depth * 16 }}>
         {isContainer ? <button onClick={() => onToggle(path)} aria-expanded={expanded} aria-label={`${expanded ? 'Collapse' : 'Expand'} ${label}`}
-          className="flex h-5 w-5 shrink-0 items-center justify-center rounded text-[#9399b2] hover:bg-[#313244] hover:text-[#cdd6f4]"><ChevronRight size={13} className={`transition-transform ${expanded ? 'rotate-90' : ''}`} /></button> : <span className="w-5 shrink-0" />}
-        <span className="text-[#89b4fa]">{label}</span>
-        <span className="text-[#585b70]">:</span>
-        {isContainer ? <span className="rounded bg-[#313244] px-1.5 py-0.5 text-[10px] text-[#f9e2af]">{Array.isArray(value) ? 'Array' : 'Object'} · {summary}</span>
-          : <span className={`${typeof value === 'string' ? 'text-[#a6e3a1]' : value === null ? 'text-[#f38ba8]' : 'text-[#fab387]'}`}>{primitive}</span>}
+          className="flex h-5 w-5 shrink-0 items-center justify-center rounded text-[#b1bea8] hover:bg-[#344435] hover:text-[#e4ebdd]"><ChevronRight size={13} className={`transition-transform ${expanded ? 'rotate-90' : ''}`} /></button> : <span className="w-5 shrink-0" />}
+        <span className="text-[#c8edb6]">{label}</span>
+        <span className="text-[#899980]">:</span>
+        {isContainer ? <span className="rounded bg-[#344435] px-1.5 py-0.5 text-[10px] text-[#f3d58c]">{Array.isArray(value) ? 'Array' : 'Object'} · {summary}</span>
+          : <span className={`${typeof value === 'string' ? 'text-[#b5dfa3]' : value === null ? 'text-[#f19aa6]' : 'text-[#f3c18e]'}`}>{primitive}</span>}
       </div>
-      {isContainer && expanded && entries.length > 0 && <div className="border-l border-[#45475a]/60" style={{ marginLeft: depth * 16 + 10 }}>
+      {isContainer && expanded && entries.length > 0 && <div className="border-l border-[#71836b]/60" style={{ marginLeft: depth * 16 + 10 }}>
         {entries.map(([key, child]) => {
           const childPath = Array.isArray(value) ? `${path}${key}` : `${path}.${key}`;
           return <JsonTreeNode key={childPath} value={child} label={key} path={childPath} depth={depth + 1} expandedPaths={expandedPaths} onToggle={onToggle} />;
@@ -208,15 +209,15 @@ function JsonGraph({ value }: { value: JsonValue }) {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="flex shrink-0 items-center justify-between gap-2 pb-2 text-[10px] text-[#6c7086]">
+      <div className="flex shrink-0 items-center justify-between gap-2 pb-2 text-[10px] text-[#9eac96]">
         <span>Drag to pan · Scroll or pinch to zoom</span>
         <div className="flex items-center gap-1">
-          <button onClick={expandAll} title="Expand all graph nodes" className="rounded border border-[#313244] px-2 py-1 text-[#cdd6f4] hover:bg-[#313244]">Expand all</button>
-          <button onClick={collapseAll} title="Collapse all graph nodes" className="rounded border border-[#313244] px-2 py-1 text-[#cdd6f4] hover:bg-[#313244]">Collapse all</button>
-          <button onClick={() => zoomBy(-0.15)} title="Zoom out" aria-label="Zoom out" className="flex h-7 w-7 items-center justify-center rounded border border-[#313244] text-[#cdd6f4] hover:bg-[#313244]"><Minus size={13} /></button>
+          <button onClick={expandAll} title="Expand all graph nodes" className="rounded border border-[#344435] px-2 py-1 text-[#e4ebdd] hover:bg-[#344435]">Expand all</button>
+          <button onClick={collapseAll} title="Collapse all graph nodes" className="rounded border border-[#344435] px-2 py-1 text-[#e4ebdd] hover:bg-[#344435]">Collapse all</button>
+          <button onClick={() => zoomBy(-0.15)} title="Zoom out" aria-label="Zoom out" className="flex h-7 w-7 items-center justify-center rounded border border-[#344435] text-[#e4ebdd] hover:bg-[#344435]"><Minus size={13} /></button>
           <span className="w-11 text-center font-mono">{Math.round(zoom * 100)}%</span>
-          <button onClick={() => zoomBy(0.15)} title="Zoom in" aria-label="Zoom in" className="flex h-7 w-7 items-center justify-center rounded border border-[#313244] text-[#cdd6f4] hover:bg-[#313244]"><Plus size={13} /></button>
-          <button onClick={resetGraph} title="Reset graph view" aria-label="Reset graph view" className="flex h-7 w-7 items-center justify-center rounded border border-[#313244] text-[#cdd6f4] hover:bg-[#313244]"><RotateCcw size={12} /></button>
+          <button onClick={() => zoomBy(0.15)} title="Zoom in" aria-label="Zoom in" className="flex h-7 w-7 items-center justify-center rounded border border-[#344435] text-[#e4ebdd] hover:bg-[#344435]"><Plus size={13} /></button>
+          <button onClick={resetGraph} title="Reset graph view" aria-label="Reset graph view" className="flex h-7 w-7 items-center justify-center rounded border border-[#344435] text-[#e4ebdd] hover:bg-[#344435]"><RotateCcw size={12} /></button>
         </div>
       </div>
       <div ref={viewportRef} onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerEnd} onPointerCancel={handlePointerEnd} onWheel={handleWheel}
@@ -229,7 +230,7 @@ function JsonGraph({ value }: { value: JsonValue }) {
               if (!parent || !child) return null;
               const x1 = parent.depth * 230 + 24 + nodeWidth;
               const x2 = child.depth * 230 + 24;
-              return <path key={`${edge.parentId}->${edge.childId}`} d={`M ${x1} ${parent.y} C ${x1 + 32} ${parent.y}, ${x2 - 32} ${child.y}, ${x2} ${child.y}`} fill="none" stroke="#45475a" strokeWidth="1.5" />;
+              return <path key={`${edge.parentId}->${edge.childId}`} d={`M ${x1} ${parent.y} C ${x1 + 32} ${parent.y}, ${x2 - 32} ${child.y}, ${x2} ${child.y}`} fill="none" stroke="#71836b" strokeWidth="1.5" />;
             })}
             {graph.nodes.map(node => {
               const x = node.depth * 230 + 24;
@@ -241,10 +242,10 @@ function JsonGraph({ value }: { value: JsonValue }) {
                 onKeyDown={event => { if (node.expandable && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); toggleNode(node.id); } }}
                 style={node.expandable ? { cursor: 'pointer' } : undefined}>
                 <title>{`${node.label}: ${node.summary}`}</title>
-                <rect x={x} y={y} width={nodeWidth} height={nodeHeight} rx="5" fill="#1a1a2c" stroke={node.depth === 0 ? '#89b4fa' : '#45475a'} />
-                <text x={x + 10} y={y + 22} fill="#89b4fa" fontSize="12" fontFamily="monospace">{node.label.length > 23 ? `${node.label.slice(0, 20)}...` : node.label}</text>
-                <text x={x + 10} y={y + 41} fill="#9399b2" fontSize="10" fontFamily="monospace">{node.summary.length > 20 ? `${node.summary.slice(0, 17)}...` : node.summary}</text>
-                {node.expandable && <g pointerEvents="none"><rect x={x + nodeWidth - 24} y={y + 18} width="16" height="16" rx="3" fill="#313244" /><text x={x + nodeWidth - 16} y={y + 30} textAnchor="middle" fill="#cdd6f4" fontSize="12" fontFamily="monospace">{node.expanded ? '-' : '+'}</text></g>}
+                <rect x={x} y={y} width={nodeWidth} height={nodeHeight} rx="5" fill="#141a16" stroke={node.depth === 0 ? '#c8edb6' : '#71836b'} />
+                <text x={x + 10} y={y + 22} fill="#c8edb6" fontSize="12" fontFamily="monospace">{node.label.length > 23 ? `${node.label.slice(0, 20)}...` : node.label}</text>
+                <text x={x + 10} y={y + 41} fill="#b1bea8" fontSize="10" fontFamily="monospace">{node.summary.length > 20 ? `${node.summary.slice(0, 17)}...` : node.summary}</text>
+                {node.expandable && <g pointerEvents="none"><rect x={x + nodeWidth - 24} y={y + 18} width="16" height="16" rx="3" fill="#344435" /><text x={x + nodeWidth - 16} y={y + 30} textAnchor="middle" fill="#e4ebdd" fontSize="12" fontFamily="monospace">{node.expanded ? '-' : '+'}</text></g>}
               </g>;
             })}
           </svg>
@@ -315,7 +316,7 @@ function ExpandableDataTable({
   });
 
   return <table className="min-w-full border-collapse text-left text-[11px]">
-    <thead className="sticky top-0 z-10 bg-[#252538] text-[#9399b2]"><tr><th className="border-b border-[#313244] px-3 py-2 font-medium">#</th>{columns.map(column => <th key={column} className="max-w-[320px] border-b border-[#313244] px-3 py-2 font-medium">{column}</th>)}</tr></thead>
+    <thead className="sticky top-0 z-10 bg-[#243025] text-[#b1bea8]"><tr><th className="border-b border-[#344435] px-3 py-2 font-medium">#</th>{columns.map(column => <th key={column} className="max-w-[320px] border-b border-[#344435] px-3 py-2 font-medium">{column}</th>)}</tr></thead>
     <tbody>{rows.map((row, rowIndex) => {
       const absoluteIndex = offset + rowIndex;
       const nestedArrays = findNestedContainers(sources[rowIndex] ?? null);
@@ -324,19 +325,19 @@ function ExpandableDataTable({
       return <Fragment key={absoluteIndex}>
         <tr onClick={toggle} onKeyDown={event => { if (nestedArrays.length && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); toggle(); } }}
           tabIndex={nestedArrays.length ? 0 : undefined} aria-expanded={nestedArrays.length ? expanded : undefined}
-          className={`${rowIndex % 2 ? '' : 'bg-[#1a1a2c]'} ${nestedArrays.length ? 'cursor-pointer hover:bg-[#252538]' : 'hover:bg-[#252538]'}`}>
-          <td className="border-b border-[#313244]/70 px-3 py-2 font-mono text-[#585b70]">
-            {nestedArrays.length ? <span className="inline-flex items-center gap-1"><ChevronRight size={12} className={`text-[#89b4fa] transition-transform ${expanded ? 'rotate-90' : ''}`} />{absoluteIndex + 1}</span> : absoluteIndex + 1}
+          className={`${rowIndex % 2 ? '' : 'bg-[#141a16]'} ${nestedArrays.length ? 'cursor-pointer hover:bg-[#243025]' : 'hover:bg-[#243025]'}`}>
+          <td className="border-b border-[#344435]/70 px-3 py-2 font-mono text-[#899980]">
+            {nestedArrays.length ? <span className="inline-flex items-center gap-1"><ChevronRight size={12} className={`text-[#c8edb6] transition-transform ${expanded ? 'rotate-90' : ''}`} />{absoluteIndex + 1}</span> : absoluteIndex + 1}
           </td>
-          {columns.map(column => <td key={column} title={row[column] ?? ''} className="max-w-[320px] border-b border-[#313244]/70 px-3 py-2 font-mono text-[#cdd6f4]"><HighlightedText text={row[column] ?? 'null'} query={query} /></td>)}
+          {columns.map(column => <td key={column} title={row[column] ?? ''} className="max-w-[320px] border-b border-[#344435]/70 px-3 py-2 font-mono text-[#e4ebdd]"><HighlightedText text={row[column] ?? 'null'} query={query} /></td>)}
         </tr>
-        {expanded && <tr className="bg-[#181825]"><td colSpan={columns.length + 1} className="border-b border-[#313244] px-5 py-3">
+        {expanded && <tr className="bg-[#111612]"><td colSpan={columns.length + 1} className="border-b border-[#344435] px-5 py-3">
           <div className="space-y-3">{nestedArrays.map(nested => {
             const childTable = rowsFromNestedValue(nested.value);
-            return <section key={nested.path} className="border-l-2 border-[#89b4fa]/40 pl-3">
-              <h4 className="mb-2 text-[10px] font-medium text-[#89b4fa]">{nested.path} · {childTable.summary}</h4>
+            return <section key={nested.path} className="border-l-2 border-[#c8edb6]/40 pl-3">
+              <h4 className="mb-2 text-[10px] font-medium text-[#c8edb6]">{nested.path} · {childTable.summary}</h4>
               {childTable.columns.length ? <ExpandableDataTable rows={childTable.rows} sources={childTable.sources} columns={childTable.columns} query={query} />
-                : <p className="text-[10px] text-[#6c7086]">This object or array is empty.</p>}
+                : <p className="text-[10px] text-[#9eac96]">This object or array is empty.</p>}
             </section>;
           })}</div>
         </td></tr>}
@@ -364,7 +365,7 @@ function HighlightedText({ text, query }: { text: string; query: string }) {
   const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const matcher = new RegExp(`(${escaped})`, 'ig');
   return text.split(matcher).map((part, index) => part.toLocaleLowerCase() === query.toLocaleLowerCase()
-    ? <mark key={index} className="rounded-sm bg-[#f9e2af]/35 text-[#f9e2af]">{part}</mark>
+    ? <mark key={index} className="rounded-sm bg-[#f3d58c]/35 text-[#f3d58c]">{part}</mark>
     : part);
 }
 
@@ -632,23 +633,23 @@ export default function JsonToolsView() {
   };
 
   return (
-    <section className="flex h-full min-h-0 flex-col bg-[#1e1e2e] text-[#cdd6f4]">
-      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#313244] bg-[#181825] px-4 py-2.5">
+    <section className="flex h-full min-h-0 flex-col bg-[#171d19] text-[#e4ebdd]">
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#344435] bg-[#111612] px-4 py-2.5">
         <div>
           <h1 className="text-sm font-semibold">JSON Studio</h1>
-          <p className="mt-0.5 text-[11px] text-[#6c7086]">Validate, format, search, and export nested JSON data.</p>
+          <p className="mt-0.5 text-[11px] text-[#9eac96]">Validate, format, search, and export nested JSON data.</p>
         </div>
         <div className="flex flex-wrap items-center gap-1.5">
-          <button onClick={() => setFormatted(false)} disabled={!valid} className="rounded-md border border-[#313244] px-2.5 py-1.5 text-[11px] text-[#9399b2] hover:text-[#cdd6f4] disabled:opacity-40">Format</button>
-          <button onClick={() => setFormatted(true)} disabled={!valid} className="rounded-md border border-[#313244] px-2.5 py-1.5 text-[11px] text-[#9399b2] hover:text-[#cdd6f4] disabled:opacity-40">Minify</button>
+          <button onClick={() => setFormatted(false)} disabled={!valid} className="rounded-md border border-[#344435] px-2.5 py-1.5 text-[11px] text-[#b1bea8] hover:text-[#e4ebdd] disabled:opacity-40">Format</button>
+          <button onClick={() => setFormatted(true)} disabled={!valid} className="rounded-md border border-[#344435] px-2.5 py-1.5 text-[11px] text-[#b1bea8] hover:text-[#e4ebdd] disabled:opacity-40">Minify</button>
           <button onClick={() => downloadText(toCsv(table.columns, filteredRows), 'json-table.csv', 'text/csv')} disabled={!valid || !table.columns.length}
-            className="flex items-center gap-1.5 rounded-md border border-[#313244] px-2.5 py-1.5 text-[11px] text-[#9399b2] hover:text-[#cdd6f4] disabled:opacity-40"><Download size={12} />CSV</button>
-          <button onClick={copySource} disabled={!source} className="flex items-center gap-1.5 rounded-md border border-[#313244] px-2.5 py-1.5 text-[11px] text-[#9399b2] hover:text-[#cdd6f4] disabled:opacity-40"><Copy size={12} />{copied ? 'Copied' : 'Copy JSON'}</button>
+            className="flex items-center gap-1.5 rounded-md border border-[#344435] px-2.5 py-1.5 text-[11px] text-[#b1bea8] hover:text-[#e4ebdd] disabled:opacity-40"><Download size={12} />CSV</button>
+          <button onClick={copySource} disabled={!source} className="flex items-center gap-1.5 rounded-md border border-[#344435] px-2.5 py-1.5 text-[11px] text-[#b1bea8] hover:text-[#e4ebdd] disabled:opacity-40"><Copy size={12} />{copied ? 'Copied' : 'Copy JSON'}</button>
         </div>
       </header>
 
-      <div className="flex shrink-0 items-center justify-between gap-3 border-b border-[#313244] px-4 py-2">
-        <div className="flex max-w-full items-center gap-1 overflow-x-auto rounded-md border border-[#313244] p-0.5" role="tablist" aria-label="JSON view">
+      <div className="flex shrink-0 items-center justify-between gap-3 border-b border-[#344435] px-4 py-2">
+        <div className="flex max-w-full items-center gap-1 overflow-x-auto rounded-md border border-[#344435] p-0.5" role="tablist" aria-label="JSON view">
           {([
             ['editor', 'JSON', <Braces size={12} />],
             ['env', 'Env ↔ JSON', <SlidersHorizontal size={12} />],
@@ -663,40 +664,40 @@ export default function JsonToolsView() {
               if (id === 'yaml' && !yamlSource && parsed !== undefined) { try { setYamlSource(YAML.stringify(parsed)); } catch {} }
               if (id === 'env' && !envJsonOutput && envSource) { handleConvertEnvToJson(); }
             }}
-            className={`flex shrink-0 items-center gap-1.5 rounded px-2.5 py-1 text-[11px] ${view === id ? 'bg-[#313244] text-[#cdd6f4]' : 'text-[#6c7086] hover:text-[#cdd6f4]'}`}>{icon}{label}</button>)}
+            className={`flex shrink-0 items-center gap-1.5 rounded px-2.5 py-1 text-[11px] ${view === id ? 'bg-[#344435] text-[#e4ebdd]' : 'text-[#9eac96] hover:text-[#e4ebdd]'}`}>{icon}{label}</button>)}
         </div>
         <div className="flex min-w-0 items-center gap-2 text-[11px]" aria-live="polite">
-          {valid ? <><Check size={13} className="text-[#a6e3a1]" /><span className="text-[#a6e3a1]">Valid JSON</span></> : parseError ? <><span className="h-2 w-2 shrink-0 rounded-full bg-[#f38ba8]" /><span className="max-w-[55vw] truncate text-[#f38ba8]">{parseError}</span></> : <span className="text-[#6c7086]">Paste JSON to validate</span>}
+          {valid ? <><Check size={13} className="text-[#b5dfa3]" /><span className="text-[#b5dfa3]">Valid JSON</span></> : parseError ? <><span className="h-2 w-2 shrink-0 rounded-full bg-[#f19aa6]" /><span className="max-w-[55vw] truncate text-[#f19aa6]">{parseError}</span></> : <span className="text-[#9eac96]">Paste JSON to validate</span>}
         </div>
       </div>
 
       {view === 'editor' ? (
         <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-2">
-          <label className="flex min-h-0 flex-col border-b border-[#313244] md:border-b-0 md:border-r">
-            <span className="shrink-0 px-4 py-2 text-[11px] text-[#9399b2]">Input JSON</span>
-            <textarea value={source} onChange={event => { setSource(event.target.value); setPage(0); setExpandedPaths(new Set(['$'])); setExpandedRows(new Set()); }}
+          <label className="flex min-h-0 flex-col border-b border-[#344435] md:border-b-0 md:border-r">
+            <span className="shrink-0 px-4 py-2 text-[11px] text-[#b1bea8]">Input JSON</span>
+            <SyntaxInput aria-label="JSON source" value={source} onChange={event => { setSource(event.target.value); setPage(0); setExpandedPaths(new Set(['$'])); setExpandedRows(new Set()); }}
               placeholder={'Paste JSON here, for example:\n[{"name":"Ada","profile":{"city":"London"}}]'} spellCheck={false}
-              className="min-h-0 flex-1 resize-none bg-[#1a1a2c] px-4 py-3 font-mono text-[12px] leading-6 text-[#cdd6f4] outline-none placeholder:text-[#585b70] focus:ring-1 focus:ring-inset focus:ring-[#89b4fa]/20" />
+              className="min-h-0 flex-1 resize-none bg-[#141a16] px-4 py-3 font-mono text-[12px] leading-6 text-[#e4ebdd] outline-none placeholder:text-[#899980] focus:ring-1 focus:ring-inset focus:ring-[#c8edb6]/20" />
           </label>
           <div className="flex min-h-0 flex-col">
-            <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 px-4 py-2 text-[11px] text-[#9399b2]">
+            <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 px-4 py-2 text-[11px] text-[#b1bea8]">
               <span>Parsed preview{valid ? ` · ${table.rows.length} table rows` : ''}</span>
-              {valid && <div className="flex gap-1.5"><button onClick={expandAll} className="rounded border border-[#313244] px-2 py-1 text-[10px] hover:text-[#cdd6f4]">Expand all</button><button onClick={collapseAll} className="rounded border border-[#313244] px-2 py-1 text-[10px] hover:text-[#cdd6f4]">Collapse all</button></div>}
+              {valid && <div className="flex gap-1.5"><button onClick={expandAll} className="rounded border border-[#344435] px-2 py-1 text-[10px] hover:text-[#e4ebdd]">Expand all</button><button onClick={collapseAll} className="rounded border border-[#344435] px-2 py-1 text-[10px] hover:text-[#e4ebdd]">Collapse all</button></div>}
             </div>
-            <div className="min-h-0 flex-1 overflow-auto bg-[#1a1a2c] px-3 py-2">
+            <div className="min-h-0 flex-1 overflow-auto bg-[#141a16] px-3 py-2">
               {valid && parsed !== undefined ? <JsonTreeNode value={parsed} label="root" path="$" depth={0} expandedPaths={expandedPaths} onToggle={togglePath} />
-                : <p className={`px-1 py-2 text-xs ${parseError ? 'text-[#f38ba8]' : 'text-[#6c7086]'}`}>{parseError ? 'Fix the JSON syntax to see the parsed preview.' : 'Parsed structure will appear here.'}</p>}
+                : <p className={`px-1 py-2 text-xs ${parseError ? 'text-[#f19aa6]' : 'text-[#9eac96]'}`}>{parseError ? 'Fix the JSON syntax to see the parsed preview.' : 'Parsed structure will appear here.'}</p>}
             </div>
           </div>
         </div>
       ) : view === 'env' ? (
         <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-2">
           {/* Left Column: Key-Value / .env Source */}
-          <div className="flex min-h-0 flex-col border-b border-[#313244] md:border-b-0 md:border-r">
-            <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#313244]/60 px-4 py-2 bg-[#181825]/50">
+          <div className="flex min-h-0 flex-col border-b border-[#344435] md:border-b-0 md:border-r">
+            <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#344435]/60 px-4 py-2 bg-[#111612]/50">
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-semibold text-[#89b4fa]">Key-Value / .env Source</span>
-                <span className="rounded bg-[#313244] px-1.5 py-0.5 text-[9px] font-mono text-[#9399b2]">
+                <span className="text-[11px] font-semibold text-[#c8edb6]">Key-Value / .env Source</span>
+                <span className="rounded bg-[#344435] px-1.5 py-0.5 text-[9px] font-mono text-[#b1bea8]">
                   Supports = and :
                 </span>
               </div>
@@ -707,7 +708,7 @@ export default function JsonToolsView() {
                     handleConvertEnvToJson(DEFAULT_ENV_SAMPLE);
                   }}
                   title="Load sample configuration with Secret__ hierarchy"
-                  className="rounded border border-[#89b4fa]/30 px-2 py-0.5 text-[10px] text-[#89b4fa] hover:bg-[#89b4fa]/10 transition-colors"
+                  className="rounded border border-[#c8edb6]/30 px-2 py-0.5 text-[10px] text-[#c8edb6] hover:bg-[#c8edb6]/10 transition-colors"
                 >
                   Load Sample
                 </button>
@@ -717,7 +718,7 @@ export default function JsonToolsView() {
                     setEnvJsonOutput('');
                     setEnvError('');
                   }}
-                  className="rounded border border-[#313244] px-2 py-0.5 text-[10px] text-[#6c7086] hover:text-[#cdd6f4] hover:bg-[#313244] transition-colors"
+                  className="rounded border border-[#344435] px-2 py-0.5 text-[10px] text-[#9eac96] hover:text-[#e4ebdd] hover:bg-[#344435] transition-colors"
                 >
                   Clear
                 </button>
@@ -725,8 +726,8 @@ export default function JsonToolsView() {
             </div>
 
             {/* Options Bar */}
-            <div className="flex shrink-0 flex-wrap items-center gap-3 border-b border-[#313244]/40 px-4 py-1.5 text-[10px] bg-[#151522]">
-              <label className="flex items-center gap-1.5 cursor-pointer text-[#cdd6f4] select-none hover:text-white">
+            <div className="flex shrink-0 flex-wrap items-center gap-3 border-b border-[#344435]/40 px-4 py-1.5 text-[10px] bg-[#151522]">
+              <label className="flex items-center gap-1.5 cursor-pointer text-[#e4ebdd] select-none hover:text-white">
                 <input
                   type="checkbox"
                   checked={nestDoubleUnderscore}
@@ -735,13 +736,13 @@ export default function JsonToolsView() {
                     setNestDoubleUnderscore(checked);
                     handleConvertEnvToJson(undefined, { nestDoubleUnderscore: checked });
                   }}
-                  className="rounded border-[#45475a] bg-[#1e1e2e] text-[#89b4fa] focus:ring-0 focus:ring-offset-0"
+                  className="rounded border-[#71836b] bg-[#171d19] text-[#c8edb6] focus:ring-0 focus:ring-offset-0"
                 />
-                <span className="font-mono text-[#89b4fa]">__</span>
+                <span className="font-mono text-[#c8edb6]">__</span>
                 <span>Nest Objects (Secret__KEY → Secret: {'{ KEY }'})</span>
               </label>
 
-              <label className="flex items-center gap-1.5 cursor-pointer text-[#9399b2] select-none hover:text-[#cdd6f4]">
+              <label className="flex items-center gap-1.5 cursor-pointer text-[#b1bea8] select-none hover:text-[#e4ebdd]">
                 <input
                   type="checkbox"
                   checked={nestDot}
@@ -750,13 +751,13 @@ export default function JsonToolsView() {
                     setNestDot(checked);
                     handleConvertEnvToJson(undefined, { nestDot: checked });
                   }}
-                  className="rounded border-[#45475a] bg-[#1e1e2e] text-[#89b4fa] focus:ring-0 focus:ring-offset-0"
+                  className="rounded border-[#71836b] bg-[#171d19] text-[#c8edb6] focus:ring-0 focus:ring-offset-0"
                 />
-                <span className="font-mono text-[#a6e3a1]">.</span>
+                <span className="font-mono text-[#b5dfa3]">.</span>
                 <span>Nest on dot</span>
               </label>
 
-              <label className="flex items-center gap-1.5 cursor-pointer text-[#9399b2] select-none hover:text-[#cdd6f4]">
+              <label className="flex items-center gap-1.5 cursor-pointer text-[#b1bea8] select-none hover:text-[#e4ebdd]">
                 <input
                   type="checkbox"
                   checked={autoParseTypes}
@@ -765,7 +766,7 @@ export default function JsonToolsView() {
                     setAutoParseTypes(checked);
                     handleConvertEnvToJson(undefined, { autoParseTypes: checked });
                   }}
-                  className="rounded border-[#45475a] bg-[#1e1e2e] text-[#89b4fa] focus:ring-0 focus:ring-offset-0"
+                  className="rounded border-[#71836b] bg-[#171d19] text-[#c8edb6] focus:ring-0 focus:ring-offset-0"
                 />
                 <span>Parse types (numbers/booleans)</span>
               </label>
@@ -781,11 +782,11 @@ export default function JsonToolsView() {
               spellCheck={false}
               aria-label="Env or Key-Value input"
               placeholder={'DATABASE_NAME=app_analytics\nSecret__DATABASE_SERVICE_API_KEY=dev_secret_key_987\nSERVICE_ENDPOINT:https://api.example.com/v1\nCLUSTER_HOSTNAME=cluster-node-01.internal'}
-              className="min-h-0 flex-1 resize-none bg-[#1a1a2c] px-4 py-3 font-mono text-[12px] leading-6 text-[#cdd6f4] outline-none placeholder:text-[#585b70] focus:ring-1 focus:ring-inset focus:ring-[#89b4fa]/20"
+              className="min-h-0 flex-1 resize-none bg-[#141a16] px-4 py-3 font-mono text-[12px] leading-6 text-[#e4ebdd] outline-none placeholder:text-[#899980] focus:ring-1 focus:ring-inset focus:ring-[#c8edb6]/20"
             />
 
-            <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-t border-[#313244] px-4 py-2 bg-[#181825]">
-              <span className="text-[10px] text-[#6c7086]">
+            <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-t border-[#344435] px-4 py-2 bg-[#111612]">
+              <span className="text-[10px] text-[#9eac96]">
                 {envSource.trim() ? `${envSource.trim().split(/\r?\n/).length} lines detected` : 'Empty input'}
               </span>
               <div className="flex items-center gap-1.5">
@@ -793,7 +794,7 @@ export default function JsonToolsView() {
                   onClick={() => handleConvertJsonToEnv()}
                   disabled={!envJsonOutput.trim()}
                   title="Convert JSON from right pane back into Env/KV lines"
-                  className="flex items-center gap-1 rounded border border-[#313244] px-2.5 py-1 text-[10px] text-[#9399b2] hover:text-[#cdd6f4] hover:bg-[#313244] disabled:opacity-40 transition-colors"
+                  className="flex items-center gap-1 rounded border border-[#344435] px-2.5 py-1 text-[10px] text-[#b1bea8] hover:text-[#e4ebdd] hover:bg-[#344435] disabled:opacity-40 transition-colors"
                 >
                   <ArrowLeftRight size={11} />
                   <span>JSON to Env</span>
@@ -801,7 +802,7 @@ export default function JsonToolsView() {
                 <button
                   onClick={() => handleConvertEnvToJson()}
                   disabled={!envSource.trim()}
-                  className="flex items-center gap-1.5 rounded bg-[#89b4fa] px-3 py-1 text-[10px] font-semibold text-[#11111b] hover:bg-[#b4befe] disabled:opacity-40 shadow-sm transition-colors"
+                  className="flex items-center gap-1.5 rounded bg-[#c8edb6] px-3 py-1 text-[10px] font-semibold text-[#0d120f] hover:bg-[#d9f6ca] disabled:opacity-40 shadow-sm transition-colors"
                 >
                   <span>Env to JSON →</span>
                 </button>
@@ -811,13 +812,13 @@ export default function JsonToolsView() {
 
           {/* Right Column: Generated Nested JSON */}
           <div className="flex min-h-0 flex-col">
-            <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#313244]/60 px-4 py-2 bg-[#181825]/50">
+            <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#344435]/60 px-4 py-2 bg-[#111612]/50">
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-semibold text-[#a6e3a1]">Nested JSON Result</span>
+                <span className="text-[11px] font-semibold text-[#b5dfa3]">Nested JSON Result</span>
                 {envError ? (
-                  <span className="text-[10px] text-[#f38ba8]">· {envError}</span>
+                  <span className="text-[10px] text-[#f19aa6]">· {envError}</span>
                 ) : envJsonOutput.trim() ? (
-                  <span className="text-[10px] text-[#a6e3a1]">· Ready</span>
+                  <span className="text-[10px] text-[#b5dfa3]">· Ready</span>
                 ) : null}
               </div>
               <div className="flex items-center gap-1.5">
@@ -830,7 +831,7 @@ export default function JsonToolsView() {
                     } catch {}
                   }}
                   disabled={!envJsonOutput.trim()}
-                  className="flex items-center gap-1 rounded border border-[#313244] px-2.5 py-1 text-[10px] text-[#cdd6f4] hover:bg-[#313244] disabled:opacity-40 transition-colors"
+                  className="flex items-center gap-1 rounded border border-[#344435] px-2.5 py-1 text-[10px] text-[#e4ebdd] hover:bg-[#344435] disabled:opacity-40 transition-colors"
                 >
                   <Copy size={11} />
                   <span>{envJsonCopied ? 'Copied!' : 'Copy JSON'}</span>
@@ -842,7 +843,7 @@ export default function JsonToolsView() {
                     }
                   }}
                   disabled={!envJsonOutput.trim()}
-                  className="flex items-center gap-1 rounded border border-[#313244] px-2.5 py-1 text-[10px] text-[#9399b2] hover:text-[#cdd6f4] hover:bg-[#313244] disabled:opacity-40 transition-colors"
+                  className="flex items-center gap-1 rounded border border-[#344435] px-2.5 py-1 text-[10px] text-[#b1bea8] hover:text-[#e4ebdd] hover:bg-[#344435] disabled:opacity-40 transition-colors"
                 >
                   <Download size={11} />
                   <span>Download</span>
@@ -851,7 +852,7 @@ export default function JsonToolsView() {
                   onClick={applyEnvJsonToStudio}
                   disabled={!envJsonOutput.trim()}
                   title="Open this generated JSON in main JSON Studio (Table, Tree, Graph, YAML)"
-                  className="flex items-center gap-1 rounded border border-[#a6e3a1]/30 bg-[#a6e3a1]/10 px-2.5 py-1 text-[10px] font-medium text-[#a6e3a1] hover:bg-[#a6e3a1]/20 disabled:opacity-40 transition-colors"
+                  className="flex items-center gap-1 rounded border border-[#b5dfa3]/30 bg-[#b5dfa3]/10 px-2.5 py-1 text-[10px] font-medium text-[#b5dfa3] hover:bg-[#b5dfa3]/20 disabled:opacity-40 transition-colors"
                 >
                   <Sparkles size={11} />
                   <span>Open in Studio</span>
@@ -868,14 +869,14 @@ export default function JsonToolsView() {
               spellCheck={false}
               aria-label="Nested JSON Output"
               placeholder="Nested JSON output will appear here..."
-              className="min-h-0 flex-1 resize-none bg-[#1a1a2c] px-4 py-3 font-mono text-[12px] leading-6 text-[#cdd6f4] outline-none placeholder:text-[#585b70] focus:ring-1 focus:ring-inset focus:ring-[#89b4fa]/20"
+              className="min-h-0 flex-1 resize-none bg-[#141a16] px-4 py-3 font-mono text-[12px] leading-6 text-[#e4ebdd] outline-none placeholder:text-[#899980] focus:ring-1 focus:ring-inset focus:ring-[#c8edb6]/20"
             />
 
             {envError && (
-              <p className="shrink-0 border-t border-[#313244] px-4 py-2 text-[10px] text-[#f38ba8]">{envError}</p>
+              <p className="shrink-0 border-t border-[#344435] px-4 py-2 text-[10px] text-[#f19aa6]">{envError}</p>
             )}
 
-            <div className="flex shrink-0 items-center justify-between border-t border-[#313244] px-4 py-2 text-[10px] text-[#6c7086] bg-[#181825]">
+            <div className="flex shrink-0 items-center justify-between border-t border-[#344435] px-4 py-2 text-[10px] text-[#9eac96] bg-[#111612]">
               <span>Tip: Click "Open in Studio" to inspect table, graph, or convert to YAML/XML.</span>
               <span>{envJsonOutput.trim().length} chars</span>
             </div>
@@ -883,9 +884,9 @@ export default function JsonToolsView() {
         </div>
       ) : view === 'yaml' ? (
         <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-2">
-          <div className="flex min-h-0 flex-col border-b border-[#313244] md:border-b-0 md:border-r">
+          <div className="flex min-h-0 flex-col border-b border-[#344435] md:border-b-0 md:border-r">
             <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 px-4 py-2">
-              <span className="text-[11px] font-medium text-[#9399b2]">JSON source</span>
+              <span className="text-[11px] font-medium text-[#b1bea8]">JSON source</span>
               <button
                 onClick={() => {
                   if (valid && parsed !== undefined) {
@@ -898,7 +899,7 @@ export default function JsonToolsView() {
                   }
                 }}
                 disabled={!valid}
-                className="flex items-center gap-1.5 rounded border border-[#89b4fa]/30 px-2.5 py-1 text-[10px] text-[#89b4fa] disabled:opacity-40"
+                className="flex items-center gap-1.5 rounded border border-[#c8edb6]/30 px-2.5 py-1 text-[10px] text-[#c8edb6] disabled:opacity-40"
               >
                 <ArrowLeftRight size={11} />JSON to YAML
               </button>
@@ -913,13 +914,13 @@ export default function JsonToolsView() {
               spellCheck={false}
               aria-label="JSON for YAML conversion"
               placeholder="Paste JSON to convert to YAML..."
-              className="min-h-0 flex-1 resize-none bg-[#1a1a2c] px-4 py-3 font-mono text-[12px] leading-6 text-[#cdd6f4] outline-none placeholder:text-[#585b70] focus:ring-1 focus:ring-inset focus:ring-[#89b4fa]/20"
+              className="min-h-0 flex-1 resize-none bg-[#141a16] px-4 py-3 font-mono text-[12px] leading-6 text-[#e4ebdd] outline-none placeholder:text-[#899980] focus:ring-1 focus:ring-inset focus:ring-[#c8edb6]/20"
             />
           </div>
           <div className="flex min-h-0 flex-col">
             <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 px-4 py-2">
-              <span className="text-[11px] font-medium text-[#9399b2]">
-                YAML source {yamlError ? <span className="font-normal text-[#f38ba8]">· {yamlError}</span> : yamlSource.trim() ? <span className="font-normal text-[#a6e3a1]">· Valid YAML</span> : null}
+              <span className="text-[11px] font-medium text-[#b1bea8]">
+                YAML source {yamlError ? <span className="font-normal text-[#f19aa6]">· {yamlError}</span> : yamlSource.trim() ? <span className="font-normal text-[#b5dfa3]">· Valid YAML</span> : null}
               </span>
               <button
                 onClick={() => {
@@ -934,7 +935,7 @@ export default function JsonToolsView() {
                   }
                 }}
                 disabled={!yamlSource.trim()}
-                className="flex items-center gap-1.5 rounded border border-[#a6e3a1]/30 px-2.5 py-1 text-[10px] text-[#a6e3a1] disabled:opacity-40"
+                className="flex items-center gap-1.5 rounded border border-[#b5dfa3]/30 px-2.5 py-1 text-[10px] text-[#b5dfa3] disabled:opacity-40"
               >
                 <ArrowLeftRight size={11} />YAML to JSON
               </button>
@@ -948,44 +949,44 @@ export default function JsonToolsView() {
               spellCheck={false}
               aria-label="YAML for JSON conversion"
               placeholder="Paste or generate YAML here..."
-              className="min-h-0 flex-1 resize-none bg-[#1a1a2c] px-4 py-3 font-mono text-[12px] leading-6 text-[#cdd6f4] outline-none placeholder:text-[#585b70] focus:ring-1 focus:ring-inset focus:ring-[#89b4fa]/20"
+              className="min-h-0 flex-1 resize-none bg-[#141a16] px-4 py-3 font-mono text-[12px] leading-6 text-[#e4ebdd] outline-none placeholder:text-[#899980] focus:ring-1 focus:ring-inset focus:ring-[#c8edb6]/20"
             />
-            {yamlError && <p className="shrink-0 border-t border-[#313244] px-4 py-2 text-[10px] text-[#f38ba8]">{yamlError}</p>}
+            {yamlError && <p className="shrink-0 border-t border-[#344435] px-4 py-2 text-[10px] text-[#f19aa6]">{yamlError}</p>}
           </div>
         </div>
       ) : view === 'xml' ? (
         <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-2">
-          <div className="flex min-h-0 flex-col border-b border-[#313244] md:border-b-0 md:border-r">
+          <div className="flex min-h-0 flex-col border-b border-[#344435] md:border-b-0 md:border-r">
             <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 px-4 py-2">
-              <span className="text-[11px] font-medium text-[#9399b2]">JSON source</span>
-              <button onClick={() => { if (valid && parsed !== undefined) setXmlSource(jsonToXml(parsed)); }} disabled={!valid} className="flex items-center gap-1.5 rounded border border-[#89b4fa]/30 px-2.5 py-1 text-[10px] text-[#89b4fa] disabled:opacity-40"><ArrowLeftRight size={11} />JSON to XML</button>
+              <span className="text-[11px] font-medium text-[#b1bea8]">JSON source</span>
+              <button onClick={() => { if (valid && parsed !== undefined) setXmlSource(jsonToXml(parsed)); }} disabled={!valid} className="flex items-center gap-1.5 rounded border border-[#c8edb6]/30 px-2.5 py-1 text-[10px] text-[#c8edb6] disabled:opacity-40"><ArrowLeftRight size={11} />JSON to XML</button>
             </div>
-            <textarea value={source} onChange={event => { setSource(event.target.value); setExpandedPaths(new Set(['$'])); setExpandedRows(new Set()); }} spellCheck={false} aria-label="JSON for XML conversion" placeholder="Paste JSON to convert to XML..."
-              className="min-h-0 flex-1 resize-none bg-[#1a1a2c] px-4 py-3 font-mono text-[12px] leading-6 text-[#cdd6f4] outline-none placeholder:text-[#585b70] focus:ring-1 focus:ring-inset focus:ring-[#89b4fa]/20" />
+            <SyntaxInput value={source} onChange={event => { setSource(event.target.value); setExpandedPaths(new Set(['$'])); setExpandedRows(new Set()); }} spellCheck={false} aria-label="JSON for XML conversion" placeholder="Paste JSON to convert to XML..."
+              className="min-h-0 flex-1 resize-none bg-[#141a16] px-4 py-3 font-mono text-[12px] leading-6 text-[#e4ebdd] outline-none placeholder:text-[#899980] focus:ring-1 focus:ring-inset focus:ring-[#c8edb6]/20" />
           </div>
           <div className="flex min-h-0 flex-col">
             <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 px-4 py-2">
-              <span className="text-[11px] font-medium text-[#9399b2]">XML source {xmlResult && (xmlResult.error ? <span className="font-normal text-[#f38ba8]">· Invalid XML</span> : <span className="font-normal text-[#a6e3a1]">· Valid XML</span>)}</span>
-              <button onClick={() => { if (xmlResult?.value !== undefined) { setSource(JSON.stringify(xmlResult.value, null, 2)); setExpandedPaths(new Set(['$'])); setExpandedRows(new Set()); } }} disabled={!xmlResult || xmlResult.error !== undefined} className="flex items-center gap-1.5 rounded border border-[#a6e3a1]/30 px-2.5 py-1 text-[10px] text-[#a6e3a1] disabled:opacity-40"><ArrowLeftRight size={11} />XML to JSON</button>
+              <span className="text-[11px] font-medium text-[#b1bea8]">XML source {xmlResult && (xmlResult.error ? <span className="font-normal text-[#f19aa6]">· Invalid XML</span> : <span className="font-normal text-[#b5dfa3]">· Valid XML</span>)}</span>
+              <button onClick={() => { if (xmlResult?.value !== undefined) { setSource(JSON.stringify(xmlResult.value, null, 2)); setExpandedPaths(new Set(['$'])); setExpandedRows(new Set()); } }} disabled={!xmlResult || xmlResult.error !== undefined} className="flex items-center gap-1.5 rounded border border-[#b5dfa3]/30 px-2.5 py-1 text-[10px] text-[#b5dfa3] disabled:opacity-40"><ArrowLeftRight size={11} />XML to JSON</button>
             </div>
             <textarea value={xmlSource} onChange={event => setXmlSource(event.target.value)} spellCheck={false} aria-label="XML for JSON conversion" placeholder="Paste or generate XML here..."
-              className="min-h-0 flex-1 resize-none bg-[#1a1a2c] px-4 py-3 font-mono text-[12px] leading-6 text-[#cdd6f4] outline-none placeholder:text-[#585b70] focus:ring-1 focus:ring-inset focus:ring-[#89b4fa]/20" />
-            {xmlResult?.error && <p className="shrink-0 border-t border-[#313244] px-4 py-2 text-[10px] text-[#f38ba8]">{xmlResult.error}</p>}
+              className="min-h-0 flex-1 resize-none bg-[#141a16] px-4 py-3 font-mono text-[12px] leading-6 text-[#e4ebdd] outline-none placeholder:text-[#899980] focus:ring-1 focus:ring-inset focus:ring-[#c8edb6]/20" />
+            {xmlResult?.error && <p className="shrink-0 border-t border-[#344435] px-4 py-2 text-[10px] text-[#f19aa6]">{xmlResult.error}</p>}
           </div>
         </div>
       ) : view === 'table' ? (
         <div className="flex min-h-0 flex-1 flex-col">
-          <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#313244] px-4 py-2">
-            <span className="text-[11px] text-[#9399b2]">{valid ? `${table.label} · ${sortedRows.length} results` : 'JSON table'}</span>
-            <label className="flex items-center gap-2 rounded-md border border-[#313244] px-2.5 py-1.5 text-[#6c7086] focus-within:border-[#89b4fa]/40">
+          <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#344435] px-4 py-2">
+            <span className="text-[11px] text-[#b1bea8]">{valid ? `${table.label} · ${sortedRows.length} results` : 'JSON table'}</span>
+            <label className="flex items-center gap-2 rounded-md border border-[#344435] px-2.5 py-1.5 text-[#9eac96] focus-within:border-[#c8edb6]/40">
               <ListFilter size={12} />
-              <input value={search} onChange={event => { setSearch(event.target.value); setPage(0); }} placeholder="Search rows..." aria-label="Search JSON rows" className="w-44 bg-transparent text-[11px] text-[#cdd6f4] outline-none placeholder:text-[#585b70]" />
+              <input value={search} onChange={event => { setSearch(event.target.value); setPage(0); }} placeholder="Search rows..." aria-label="Search JSON rows" className="w-44 bg-transparent text-[11px] text-[#e4ebdd] outline-none placeholder:text-[#899980]" />
             </label>
           </div>
           <div className="min-h-0 flex-1 overflow-auto">
             {valid && table.columns.length > 0 ? (
               <table className="min-w-full border-collapse text-left text-[11px]">
-                <thead className="sticky top-0 z-10 bg-[#252538] text-[#9399b2]"><tr><th className="border-b border-[#313244] px-3 py-2 font-medium">#</th>{table.columns.map(column => <th key={column} aria-sort={sort?.key === column ? (sort.direction === 'asc' ? 'ascending' : 'descending') : 'none'} className="max-w-[320px] border-b border-[#313244] px-3 py-2 font-medium"><button onClick={() => { setSort(current => current?.key === column ? { key: column, direction: current.direction === 'asc' ? 'desc' : 'asc' } : { key: column, direction: 'asc' }); setPage(0); }} className="flex items-center gap-1.5 text-left hover:text-[#cdd6f4]"><HighlightedText text={column} query={search} /><ChevronsUpDown size={12} className={sort?.key === column ? 'text-[#89b4fa]' : 'opacity-50'} /></button></th>)}</tr></thead>
+                <thead className="sticky top-0 z-10 bg-[#243025] text-[#b1bea8]"><tr><th className="border-b border-[#344435] px-3 py-2 font-medium">#</th>{table.columns.map(column => <th key={column} aria-sort={sort?.key === column ? (sort.direction === 'asc' ? 'ascending' : 'descending') : 'none'} className="max-w-[320px] border-b border-[#344435] px-3 py-2 font-medium"><button onClick={() => { setSort(current => current?.key === column ? { key: column, direction: current.direction === 'asc' ? 'desc' : 'asc' } : { key: column, direction: 'asc' }); setPage(0); }} className="flex items-center gap-1.5 text-left hover:text-[#e4ebdd]"><HighlightedText text={column} query={search} /><ChevronsUpDown size={12} className={sort?.key === column ? 'text-[#c8edb6]' : 'opacity-50'} /></button></th>)}</tr></thead>
                 <tbody>{visibleRows.map((row, rowIndex) => {
                   const originalIndex = table.rows.indexOf(row);
                   const nestedArrays = findNestedContainers(table.sources[originalIndex] ?? null);
@@ -994,56 +995,56 @@ export default function JsonToolsView() {
                   return <Fragment key={originalIndex}>
                     <tr onClick={toggle} onKeyDown={event => { if (nestedArrays.length && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); toggle(); } }}
                       tabIndex={nestedArrays.length ? 0 : undefined} aria-expanded={nestedArrays.length ? expanded : undefined}
-                      className={`${rowIndex % 2 ? '' : 'bg-[#1a1a2c]'} ${nestedArrays.length ? 'cursor-pointer hover:bg-[#252538]' : 'hover:bg-[#252538]'}`}>
-                      <td className="border-b border-[#313244]/70 px-3 py-2 font-mono text-[#585b70]">{nestedArrays.length ? <span className="inline-flex items-center gap-1"><ChevronRight size={12} className={`text-[#89b4fa] transition-transform ${expanded ? 'rotate-90' : ''}`} />{page * pageSize + rowIndex + 1}</span> : page * pageSize + rowIndex + 1}</td>
-                      {table.columns.map(column => <td key={column} title={row[column] ?? ''} className="max-w-[320px] border-b border-[#313244]/70 px-3 py-2 font-mono text-[#cdd6f4]"><HighlightedText text={row[column] ?? 'null'} query={search} /></td>)}
+                      className={`${rowIndex % 2 ? '' : 'bg-[#141a16]'} ${nestedArrays.length ? 'cursor-pointer hover:bg-[#243025]' : 'hover:bg-[#243025]'}`}>
+                      <td className="border-b border-[#344435]/70 px-3 py-2 font-mono text-[#899980]">{nestedArrays.length ? <span className="inline-flex items-center gap-1"><ChevronRight size={12} className={`text-[#c8edb6] transition-transform ${expanded ? 'rotate-90' : ''}`} />{page * pageSize + rowIndex + 1}</span> : page * pageSize + rowIndex + 1}</td>
+                      {table.columns.map(column => <td key={column} title={row[column] ?? ''} className="max-w-[320px] border-b border-[#344435]/70 px-3 py-2 font-mono text-[#e4ebdd]"><HighlightedText text={row[column] ?? 'null'} query={search} /></td>)}
                     </tr>
-                    {expanded && <tr><td colSpan={table.columns.length + 1} className="border-b border-[#313244] bg-[#181825] px-5 py-3">
+                    {expanded && <tr><td colSpan={table.columns.length + 1} className="border-b border-[#344435] bg-[#111612] px-5 py-3">
                       <div className="space-y-3">{nestedArrays.map(nested => {
                         const childTable = rowsFromNestedValue(nested.value);
-                        return <section key={nested.path} className="border-l-2 border-[#89b4fa]/40 pl-3">
-                          <h4 className="mb-2 text-[10px] font-medium text-[#89b4fa]">{nested.path} · {childTable.summary}</h4>
+                        return <section key={nested.path} className="border-l-2 border-[#c8edb6]/40 pl-3">
+                          <h4 className="mb-2 text-[10px] font-medium text-[#c8edb6]">{nested.path} · {childTable.summary}</h4>
                           {childTable.columns.length ? <ExpandableDataTable rows={childTable.rows} sources={childTable.sources} columns={childTable.columns} query={search} />
-                            : <p className="text-[10px] text-[#6c7086]">This object or array is empty.</p>}
+                            : <p className="text-[10px] text-[#9eac96]">This object or array is empty.</p>}
                         </section>;
                       })}</div>
                     </td></tr>}
                   </Fragment>;
                 })}</tbody>
               </table>
-            ) : <div className="flex h-full items-center justify-center px-6 text-center text-xs text-[#6c7086]">{!source.trim() ? 'Paste a JSON array or object to build a table.' : parseError ? 'Correct the JSON syntax to view its table.' : 'No rows match this search.'}</div>}
+            ) : <div className="flex h-full items-center justify-center px-6 text-center text-xs text-[#9eac96]">{!source.trim() ? 'Paste a JSON array or object to build a table.' : parseError ? 'Correct the JSON syntax to view its table.' : 'No rows match this search.'}</div>}
           </div>
-          <footer className="flex shrink-0 items-center justify-between border-t border-[#313244] px-4 py-2 text-[11px] text-[#6c7086]">
+          <footer className="flex shrink-0 items-center justify-between border-t border-[#344435] px-4 py-2 text-[11px] text-[#9eac96]">
             <div className="flex items-center gap-3">
-              <label className="flex items-center gap-2">Rows per page<select value={pageSize} onChange={event => { setPageSize(Number(event.target.value)); setPage(0); }} aria-label="Rows per page" className="rounded border border-[#313244] bg-[#1a1a2c] px-2 py-1 text-[#cdd6f4]">{PAGE_SIZES.map(size => <option key={size} value={size}>{size}</option>)}</select></label>
+              <label className="flex items-center gap-2">Rows per page<select value={pageSize} onChange={event => { setPageSize(Number(event.target.value)); setPage(0); }} aria-label="Rows per page" className="rounded border border-[#344435] bg-[#141a16] px-2 py-1 text-[#e4ebdd]">{PAGE_SIZES.map(size => <option key={size} value={size}>{size}</option>)}</select></label>
               <span>{sortedRows.length ? `Page ${page + 1} of ${pageCount} · ${sortedRows.length} rows` : '0 rows'}</span>
             </div>
-            <div className="flex gap-2"><button onClick={() => setPage(value => Math.max(0, value - 1))} disabled={page === 0} className="rounded border border-[#313244] px-2.5 py-1 hover:text-[#cdd6f4] disabled:opacity-40">Previous</button><button onClick={() => setPage(value => Math.min(pageCount - 1, value + 1))} disabled={page + 1 >= pageCount} className="rounded border border-[#313244] px-2.5 py-1 hover:text-[#cdd6f4] disabled:opacity-40">Next</button></div>
+            <div className="flex gap-2"><button onClick={() => setPage(value => Math.max(0, value - 1))} disabled={page === 0} className="rounded border border-[#344435] px-2.5 py-1 hover:text-[#e4ebdd] disabled:opacity-40">Previous</button><button onClick={() => setPage(value => Math.min(pageCount - 1, value + 1))} disabled={page + 1 >= pageCount} className="rounded border border-[#344435] px-2.5 py-1 hover:text-[#e4ebdd] disabled:opacity-40">Next</button></div>
           </footer>
         </div>
       ) : view === 'tree' ? (
         <div className="flex min-h-0 flex-1 flex-col">
-          <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#313244] px-4 py-2">
-            <span className="text-[11px] text-[#9399b2]">Tree structure{valid && parsed !== undefined ? ` · ${collectExpandablePaths(parsed).length} containers` : ''}</span>
-            {valid && <div className="flex gap-1.5"><button onClick={expandAll} className="rounded border border-[#313244] px-2 py-1 text-[10px] text-[#9399b2] hover:text-[#cdd6f4]">Expand all</button><button onClick={collapseAll} className="rounded border border-[#313244] px-2 py-1 text-[10px] text-[#9399b2] hover:text-[#cdd6f4]">Collapse all</button></div>}
+          <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#344435] px-4 py-2">
+            <span className="text-[11px] text-[#b1bea8]">Tree structure{valid && parsed !== undefined ? ` · ${collectExpandablePaths(parsed).length} containers` : ''}</span>
+            {valid && <div className="flex gap-1.5"><button onClick={expandAll} className="rounded border border-[#344435] px-2 py-1 text-[10px] text-[#b1bea8] hover:text-[#e4ebdd]">Expand all</button><button onClick={collapseAll} className="rounded border border-[#344435] px-2 py-1 text-[10px] text-[#b1bea8] hover:text-[#e4ebdd]">Collapse all</button></div>}
           </div>
-          <div className="min-h-0 flex-1 overflow-auto bg-[#1a1a2c] p-4">
+          <div className="min-h-0 flex-1 overflow-auto bg-[#141a16] p-4">
             {valid && parsed !== undefined ? <JsonTreeNode value={parsed} label="root" path="$" depth={0} expandedPaths={expandedPaths} onToggle={togglePath} />
-              : <p className="text-xs text-[#6c7086]">Paste valid JSON to explore its tree.</p>}
+              : <p className="text-xs text-[#9eac96]">Paste valid JSON to explore its tree.</p>}
           </div>
         </div>
       ) : (
         <div className="flex min-h-0 flex-1 flex-col">
-          <div className="flex shrink-0 items-center justify-between border-b border-[#313244] px-4 py-2">
+          <div className="flex shrink-0 items-center justify-between border-b border-[#344435] px-4 py-2">
             <div>
-              <h2 className="text-[11px] font-medium text-[#cdd6f4]">JSON relationships</h2>
-              <p className="mt-0.5 text-[10px] text-[#6c7086]">Each edge connects a parent to its nested property or array item.</p>
+              <h2 className="text-[11px] font-medium text-[#e4ebdd]">JSON relationships</h2>
+              <p className="mt-0.5 text-[10px] text-[#9eac96]">Each edge connects a parent to its nested property or array item.</p>
             </div>
-            {valid && <span className="text-[10px] text-[#6c7086]">{makeGraph(parsed as JsonValue, new Set(collectExpandablePaths(parsed as JsonValue))).nodes.length} nodes</span>}
+            {valid && <span className="text-[10px] text-[#9eac96]">{makeGraph(parsed as JsonValue, new Set(collectExpandablePaths(parsed as JsonValue))).nodes.length} nodes</span>}
           </div>
-          <div className="min-h-0 flex-1 overflow-auto bg-[#1a1a2c] p-4">
+          <div className="min-h-0 flex-1 overflow-auto bg-[#141a16] p-4">
             {valid && parsed !== undefined ? <JsonGraph value={parsed} />
-              : <div className="flex h-full items-center justify-center text-xs text-[#6c7086]">Paste valid JSON to view its relationship graph.</div>}
+              : <div className="flex h-full items-center justify-center text-xs text-[#9eac96]">Paste valid JSON to view its relationship graph.</div>}
           </div>
         </div>
       )}

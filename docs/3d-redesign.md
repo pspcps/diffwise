@@ -1,17 +1,14 @@
-# Interactive workspace and portfolio
+# Workspace, tools, and portfolio redesign
 
-The default route (`#/` or `#/home`) opens the new workspace overview. Existing deep links (including `#/text`, `#/json`, and `#/portfolio`) continue to work.
+The overview, all 18 tool surfaces, and portfolio share a charcoal visual system with five selectable language accents: Node.js, Python, TypeScript, Go, and Rust. The selected theme and tool favorites persist in browser storage; storage failures do not block the app.
 
-## Design and interactions
+The portfolio now introduces Prakash directly. Its animated cartoon developer guide cycles factual stories from the existing resume and projects. Project cards show real summaries and technology tags, with details and existing architecture walkthroughs. Opening project details also offers a guide specific to that project. The abstract sculpture and decorative cube cards have been removed from the active pages.
 
-- A dark charcoal, warm white, and soft mint visual system with shared navigation.
-- An actual Three.js sculpture on the workspace and portfolio. Drag to orbit; use the pause/play and reset controls below it.
-- Tool search, category filters, and favorites saved to this browser's local storage. Storage failures do not prevent using tools.
-- A portfolio built from `src/data/resumeData.ts`, including filtered projects, accessible project detail dialogs, experience, skills, education, certifications, and open-source contributions.
-- Subtle card tilt and floating details. Reduced-motion preferences disable automatic movement; the sculpture can still be rotated manually.
-- A CSS sculpture fallback when WebGL initialization is unavailable.
+Each tool includes a compact, dismissible guide with context-specific tips. It opens only when requested. Guide text can optionally be read aloud through the browser's speech feature. It never starts audio automatically. Character expressions change on click, with subtle wave/blink animation disabled by reduced-motion preferences.
 
-The 3D renderer caps pixel density, skips rendering when the page or scene is hidden, and releases its GPU resources when navigating away. The overview and portfolio are lazy-loaded, so direct tool routes do not load their 3D scenes.
+Tool panels, forms, tables, graphs, and Monaco editors use the shared palette, clearer text, focus feedback, subtle panel depth, and entrance motion. Comparison inputs and JSON source inputs distinguish object keys, strings, numbers, booleans, null, and nested brackets. Monaco provides bracket-pair coloring and guides. Comparison includes a runnable JSON example and a visible mobile return-to-input action. Very large inputs skip the lightweight input coloring to keep typing responsive.
+
+Existing tool routes and resume data remain. The shared ManagedDiffEditor releases anonymous models after the diff widget is disposed, fixing the Monaco 0.55 cleanup error.
 
 ## Development
 
@@ -21,22 +18,15 @@ npm run dev
 npm run build
 ```
 
-No additional runtime dependencies or credentials are required. The existing React, Three.js, Lucide, and browser-local tools are reused. External project, résumé, and contact links use the existing profile data.
-
-## Previews
-
-![Workspace overview](redesign/workspace.jpg)
-
-![Portfolio](redesign/portfolio.jpg)
-
-[Mobile overview](redesign/mobile.jpg)
+No additional runtime dependencies or credentials are required.
 
 ## Validation
 
-- Production build: `npm run build` (TypeScript and Vite).
-- Focused ESLint checks on the new and redesigned components.
-- Chromium checks against the production preview: featured and full tool catalogs, category filtering, search and empty states, persisted favorites, 3D drag/pause/reset, project filtering, project dialog and Escape, existing architecture walkthroughs, experience expansion, case conversion, keyboard command search, and Monaco diff rendering.
-- Responsive screenshots at 1440px and 390px, plus a 320px overflow check; reduced-motion and unavailable-WebGL checks.
-- No uncaught browser errors in the completed flow. Headless Chromium used the environment's installed CA pins to load the existing Monaco CDN; analytics and ads were blocked during QA.
+Production build (TypeScript/Vite), focused ESLint checks for the new shared components, 21 Chromium checks across all tool routes and selected editing/comparison interactions, and five additional checks for theme persistence, career stories, project-specific guidance, tool tips, and mobile layouts. No uncaught browser errors in these completed flows. These checks do not exhaustively exercise every file-processing or remote API workflow. Headless Chromium uses the environment's installed CA pins to load the existing Monaco CDN; analytics and ads are blocked during QA.
 
-The shared `ManagedDiffEditor` also fixes the existing Monaco 0.55 model-disposal error when closing a comparison. It releases anonymous models after the diff widget is disposed, including when returning to the new overview.
+## Previews
+
+![Workspace](redesign/workspace.jpg)
+![Portfolio](redesign/portfolio.jpg)
+![Comparison input and syntax colors](redesign/tools.jpg)
+[Mobile portfolio](redesign/mobile.jpg)

@@ -42,7 +42,7 @@ export default function AboutPanel({ onClose, onPortfolio }: AboutPanelProps) {
         <div className="flex items-center justify-between px-5 pt-5 pb-3 shrink-0">
           <span className="text-[10px] tracking-[0.25em] uppercase text-[#3d3f55]">About the Builder</span>
           <button onClick={onClose}
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-[#45475a] hover:text-[#cdd6f4] hover:bg-white/5 transition-all">
+            className="w-7 h-7 rounded-lg flex items-center justify-center text-[#71836b] hover:text-[#e4ebdd] hover:bg-white/5 transition-all">
             <X size={14} />
           </button>
         </div>
@@ -63,7 +63,7 @@ export default function AboutPanel({ onClose, onPortfolio }: AboutPanelProps) {
 
           <h2 className="text-lg font-bold text-white">{RESUME.name}</h2>
           <p className="text-sm mt-0.5" style={{ color: '#4f8ef7' }}>{RESUME.title}</p>
-          <p className="text-[11px] mt-1 text-center leading-relaxed" style={{ color: '#45475a' }}>
+          <p className="text-[11px] mt-1 text-center leading-relaxed" style={{ color: '#71836b' }}>
             {RESUME.focus}
           </p>
         </div>
@@ -74,7 +74,7 @@ export default function AboutPanel({ onClose, onPortfolio }: AboutPanelProps) {
 
         {/* Bio */}
         <div className="px-5 mb-5 shrink-0">
-          <p className="text-[12px] leading-relaxed" style={{ color: '#6c7086' }}>
+          <p className="text-[12px] leading-relaxed" style={{ color: '#9eac96' }}>
             {RESUME.summary.slice(0, 160)}...
           </p>
         </div>
@@ -83,7 +83,7 @@ export default function AboutPanel({ onClose, onPortfolio }: AboutPanelProps) {
         <div className="px-5 flex flex-col gap-2 mb-5 shrink-0">
           <a href={RESUME.linkedin} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs transition-all"
-            style={{ color: '#6c7086', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
+            style={{ color: '#9eac96', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
             onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = 'rgba(139,92,246,0.3)'}
             onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.05)'}
           >
@@ -109,8 +109,8 @@ export default function AboutPanel({ onClose, onPortfolio }: AboutPanelProps) {
             <ExternalLink size={14} />
             View Portfolio &amp; Projects
           </button>
-          <p className="text-center text-[10px]" style={{ color: '#6c7086' }}>
-            <Code2 size={10} className="inline mr-1 text-[#89b4fa]" />
+          <p className="text-center text-[10px]" style={{ color: '#9eac96' }}>
+            <Code2 size={10} className="inline mr-1 text-[#c8edb6]" />
             Featuring Kafka systems, full-stack tools &amp; AI architectures
           </p>
         </div>

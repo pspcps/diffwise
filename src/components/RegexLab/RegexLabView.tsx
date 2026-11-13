@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
-import MonacoEditor from '@monaco-editor/react';
+import MonacoEditor from '../Common/CodeEditor';
 import { parseRegExpLiteral, visitRegExpAST } from '@eslint-community/regexpp';
 import { ChevronLeft, ChevronRight, Copy, Search, ShieldAlert, Sparkles, TestTube2, Wrench } from 'lucide-react';
 
@@ -80,10 +80,10 @@ function HighlightedInput({ text, matches }: { text: string; matches: RegexMatch
   for (const [index, match] of matches.entries()) {
     if (match.index > cursor) parts.push(<span key={`text-${index}`}>{text.slice(cursor, match.index)}</span>);
     if (match.end > match.index) {
-      parts.push(<mark key={`match-${index}`} className="rounded-sm bg-[#f9e2af]/30 text-[#f9e2af]">{text.slice(match.index, match.end)}</mark>);
+      parts.push(<mark key={`match-${index}`} className="rounded-sm bg-[#f3d58c]/30 text-[#f3d58c]">{text.slice(match.index, match.end)}</mark>);
       cursor = match.end;
     } else {
-      parts.push(<span key={`empty-${index}`} title="Zero-width match" className="border-l border-[#f38ba8]">{'\u200b'}</span>);
+      parts.push(<span key={`empty-${index}`} title="Zero-width match" className="border-l border-[#f19aa6]">{'\u200b'}</span>);
       cursor = match.index;
     }
   }
@@ -181,45 +181,45 @@ export default function RegexLabView() {
   };
 
   return (
-    <section className="flex h-full min-h-0 flex-col bg-[#1e1e2e] text-[#cdd6f4]">
-      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#313244] bg-[#181825] px-4 py-2.5">
+    <section className="flex h-full min-h-0 flex-col bg-[#171d19] text-[#e4ebdd]">
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#344435] bg-[#111612] px-4 py-2.5">
         <div>
           <h1 className="text-sm font-semibold">Regex Lab</h1>
-          <p className="mt-0.5 text-[11px] text-[#6c7086]">Generate patterns, test captures, and inspect match behavior.</p>
+          <p className="mt-0.5 text-[11px] text-[#9eac96]">Generate patterns, test captures, and inspect match behavior.</p>
         </div>
-        <div className="flex gap-1 rounded-md border border-[#313244] p-0.5" role="tablist" aria-label="Regex mode">
-          {([['test', 'Test', <TestTube2 size={12} />], ['debug', 'Debug', <Wrench size={12} />], ['generate', 'Generate', <Sparkles size={12} />]] as const).map(([id, label, icon]) => <button key={id} onClick={() => setMode(id)} role="tab" aria-selected={mode === id} className={`flex items-center gap-1.5 rounded px-3 py-1.5 text-[11px] ${mode === id ? 'bg-[#313244] text-[#cdd6f4]' : 'text-[#6c7086] hover:text-[#cdd6f4]'}`}>{icon}{label}</button>)}
+        <div className="flex gap-1 rounded-md border border-[#344435] p-0.5" role="tablist" aria-label="Regex mode">
+          {([['test', 'Test', <TestTube2 size={12} />], ['debug', 'Debug', <Wrench size={12} />], ['generate', 'Generate', <Sparkles size={12} />]] as const).map(([id, label, icon]) => <button key={id} onClick={() => setMode(id)} role="tab" aria-selected={mode === id} className={`flex items-center gap-1.5 rounded px-3 py-1.5 text-[11px] ${mode === id ? 'bg-[#344435] text-[#e4ebdd]' : 'text-[#9eac96] hover:text-[#e4ebdd]'}`}>{icon}{label}</button>)}
         </div>
       </header>
 
       {mode === 'generate' ? (
         <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-[280px_minmax(0,1fr)]">
-          <aside className="flex min-h-0 flex-col border-b border-[#313244] md:border-b-0 md:border-r">
-            <label className="m-3 flex items-center gap-2 rounded-md border border-[#313244] px-2.5 py-2 text-[#6c7086]"><Search size={13} /><input value={presetSearch} onChange={event => setPresetSearch(event.target.value)} placeholder="Search patterns..." aria-label="Search regex patterns" className="min-w-0 flex-1 bg-transparent text-[11px] text-[#cdd6f4] outline-none placeholder:text-[#585b70]" /></label>
+          <aside className="flex min-h-0 flex-col border-b border-[#344435] md:border-b-0 md:border-r">
+            <label className="m-3 flex items-center gap-2 rounded-md border border-[#344435] px-2.5 py-2 text-[#9eac96]"><Search size={13} /><input value={presetSearch} onChange={event => setPresetSearch(event.target.value)} placeholder="Search patterns..." aria-label="Search regex patterns" className="min-w-0 flex-1 bg-transparent text-[11px] text-[#e4ebdd] outline-none placeholder:text-[#899980]" /></label>
             <div className="min-h-0 flex-1 overflow-auto px-2 pb-3">
-              {matchingPresets.map(preset => <button key={preset.name} onClick={() => selectPreset(preset)} className={`mb-1 w-full rounded-md border px-3 py-2 text-left ${selectedPreset?.name === preset.name ? 'border-[#89b4fa]/40 bg-[#89b4fa]/10' : 'border-transparent hover:bg-[#252538]'}`}>
-                <span className="block text-[11px] font-medium text-[#cdd6f4]">{preset.name}</span><span className="mt-1 block text-[9px] uppercase text-[#6c7086]">{preset.category}</span>
+              {matchingPresets.map(preset => <button key={preset.name} onClick={() => selectPreset(preset)} className={`mb-1 w-full rounded-md border px-3 py-2 text-left ${selectedPreset?.name === preset.name ? 'border-[#c8edb6]/40 bg-[#c8edb6]/10' : 'border-transparent hover:bg-[#243025]'}`}>
+                <span className="block text-[11px] font-medium text-[#e4ebdd]">{preset.name}</span><span className="mt-1 block text-[9px] uppercase text-[#9eac96]">{preset.category}</span>
               </button>)}
             </div>
           </aside>
           <div className="flex min-h-0 flex-col overflow-auto p-4 sm:p-6">
             {selectedPreset ? <>
-              <span className="text-[10px] uppercase text-[#89b4fa]">{selectedPreset.category}</span>
-              <h2 className="mt-1 text-lg font-semibold text-[#cdd6f4]">{selectedPreset.name}</h2>
-              <p className="mt-2 max-w-2xl text-xs leading-5 text-[#9399b2]">{selectedPreset.description}</p>
-              {selectedPreset.caveat && <p className="mt-3 flex max-w-2xl gap-2 border-l-2 border-[#f9e2af]/60 pl-3 text-[11px] leading-5 text-[#f9e2af]"><ShieldAlert size={14} className="mt-0.5 shrink-0" />{selectedPreset.caveat}</p>}
-              <label className="mt-6 flex flex-col gap-2"><span className="text-[11px] font-medium text-[#9399b2]">Generated JavaScript regex</span><div className="flex items-center gap-2 rounded-md border border-[#313244] bg-[#11111b] p-3"><code className="min-w-0 flex-1 break-all font-mono text-sm text-[#a6e3a1]">/{pattern}/{flags}</code><button onClick={() => void copyPattern()} title={copied ? 'Copied' : 'Copy generated regex'} aria-label="Copy generated regex" className="rounded border border-[#313244] p-2 text-[#9399b2] hover:text-[#cdd6f4]"><Copy size={14} /></button></div></label>
-              <div className="mt-3 rounded-md border border-[#313244] bg-[#181825] p-3"><span className="text-[10px] text-[#6c7086]">Example</span><pre className="mt-1 overflow-auto font-mono text-[11px] text-[#cdd6f4]">{selectedPreset.sample}</pre></div>
-              <button onClick={() => setMode('test')} className="mt-4 self-start rounded-md border border-[#89b4fa]/30 bg-[#89b4fa]/10 px-3 py-2 text-[11px] text-[#89b4fa]">Test this pattern</button>
-            </> : <div className="m-auto max-w-md text-center"><Sparkles size={22} className="mx-auto text-[#89b4fa]" /><h2 className="mt-3 text-sm font-semibold">Pattern generator</h2><p className="mt-2 text-xs leading-5 text-[#6c7086]">Choose a common validation or formatting pattern. You can edit it in the test bench and copy the generated JavaScript regex.</p></div>}
+              <span className="text-[10px] uppercase text-[#c8edb6]">{selectedPreset.category}</span>
+              <h2 className="mt-1 text-lg font-semibold text-[#e4ebdd]">{selectedPreset.name}</h2>
+              <p className="mt-2 max-w-2xl text-xs leading-5 text-[#b1bea8]">{selectedPreset.description}</p>
+              {selectedPreset.caveat && <p className="mt-3 flex max-w-2xl gap-2 border-l-2 border-[#f3d58c]/60 pl-3 text-[11px] leading-5 text-[#f3d58c]"><ShieldAlert size={14} className="mt-0.5 shrink-0" />{selectedPreset.caveat}</p>}
+              <label className="mt-6 flex flex-col gap-2"><span className="text-[11px] font-medium text-[#b1bea8]">Generated JavaScript regex</span><div className="flex items-center gap-2 rounded-md border border-[#344435] bg-[#0d120f] p-3"><code className="min-w-0 flex-1 break-all font-mono text-sm text-[#b5dfa3]">/{pattern}/{flags}</code><button onClick={() => void copyPattern()} title={copied ? 'Copied' : 'Copy generated regex'} aria-label="Copy generated regex" className="rounded border border-[#344435] p-2 text-[#b1bea8] hover:text-[#e4ebdd]"><Copy size={14} /></button></div></label>
+              <div className="mt-3 rounded-md border border-[#344435] bg-[#111612] p-3"><span className="text-[10px] text-[#9eac96]">Example</span><pre className="mt-1 overflow-auto font-mono text-[11px] text-[#e4ebdd]">{selectedPreset.sample}</pre></div>
+              <button onClick={() => setMode('test')} className="mt-4 self-start rounded-md border border-[#c8edb6]/30 bg-[#c8edb6]/10 px-3 py-2 text-[11px] text-[#c8edb6]">Test this pattern</button>
+            </> : <div className="m-auto max-w-md text-center"><Sparkles size={22} className="mx-auto text-[#c8edb6]" /><h2 className="mt-3 text-sm font-semibold">Pattern generator</h2><p className="mt-2 text-xs leading-5 text-[#9eac96]">Choose a common validation or formatting pattern. You can edit it in the test bench and copy the generated JavaScript regex.</p></div>}
           </div>
         </div>
       ) : (
         <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-          <div className="flex min-h-0 flex-col border-b border-[#313244] lg:border-b-0 lg:border-r">
-            <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#313244] px-4 py-2">
+          <div className="flex min-h-0 flex-col border-b border-[#344435] lg:border-b-0 lg:border-r">
+            <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#344435] px-4 py-2">
               <div className="flex min-w-0 flex-1 items-center gap-1.5 font-mono text-xs">
-                <span className="text-[#89b4fa]">/</span>
+                <span className="text-[#c8edb6]">/</span>
                 <div className="h-8 min-w-0 flex-1">
                   <MonacoEditor height="32px" language="devbench-regex" theme="vs-dark" value={pattern} onChange={value => setPattern(value ?? '')}
                     onMount={(_editor, monaco) => {
@@ -262,11 +262,11 @@ export default function RegexLabView() {
                           { token: 'regex.literal', foreground: 'CDD6F4' },
                         ],
                         colors: {
-                          'editorBracketHighlight.foreground1': '#89b4fa',
-                          'editorBracketHighlight.foreground2': '#a6e3a1',
-                          'editorBracketHighlight.foreground3': '#f9e2af',
-                          'editorBracketHighlight.foreground4': '#f38ba8',
-                          'editorBracketHighlight.foreground5': '#cba6f7',
+                          'editorBracketHighlight.foreground1': '#c8edb6',
+                          'editorBracketHighlight.foreground2': '#b5dfa3',
+                          'editorBracketHighlight.foreground3': '#f3d58c',
+                          'editorBracketHighlight.foreground4': '#f19aa6',
+                          'editorBracketHighlight.foreground5': '#ceb8f6',
                           'editorBracketHighlight.foreground6': '#94e2d5',
                         },
                       });
@@ -275,41 +275,41 @@ export default function RegexLabView() {
                     }}
                     options={{ automaticLayout: true, minimap: { enabled: false }, lineNumbers: 'off', folding: false, bracketPairColorization: { enabled: true }, matchBrackets: 'always', scrollBeyondLastLine: false, wordWrap: 'off', fontSize: 12, padding: { top: 6, bottom: 4 }, tabSize: 2 }} />
                 </div>
-                <span className="text-[#89b4fa]">/</span><span className="text-[#f9e2af]">{flags}</span>
+                <span className="text-[#c8edb6]">/</span><span className="text-[#f3d58c]">{flags}</span>
               </div>
-              <button onClick={() => void copyPattern()} title={copied ? 'Copied' : 'Copy regex'} aria-label="Copy regex" className="rounded border border-[#313244] p-1.5 text-[#9399b2] hover:text-[#cdd6f4]"><Copy size={12} /></button>
+              <button onClick={() => void copyPattern()} title={copied ? 'Copied' : 'Copy regex'} aria-label="Copy regex" className="rounded border border-[#344435] p-1.5 text-[#b1bea8] hover:text-[#e4ebdd]"><Copy size={12} /></button>
             </div>
-            <div className="flex shrink-0 flex-wrap gap-1.5 border-b border-[#313244] px-4 py-2" role="group" aria-label="Regular expression flags">
-              {FLAGS.map(flag => <button key={flag.id} onClick={() => flagToggle(flag.id)} title={flag.title} aria-pressed={flags.includes(flag.id)} className={`rounded border px-2 py-1 text-[10px] ${flags.includes(flag.id) ? 'border-[#89b4fa]/40 bg-[#89b4fa]/10 text-[#89b4fa]' : 'border-[#313244] text-[#6c7086]'}`}>{flag.id} · {flag.label}</button>)}
+            <div className="flex shrink-0 flex-wrap gap-1.5 border-b border-[#344435] px-4 py-2" role="group" aria-label="Regular expression flags">
+              {FLAGS.map(flag => <button key={flag.id} onClick={() => flagToggle(flag.id)} title={flag.title} aria-pressed={flags.includes(flag.id)} className={`rounded border px-2 py-1 text-[10px] ${flags.includes(flag.id) ? 'border-[#c8edb6]/40 bg-[#c8edb6]/10 text-[#c8edb6]' : 'border-[#344435] text-[#9eac96]'}`}>{flag.id} · {flag.label}</button>)}
             </div>
             {mode === 'debug' ? <div className="min-h-0 flex-1 overflow-auto p-4">
-              <h2 className="text-[11px] font-semibold text-[#cdd6f4]">Pattern structure</h2>
-              {debugSteps.error ? <p className="mt-2 text-xs text-[#f38ba8]">{debugSteps.error}</p> : <ol className="mt-3 space-y-1.5">{debugSteps.steps.map((step, index) => <li key={`${step.start}-${step.end}-${index}`} className="grid grid-cols-[24px_minmax(0,1fr)] gap-2 rounded border border-[#313244]/70 bg-[#1a1a2c] p-2.5"><span className="font-mono text-[10px] text-[#585b70]">{index + 1}</span><div className="min-w-0"><code className="font-mono text-[11px] text-[#f9e2af]">{step.token}</code><p className="mt-1 text-[10px] leading-4 text-[#9399b2]">{step.description}</p></div></li>)}</ol>}
-              <p className="mt-3 text-[10px] leading-4 text-[#6c7086]">This explains parsed tokens and actual match spans. JavaScript does not expose its internal backtracking trace.</p>
-            </div> : <label className="flex min-h-0 flex-1 flex-col"><span className="shrink-0 px-4 py-2 text-[11px] text-[#9399b2]">Test string</span><textarea value={testText} onChange={event => setTestText(event.target.value)} spellCheck={false} aria-label="Regex test text" placeholder="Type or paste text to test..." className="min-h-0 flex-1 resize-none bg-[#1a1a2c] px-4 py-3 font-mono text-[12px] leading-6 text-[#cdd6f4] outline-none placeholder:text-[#585b70]" /></label>}
+              <h2 className="text-[11px] font-semibold text-[#e4ebdd]">Pattern structure</h2>
+              {debugSteps.error ? <p className="mt-2 text-xs text-[#f19aa6]">{debugSteps.error}</p> : <ol className="mt-3 space-y-1.5">{debugSteps.steps.map((step, index) => <li key={`${step.start}-${step.end}-${index}`} className="grid grid-cols-[24px_minmax(0,1fr)] gap-2 rounded border border-[#344435]/70 bg-[#141a16] p-2.5"><span className="font-mono text-[10px] text-[#899980]">{index + 1}</span><div className="min-w-0"><code className="font-mono text-[11px] text-[#f3d58c]">{step.token}</code><p className="mt-1 text-[10px] leading-4 text-[#b1bea8]">{step.description}</p></div></li>)}</ol>}
+              <p className="mt-3 text-[10px] leading-4 text-[#9eac96]">This explains parsed tokens and actual match spans. JavaScript does not expose its internal backtracking trace.</p>
+            </div> : <label className="flex min-h-0 flex-1 flex-col"><span className="shrink-0 px-4 py-2 text-[11px] text-[#b1bea8]">Test string</span><textarea value={testText} onChange={event => setTestText(event.target.value)} spellCheck={false} aria-label="Regex test text" placeholder="Type or paste text to test..." className="min-h-0 flex-1 resize-none bg-[#141a16] px-4 py-3 font-mono text-[12px] leading-6 text-[#e4ebdd] outline-none placeholder:text-[#899980]" /></label>}
           </div>
 
           <div className="flex min-h-0 flex-col">
-            <div className="flex shrink-0 items-center justify-between gap-2 border-b border-[#313244] px-4 py-2 text-[11px]">
-              <span className="font-medium text-[#9399b2]">{mode === 'debug' ? 'Match debugger' : 'Match results'}</span>
-              <span className="text-[#6c7086]">{pending ? 'Testing…' : `${matches.length}${matches.length === 1000 ? '+' : ''} match${matches.length === 1 ? '' : 'es'}`}</span>
+            <div className="flex shrink-0 items-center justify-between gap-2 border-b border-[#344435] px-4 py-2 text-[11px]">
+              <span className="font-medium text-[#b1bea8]">{mode === 'debug' ? 'Match debugger' : 'Match results'}</span>
+              <span className="text-[#9eac96]">{pending ? 'Testing…' : `${matches.length}${matches.length === 1000 ? '+' : ''} match${matches.length === 1 ? '' : 'es'}`}</span>
             </div>
             {mode === 'test' ? <>
-              <div className="min-h-0 flex-1 overflow-auto bg-[#1a1a2c] p-4 font-mono text-[12px] leading-6 whitespace-pre-wrap break-words"><HighlightedInput text={testText} matches={matches} /></div>
-              <div className="max-h-[38%] min-h-24 overflow-auto border-t border-[#313244] p-3">
-                {matches.length ? <div className="space-y-2">{matches.map((match, index) => <div key={`${match.index}-${index}`} className="rounded-md border border-[#313244] bg-[#181825] p-2.5"><div className="flex justify-between gap-2"><code className="break-all font-mono text-[11px] text-[#f9e2af]">{match.text || '(empty match)'}</code><span className="shrink-0 text-[10px] text-[#6c7086]">{match.index}–{match.end}</span></div>{(match.captures.length > 0 || Object.keys(match.namedCaptures).length > 0) && <div className="mt-2 space-y-1 border-t border-[#313244] pt-2">{match.captures.map((capture, groupIndex) => <div key={groupIndex} className="flex gap-2 text-[10px]"><span className="text-[#6c7086]">${groupIndex + 1}</span><code className="break-all text-[#a6e3a1]">{capture ?? '(unmatched)'}</code></div>)}{Object.entries(match.namedCaptures).map(([name, capture]) => <div key={name} className="flex gap-2 text-[10px]"><span className="text-[#89b4fa]">{name}</span><code className="break-all text-[#a6e3a1]">{capture ?? '(unmatched)'}</code></div>)}</div>}</div>)}</div>
-                  : !pending && !workerError && <p className="py-3 text-center text-[11px] text-[#6c7086]">No matches found.</p>}
+              <div className="min-h-0 flex-1 overflow-auto bg-[#141a16] p-4 font-mono text-[12px] leading-6 whitespace-pre-wrap break-words"><HighlightedInput text={testText} matches={matches} /></div>
+              <div className="max-h-[38%] min-h-24 overflow-auto border-t border-[#344435] p-3">
+                {matches.length ? <div className="space-y-2">{matches.map((match, index) => <div key={`${match.index}-${index}`} className="rounded-md border border-[#344435] bg-[#111612] p-2.5"><div className="flex justify-between gap-2"><code className="break-all font-mono text-[11px] text-[#f3d58c]">{match.text || '(empty match)'}</code><span className="shrink-0 text-[10px] text-[#9eac96]">{match.index}–{match.end}</span></div>{(match.captures.length > 0 || Object.keys(match.namedCaptures).length > 0) && <div className="mt-2 space-y-1 border-t border-[#344435] pt-2">{match.captures.map((capture, groupIndex) => <div key={groupIndex} className="flex gap-2 text-[10px]"><span className="text-[#9eac96]">${groupIndex + 1}</span><code className="break-all text-[#b5dfa3]">{capture ?? '(unmatched)'}</code></div>)}{Object.entries(match.namedCaptures).map(([name, capture]) => <div key={name} className="flex gap-2 text-[10px]"><span className="text-[#c8edb6]">{name}</span><code className="break-all text-[#b5dfa3]">{capture ?? '(unmatched)'}</code></div>)}</div>}</div>)}</div>
+                  : !pending && !workerError && <p className="py-3 text-center text-[11px] text-[#9eac96]">No matches found.</p>}
               </div>
             </> : <div className="flex min-h-0 flex-1 flex-col overflow-auto p-4">
-              {workerError && <p className="mb-3 text-[11px] text-[#f38ba8]">{workerError}</p>}
-              {timedOut && <p className="mb-3 rounded border border-[#f9e2af]/20 bg-[#f9e2af]/5 p-2 text-[10px] leading-4 text-[#f9e2af]">Matching exceeded 900 ms and was stopped to keep the page responsive. Check for nested ambiguous quantifiers such as <code>(a+)+</code>.</p>}
-              {matches.length ? <div className="mb-4 rounded-md border border-[#a6e3a1]/20 bg-[#a6e3a1]/5 p-3"><div className="flex items-center justify-between gap-2"><span className="text-[10px] uppercase text-[#a6e3a1]">Match {matchIndex + 1} of {matches.length}</span><div className="flex gap-1"><button onClick={() => setMatchIndex(value => Math.max(0, value - 1))} disabled={matchIndex === 0} aria-label="Previous match" className="rounded border border-[#313244] p-1 text-[#cdd6f4] disabled:opacity-30"><ChevronLeft size={13} /></button><button onClick={() => setMatchIndex(value => Math.min(matches.length - 1, value + 1))} disabled={matchIndex >= matches.length - 1} aria-label="Next match" className="rounded border border-[#313244] p-1 text-[#cdd6f4] disabled:opacity-30"><ChevronRight size={13} /></button></div></div><code className="mt-2 block break-all font-mono text-xs text-[#f9e2af]">{currentMatch?.text || '(empty match)'}</code><p className="mt-1 text-[10px] text-[#9399b2]">Characters {currentMatch?.index}–{currentMatch?.end}</p>{currentMatch?.captures.map((capture, index) => <p key={index} className="mt-1 text-[10px] text-[#6c7086]">Capture ${index + 1}: <code className="text-[#a6e3a1]">{capture ?? '(unmatched)'}</code></p>)}{Object.entries(currentMatch?.namedCaptures ?? {}).map(([name, capture]) => <p key={name} className="mt-1 text-[10px] text-[#6c7086]">{name}: <code className="text-[#a6e3a1]">{capture ?? '(unmatched)'}</code></p>)}</div>
-                : <p className="text-[11px] text-[#6c7086]">{pending ? 'Running the test string in an isolated worker…' : 'No match trace yet. Add a pattern and test text.'}</p>}
-              <h2 className="mb-2 text-[11px] font-semibold text-[#cdd6f4]">Test string with match spans</h2>
-              <pre className="min-h-20 whitespace-pre-wrap break-words rounded-md border border-[#313244] bg-[#1a1a2c] p-3 font-mono text-[11px] leading-5"><HighlightedInput text={testText} matches={matches} /></pre>
-              {workerError && !debugSteps.error && <p className="mt-3 text-[10px] text-[#f38ba8]">{workerError}</p>}
+              {workerError && <p className="mb-3 text-[11px] text-[#f19aa6]">{workerError}</p>}
+              {timedOut && <p className="mb-3 rounded border border-[#f3d58c]/20 bg-[#f3d58c]/5 p-2 text-[10px] leading-4 text-[#f3d58c]">Matching exceeded 900 ms and was stopped to keep the page responsive. Check for nested ambiguous quantifiers such as <code>(a+)+</code>.</p>}
+              {matches.length ? <div className="mb-4 rounded-md border border-[#b5dfa3]/20 bg-[#b5dfa3]/5 p-3"><div className="flex items-center justify-between gap-2"><span className="text-[10px] uppercase text-[#b5dfa3]">Match {matchIndex + 1} of {matches.length}</span><div className="flex gap-1"><button onClick={() => setMatchIndex(value => Math.max(0, value - 1))} disabled={matchIndex === 0} aria-label="Previous match" className="rounded border border-[#344435] p-1 text-[#e4ebdd] disabled:opacity-30"><ChevronLeft size={13} /></button><button onClick={() => setMatchIndex(value => Math.min(matches.length - 1, value + 1))} disabled={matchIndex >= matches.length - 1} aria-label="Next match" className="rounded border border-[#344435] p-1 text-[#e4ebdd] disabled:opacity-30"><ChevronRight size={13} /></button></div></div><code className="mt-2 block break-all font-mono text-xs text-[#f3d58c]">{currentMatch?.text || '(empty match)'}</code><p className="mt-1 text-[10px] text-[#b1bea8]">Characters {currentMatch?.index}–{currentMatch?.end}</p>{currentMatch?.captures.map((capture, index) => <p key={index} className="mt-1 text-[10px] text-[#9eac96]">Capture ${index + 1}: <code className="text-[#b5dfa3]">{capture ?? '(unmatched)'}</code></p>)}{Object.entries(currentMatch?.namedCaptures ?? {}).map(([name, capture]) => <p key={name} className="mt-1 text-[10px] text-[#9eac96]">{name}: <code className="text-[#b5dfa3]">{capture ?? '(unmatched)'}</code></p>)}</div>
+                : <p className="text-[11px] text-[#9eac96]">{pending ? 'Running the test string in an isolated worker…' : 'No match trace yet. Add a pattern and test text.'}</p>}
+              <h2 className="mb-2 text-[11px] font-semibold text-[#e4ebdd]">Test string with match spans</h2>
+              <pre className="min-h-20 whitespace-pre-wrap break-words rounded-md border border-[#344435] bg-[#141a16] p-3 font-mono text-[11px] leading-5"><HighlightedInput text={testText} matches={matches} /></pre>
+              {workerError && !debugSteps.error && <p className="mt-3 text-[10px] text-[#f19aa6]">{workerError}</p>}
             </div>}
-            {debugSteps.error && <div className="shrink-0 border-t border-[#313244] px-4 py-2 text-[10px] text-[#f38ba8]">Pattern error: {debugSteps.error}</div>}
+            {debugSteps.error && <div className="shrink-0 border-t border-[#344435] px-4 py-2 text-[10px] text-[#f19aa6]">Pattern error: {debugSteps.error}</div>}
           </div>
         </div>
       )}

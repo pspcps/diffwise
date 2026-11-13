@@ -1,5 +1,7 @@
 import { DiffEditor, type DiffEditorProps } from "@monaco-editor/react";
 
+import { defineEditorTheme, EDITOR_THEME } from "./editorTheme";
+
 type Props = Omit<
   DiffEditorProps,
   | "keepCurrentOriginalModel"
@@ -12,10 +14,13 @@ type Props = Omit<
  * @monaco-editor/react 4.x otherwise disposes models before Monaco 0.55's
  * diff widget, which raises an uncaught error when leaving a comparison.
  */
-export default function ManagedDiffEditor({ onMount, ...props }: Props) {
+export default function ManagedDiffEditor({ onMount, beforeMount, options, ...props }: Props) {
   return (
     <DiffEditor
       {...props}
+      theme={EDITOR_THEME}
+      options={{ bracketPairColorization: { enabled: true }, guides: { bracketPairs: true }, ...options }}
+      beforeMount={monaco => { defineEditorTheme(monaco); beforeMount?.(monaco); }}
       keepCurrentOriginalModel
       keepCurrentModifiedModel
       onMount={(editor, monaco) => {

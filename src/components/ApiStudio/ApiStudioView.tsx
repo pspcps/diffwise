@@ -103,13 +103,13 @@ export interface SwaggerRoute {
 }
 
 const METHOD_COLORS: Record<HttpMethod, { bg: string; text: string; border: string }> = {
-  GET: { bg: 'bg-[#a6e3a1]/15', text: 'text-[#a6e3a1]', border: 'border-[#a6e3a1]/30' },
-  POST: { bg: 'bg-[#89b4fa]/15', text: 'text-[#89b4fa]', border: 'border-[#89b4fa]/30' },
-  PUT: { bg: 'bg-[#fab387]/15', text: 'text-[#fab387]', border: 'border-[#fab387]/30' },
-  PATCH: { bg: 'bg-[#cba6f7]/15', text: 'text-[#cba6f7]', border: 'border-[#cba6f7]/30' },
-  DELETE: { bg: 'bg-[#f38ba8]/15', text: 'text-[#f38ba8]', border: 'border-[#f38ba8]/30' },
+  GET: { bg: 'bg-[#b5dfa3]/15', text: 'text-[#b5dfa3]', border: 'border-[#b5dfa3]/30' },
+  POST: { bg: 'bg-[#c8edb6]/15', text: 'text-[#c8edb6]', border: 'border-[#c8edb6]/30' },
+  PUT: { bg: 'bg-[#f3c18e]/15', text: 'text-[#f3c18e]', border: 'border-[#f3c18e]/30' },
+  PATCH: { bg: 'bg-[#ceb8f6]/15', text: 'text-[#ceb8f6]', border: 'border-[#ceb8f6]/30' },
+  DELETE: { bg: 'bg-[#f19aa6]/15', text: 'text-[#f19aa6]', border: 'border-[#f19aa6]/30' },
   HEAD: { bg: 'bg-[#94e2d5]/15', text: 'text-[#94e2d5]', border: 'border-[#94e2d5]/30' },
-  OPTIONS: { bg: 'bg-[#f9e2af]/15', text: 'text-[#f9e2af]', border: 'border-[#f9e2af]/30' },
+  OPTIONS: { bg: 'bg-[#f3d58c]/15', text: 'text-[#f3d58c]', border: 'border-[#f3d58c]/30' },
 };
 
 const DEFAULT_COLLECTIONS: ApiCollection[] = [
@@ -1225,21 +1225,21 @@ export default function ApiStudioView() {
   };
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-[#181825] text-[#cdd6f4] overflow-hidden">
+    <div className="flex-1 flex flex-col h-full bg-[#111612] text-[#e4ebdd] overflow-hidden">
       {/* Top Header: Title & Studio Mode Switcher */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-[#1e1e2e] border-b border-[#313244] gap-3 shrink-0 flex-wrap">
+      <div className="flex items-center justify-between px-4 py-2.5 bg-[#171d19] border-b border-[#344435] gap-3 shrink-0 flex-wrap">
         <div className="flex items-center gap-3">
-          <div className="p-1.5 rounded-lg bg-[#a6e3a1]/10 text-[#a6e3a1] border border-[#a6e3a1]/20">
+          <div className="p-1.5 rounded-lg bg-[#b5dfa3]/10 text-[#b5dfa3] border border-[#b5dfa3]/20">
             <Send size={16} />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-[#cdd6f4]">ApiDesk Studio</h2>
-              <span className="px-2 py-0.5 text-[10px] rounded-full bg-[#89b4fa]/15 text-[#89b4fa] font-semibold border border-[#89b4fa]/30">
+              <h2 className="text-sm font-bold text-[#e4ebdd]">ApiDesk Studio</h2>
+              <span className="px-2 py-0.5 text-[10px] rounded-full bg-[#c8edb6]/15 text-[#c8edb6] font-semibold border border-[#c8edb6]/30">
                 Postman &amp; Swagger Hub
               </span>
             </div>
-            <p className="text-[11px] text-[#9399b2]">
+            <p className="text-[11px] text-[#b1bea8]">
               {studioMode === 'client'
                 ? 'Send API requests, test endpoints, inspect latency & headers, and organize collections'
                 : 'Inspect all Swagger/OpenAPI routes, convert between JSON and YAML, and test in client'}
@@ -1249,13 +1249,13 @@ export default function ApiStudioView() {
 
         {/* View Mode Toggle: API Client vs Swagger Explorer */}
         <div className="flex items-center gap-2">
-          <div className="flex rounded-xl bg-[#11111b] border border-[#313244] p-1">
+          <div className="flex rounded-xl bg-[#0d120f] border border-[#344435] p-1">
             <button
               onClick={() => setStudioMode('client')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 studioMode === 'client'
-                  ? 'bg-[#89b4fa] text-[#11111b] shadow-sm'
-                  : 'text-[#9399b2] hover:text-[#cdd6f4]'
+                  ? 'bg-[#c8edb6] text-[#0d120f] shadow-sm'
+                  : 'text-[#b1bea8] hover:text-[#e4ebdd]'
               }`}
             >
               <Send size={13} />
@@ -1266,8 +1266,8 @@ export default function ApiStudioView() {
               onClick={() => setStudioMode('swagger')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 studioMode === 'swagger'
-                  ? 'bg-[#cba6f7] text-[#11111b] shadow-sm'
-                  : 'text-[#9399b2] hover:text-[#cdd6f4]'
+                  ? 'bg-[#ceb8f6] text-[#0d120f] shadow-sm'
+                  : 'text-[#b1bea8] hover:text-[#e4ebdd]'
               }`}
             >
               <BookOpen size={13} />
@@ -1279,25 +1279,25 @@ export default function ApiStudioView() {
             <div className="flex items-center gap-1.5">
               <button
                 onClick={() => setShowCurlModal(true)}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#313244] hover:bg-[#45475a] text-xs font-medium text-[#cdd6f4] border border-[#45475a] transition-all"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#344435] hover:bg-[#71836b] text-xs font-medium text-[#e4ebdd] border border-[#71836b] transition-all"
                 title="Import cURL command"
               >
-                <Upload size={13} className="text-[#89b4fa]" />
+                <Upload size={13} className="text-[#c8edb6]" />
                 <span className="hidden sm:inline">Import cURL</span>
               </button>
 
               <button
                 onClick={() => handleCopy(generateCurlCommand(activeRequest), 'curl')}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#313244] hover:bg-[#45475a] text-xs font-medium text-[#cdd6f4] border border-[#45475a] transition-all"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#344435] hover:bg-[#71836b] text-xs font-medium text-[#e4ebdd] border border-[#71836b] transition-all"
                 title="Copy as cURL"
               >
-                {copiedKey === 'curl' ? <Check size={13} className="text-[#a6e3a1]" /> : <Copy size={13} />}
+                {copiedKey === 'curl' ? <Check size={13} className="text-[#b5dfa3]" /> : <Copy size={13} />}
                 <span className="hidden sm:inline">Copy cURL</span>
               </button>
 
               <button
                 onClick={handleCreateNewRequest}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#89b4fa] hover:bg-[#b4befe] text-[#11111b] text-xs font-bold transition-all shadow-md"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#c8edb6] hover:bg-[#d9f6ca] text-[#0d120f] text-xs font-bold transition-all shadow-md"
               >
                 <Plus size={14} />
                 <span>New</span>
@@ -1311,17 +1311,17 @@ export default function ApiStudioView() {
       {/* 1. API CLIENT MODE (Postman Request Runner & Collections)     */}
       {/* ============================================================== */}
       {studioMode === 'client' && (
-        <div className="flex-1 flex min-h-0 divide-x divide-[#313244] overflow-hidden">
+        <div className="flex-1 flex min-h-0 divide-x divide-[#344435] overflow-hidden">
           {/* Left Sidebar: Collections & Requests */}
-          <div className="w-64 bg-[#11111b] flex flex-col shrink-0 min-h-0 overflow-hidden">
-            <div className="p-3 border-b border-[#313244] flex items-center justify-between gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#9399b2] flex items-center gap-1.5">
-                <Layers size={13} className="text-[#89b4fa]" />
+          <div className="w-64 bg-[#0d120f] flex flex-col shrink-0 min-h-0 overflow-hidden">
+            <div className="p-3 border-b border-[#344435] flex items-center justify-between gap-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#b1bea8] flex items-center gap-1.5">
+                <Layers size={13} className="text-[#c8edb6]" />
                 <span>Collections</span>
               </span>
               <button
                 onClick={handleCreateCollection}
-                className="p-1 rounded hover:bg-[#313244] text-[#89b4fa]"
+                className="p-1 rounded hover:bg-[#344435] text-[#c8edb6]"
                 title="Create Collection"
               >
                 <FolderPlus size={15} />
@@ -1329,15 +1329,15 @@ export default function ApiStudioView() {
             </div>
 
             {/* Search collections */}
-            <div className="p-2 border-b border-[#252535]">
-              <div className="flex items-center px-2 py-1 bg-[#181825] rounded-lg border border-[#313244]">
-                <Search size={12} className="text-[#6c7086] mr-1.5" />
+            <div className="p-2 border-b border-[#2b382c]">
+              <div className="flex items-center px-2 py-1 bg-[#111612] rounded-lg border border-[#344435]">
+                <Search size={12} className="text-[#9eac96] mr-1.5" />
                 <input
                   type="text"
                   placeholder="Filter requests..."
                   value={searchFilter}
                   onChange={e => setSearchFilter(e.target.value)}
-                  className="w-full bg-transparent text-[11px] text-[#cdd6f4] placeholder-[#585b70] focus:outline-none"
+                  className="w-full bg-transparent text-[11px] text-[#e4ebdd] placeholder-[#899980] focus:outline-none"
                 />
               </div>
             </div>
@@ -1354,11 +1354,11 @@ export default function ApiStudioView() {
 
                 return (
                   <div key={col.id} className="space-y-1">
-                    <div className="flex items-center justify-between px-2 py-1 text-[11px] font-bold text-[#cdd6f4] uppercase tracking-wider group">
+                    <div className="flex items-center justify-between px-2 py-1 text-[11px] font-bold text-[#e4ebdd] uppercase tracking-wider group">
                       <span className="truncate">{col.name}</span>
                       <button
                         onClick={() => handleSaveToCollection(col.id)}
-                        className="opacity-0 group-hover:opacity-100 text-[10px] text-[#89b4fa] hover:underline"
+                        className="opacity-0 group-hover:opacity-100 text-[10px] text-[#c8edb6] hover:underline"
                         title="Save current request here"
                       >
                         + Save Here
@@ -1375,7 +1375,7 @@ export default function ApiStudioView() {
                             key={req.id}
                             onClick={() => setActiveRequest(req)}
                             className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg cursor-pointer text-xs group transition-colors ${
-                              isActive ? 'bg-[#89b4fa]/15 text-[#cdd6f4]' : 'hover:bg-[#181825] text-[#9399b2]'
+                              isActive ? 'bg-[#c8edb6]/15 text-[#e4ebdd]' : 'hover:bg-[#111612] text-[#b1bea8]'
                             }`}
                           >
                             <div className="flex items-center gap-2 min-w-0">
@@ -1384,7 +1384,7 @@ export default function ApiStudioView() {
                               >
                                 {req.method}
                               </span>
-                              <span className="truncate text-xs text-[#cdd6f4] font-medium">{req.name}</span>
+                              <span className="truncate text-xs text-[#e4ebdd] font-medium">{req.name}</span>
                             </div>
 
                             <button
@@ -1392,7 +1392,7 @@ export default function ApiStudioView() {
                                 e.stopPropagation();
                                 handleDeleteRequest(req.id);
                               }}
-                              className="opacity-0 group-hover:opacity-100 text-[#f38ba8] hover:text-[#f38ba8]/80 p-0.5"
+                              className="opacity-0 group-hover:opacity-100 text-[#f19aa6] hover:text-[#f19aa6]/80 p-0.5"
                               title="Delete request"
                             >
                               <Trash2 size={12} />
@@ -1407,14 +1407,14 @@ export default function ApiStudioView() {
 
               {/* History Section */}
               {history.length > 0 && (
-                <div className="pt-3 border-t border-[#252535] space-y-1">
-                  <div className="flex items-center justify-between px-2 py-1 text-[11px] font-bold text-[#6c7086] uppercase tracking-wider">
+                <div className="pt-3 border-t border-[#2b382c] space-y-1">
+                  <div className="flex items-center justify-between px-2 py-1 text-[11px] font-bold text-[#9eac96] uppercase tracking-wider">
                     <span className="flex items-center gap-1.5">
                       <Clock size={12} /> Recent History
                     </span>
                     <button
                       onClick={() => setHistory([])}
-                      className="text-[10px] text-[#f38ba8] hover:underline"
+                      className="text-[10px] text-[#f19aa6] hover:underline"
                     >
                       Clear
                     </button>
@@ -1427,7 +1427,7 @@ export default function ApiStudioView() {
                         <div
                           key={`hist-${idx}`}
                           onClick={() => setActiveRequest(req)}
-                          className="flex items-center gap-2 px-2.5 py-1 rounded-lg cursor-pointer text-xs hover:bg-[#181825] text-[#9399b2] truncate"
+                          className="flex items-center gap-2 px-2.5 py-1 rounded-lg cursor-pointer text-xs hover:bg-[#111612] text-[#b1bea8] truncate"
                         >
                           <span
                             className={`text-[9px] font-bold font-mono px-1 py-0.2 rounded border ${mColor.bg} ${mColor.text} ${mColor.border}`}
@@ -1447,21 +1447,21 @@ export default function ApiStudioView() {
           {/* Right Main Panel: Request Builder (Top) + Response Viewer (Bottom) */}
           <div className="flex-1 flex flex-col min-h-0 overflow-y-auto">
             {/* Request Name & URL Row */}
-            <div className="p-4 bg-[#1e1e2e]/50 border-b border-[#313244] space-y-3 shrink-0">
+            <div className="p-4 bg-[#171d19]/50 border-b border-[#344435] space-y-3 shrink-0">
               <div className="flex items-center justify-between gap-3">
                 <input
                   type="text"
                   value={activeRequest.name}
                   onChange={e => setActiveRequest(prev => ({ ...prev, name: e.target.value }))}
                   placeholder="Request Name (e.g. Get User Profile)"
-                  className="bg-transparent text-sm font-bold text-[#cdd6f4] placeholder-[#585b70] focus:outline-none border-b border-transparent focus:border-[#89b4fa] pb-0.5"
+                  className="bg-transparent text-sm font-bold text-[#e4ebdd] placeholder-[#899980] focus:outline-none border-b border-transparent focus:border-[#c8edb6] pb-0.5"
                 />
 
                 <div className="flex items-center gap-2 text-xs">
                   {collections[0] && (
                     <button
                       onClick={() => handleSaveToCollection(collections[0].id)}
-                      className="px-2.5 py-1 rounded bg-[#313244] hover:bg-[#45475a] text-[#89b4fa] font-medium transition-colors"
+                      className="px-2.5 py-1 rounded bg-[#344435] hover:bg-[#71836b] text-[#c8edb6] font-medium transition-colors"
                     >
                       Save Changes
                     </button>
@@ -1507,10 +1507,10 @@ export default function ApiStudioView() {
                     if (e.key === "Enter") handleSend();
                   }}
                   placeholder="Paste URL or full cURL command (e.g. curl -X POST https://api... -H ... -d ...)"
-                  className="w-full px-3 py-2 bg-[#11111b] border border-[#313244] rounded-xl font-mono text-xs text-[#cdd6f4] placeholder-[#585b70] focus:outline-none focus:border-[#89b4fa]"
+                  className="w-full px-3 py-2 bg-[#0d120f] border border-[#344435] rounded-xl font-mono text-xs text-[#e4ebdd] placeholder-[#899980] focus:outline-none focus:border-[#c8edb6]"
                 />
                 {curlParsedToast && (
-                  <div className="absolute top-full left-0 mt-1 z-20 px-2.5 py-1 bg-[#a6e3a1]/20 border border-[#a6e3a1]/40 rounded-lg text-[11px] font-bold text-[#a6e3a1] shadow-lg flex items-center gap-1.5 animate-in fade-in slide-in-from-top-1">
+                  <div className="absolute top-full left-0 mt-1 z-20 px-2.5 py-1 bg-[#b5dfa3]/20 border border-[#b5dfa3]/40 rounded-lg text-[11px] font-bold text-[#b5dfa3] shadow-lg flex items-center gap-1.5 animate-in fade-in slide-in-from-top-1">
                     <Check size={12} />
                     <span>{curlParsedToast}</span>
                   </div>
@@ -1520,7 +1520,7 @@ export default function ApiStudioView() {
                 {isLoading ? (
                   <button
                     onClick={handleCancelRequest}
-                    className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-[#f38ba8] hover:bg-[#f38ba8]/80 text-[#11111b] font-bold text-xs transition-all shadow-md shrink-0"
+                    className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-[#f19aa6] hover:bg-[#f19aa6]/80 text-[#0d120f] font-bold text-xs transition-all shadow-md shrink-0"
                   >
                     <RotateCcw size={14} className="animate-spin" />
                     <span>Cancel</span>
@@ -1528,7 +1528,7 @@ export default function ApiStudioView() {
                 ) : (
                   <button
                     onClick={handleSend}
-                    className="flex items-center gap-1.5 px-6 py-2 rounded-xl bg-[#89b4fa] hover:bg-[#b4befe] text-[#11111b] font-bold text-xs transition-all shadow-md shrink-0"
+                    className="flex items-center gap-1.5 px-6 py-2 rounded-xl bg-[#c8edb6] hover:bg-[#d9f6ca] text-[#0d120f] font-bold text-xs transition-all shadow-md shrink-0"
                   >
                     <Send size={14} />
                     <span>Send</span>
@@ -1538,7 +1538,7 @@ export default function ApiStudioView() {
             </div>
 
             {/* Request Sub-Tabs */}
-            <div className="border-b border-[#313244] bg-[#181825] px-4 pt-2 shrink-0">
+            <div className="border-b border-[#344435] bg-[#111612] px-4 pt-2 shrink-0">
               <div className="flex gap-4 text-xs font-medium">
                 {[
                   { id: 'params', label: `Params (${activeRequest.params.filter(p => p.enabled).length})` },
@@ -1551,12 +1551,12 @@ export default function ApiStudioView() {
                     key={tab.id}
                     onClick={() => setRequestTab(tab.id as typeof requestTab)}
                     className={`pb-2.5 px-1 relative transition-colors ${
-                      requestTab === tab.id ? 'text-[#89b4fa] font-bold' : 'text-[#6c7086] hover:text-[#cdd6f4]'
+                      requestTab === tab.id ? 'text-[#c8edb6] font-bold' : 'text-[#9eac96] hover:text-[#e4ebdd]'
                     }`}
                   >
                     {tab.label}
                     {requestTab === tab.id && (
-                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#89b4fa] rounded-full" />
+                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#c8edb6] rounded-full" />
                     )}
                   </button>
                 ))}
@@ -1564,11 +1564,11 @@ export default function ApiStudioView() {
             </div>
 
             {/* Request Tab Contents */}
-            <div className="p-4 bg-[#181825] border-b border-[#313244] max-h-60 overflow-y-auto shrink-0">
+            <div className="p-4 bg-[#111612] border-b border-[#344435] max-h-60 overflow-y-auto shrink-0">
               {/* PARAMS TAB */}
               {requestTab === 'params' && (
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between text-xs text-[#9399b2] mb-1">
+                  <div className="flex items-center justify-between text-xs text-[#b1bea8] mb-1">
                     <span>Query Parameters</span>
                     <button
                       onClick={() => {
@@ -1580,14 +1580,14 @@ export default function ApiStudioView() {
                         };
                         updateUrlWithParams([...activeRequest.params, newP]);
                       }}
-                      className="flex items-center gap-1 text-[11px] text-[#89b4fa] hover:underline"
+                      className="flex items-center gap-1 text-[11px] text-[#c8edb6] hover:underline"
                     >
                       <Plus size={12} /> Add Parameter
                     </button>
                   </div>
 
                   {activeRequest.params.length === 0 ? (
-                    <p className="text-xs text-[#6c7086] italic py-2">
+                    <p className="text-xs text-[#9eac96] italic py-2">
                       No query parameters. Click &quot;Add Parameter&quot; to append key-value pairs to the URL.
                     </p>
                   ) : (
@@ -1602,7 +1602,7 @@ export default function ApiStudioView() {
                               updated[pIdx].enabled = e.target.checked;
                               updateUrlWithParams(updated);
                             }}
-                            className="rounded border-[#313244] text-[#89b4fa] focus:ring-0"
+                            className="rounded border-[#344435] text-[#c8edb6] focus:ring-0"
                           />
                           <input
                             type="text"
@@ -1613,7 +1613,7 @@ export default function ApiStudioView() {
                               updated[pIdx].key = e.target.value;
                               updateUrlWithParams(updated);
                             }}
-                            className="flex-1 px-2.5 py-1.5 bg-[#11111b] border border-[#313244] rounded-lg text-xs font-mono text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]"
+                            className="flex-1 px-2.5 py-1.5 bg-[#0d120f] border border-[#344435] rounded-lg text-xs font-mono text-[#e4ebdd] focus:outline-none focus:border-[#c8edb6]"
                           />
                           <input
                             type="text"
@@ -1624,14 +1624,14 @@ export default function ApiStudioView() {
                               updated[pIdx].value = e.target.value;
                               updateUrlWithParams(updated);
                             }}
-                            className="flex-1 px-2.5 py-1.5 bg-[#11111b] border border-[#313244] rounded-lg text-xs font-mono text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]"
+                            className="flex-1 px-2.5 py-1.5 bg-[#0d120f] border border-[#344435] rounded-lg text-xs font-mono text-[#e4ebdd] focus:outline-none focus:border-[#c8edb6]"
                           />
                           <button
                             onClick={() => {
                               const updated = activeRequest.params.filter((_, idx) => idx !== pIdx);
                               updateUrlWithParams(updated);
                             }}
-                            className="p-1 text-[#6c7086] hover:text-[#f38ba8]"
+                            className="p-1 text-[#9eac96] hover:text-[#f19aa6]"
                           >
                             <Trash2 size={13} />
                           </button>
@@ -1645,7 +1645,7 @@ export default function ApiStudioView() {
               {/* HEADERS TAB */}
               {requestTab === 'headers' && (
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between text-xs text-[#9399b2] mb-1">
+                  <div className="flex items-center justify-between text-xs text-[#b1bea8] mb-1">
                     <span>HTTP Request Headers</span>
                     <button
                       onClick={() => {
@@ -1657,7 +1657,7 @@ export default function ApiStudioView() {
                         };
                         setActiveRequest(prev => ({ ...prev, headers: [...prev.headers, newH] }));
                       }}
-                      className="flex items-center gap-1 text-[11px] text-[#89b4fa] hover:underline"
+                      className="flex items-center gap-1 text-[11px] text-[#c8edb6] hover:underline"
                     >
                       <Plus size={12} /> Add Header
                     </button>
@@ -1674,7 +1674,7 @@ export default function ApiStudioView() {
                             updated[hIdx].enabled = e.target.checked;
                             setActiveRequest(prev => ({ ...prev, headers: updated }));
                           }}
-                          className="rounded border-[#313244] text-[#89b4fa] focus:ring-0"
+                          className="rounded border-[#344435] text-[#c8edb6] focus:ring-0"
                         />
                         <input
                           type="text"
@@ -1685,7 +1685,7 @@ export default function ApiStudioView() {
                             updated[hIdx].key = e.target.value;
                             setActiveRequest(prev => ({ ...prev, headers: updated }));
                           }}
-                          className="flex-1 px-2.5 py-1.5 bg-[#11111b] border border-[#313244] rounded-lg text-xs font-mono text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]"
+                          className="flex-1 px-2.5 py-1.5 bg-[#0d120f] border border-[#344435] rounded-lg text-xs font-mono text-[#e4ebdd] focus:outline-none focus:border-[#c8edb6]"
                         />
                         <input
                           type="text"
@@ -1696,14 +1696,14 @@ export default function ApiStudioView() {
                             updated[hIdx].value = e.target.value;
                             setActiveRequest(prev => ({ ...prev, headers: updated }));
                           }}
-                          className="flex-1 px-2.5 py-1.5 bg-[#11111b] border border-[#313244] rounded-lg text-xs font-mono text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]"
+                          className="flex-1 px-2.5 py-1.5 bg-[#0d120f] border border-[#344435] rounded-lg text-xs font-mono text-[#e4ebdd] focus:outline-none focus:border-[#c8edb6]"
                         />
                         <button
                           onClick={() => {
                             const updated = activeRequest.headers.filter((_, idx) => idx !== hIdx);
                             setActiveRequest(prev => ({ ...prev, headers: updated }));
                           }}
-                          className="p-1 text-[#6c7086] hover:text-[#f38ba8]"
+                          className="p-1 text-[#9eac96] hover:text-[#f19aa6]"
                         >
                           <Trash2 size={13} />
                         </button>
@@ -1719,14 +1719,14 @@ export default function ApiStudioView() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3 text-xs">
                       {(['none', 'json', 'raw'] as BodyType[]).map(type => (
-                        <label key={type} className="flex items-center gap-1.5 cursor-pointer text-[#cdd6f4]">
+                        <label key={type} className="flex items-center gap-1.5 cursor-pointer text-[#e4ebdd]">
                           <input
                             type="radio"
                             name="bodyType"
                             value={type}
                             checked={activeRequest.bodyType === type}
                             onChange={() => setActiveRequest(prev => ({ ...prev, bodyType: type }))}
-                            className="text-[#89b4fa]"
+                            className="text-[#c8edb6]"
                           />
                           <span className="capitalize">{type}</span>
                         </label>
@@ -1736,7 +1736,7 @@ export default function ApiStudioView() {
                     {activeRequest.bodyType === 'json' && (
                       <button
                         onClick={handleFormatJson}
-                        className="flex items-center gap-1 text-[11px] text-[#89b4fa] hover:underline"
+                        className="flex items-center gap-1 text-[11px] text-[#c8edb6] hover:underline"
                       >
                         <Sparkles size={12} /> Format JSON
                       </button>
@@ -1748,7 +1748,7 @@ export default function ApiStudioView() {
                       value={activeRequest.bodyContent}
                       onChange={e => setActiveRequest(prev => ({ ...prev, bodyContent: e.target.value }))}
                       placeholder={'{\n  "key": "value"\n}'}
-                      className="w-full h-32 p-3 bg-[#11111b] border border-[#313244] rounded-xl font-mono text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa] resize-none"
+                      className="w-full h-32 p-3 bg-[#0d120f] border border-[#344435] rounded-xl font-mono text-xs text-[#e4ebdd] focus:outline-none focus:border-[#c8edb6] resize-none"
                     />
                   )}
                 </div>
@@ -1758,7 +1758,7 @@ export default function ApiStudioView() {
               {requestTab === 'auth' && (
                 <div className="space-y-3">
                   <div className="flex items-center gap-4 text-xs">
-                    <label className="text-[#9399b2]">Auth Type:</label>
+                    <label className="text-[#b1bea8]">Auth Type:</label>
                     <select
                       value={activeRequest.authType}
                       onChange={e =>
@@ -1767,7 +1767,7 @@ export default function ApiStudioView() {
                           authType: e.target.value as ApiRequestItem['authType'],
                         }))
                       }
-                      className="px-2.5 py-1 bg-[#11111b] border border-[#313244] rounded-lg text-xs text-[#cdd6f4] focus:outline-none"
+                      className="px-2.5 py-1 bg-[#0d120f] border border-[#344435] rounded-lg text-xs text-[#e4ebdd] focus:outline-none"
                     >
                       <option value="none">No Auth</option>
                       <option value="bearer">Bearer Token</option>
@@ -1778,7 +1778,7 @@ export default function ApiStudioView() {
 
                   {activeRequest.authType === 'bearer' && (
                     <div className="space-y-1">
-                      <label className="text-[11px] text-[#9399b2]">Bearer Token:</label>
+                      <label className="text-[11px] text-[#b1bea8]">Bearer Token:</label>
                       <input
                         type="text"
                         placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -1786,7 +1786,7 @@ export default function ApiStudioView() {
                         onChange={e =>
                           setActiveRequest(prev => ({ ...prev, authBearerToken: e.target.value }))
                         }
-                        className="w-full px-3 py-1.5 bg-[#11111b] border border-[#313244] rounded-lg font-mono text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]"
+                        className="w-full px-3 py-1.5 bg-[#0d120f] border border-[#344435] rounded-lg font-mono text-xs text-[#e4ebdd] focus:outline-none focus:border-[#c8edb6]"
                       />
                     </div>
                   )}
@@ -1794,25 +1794,25 @@ export default function ApiStudioView() {
                   {activeRequest.authType === 'basic' && (
                     <div className="grid grid-cols-2 gap-2">
                       <div className="space-y-1">
-                        <label className="text-[11px] text-[#9399b2]">Username:</label>
+                        <label className="text-[11px] text-[#b1bea8]">Username:</label>
                         <input
                           type="text"
                           value={activeRequest.authBasicUser || ''}
                           onChange={e =>
                             setActiveRequest(prev => ({ ...prev, authBasicUser: e.target.value }))
                           }
-                          className="w-full px-3 py-1.5 bg-[#11111b] border border-[#313244] rounded-lg font-mono text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]"
+                          className="w-full px-3 py-1.5 bg-[#0d120f] border border-[#344435] rounded-lg font-mono text-xs text-[#e4ebdd] focus:outline-none focus:border-[#c8edb6]"
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[11px] text-[#9399b2]">Password:</label>
+                        <label className="text-[11px] text-[#b1bea8]">Password:</label>
                         <input
                           type="password"
                           value={activeRequest.authBasicPass || ''}
                           onChange={e =>
                             setActiveRequest(prev => ({ ...prev, authBasicPass: e.target.value }))
                           }
-                          className="w-full px-3 py-1.5 bg-[#11111b] border border-[#313244] rounded-lg font-mono text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]"
+                          className="w-full px-3 py-1.5 bg-[#0d120f] border border-[#344435] rounded-lg font-mono text-xs text-[#e4ebdd] focus:outline-none focus:border-[#c8edb6]"
                         />
                       </div>
                     </div>
@@ -1821,7 +1821,7 @@ export default function ApiStudioView() {
                   {activeRequest.authType === 'apikey' && (
                     <div className="grid grid-cols-3 gap-2">
                       <div className="space-y-1">
-                        <label className="text-[11px] text-[#9399b2]">Key Name:</label>
+                        <label className="text-[11px] text-[#b1bea8]">Key Name:</label>
                         <input
                           type="text"
                           placeholder="X-API-Key"
@@ -1829,11 +1829,11 @@ export default function ApiStudioView() {
                           onChange={e =>
                             setActiveRequest(prev => ({ ...prev, authApiKeyName: e.target.value }))
                           }
-                          className="w-full px-3 py-1.5 bg-[#11111b] border border-[#313244] rounded-lg font-mono text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]"
+                          className="w-full px-3 py-1.5 bg-[#0d120f] border border-[#344435] rounded-lg font-mono text-xs text-[#e4ebdd] focus:outline-none focus:border-[#c8edb6]"
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[11px] text-[#9399b2]">Key Value:</label>
+                        <label className="text-[11px] text-[#b1bea8]">Key Value:</label>
                         <input
                           type="text"
                           placeholder="secret_key_123"
@@ -1841,11 +1841,11 @@ export default function ApiStudioView() {
                           onChange={e =>
                             setActiveRequest(prev => ({ ...prev, authApiKeyValue: e.target.value }))
                           }
-                          className="w-full px-3 py-1.5 bg-[#11111b] border border-[#313244] rounded-lg font-mono text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]"
+                          className="w-full px-3 py-1.5 bg-[#0d120f] border border-[#344435] rounded-lg font-mono text-xs text-[#e4ebdd] focus:outline-none focus:border-[#c8edb6]"
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[11px] text-[#9399b2]">Add To:</label>
+                        <label className="text-[11px] text-[#b1bea8]">Add To:</label>
                         <select
                           value={activeRequest.authApiKeyLocation || 'header'}
                           onChange={e =>
@@ -1854,7 +1854,7 @@ export default function ApiStudioView() {
                               authApiKeyLocation: e.target.value as 'header' | 'query',
                             }))
                           }
-                          className="w-full px-3 py-1.5 bg-[#11111b] border border-[#313244] rounded-lg text-xs text-[#cdd6f4] focus:outline-none"
+                          className="w-full px-3 py-1.5 bg-[#0d120f] border border-[#344435] rounded-lg text-xs text-[#e4ebdd] focus:outline-none"
                         >
                           <option value="header">Header</option>
                           <option value="query">Query Params</option>
@@ -1875,11 +1875,11 @@ export default function ApiStudioView() {
                       onChange={e =>
                         setActiveRequest(prev => ({ ...prev, useCorsProxy: e.target.checked }))
                       }
-                      className="rounded border-[#313244] text-[#89b4fa] focus:ring-0"
+                      className="rounded border-[#344435] text-[#c8edb6] focus:ring-0"
                     />
                     <div>
-                      <span className="font-bold text-[#cdd6f4]">Use Browser CORS Proxy</span>
-                      <p className="text-[11px] text-[#9399b2]">
+                      <span className="font-bold text-[#e4ebdd]">Use Browser CORS Proxy</span>
+                      <p className="text-[11px] text-[#b1bea8]">
                         Bypasses browser &quot;CORS Missing Allow Origin&quot; restrictions when testing third-party APIs
                       </p>
                     </div>
@@ -1889,33 +1889,33 @@ export default function ApiStudioView() {
             </div>
 
             {/* RESPONSE SECTION */}
-            <div className="flex-1 flex flex-col min-h-0 bg-[#11111b]">
+            <div className="flex-1 flex flex-col min-h-0 bg-[#0d120f]">
               {/* Response Top Bar */}
-              <div className="flex items-center justify-between px-4 py-2 border-b border-[#313244] bg-[#181825] gap-3 flex-wrap">
+              <div className="flex items-center justify-between px-4 py-2 border-b border-[#344435] bg-[#111612] gap-3 flex-wrap">
                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-bold text-[#cdd6f4]">Response</span>
+                  <span className="text-xs font-bold text-[#e4ebdd]">Response</span>
 
                   {response && (
                     <div className="flex items-center gap-2 text-xs">
                       <span
                         className={`px-2 py-0.5 rounded font-mono font-bold ${
                           response.status < 300
-                            ? 'bg-[#a6e3a1]/20 text-[#a6e3a1]'
+                            ? 'bg-[#b5dfa3]/20 text-[#b5dfa3]'
                             : response.status < 400
-                            ? 'bg-[#89b4fa]/20 text-[#89b4fa]'
+                            ? 'bg-[#c8edb6]/20 text-[#c8edb6]'
                             : response.status < 500
-                            ? 'bg-[#fab387]/20 text-[#fab387]'
-                            : 'bg-[#f38ba8]/20 text-[#f38ba8]'
+                            ? 'bg-[#f3c18e]/20 text-[#f3c18e]'
+                            : 'bg-[#f19aa6]/20 text-[#f19aa6]'
                         }`}
                       >
                         {response.status} {response.statusText}
                       </span>
 
-                      <span className="text-[11px] text-[#9399b2] flex items-center gap-1 font-mono">
+                      <span className="text-[11px] text-[#b1bea8] flex items-center gap-1 font-mono">
                         <Clock size={11} /> {response.timeMs} ms
                       </span>
 
-                      <span className="text-[11px] text-[#9399b2] font-mono">
+                      <span className="text-[11px] text-[#b1bea8] font-mono">
                         {(response.sizeBytes / 1024).toFixed(2)} KB
                       </span>
                     </div>
@@ -1924,7 +1924,7 @@ export default function ApiStudioView() {
 
                 {response && (
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-[#a6e3a1] font-medium bg-[#a6e3a1]/10 px-2 py-0.5 rounded border border-[#a6e3a1]/20">
+                    <span className="text-xs text-[#b5dfa3] font-medium bg-[#b5dfa3]/10 px-2 py-0.5 rounded border border-[#b5dfa3]/20">
                       Response Received
                     </span>
                   </div>
@@ -1933,11 +1933,11 @@ export default function ApiStudioView() {
 
               {/* Error Banner */}
               {errorMessage && (
-                <div className="p-3 bg-[#f38ba8]/10 border-b border-[#f38ba8]/30 text-xs text-[#f38ba8] flex items-center justify-between">
+                <div className="p-3 bg-[#f19aa6]/10 border-b border-[#f19aa6]/30 text-xs text-[#f19aa6] flex items-center justify-between">
                   <span>{errorMessage}</span>
                   <button
                     onClick={() => setActiveRequest(prev => ({ ...prev, useCorsProxy: true }))}
-                    className="px-2 py-0.5 rounded bg-[#f38ba8]/20 font-bold hover:underline"
+                    className="px-2 py-0.5 rounded bg-[#f19aa6]/20 font-bold hover:underline"
                   >
                     Enable CORS Proxy
                   </button>
@@ -1948,12 +1948,12 @@ export default function ApiStudioView() {
               <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
                 {!response && !isLoading && !errorMessage && (
                   <div className="h-full flex flex-col items-center justify-center text-center p-8 space-y-3">
-                    <div className="w-12 h-12 rounded-2xl bg-[#1e1e2e] border border-[#313244] flex items-center justify-center text-[#89b4fa]">
+                    <div className="w-12 h-12 rounded-2xl bg-[#171d19] border border-[#344435] flex items-center justify-center text-[#c8edb6]">
                       <Send size={22} />
                     </div>
                     <div>
-                      <h3 className="text-sm font-bold text-[#cdd6f4]">Enter URL and click Send</h3>
-                      <p className="text-xs text-[#6c7086] max-w-sm mt-1">
+                      <h3 className="text-sm font-bold text-[#e4ebdd]">Enter URL and click Send</h3>
+                      <p className="text-xs text-[#9eac96] max-w-sm mt-1">
                         Choose any HTTP method, add headers, params, authentication or body, and execute queries directly in your browser.
                       </p>
                     </div>
@@ -1962,8 +1962,8 @@ export default function ApiStudioView() {
 
                 {isLoading && (
                   <div className="h-full flex flex-col items-center justify-center text-center p-8 space-y-3">
-                    <RotateCcw size={28} className="animate-spin text-[#89b4fa]" />
-                    <p className="text-xs text-[#9399b2]">Waiting for response from {activeRequest.url}...</p>
+                    <RotateCcw size={28} className="animate-spin text-[#c8edb6]" />
+                    <p className="text-xs text-[#b1bea8]">Waiting for response from {activeRequest.url}...</p>
                   </div>
                 )}
 
@@ -1982,23 +1982,23 @@ export default function ApiStudioView() {
       {studioMode === 'swagger' && (
         <div className="flex-1 flex flex-col min-h-0 overflow-y-auto">
           {/* Top Swagger Action Bar: URL Input + Upload + Format Converter */}
-          <div className="p-4 bg-[#1e1e2e] border-b border-[#313244] space-y-3 shrink-0">
+          <div className="p-4 bg-[#171d19] border-b border-[#344435] space-y-3 shrink-0">
             <div className="flex items-center justify-between gap-3 flex-wrap">
               <div>
-                <h3 className="text-sm font-bold text-[#cdd6f4]">Swagger &amp; OpenAPI Spec Explorer</h3>
-                <p className="text-[11px] text-[#9399b2]">
+                <h3 className="text-sm font-bold text-[#e4ebdd]">Swagger &amp; OpenAPI Spec Explorer</h3>
+                <p className="text-[11px] text-[#b1bea8]">
                   Paste a Swagger URL, upload a JSON/YAML file, explore all routes, and test them directly in the API client
                 </p>
               </div>
 
               {/* Conversion Buttons (Swagger to JSON / YAML) */}
               <div className="flex items-center gap-2">
-                <div className="flex items-center rounded-lg bg-[#11111b] border border-[#313244] p-0.5">
+                <div className="flex items-center rounded-lg bg-[#0d120f] border border-[#344435] p-0.5">
                   <button
                     onClick={() => handleConvertSwagger('json')}
                     disabled={swaggerFormat === 'json'}
                     className={`px-2.5 py-1 text-xs rounded font-medium ${
-                      swaggerFormat === 'json' ? 'bg-[#89b4fa]/20 text-[#89b4fa] font-bold' : 'text-[#9399b2] hover:text-[#cdd6f4]'
+                      swaggerFormat === 'json' ? 'bg-[#c8edb6]/20 text-[#c8edb6] font-bold' : 'text-[#b1bea8] hover:text-[#e4ebdd]'
                     }`}
                   >
                     Format as JSON
@@ -2007,7 +2007,7 @@ export default function ApiStudioView() {
                     onClick={() => handleConvertSwagger('yaml')}
                     disabled={swaggerFormat === 'yaml'}
                     className={`px-2.5 py-1 text-xs rounded font-medium ${
-                      swaggerFormat === 'yaml' ? 'bg-[#cba6f7]/20 text-[#cba6f7] font-bold' : 'text-[#9399b2] hover:text-[#cdd6f4]'
+                      swaggerFormat === 'yaml' ? 'bg-[#ceb8f6]/20 text-[#ceb8f6] font-bold' : 'text-[#b1bea8] hover:text-[#e4ebdd]'
                     }`}
                   >
                     Format as YAML
@@ -2016,16 +2016,16 @@ export default function ApiStudioView() {
 
                 <button
                   onClick={() => handleCopy(swaggerRawText, 'swagger-raw')}
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#313244] hover:bg-[#45475a] text-xs font-medium text-[#cdd6f4]"
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#344435] hover:bg-[#71836b] text-xs font-medium text-[#e4ebdd]"
                   title="Copy full specification"
                 >
-                  {copiedKey === 'swagger-raw' ? <Check size={12} className="text-[#a6e3a1]" /> : <Copy size={12} />}
+                  {copiedKey === 'swagger-raw' ? <Check size={12} className="text-[#b5dfa3]" /> : <Copy size={12} />}
                   <span>Copy</span>
                 </button>
 
                 <button
                   onClick={handleDownloadSwagger}
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#313244] hover:bg-[#45475a] text-xs font-medium text-[#cdd6f4]"
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#344435] hover:bg-[#71836b] text-xs font-medium text-[#e4ebdd]"
                   title="Download specification file"
                 >
                   <Download size={12} />
@@ -2035,7 +2035,7 @@ export default function ApiStudioView() {
                 {swaggerRoutesInfo.routes.length > 0 && (
                   <button
                     onClick={handleImportAllRoutesToCollection}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#89b4fa] text-[#11111b] text-xs font-bold hover:bg-[#b4befe] shadow-sm"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#c8edb6] text-[#0d120f] text-xs font-bold hover:bg-[#d9f6ca] shadow-sm"
                   >
                     <FolderPlus size={13} />
                     <span>Import All to Collection</span>
@@ -2054,13 +2054,13 @@ export default function ApiStudioView() {
                 onKeyDown={e => {
                   if (e.key === 'Enter') handleFetchSwaggerUrl();
                 }}
-                className="flex-1 px-3 py-2 bg-[#11111b] border border-[#313244] rounded-xl font-mono text-xs text-[#cdd6f4] placeholder-[#585b70] focus:outline-none focus:border-[#cba6f7]"
+                className="flex-1 px-3 py-2 bg-[#0d120f] border border-[#344435] rounded-xl font-mono text-xs text-[#e4ebdd] placeholder-[#899980] focus:outline-none focus:border-[#ceb8f6]"
               />
 
               <button
                 onClick={() => handleFetchSwaggerUrl()}
                 disabled={swaggerLoading}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#cba6f7] hover:bg-[#cba6f7]/80 text-[#11111b] font-bold text-xs transition-all shadow-md shrink-0 disabled:opacity-50"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#ceb8f6] hover:bg-[#ceb8f6]/80 text-[#0d120f] font-bold text-xs transition-all shadow-md shrink-0 disabled:opacity-50"
               >
                 {swaggerLoading ? <RotateCcw size={13} className="animate-spin" /> : <ExternalLink size={13} />}
                 <span>Fetch Spec</span>
@@ -2068,9 +2068,9 @@ export default function ApiStudioView() {
 
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#313244] hover:bg-[#45475a] text-[#cdd6f4] font-medium text-xs border border-[#45475a] shrink-0"
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#344435] hover:bg-[#71836b] text-[#e4ebdd] font-medium text-xs border border-[#71836b] shrink-0"
               >
-                <Upload size={13} className="text-[#89b4fa]" />
+                <Upload size={13} className="text-[#c8edb6]" />
                 <span>Upload File</span>
               </button>
               <input
@@ -2083,7 +2083,7 @@ export default function ApiStudioView() {
             </div>
 
             {/* Sample URLs quick select */}
-            <div className="flex items-center gap-2 text-xs text-[#9399b2] flex-wrap">
+            <div className="flex items-center gap-2 text-xs text-[#b1bea8] flex-wrap">
               <span>Samples:</span>
               {SAMPLE_SWAGGER_URLS.map(s => (
                 <button
@@ -2092,7 +2092,7 @@ export default function ApiStudioView() {
                     setSwaggerUrlInput(s.url);
                     handleFetchSwaggerUrl(s.url);
                   }}
-                  className="px-2 py-0.5 rounded bg-[#181825] hover:bg-[#313244] text-[11px] text-[#89b4fa] border border-[#313244]"
+                  className="px-2 py-0.5 rounded bg-[#111612] hover:bg-[#344435] text-[11px] text-[#c8edb6] border border-[#344435]"
                 >
                   {s.name}
                 </button>
@@ -2100,40 +2100,40 @@ export default function ApiStudioView() {
             </div>
 
             {swaggerError && (
-              <div className="p-3 bg-[#f38ba8]/10 border border-[#f38ba8]/30 rounded-xl text-xs text-[#f38ba8]">
+              <div className="p-3 bg-[#f19aa6]/10 border border-[#f19aa6]/30 rounded-xl text-xs text-[#f19aa6]">
                 {swaggerError}
               </div>
             )}
           </div>
 
           {/* Swagger Meta Info & Route Filters */}
-          <div className="p-4 bg-[#181825] border-b border-[#313244] flex items-center justify-between gap-4 flex-wrap">
+          <div className="p-4 bg-[#111612] border-b border-[#344435] flex items-center justify-between gap-4 flex-wrap">
             <div>
               <div className="flex items-center gap-2">
-                <h4 className="text-sm font-bold text-[#cdd6f4]">{swaggerRoutesInfo.title}</h4>
-                <span className="px-2 py-0.5 rounded text-[10px] bg-[#313244] font-mono text-[#89b4fa]">
+                <h4 className="text-sm font-bold text-[#e4ebdd]">{swaggerRoutesInfo.title}</h4>
+                <span className="px-2 py-0.5 rounded text-[10px] bg-[#344435] font-mono text-[#c8edb6]">
                   v{swaggerRoutesInfo.version}
                 </span>
-                <span className="px-2 py-0.5 rounded text-[10px] bg-[#a6e3a1]/15 text-[#a6e3a1] font-mono">
+                <span className="px-2 py-0.5 rounded text-[10px] bg-[#b5dfa3]/15 text-[#b5dfa3] font-mono">
                   {swaggerRoutesInfo.routes.length} total endpoints
                 </span>
               </div>
               {swaggerRoutesInfo.description && (
-                <p className="text-xs text-[#9399b2] mt-0.5 max-w-2xl">{swaggerRoutesInfo.description}</p>
+                <p className="text-xs text-[#b1bea8] mt-0.5 max-w-2xl">{swaggerRoutesInfo.description}</p>
               )}
             </div>
 
             {/* Method filter & search */}
             <div className="flex items-center gap-2 flex-wrap">
-              <div className="flex items-center rounded-lg bg-[#11111b] border border-[#313244] p-0.5 text-xs font-mono font-bold">
+              <div className="flex items-center rounded-lg bg-[#0d120f] border border-[#344435] p-0.5 text-xs font-mono font-bold">
                 {(['ALL', 'GET', 'POST', 'PUT', 'DELETE', 'PATCH'] as const).map(m => (
                   <button
                     key={m}
                     onClick={() => setSwaggerMethodFilter(m)}
                     className={`px-2 py-1 rounded ${
                       swaggerMethodFilter === m
-                        ? 'bg-[#cba6f7] text-[#11111b]'
-                        : 'text-[#9399b2] hover:text-[#cdd6f4]'
+                        ? 'bg-[#ceb8f6] text-[#0d120f]'
+                        : 'text-[#b1bea8] hover:text-[#e4ebdd]'
                     }`}
                   >
                     {m}
@@ -2141,14 +2141,14 @@ export default function ApiStudioView() {
                 ))}
               </div>
 
-              <div className="flex items-center px-2.5 py-1.5 bg-[#11111b] border border-[#313244] rounded-lg">
-                <Search size={13} className="text-[#6c7086] mr-1.5" />
+              <div className="flex items-center px-2.5 py-1.5 bg-[#0d120f] border border-[#344435] rounded-lg">
+                <Search size={13} className="text-[#9eac96] mr-1.5" />
                 <input
                   type="text"
                   placeholder="Filter routes (/pet, order)..."
                   value={swaggerRouteFilter}
                   onChange={e => setSwaggerRouteFilter(e.target.value)}
-                  className="bg-transparent text-xs text-[#cdd6f4] placeholder-[#585b70] focus:outline-none w-44"
+                  className="bg-transparent text-xs text-[#e4ebdd] placeholder-[#899980] focus:outline-none w-44"
                 />
               </div>
             </div>
@@ -2157,16 +2157,16 @@ export default function ApiStudioView() {
           {/* Swagger Routes List grouped by tags */}
           <div className="flex-1 p-4 space-y-6 overflow-y-auto">
             {Object.keys(routesByTag).length === 0 ? (
-              <div className="p-12 text-center text-xs text-[#6c7086]">
+              <div className="p-12 text-center text-xs text-[#9eac96]">
                 No routes matching your criteria. Try changing method or filter.
               </div>
             ) : (
               Object.entries(routesByTag).map(([tag, routes]) => (
                 <div key={tag} className="space-y-2">
-                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#9399b2]">
-                    <span className="text-[#cba6f7]">{tag}</span>
-                    <span className="text-[10px] text-[#6c7086]">({routes.length} routes)</span>
-                    <div className="flex-1 h-px bg-[#313244]" />
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#b1bea8]">
+                    <span className="text-[#ceb8f6]">{tag}</span>
+                    <span className="text-[10px] text-[#9eac96]">({routes.length} routes)</span>
+                    <div className="flex-1 h-px bg-[#344435]" />
                   </div>
 
                   <div className="space-y-2">
@@ -2178,7 +2178,7 @@ export default function ApiStudioView() {
                       return (
                         <div
                           key={routeKey}
-                          className="bg-[#1e1e2e] border border-[#313244] rounded-xl overflow-hidden transition-all hover:border-[#45475a]"
+                          className="bg-[#171d19] border border-[#344435] rounded-xl overflow-hidden transition-all hover:border-[#71836b]"
                         >
                           {/* Route Row Header */}
                           <div
@@ -2191,11 +2191,11 @@ export default function ApiStudioView() {
                               >
                                 {route.method}
                               </span>
-                              <span className="font-mono text-xs text-[#cdd6f4] font-semibold truncate">
+                              <span className="font-mono text-xs text-[#e4ebdd] font-semibold truncate">
                                 {route.path}
                               </span>
                               {route.summary && (
-                                <span className="text-xs text-[#9399b2] truncate hidden md:inline">
+                                <span className="text-xs text-[#b1bea8] truncate hidden md:inline">
                                   — {route.summary}
                                 </span>
                               )}
@@ -2207,7 +2207,7 @@ export default function ApiStudioView() {
                                   e.stopPropagation();
                                   handleLoadRouteInClient(route);
                                 }}
-                                className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#89b4fa]/15 hover:bg-[#89b4fa]/25 text-[#89b4fa] border border-[#89b4fa]/30 text-xs font-bold transition-all"
+                                className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#c8edb6]/15 hover:bg-[#c8edb6]/25 text-[#c8edb6] border border-[#c8edb6]/30 text-xs font-bold transition-all"
                                 title="Open and test in API Client"
                               >
                                 <span>Try in Client</span>
@@ -2222,17 +2222,17 @@ export default function ApiStudioView() {
                                     `swg-url-${routeKey}`
                                   );
                                 }}
-                                className="p-1 rounded text-[#6c7086] hover:text-[#cdd6f4]"
+                                className="p-1 rounded text-[#9eac96] hover:text-[#e4ebdd]"
                                 title="Copy endpoint URL"
                               >
                                 {copiedKey === `swg-url-${routeKey}` ? (
-                                  <Check size={13} className="text-[#a6e3a1]" />
+                                  <Check size={13} className="text-[#b5dfa3]" />
                                 ) : (
                                   <Copy size={13} />
                                 )}
                               </button>
 
-                              <span className="text-[#6c7086]">
+                              <span className="text-[#9eac96]">
                                 {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                               </span>
                             </div>
@@ -2240,20 +2240,20 @@ export default function ApiStudioView() {
 
                           {/* Expanded Details: Parameters, Request Body, Responses */}
                           {isExpanded && (
-                            <div className="p-4 bg-[#181825] border-t border-[#313244] space-y-4 text-xs font-mono">
+                            <div className="p-4 bg-[#111612] border-t border-[#344435] space-y-4 text-xs font-mono">
                               {route.description && (
-                                <p className="text-[#9399b2] font-sans">{route.description}</p>
+                                <p className="text-[#b1bea8] font-sans">{route.description}</p>
                               )}
 
                               {/* Parameters Table */}
                               {route.parameters && route.parameters.length > 0 && (
                                 <div className="space-y-1.5">
-                                  <div className="text-[11px] font-bold text-[#89b4fa] uppercase tracking-wider font-sans">
+                                  <div className="text-[11px] font-bold text-[#c8edb6] uppercase tracking-wider font-sans">
                                     Parameters ({route.parameters.length})
                                   </div>
-                                  <div className="border border-[#313244] rounded-lg overflow-x-auto">
+                                  <div className="border border-[#344435] rounded-lg overflow-x-auto">
                                     <table className="w-full text-left text-xs">
-                                      <thead className="bg-[#11111b] border-b border-[#313244] text-[#9399b2]">
+                                      <thead className="bg-[#0d120f] border-b border-[#344435] text-[#b1bea8]">
                                         <tr>
                                           <th className="px-3 py-1.5 font-sans">Name</th>
                                           <th className="px-3 py-1.5 font-sans">In</th>
@@ -2262,24 +2262,24 @@ export default function ApiStudioView() {
                                           <th className="px-3 py-1.5 font-sans">Description</th>
                                         </tr>
                                       </thead>
-                                      <tbody className="divide-y divide-[#313244]">
+                                      <tbody className="divide-y divide-[#344435]">
                                         {route.parameters.map((p, pIdx) => (
-                                          <tr key={pIdx} className="hover:bg-[#1e1e2e]">
-                                            <td className="px-3 py-1.5 font-bold text-[#cdd6f4]">
+                                          <tr key={pIdx} className="hover:bg-[#171d19]">
+                                            <td className="px-3 py-1.5 font-bold text-[#e4ebdd]">
                                               {p.name}
                                             </td>
-                                            <td className="px-3 py-1.5 text-[#cba6f7]">{p.in}</td>
-                                            <td className="px-3 py-1.5 text-[#fab387]">
+                                            <td className="px-3 py-1.5 text-[#ceb8f6]">{p.in}</td>
+                                            <td className="px-3 py-1.5 text-[#f3c18e]">
                                               {p.type || (p.schema?.type as string) || 'string'}
                                             </td>
                                             <td className="px-3 py-1.5">
                                               {p.required ? (
-                                                <span className="text-[#f38ba8] font-bold">Yes</span>
+                                                <span className="text-[#f19aa6] font-bold">Yes</span>
                                               ) : (
-                                                <span className="text-[#6c7086]">No</span>
+                                                <span className="text-[#9eac96]">No</span>
                                               )}
                                             </td>
-                                            <td className="px-3 py-1.5 text-[#9399b2] font-sans">
+                                            <td className="px-3 py-1.5 text-[#b1bea8] font-sans">
                                               {p.description || '—'}
                                             </td>
                                           </tr>
@@ -2293,27 +2293,27 @@ export default function ApiStudioView() {
                               {/* Responses Table */}
                               {route.responses && (
                                 <div className="space-y-1.5">
-                                  <div className="text-[11px] font-bold text-[#a6e3a1] uppercase tracking-wider font-sans">
+                                  <div className="text-[11px] font-bold text-[#b5dfa3] uppercase tracking-wider font-sans">
                                     Responses
                                   </div>
                                   <div className="flex gap-2 flex-wrap">
                                     {Object.entries(route.responses).map(([statusCode, resp]) => (
                                       <div
                                         key={statusCode}
-                                        className="px-2.5 py-1 rounded bg-[#11111b] border border-[#313244] flex items-center gap-2"
+                                        className="px-2.5 py-1 rounded bg-[#0d120f] border border-[#344435] flex items-center gap-2"
                                       >
                                         <span
                                           className={`font-bold ${
                                             statusCode.startsWith('2')
-                                              ? 'text-[#a6e3a1]'
+                                              ? 'text-[#b5dfa3]'
                                               : statusCode.startsWith('4')
-                                              ? 'text-[#fab387]'
-                                              : 'text-[#f38ba8]'
+                                              ? 'text-[#f3c18e]'
+                                              : 'text-[#f19aa6]'
                                           }`}
                                         >
                                           {statusCode}
                                         </span>
-                                        <span className="text-[#9399b2] font-sans">
+                                        <span className="text-[#b1bea8] font-sans">
                                           {resp.description || 'Response'}
                                         </span>
                                       </div>
@@ -2337,10 +2337,10 @@ export default function ApiStudioView() {
       {/* Import cURL Modal */}
       {showCurlModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-lg bg-[#1e1e2e] border border-[#313244] rounded-2xl shadow-2xl overflow-hidden p-5 space-y-4">
+          <div className="w-full max-w-lg bg-[#171d19] border border-[#344435] rounded-2xl shadow-2xl overflow-hidden p-5 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold text-[#cdd6f4]">Import cURL Command</h3>
-              <button onClick={() => setShowCurlModal(false)} className="text-[#6c7086] hover:text-[#cdd6f4]">
+              <h3 className="text-sm font-bold text-[#e4ebdd]">Import cURL Command</h3>
+              <button onClick={() => setShowCurlModal(false)} className="text-[#9eac96] hover:text-[#e4ebdd]">
                 ✕
               </button>
             </div>
@@ -2349,19 +2349,19 @@ export default function ApiStudioView() {
               value={curlInput}
               onChange={e => setCurlInput(e.target.value)}
               placeholder="curl -X POST https://api.example.com/v1/users -H 'Content-Type: application/json' -d '{...}'"
-              className="w-full h-36 p-3 bg-[#11111b] border border-[#313244] rounded-xl font-mono text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa] resize-none"
+              className="w-full h-36 p-3 bg-[#0d120f] border border-[#344435] rounded-xl font-mono text-xs text-[#e4ebdd] focus:outline-none focus:border-[#c8edb6] resize-none"
             />
 
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => setShowCurlModal(false)}
-                className="px-3 py-1.5 rounded-lg text-xs text-[#9399b2] hover:bg-[#313244]"
+                className="px-3 py-1.5 rounded-lg text-xs text-[#b1bea8] hover:bg-[#344435]"
               >
                 Cancel
               </button>
               <button
                 onClick={handleParseCurl}
-                className="px-4 py-1.5 rounded-lg bg-[#89b4fa] text-[#11111b] font-bold text-xs hover:bg-[#b4befe]"
+                className="px-4 py-1.5 rounded-lg bg-[#c8edb6] text-[#0d120f] font-bold text-xs hover:bg-[#d9f6ca]"
               >
                 Import &amp; Load Request
               </button>

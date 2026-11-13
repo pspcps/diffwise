@@ -274,22 +274,22 @@ function getMimeCategory(mimeType: string, url: string): string {
 }
 
 function getStatusColor(status: number) {
-  if (status >= 200 && status < 300) return 'text-[#a6e3a1] bg-[#a6e3a1]/10 border-[#a6e3a1]/30';
-  if (status >= 300 && status < 400) return 'text-[#89b4fa] bg-[#89b4fa]/10 border-[#89b4fa]/30';
-  if (status >= 400 && status < 500) return 'text-[#f9e2af] bg-[#f9e2af]/10 border-[#f9e2af]/30';
-  if (status >= 500) return 'text-[#f38ba8] bg-[#f38ba8]/10 border-[#f38ba8]/30';
-  return 'text-[#9399b2] bg-[#313244] border-[#45475a]';
+  if (status >= 200 && status < 300) return 'text-[#b5dfa3] bg-[#b5dfa3]/10 border-[#b5dfa3]/30';
+  if (status >= 300 && status < 400) return 'text-[#c8edb6] bg-[#c8edb6]/10 border-[#c8edb6]/30';
+  if (status >= 400 && status < 500) return 'text-[#f3d58c] bg-[#f3d58c]/10 border-[#f3d58c]/30';
+  if (status >= 500) return 'text-[#f19aa6] bg-[#f19aa6]/10 border-[#f19aa6]/30';
+  return 'text-[#b1bea8] bg-[#344435] border-[#71836b]';
 }
 
 function getMethodColor(method: string) {
   switch (method.toUpperCase()) {
-    case 'GET': return 'text-[#a6e3a1] bg-[#a6e3a1]/10 border-[#a6e3a1]/30';
-    case 'POST': return 'text-[#89b4fa] bg-[#89b4fa]/10 border-[#89b4fa]/30';
-    case 'PUT': return 'text-[#f9e2af] bg-[#f9e2af]/10 border-[#f9e2af]/30';
-    case 'DELETE': return 'text-[#f38ba8] bg-[#f38ba8]/10 border-[#f38ba8]/30';
-    case 'PATCH': return 'text-[#cba6f7] bg-[#cba6f7]/10 border-[#cba6f7]/30';
+    case 'GET': return 'text-[#b5dfa3] bg-[#b5dfa3]/10 border-[#b5dfa3]/30';
+    case 'POST': return 'text-[#c8edb6] bg-[#c8edb6]/10 border-[#c8edb6]/30';
+    case 'PUT': return 'text-[#f3d58c] bg-[#f3d58c]/10 border-[#f3d58c]/30';
+    case 'DELETE': return 'text-[#f19aa6] bg-[#f19aa6]/10 border-[#f19aa6]/30';
+    case 'PATCH': return 'text-[#ceb8f6] bg-[#ceb8f6]/10 border-[#ceb8f6]/30';
     case 'OPTIONS': return 'text-[#94e2d5] bg-[#94e2d5]/10 border-[#94e2d5]/30';
-    default: return 'text-[#cdd6f4] bg-[#313244] border-[#45475a]';
+    default: return 'text-[#e4ebdd] bg-[#344435] border-[#71836b]';
   }
 }
 
@@ -429,21 +429,21 @@ export default function HarViewerView() {
   }, [entries, searchQuery, filterType, statusFilter]);
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-[#181825] text-[#cdd6f4] overflow-hidden">
+    <div className="flex-1 flex flex-col h-full bg-[#111612] text-[#e4ebdd] overflow-hidden">
       {/* Top Banner / Upload Bar */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-[#1e1e2e] border-b border-[#313244] gap-3 shrink-0 flex-wrap">
+      <div className="flex items-center justify-between px-4 py-2.5 bg-[#171d19] border-b border-[#344435] gap-3 shrink-0 flex-wrap">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-[#89b4fa]/10 text-[#89b4fa] border border-[#89b4fa]/20">
+          <div className="p-1.5 rounded-lg bg-[#c8edb6]/10 text-[#c8edb6] border border-[#c8edb6]/20">
             <Globe size={16} />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-[#cdd6f4]">HAR File Viewer &amp; Network Inspector</h2>
-              <span className="px-2 py-0.5 text-[10px] rounded-full bg-[#a6e3a1]/15 text-[#a6e3a1] font-semibold border border-[#a6e3a1]/30">
+              <h2 className="text-sm font-bold text-[#e4ebdd]">HAR File Viewer &amp; Network Inspector</h2>
+              <span className="px-2 py-0.5 text-[10px] rounded-full bg-[#b5dfa3]/15 text-[#b5dfa3] font-semibold border border-[#b5dfa3]/30">
                 100% Client-Side Private
               </span>
             </div>
-            <p className="text-[11px] text-[#9399b2]">
+            <p className="text-[11px] text-[#b1bea8]">
               Inspect HTTP traffic, debug API payloads, analyze TTFB waterfalls, and sanitize authorization tokens
             </p>
           </div>
@@ -461,7 +461,7 @@ export default function HarViewerView() {
           />
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#89b4fa] hover:bg-[#b4befe] text-[#11111b] text-xs font-semibold shadow-sm transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#c8edb6] hover:bg-[#d9f6ca] text-[#0d120f] text-xs font-semibold shadow-sm transition-all"
           >
             <Upload size={13} />
             Upload .HAR File
@@ -472,7 +472,7 @@ export default function HarViewerView() {
               setHarData(SAMPLE_HAR);
               setSelectedEntry(SAMPLE_HAR.log.entries[0]);
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#313244] hover:bg-[#45475a] text-[#cdd6f4] text-xs font-medium border border-[#45475a] transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#344435] hover:bg-[#71836b] text-[#e4ebdd] text-xs font-medium border border-[#71836b] transition-all"
           >
             <RefreshCw size={13} />
             Load Sample HAR
@@ -482,7 +482,7 @@ export default function HarViewerView() {
             <button
               onClick={exportSanitizedHar}
               title="Exports this HAR with tokens and cookies redacted for safe bug reports"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#a6e3a1]/10 hover:bg-[#a6e3a1]/20 text-[#a6e3a1] text-xs font-medium border border-[#a6e3a1]/30 transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#b5dfa3]/10 hover:bg-[#b5dfa3]/20 text-[#b5dfa3] text-xs font-medium border border-[#b5dfa3]/30 transition-all"
             >
               <Download size={13} />
               Export Sanitized
@@ -498,48 +498,48 @@ export default function HarViewerView() {
           onDragLeave={onDragLeave}
           onDrop={onDrop}
           className={`flex-1 flex flex-col items-center justify-center p-8 m-4 rounded-2xl border-2 border-dashed transition-all ${
-            isDragging ? 'border-[#89b4fa] bg-[#89b4fa]/5' : 'border-[#313244] bg-[#1e1e2e]/60'
+            isDragging ? 'border-[#c8edb6] bg-[#c8edb6]/5' : 'border-[#344435] bg-[#171d19]/60'
           }`}
         >
-          <div className="w-16 h-16 rounded-2xl bg-[#313244] flex items-center justify-center text-[#89b4fa] mb-4 shadow-inner">
+          <div className="w-16 h-16 rounded-2xl bg-[#344435] flex items-center justify-center text-[#c8edb6] mb-4 shadow-inner">
             <Upload size={32} />
           </div>
-          <h3 className="text-lg font-bold text-[#cdd6f4] mb-1">Drop your HTTP Archive (.har) file here</h3>
-          <p className="text-xs text-[#9399b2] text-center max-w-md mb-6">
+          <h3 className="text-lg font-bold text-[#e4ebdd] mb-1">Drop your HTTP Archive (.har) file here</h3>
+          <p className="text-xs text-[#b1bea8] text-center max-w-md mb-6">
             Inspect network calls exported from Chrome, Firefox, Edge, Safari DevTools, or Charles Proxy. All analysis runs locally in your browser.
           </p>
 
           <div className="flex items-center gap-3">
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="px-4 py-2 rounded-xl bg-[#89b4fa] hover:bg-[#b4befe] text-[#11111b] text-xs font-bold transition-all shadow-md"
+              className="px-4 py-2 rounded-xl bg-[#c8edb6] hover:bg-[#d9f6ca] text-[#0d120f] text-xs font-bold transition-all shadow-md"
             >
               Select HAR File
             </button>
-            <span className="text-xs text-[#585b70]">or</span>
+            <span className="text-xs text-[#899980]">or</span>
             <button
               onClick={() => {
                 setHarData(SAMPLE_HAR);
                 setSelectedEntry(SAMPLE_HAR.log.entries[0]);
               }}
-              className="px-4 py-2 rounded-xl bg-[#313244] hover:bg-[#45475a] text-[#cdd6f4] text-xs font-medium border border-[#45475a] transition-all"
+              className="px-4 py-2 rounded-xl bg-[#344435] hover:bg-[#71836b] text-[#e4ebdd] text-xs font-medium border border-[#71836b] transition-all"
             >
               Try with Sample HAR Data
             </button>
           </div>
 
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-xl w-full text-center">
-            <div className="p-3 rounded-xl bg-[#181825] border border-[#313244]">
-              <div className="text-xs font-bold text-[#89b4fa] mb-0.5">Waterfall Timeline</div>
-              <div className="text-[11px] text-[#9399b2]">DNS, SSL, Connect, and TTFB latencies</div>
+            <div className="p-3 rounded-xl bg-[#111612] border border-[#344435]">
+              <div className="text-xs font-bold text-[#c8edb6] mb-0.5">Waterfall Timeline</div>
+              <div className="text-[11px] text-[#b1bea8]">DNS, SSL, Connect, and TTFB latencies</div>
             </div>
-            <div className="p-3 rounded-xl bg-[#181825] border border-[#313244]">
-              <div className="text-xs font-bold text-[#a6e3a1] mb-0.5">Payload &amp; Headers</div>
-              <div className="text-[11px] text-[#9399b2]">Inspect formatted JSON POST bodies &amp; params</div>
+            <div className="p-3 rounded-xl bg-[#111612] border border-[#344435]">
+              <div className="text-xs font-bold text-[#b5dfa3] mb-0.5">Payload &amp; Headers</div>
+              <div className="text-[11px] text-[#b1bea8]">Inspect formatted JSON POST bodies &amp; params</div>
             </div>
-            <div className="p-3 rounded-xl bg-[#181825] border border-[#313244]">
-              <div className="text-xs font-bold text-[#f38ba8] mb-0.5">Privacy Sanitizer</div>
-              <div className="text-[11px] text-[#9399b2]">Scrub Bearer tokens before sharing logs</div>
+            <div className="p-3 rounded-xl bg-[#111612] border border-[#344435]">
+              <div className="text-xs font-bold text-[#f19aa6] mb-0.5">Privacy Sanitizer</div>
+              <div className="text-[11px] text-[#b1bea8]">Scrub Bearer tokens before sharing logs</div>
             </div>
           </div>
         </div>
@@ -547,45 +547,45 @@ export default function HarViewerView() {
         /* HAR Loaded Workspace */
         <div className="flex-1 flex flex-col min-h-0">
           {/* Metrics summary bar */}
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 px-4 py-2 bg-[#181825] border-b border-[#252535] text-xs shrink-0">
-            <div className="flex items-center gap-2 p-1.5 rounded-lg bg-[#1e1e2e] border border-[#313244]">
-              <span className="text-[#9399b2]">Requests:</span>
-              <span className="font-bold text-[#cdd6f4]">{entries.length}</span>
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 px-4 py-2 bg-[#111612] border-b border-[#2b382c] text-xs shrink-0">
+            <div className="flex items-center gap-2 p-1.5 rounded-lg bg-[#171d19] border border-[#344435]">
+              <span className="text-[#b1bea8]">Requests:</span>
+              <span className="font-bold text-[#e4ebdd]">{entries.length}</span>
             </div>
-            <div className="flex items-center gap-2 p-1.5 rounded-lg bg-[#1e1e2e] border border-[#313244]">
-              <span className="text-[#9399b2]">Transferred:</span>
-              <span className="font-bold text-[#89b4fa]">{formatBytes(stats.totalSize)}</span>
+            <div className="flex items-center gap-2 p-1.5 rounded-lg bg-[#171d19] border border-[#344435]">
+              <span className="text-[#b1bea8]">Transferred:</span>
+              <span className="font-bold text-[#c8edb6]">{formatBytes(stats.totalSize)}</span>
             </div>
-            <div className="flex items-center gap-2 p-1.5 rounded-lg bg-[#1e1e2e] border border-[#313244]">
-              <span className="text-[#9399b2]">Duration:</span>
-              <span className="font-bold text-[#f9e2af]">{Math.round(stats.totalTime)} ms</span>
+            <div className="flex items-center gap-2 p-1.5 rounded-lg bg-[#171d19] border border-[#344435]">
+              <span className="text-[#b1bea8]">Duration:</span>
+              <span className="font-bold text-[#f3d58c]">{Math.round(stats.totalTime)} ms</span>
             </div>
-            <div className="flex items-center gap-2 p-1.5 rounded-lg bg-[#1e1e2e] border border-[#313244]">
-              <span className="text-[#9399b2]">Failed:</span>
-              <span className={`font-bold ${stats.failedCount > 0 ? 'text-[#f38ba8]' : 'text-[#a6e3a1]'}`}>
+            <div className="flex items-center gap-2 p-1.5 rounded-lg bg-[#171d19] border border-[#344435]">
+              <span className="text-[#b1bea8]">Failed:</span>
+              <span className={`font-bold ${stats.failedCount > 0 ? 'text-[#f19aa6]' : 'text-[#b5dfa3]'}`}>
                 {stats.failedCount}
               </span>
             </div>
-            <div className="flex items-center gap-2 p-1.5 rounded-lg bg-[#1e1e2e] border border-[#313244]">
-              <span className="text-[#9399b2]">Domains:</span>
-              <span className="font-bold text-[#cba6f7]">{stats.domains}</span>
+            <div className="flex items-center gap-2 p-1.5 rounded-lg bg-[#171d19] border border-[#344435]">
+              <span className="text-[#b1bea8]">Domains:</span>
+              <span className="font-bold text-[#ceb8f6]">{stats.domains}</span>
             </div>
           </div>
 
           {/* Filter & Search Toolbar */}
-          <div className="flex items-center justify-between px-4 py-2 bg-[#1e1e2e] border-b border-[#313244] gap-2 flex-wrap shrink-0">
+          <div className="flex items-center justify-between px-4 py-2 bg-[#171d19] border-b border-[#344435] gap-2 flex-wrap shrink-0">
             {/* Search */}
             <div className="relative flex-1 min-w-[200px] max-w-md">
-              <Search size={14} className="absolute left-2.5 top-2 text-[#6c7086]" />
+              <Search size={14} className="absolute left-2.5 top-2 text-[#9eac96]" />
               <input
                 type="text"
                 placeholder="Filter by URL, method, status..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-8 pr-3 py-1 bg-[#181825] border border-[#313244] rounded-lg text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]"
+                className="w-full pl-8 pr-3 py-1 bg-[#111612] border border-[#344435] rounded-lg text-xs text-[#e4ebdd] focus:outline-none focus:border-[#c8edb6]"
               />
               {searchQuery && (
-                <button onClick={() => setSearchQuery('')} className="absolute right-2 top-1.5 text-[#6c7086] hover:text-[#cdd6f4]">
+                <button onClick={() => setSearchQuery('')} className="absolute right-2 top-1.5 text-[#9eac96] hover:text-[#e4ebdd]">
                   <X size={12} />
                 </button>
               )}
@@ -607,8 +607,8 @@ export default function HarViewerView() {
                   onClick={() => setFilterType(t.id)}
                   className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all ${
                     filterType === t.id
-                      ? 'bg-[#89b4fa] text-[#11111b] font-bold'
-                      : 'text-[#9399b2] hover:bg-[#313244] hover:text-[#cdd6f4]'
+                      ? 'bg-[#c8edb6] text-[#0d120f] font-bold'
+                      : 'text-[#b1bea8] hover:bg-[#344435] hover:text-[#e4ebdd]'
                   }`}
                 >
                   {t.label}
@@ -624,8 +624,8 @@ export default function HarViewerView() {
                   onClick={() => setStatusFilter(s)}
                   className={`px-2 py-0.5 rounded text-[11px] uppercase transition-all ${
                     statusFilter === s
-                      ? 'bg-[#cba6f7] text-[#11111b] font-bold'
-                      : 'text-[#6c7086] hover:text-[#cdd6f4]'
+                      ? 'bg-[#ceb8f6] text-[#0d120f] font-bold'
+                      : 'text-[#9eac96] hover:text-[#e4ebdd]'
                   }`}
                 >
                   {s}
@@ -637,8 +637,8 @@ export default function HarViewerView() {
           {/* Main Master-Detail Split Pane */}
           <div className="flex-1 flex min-h-0 overflow-hidden">
             {/* Request Table (Left) */}
-            <div className={`flex flex-col border-r border-[#313244] overflow-hidden ${selectedEntry ? 'w-full lg:w-1/2' : 'w-full'}`}>
-              <div className="flex items-center px-3 py-1.5 bg-[#181825] border-b border-[#252535] text-[10px] font-bold uppercase tracking-wider text-[#6c7086] shrink-0">
+            <div className={`flex flex-col border-r border-[#344435] overflow-hidden ${selectedEntry ? 'w-full lg:w-1/2' : 'w-full'}`}>
+              <div className="flex items-center px-3 py-1.5 bg-[#111612] border-b border-[#2b382c] text-[10px] font-bold uppercase tracking-wider text-[#9eac96] shrink-0">
                 <span className="w-16">Method</span>
                 <span className="w-12">Status</span>
                 <span className="flex-1 px-2">Path / Domain</span>
@@ -647,9 +647,9 @@ export default function HarViewerView() {
                 <span className="w-24 text-right pr-2">Waterfall</span>
               </div>
 
-              <div className="flex-1 overflow-y-auto divide-y divide-[#252535]">
+              <div className="flex-1 overflow-y-auto divide-y divide-[#2b382c]">
                 {filteredEntries.length === 0 ? (
-                  <div className="p-8 text-center text-xs text-[#6c7086]">
+                  <div className="p-8 text-center text-xs text-[#9eac96]">
                     No requests match your search criteria.
                   </div>
                 ) : (
@@ -667,7 +667,7 @@ export default function HarViewerView() {
                         key={idx}
                         onClick={() => setSelectedEntry(entry)}
                         className={`flex items-center px-3 py-2 text-xs cursor-pointer transition-colors ${
-                          isSelected ? 'bg-[#89b4fa]/15 text-[#cdd6f4]' : 'hover:bg-[#1e1e2e]'
+                          isSelected ? 'bg-[#c8edb6]/15 text-[#e4ebdd]' : 'hover:bg-[#171d19]'
                         }`}
                       >
                         {/* Method */}
@@ -686,29 +686,29 @@ export default function HarViewerView() {
 
                         {/* Name & Host */}
                         <div className="flex-1 px-2 min-w-0">
-                          <div className="truncate font-medium text-[#cdd6f4]" title={entry.request.url}>
+                          <div className="truncate font-medium text-[#e4ebdd]" title={entry.request.url}>
                             {pathDisplay}
                           </div>
-                          <div className="truncate text-[10px] text-[#6c7086]">
+                          <div className="truncate text-[10px] text-[#9eac96]">
                             {urlObj.hostname}
                           </div>
                         </div>
 
                         {/* Size */}
-                        <span className="w-16 text-right text-[11px] text-[#a6adc8] shrink-0">
+                        <span className="w-16 text-right text-[11px] text-[#c3ceba] shrink-0">
                           {formatBytes(entry.response.bodySize || entry.response.content.size)}
                         </span>
 
                         {/* Time */}
-                        <span className="w-16 text-right text-[11px] text-[#a6adc8] shrink-0 font-mono">
+                        <span className="w-16 text-right text-[11px] text-[#c3ceba] shrink-0 font-mono">
                           {Math.round(entry.time)}ms
                         </span>
 
                         {/* Mini Waterfall */}
                         <div className="w-24 pl-2 shrink-0">
-                          <div className="w-full bg-[#313244] h-2 rounded-full overflow-hidden flex">
+                          <div className="w-full bg-[#344435] h-2 rounded-full overflow-hidden flex">
                             <div
-                              className="h-full bg-gradient-to-r from-[#89b4fa] to-[#a6e3a1] rounded-full"
+                              className="h-full bg-gradient-to-r from-[#c8edb6] to-[#b5dfa3] rounded-full"
                               style={{ width: `${relativeWidth}%` }}
                             />
                           </div>
@@ -722,9 +722,9 @@ export default function HarViewerView() {
 
             {/* Inspector Details Panel (Right) */}
             {selectedEntry && (
-              <div className="hidden lg:flex flex-1 flex-col bg-[#1e1e2e] min-w-0 overflow-hidden">
+              <div className="hidden lg:flex flex-1 flex-col bg-[#171d19] min-w-0 overflow-hidden">
                 {/* Header bar of selected request */}
-                <div className="flex items-center justify-between px-4 py-2.5 bg-[#181825] border-b border-[#313244] shrink-0">
+                <div className="flex items-center justify-between px-4 py-2.5 bg-[#111612] border-b border-[#344435] shrink-0">
                   <div className="flex items-center gap-2 min-w-0 flex-1 mr-2">
                     <span className={`px-2 py-0.5 rounded text-[11px] font-bold border ${getMethodColor(selectedEntry.request.method)}`}>
                       {selectedEntry.request.method}
@@ -732,7 +732,7 @@ export default function HarViewerView() {
                     <span className={`px-2 py-0.5 rounded text-[11px] font-bold border ${getStatusColor(selectedEntry.response.status)}`}>
                       {selectedEntry.response.status} {selectedEntry.response.statusText}
                     </span>
-                    <span className="truncate text-xs font-mono text-[#cdd6f4]" title={selectedEntry.request.url}>
+                    <span className="truncate text-xs font-mono text-[#e4ebdd]" title={selectedEntry.request.url}>
                       {selectedEntry.request.url}
                     </span>
                   </div>
@@ -740,14 +740,14 @@ export default function HarViewerView() {
                   <div className="flex items-center gap-2 shrink-0">
                     <button
                       onClick={() => handleCopy(selectedEntry.request.url, 'url')}
-                      className="p-1.5 rounded hover:bg-[#313244] text-[#9399b2] hover:text-[#cdd6f4]"
+                      className="p-1.5 rounded hover:bg-[#344435] text-[#b1bea8] hover:text-[#e4ebdd]"
                       title="Copy URL"
                     >
-                      {copiedKey === 'url' ? <Check size={14} className="text-[#a6e3a1]" /> : <Copy size={14} />}
+                      {copiedKey === 'url' ? <Check size={14} className="text-[#b5dfa3]" /> : <Copy size={14} />}
                     </button>
                     <button
                       onClick={() => setSelectedEntry(null)}
-                      className="p-1.5 rounded hover:bg-[#313244] text-[#9399b2] hover:text-[#cdd6f4]"
+                      className="p-1.5 rounded hover:bg-[#344435] text-[#b1bea8] hover:text-[#e4ebdd]"
                       title="Close details"
                     >
                       <X size={14} />
@@ -756,7 +756,7 @@ export default function HarViewerView() {
                 </div>
 
                 {/* Sub-tabs */}
-                <div className="flex items-center px-4 bg-[#1e1e2e] border-b border-[#313244] gap-1 text-xs shrink-0">
+                <div className="flex items-center px-4 bg-[#171d19] border-b border-[#344435] gap-1 text-xs shrink-0">
                   {[
                     { id: 'headers', label: `Headers (${selectedEntry.request.headers.length + selectedEntry.response.headers.length})` },
                     { id: 'payload', label: `Payload (${selectedEntry.request.queryString.length + (selectedEntry.request.postData ? 1 : 0)})` },
@@ -769,8 +769,8 @@ export default function HarViewerView() {
                       onClick={() => setActiveTab(tab.id as any)}
                       className={`px-3 py-2 border-b-2 font-medium text-xs transition-all ${
                         activeTab === tab.id
-                          ? 'border-[#89b4fa] text-[#89b4fa] font-bold'
-                          : 'border-transparent text-[#9399b2] hover:text-[#cdd6f4]'
+                          ? 'border-[#c8edb6] text-[#c8edb6] font-bold'
+                          : 'border-transparent text-[#b1bea8] hover:text-[#e4ebdd]'
                       }`}
                     >
                       {tab.label}
@@ -785,27 +785,27 @@ export default function HarViewerView() {
                     <div className="space-y-6">
                       {/* General */}
                       <div>
-                        <div className="text-[11px] font-bold text-[#89b4fa] uppercase tracking-wider mb-2 font-sans flex items-center justify-between">
+                        <div className="text-[11px] font-bold text-[#c8edb6] uppercase tracking-wider mb-2 font-sans flex items-center justify-between">
                           <span>General</span>
-                          <span className="text-[10px] text-[#6c7086] font-normal">HTTP {selectedEntry.request.httpVersion}</span>
+                          <span className="text-[10px] text-[#9eac96] font-normal">HTTP {selectedEntry.request.httpVersion}</span>
                         </div>
-                        <div className="bg-[#181825] rounded-xl border border-[#313244] p-3 space-y-1.5">
+                        <div className="bg-[#111612] rounded-xl border border-[#344435] p-3 space-y-1.5">
                           <div className="flex gap-2">
-                            <span className="text-[#9399b2] w-28 shrink-0">Request URL:</span>
-                            <span className="text-[#cdd6f4] break-all">{selectedEntry.request.url}</span>
+                            <span className="text-[#b1bea8] w-28 shrink-0">Request URL:</span>
+                            <span className="text-[#e4ebdd] break-all">{selectedEntry.request.url}</span>
                           </div>
                           <div className="flex gap-2">
-                            <span className="text-[#9399b2] w-28 shrink-0">Request Method:</span>
-                            <span className="text-[#cdd6f4] font-bold">{selectedEntry.request.method}</span>
+                            <span className="text-[#b1bea8] w-28 shrink-0">Request Method:</span>
+                            <span className="text-[#e4ebdd] font-bold">{selectedEntry.request.method}</span>
                           </div>
                           <div className="flex gap-2">
-                            <span className="text-[#9399b2] w-28 shrink-0">Status Code:</span>
-                            <span className="text-[#cdd6f4]">{selectedEntry.response.status} {selectedEntry.response.statusText}</span>
+                            <span className="text-[#b1bea8] w-28 shrink-0">Status Code:</span>
+                            <span className="text-[#e4ebdd]">{selectedEntry.response.status} {selectedEntry.response.statusText}</span>
                           </div>
                           {selectedEntry.serverIPAddress && (
                             <div className="flex gap-2">
-                              <span className="text-[#9399b2] w-28 shrink-0">Remote Address:</span>
-                              <span className="text-[#cdd6f4]">{selectedEntry.serverIPAddress}</span>
+                              <span className="text-[#b1bea8] w-28 shrink-0">Remote Address:</span>
+                              <span className="text-[#e4ebdd]">{selectedEntry.serverIPAddress}</span>
                             </div>
                           )}
                         </div>
@@ -813,20 +813,20 @@ export default function HarViewerView() {
 
                       {/* Response Headers */}
                       <div>
-                        <div className="text-[11px] font-bold text-[#a6e3a1] uppercase tracking-wider mb-2 font-sans flex items-center justify-between">
+                        <div className="text-[11px] font-bold text-[#b5dfa3] uppercase tracking-wider mb-2 font-sans flex items-center justify-between">
                           <span>Response Headers ({selectedEntry.response.headers.length})</span>
                           <button
                             onClick={() => handleCopy(JSON.stringify(selectedEntry.response.headers, null, 2), 'res-headers')}
-                            className="text-[10px] text-[#89b4fa] hover:underline flex items-center gap-1 font-sans"
+                            className="text-[10px] text-[#c8edb6] hover:underline flex items-center gap-1 font-sans"
                           >
                             {copiedKey === 'res-headers' ? <Check size={10} /> : <Copy size={10} />} Copy All
                           </button>
                         </div>
-                        <div className="bg-[#181825] rounded-xl border border-[#313244] divide-y divide-[#252535]">
+                        <div className="bg-[#111612] rounded-xl border border-[#344435] divide-y divide-[#2b382c]">
                           {selectedEntry.response.headers.map((h, i) => (
-                            <div key={i} className="flex px-3 py-1.5 gap-2 hover:bg-[#1e1e2e]">
-                              <span className="text-[#89b4fa] font-bold w-44 shrink-0 break-all">{h.name}:</span>
-                              <span className="text-[#cdd6f4] break-all flex-1">{h.value}</span>
+                            <div key={i} className="flex px-3 py-1.5 gap-2 hover:bg-[#171d19]">
+                              <span className="text-[#c8edb6] font-bold w-44 shrink-0 break-all">{h.name}:</span>
+                              <span className="text-[#e4ebdd] break-all flex-1">{h.value}</span>
                             </div>
                           ))}
                         </div>
@@ -834,20 +834,20 @@ export default function HarViewerView() {
 
                       {/* Request Headers */}
                       <div>
-                        <div className="text-[11px] font-bold text-[#f9e2af] uppercase tracking-wider mb-2 font-sans flex items-center justify-between">
+                        <div className="text-[11px] font-bold text-[#f3d58c] uppercase tracking-wider mb-2 font-sans flex items-center justify-between">
                           <span>Request Headers ({selectedEntry.request.headers.length})</span>
                           <button
                             onClick={() => handleCopy(JSON.stringify(selectedEntry.request.headers, null, 2), 'req-headers')}
-                            className="text-[10px] text-[#89b4fa] hover:underline flex items-center gap-1 font-sans"
+                            className="text-[10px] text-[#c8edb6] hover:underline flex items-center gap-1 font-sans"
                           >
                             {copiedKey === 'req-headers' ? <Check size={10} /> : <Copy size={10} />} Copy All
                           </button>
                         </div>
-                        <div className="bg-[#181825] rounded-xl border border-[#313244] divide-y divide-[#252535]">
+                        <div className="bg-[#111612] rounded-xl border border-[#344435] divide-y divide-[#2b382c]">
                           {selectedEntry.request.headers.map((h, i) => (
-                            <div key={i} className="flex px-3 py-1.5 gap-2 hover:bg-[#1e1e2e]">
-                              <span className="text-[#f9e2af] font-bold w-44 shrink-0 break-all">{h.name}:</span>
-                              <span className="text-[#cdd6f4] break-all flex-1">{h.value}</span>
+                            <div key={i} className="flex px-3 py-1.5 gap-2 hover:bg-[#171d19]">
+                              <span className="text-[#f3d58c] font-bold w-44 shrink-0 break-all">{h.name}:</span>
+                              <span className="text-[#e4ebdd] break-all flex-1">{h.value}</span>
                             </div>
                           ))}
                         </div>
@@ -860,17 +860,17 @@ export default function HarViewerView() {
                     <div className="space-y-6">
                       {/* Query Parameters */}
                       <div>
-                        <div className="text-[11px] font-bold text-[#89b4fa] uppercase tracking-wider mb-2 font-sans">
+                        <div className="text-[11px] font-bold text-[#c8edb6] uppercase tracking-wider mb-2 font-sans">
                           Query String Parameters ({selectedEntry.request.queryString.length})
                         </div>
                         {selectedEntry.request.queryString.length === 0 ? (
-                          <div className="text-[#6c7086] text-xs italic">No query parameters for this request.</div>
+                          <div className="text-[#9eac96] text-xs italic">No query parameters for this request.</div>
                         ) : (
-                          <div className="bg-[#181825] rounded-xl border border-[#313244] divide-y divide-[#252535]">
+                          <div className="bg-[#111612] rounded-xl border border-[#344435] divide-y divide-[#2b382c]">
                             {selectedEntry.request.queryString.map((q, i) => (
                               <div key={i} className="flex px-3 py-1.5 gap-2">
-                                <span className="text-[#a6e3a1] font-bold w-36 shrink-0">{q.name}:</span>
-                                <span className="text-[#cdd6f4] break-all">{q.value}</span>
+                                <span className="text-[#b5dfa3] font-bold w-36 shrink-0">{q.name}:</span>
+                                <span className="text-[#e4ebdd] break-all">{q.value}</span>
                               </div>
                             ))}
                           </div>
@@ -879,12 +879,12 @@ export default function HarViewerView() {
 
                       {/* Request Body / Post Data */}
                       <div>
-                        <div className="text-[11px] font-bold text-[#cba6f7] uppercase tracking-wider mb-2 font-sans flex items-center justify-between">
+                        <div className="text-[11px] font-bold text-[#ceb8f6] uppercase tracking-wider mb-2 font-sans flex items-center justify-between">
                           <span>Request Payload ({selectedEntry.request.postData?.mimeType || 'None'})</span>
                           {selectedEntry.request.postData?.text && (
                             <button
                               onClick={() => handleCopy(selectedEntry.request.postData?.text || '', 'payload')}
-                              className="text-[10px] text-[#89b4fa] hover:underline flex items-center gap-1 font-sans"
+                              className="text-[10px] text-[#c8edb6] hover:underline flex items-center gap-1 font-sans"
                             >
                               {copiedKey === 'payload' ? <Check size={10} /> : <Copy size={10} />} Copy Body
                             </button>
@@ -892,9 +892,9 @@ export default function HarViewerView() {
                         </div>
 
                         {!selectedEntry.request.postData?.text ? (
-                          <div className="text-[#6c7086] text-xs italic">No POST/PUT request payload.</div>
+                          <div className="text-[#9eac96] text-xs italic">No POST/PUT request payload.</div>
                         ) : (
-                          <pre className="p-3 bg-[#181825] rounded-xl border border-[#313244] text-[#a6e3a1] text-xs overflow-x-auto whitespace-pre-wrap leading-relaxed">
+                          <pre className="p-3 bg-[#111612] rounded-xl border border-[#344435] text-[#b5dfa3] text-xs overflow-x-auto whitespace-pre-wrap leading-relaxed">
                             {selectedEntry.request.postData.text}
                           </pre>
                         )}
@@ -914,18 +914,18 @@ export default function HarViewerView() {
                   {/* TAB: WATERFALL TIMING */}
                   {activeTab === 'timing' && (
                     <div className="space-y-4 font-sans">
-                      <div className="text-[11px] font-bold text-[#89b4fa] uppercase tracking-wider mb-2">
+                      <div className="text-[11px] font-bold text-[#c8edb6] uppercase tracking-wider mb-2">
                         Timing Breakdown • Total: {Math.round(selectedEntry.time)} ms
                       </div>
 
-                      <div className="bg-[#181825] rounded-xl border border-[#313244] p-4 space-y-3">
+                      <div className="bg-[#111612] rounded-xl border border-[#344435] p-4 space-y-3">
                         {[
-                          { label: 'Blocked / Queueing', value: selectedEntry.timings.blocked, color: '#6c7086' },
-                          { label: 'DNS Lookup', value: selectedEntry.timings.dns, color: '#fab387' },
-                          { label: 'Initial Connection', value: selectedEntry.timings.connect, color: '#f9e2af' },
-                          { label: 'SSL / TLS Handshake', value: selectedEntry.timings.ssl, color: '#cba6f7' },
-                          { label: 'Request Sent', value: selectedEntry.timings.send, color: '#89b4fa' },
-                          { label: 'Waiting (TTFB - Time to First Byte)', value: selectedEntry.timings.wait, color: '#a6e3a1' },
+                          { label: 'Blocked / Queueing', value: selectedEntry.timings.blocked, color: '#9eac96' },
+                          { label: 'DNS Lookup', value: selectedEntry.timings.dns, color: '#f3c18e' },
+                          { label: 'Initial Connection', value: selectedEntry.timings.connect, color: '#f3d58c' },
+                          { label: 'SSL / TLS Handshake', value: selectedEntry.timings.ssl, color: '#ceb8f6' },
+                          { label: 'Request Sent', value: selectedEntry.timings.send, color: '#c8edb6' },
+                          { label: 'Waiting (TTFB - Time to First Byte)', value: selectedEntry.timings.wait, color: '#b5dfa3' },
                           { label: 'Content Download', value: selectedEntry.timings.receive, color: '#94e2d5' },
                         ].map((t, i) => {
                           if (t.value === undefined || t.value < 0) return null;
@@ -933,13 +933,13 @@ export default function HarViewerView() {
                           return (
                             <div key={i} className="space-y-1">
                               <div className="flex justify-between text-xs">
-                                <span className="text-[#cdd6f4] flex items-center gap-2">
+                                <span className="text-[#e4ebdd] flex items-center gap-2">
                                   <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: t.color }} />
                                   {t.label}
                                 </span>
-                                <span className="font-mono text-[#a6adc8]">{Math.round(t.value)} ms ({percent}%)</span>
+                                <span className="font-mono text-[#c3ceba]">{Math.round(t.value)} ms ({percent}%)</span>
                               </div>
-                              <div className="w-full h-2 bg-[#313244] rounded-full overflow-hidden">
+                              <div className="w-full h-2 bg-[#344435] rounded-full overflow-hidden">
                                 <div className="h-full rounded-full" style={{ width: `${percent}%`, backgroundColor: t.color }} />
                               </div>
                             </div>
@@ -953,17 +953,17 @@ export default function HarViewerView() {
                   {activeTab === 'cookies' && (
                     <div className="space-y-6">
                       <div>
-                        <div className="text-[11px] font-bold text-[#89b4fa] uppercase tracking-wider mb-2 font-sans">
+                        <div className="text-[11px] font-bold text-[#c8edb6] uppercase tracking-wider mb-2 font-sans">
                           Request Cookies ({selectedEntry.request.cookies.length})
                         </div>
                         {selectedEntry.request.cookies.length === 0 ? (
-                          <div className="text-[#6c7086] text-xs italic">No request cookies.</div>
+                          <div className="text-[#9eac96] text-xs italic">No request cookies.</div>
                         ) : (
-                          <div className="bg-[#181825] rounded-xl border border-[#313244] divide-y divide-[#252535]">
+                          <div className="bg-[#111612] rounded-xl border border-[#344435] divide-y divide-[#2b382c]">
                             {selectedEntry.request.cookies.map((c, i) => (
                               <div key={i} className="flex px-3 py-1.5 gap-2">
-                                <span className="text-[#89b4fa] font-bold w-40 shrink-0">{c.name}:</span>
-                                <span className="text-[#cdd6f4] break-all">{c.value}</span>
+                                <span className="text-[#c8edb6] font-bold w-40 shrink-0">{c.name}:</span>
+                                <span className="text-[#e4ebdd] break-all">{c.value}</span>
                               </div>
                             ))}
                           </div>
@@ -971,17 +971,17 @@ export default function HarViewerView() {
                       </div>
 
                       <div>
-                        <div className="text-[11px] font-bold text-[#a6e3a1] uppercase tracking-wider mb-2 font-sans">
+                        <div className="text-[11px] font-bold text-[#b5dfa3] uppercase tracking-wider mb-2 font-sans">
                           Response Cookies ({selectedEntry.response.cookies.length})
                         </div>
                         {selectedEntry.response.cookies.length === 0 ? (
-                          <div className="text-[#6c7086] text-xs italic">No response cookies received.</div>
+                          <div className="text-[#9eac96] text-xs italic">No response cookies received.</div>
                         ) : (
-                          <div className="bg-[#181825] rounded-xl border border-[#313244] divide-y divide-[#252535]">
+                          <div className="bg-[#111612] rounded-xl border border-[#344435] divide-y divide-[#2b382c]">
                             {selectedEntry.response.cookies.map((c, i) => (
                               <div key={i} className="flex px-3 py-1.5 gap-2">
-                                <span className="text-[#a6e3a1] font-bold w-40 shrink-0">{c.name}:</span>
-                                <span className="text-[#cdd6f4] break-all">{c.value}</span>
+                                <span className="text-[#b5dfa3] font-bold w-40 shrink-0">{c.name}:</span>
+                                <span className="text-[#e4ebdd] break-all">{c.value}</span>
                               </div>
                             ))}
                           </div>

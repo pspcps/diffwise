@@ -323,26 +323,26 @@ export default function ImageStudioView() {
   };
 
   return (
-    <div className="flex h-full min-h-0 flex-col bg-[#1e1e2e] text-[#cdd6f4]">
+    <div className="flex h-full min-h-0 flex-col bg-[#171d19] text-[#e4ebdd]">
       {/* Top Header / Mode Switcher */}
-      <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#313244] bg-[#181825] px-4 py-2.5">
+      <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#344435] bg-[#111612] px-4 py-2.5">
         <div>
           <div className="flex items-center gap-2">
-            <span className="rounded bg-[#89b4fa]/15 p-1 text-[#89b4fa]">
+            <span className="rounded bg-[#c8edb6]/15 p-1 text-[#c8edb6]">
               <ImageIcon size={16} />
             </span>
-            <h1 className="text-sm font-bold text-[#cdd6f4]">Image Studio</h1>
-            <span className="rounded border border-[#a6e3a1]/30 bg-[#a6e3a1]/10 px-1.5 py-0.5 text-[9px] font-medium text-[#a6e3a1]">
+            <h1 className="text-sm font-bold text-[#e4ebdd]">Image Studio</h1>
+            <span className="rounded border border-[#b5dfa3]/30 bg-[#b5dfa3]/10 px-1.5 py-0.5 text-[9px] font-medium text-[#b5dfa3]">
               100% Client-Side Fast
             </span>
           </div>
-          <p className="mt-0.5 text-[10px] text-[#6c7086]">
+          <p className="mt-0.5 text-[10px] text-[#9eac96]">
             Convert, resize, compress, crop, and transform images in real-time with zero server uploads.
           </p>
         </div>
 
         {/* Tab switchers */}
-        <div className="flex flex-wrap gap-1 rounded-lg border border-[#313244] bg-[#11111b] p-0.5">
+        <div className="flex flex-wrap gap-1 rounded-lg border border-[#344435] bg-[#0d120f] p-0.5">
           {(
             [
               ['convert', 'Format Converter', <ImageIcon size={12} key="c" />],
@@ -357,8 +357,8 @@ export default function ImageStudioView() {
               onClick={() => setActiveTool(id)}
               className={`flex items-center gap-1.5 rounded px-2.5 py-1 text-[10px] font-medium transition-all ${
                 activeTool === id
-                  ? 'bg-[#313244] text-[#cdd6f4] shadow-sm'
-                  : 'text-[#6c7086] hover:text-[#cdd6f4]'
+                  ? 'bg-[#344435] text-[#e4ebdd] shadow-sm'
+                  : 'text-[#9eac96] hover:text-[#e4ebdd]'
               }`}
             >
               {icon}
@@ -381,23 +381,23 @@ export default function ImageStudioView() {
         {!image ? (
           <div
             onClick={() => fileInputRef.current?.click()}
-            className="m-auto flex min-h-[300px] w-full max-w-xl cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-[#313244] bg-[#181825]/60 p-8 text-center transition-all hover:border-[#89b4fa]"
+            className="m-auto flex min-h-[300px] w-full max-w-xl cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-[#344435] bg-[#111612]/60 p-8 text-center transition-all hover:border-[#c8edb6]"
           >
-            <div className="rounded-2xl bg-[#89b4fa]/10 p-4 text-[#89b4fa]">
+            <div className="rounded-2xl bg-[#c8edb6]/10 p-4 text-[#c8edb6]">
               <ImageIcon size={38} />
             </div>
             <div>
-              <div className="text-sm font-semibold text-[#cdd6f4]">Choose or drop an image</div>
-              <div className="text-[11px] text-[#6c7086] mt-1">Supports PNG, JPG, WebP, AVIF, SVG, GIF, BMP</div>
+              <div className="text-sm font-semibold text-[#e4ebdd]">Choose or drop an image</div>
+              <div className="text-[11px] text-[#9eac96] mt-1">Supports PNG, JPG, WebP, AVIF, SVG, GIF, BMP</div>
             </div>
             <div className="flex gap-2 mt-2">
-              <span className="rounded border border-[#313244] bg-[#11111b] px-2 py-1 text-[9px] text-[#9399b2]">
+              <span className="rounded border border-[#344435] bg-[#0d120f] px-2 py-1 text-[9px] text-[#b1bea8]">
                 1-Click Preset Converters
               </span>
-              <span className="rounded border border-[#313244] bg-[#11111b] px-2 py-1 text-[9px] text-[#9399b2]">
+              <span className="rounded border border-[#344435] bg-[#0d120f] px-2 py-1 text-[9px] text-[#b1bea8]">
                 Lossless Cropper
               </span>
-              <span className="rounded border border-[#313244] bg-[#11111b] px-2 py-1 text-[9px] text-[#9399b2]">
+              <span className="rounded border border-[#344435] bg-[#0d120f] px-2 py-1 text-[9px] text-[#b1bea8]">
                 Live Compressor
               </span>
             </div>
@@ -405,17 +405,17 @@ export default function ImageStudioView() {
         ) : (
           <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
             {/* Visual Preview Canvas */}
-            <div className="flex flex-col rounded-xl border border-[#313244] bg-[#181825] p-4">
-              <div className="flex items-center justify-between border-b border-[#313244] pb-2 text-xs">
-                <div className="truncate font-medium text-[#cdd6f4]">{image.name}</div>
-                <div className="flex items-center gap-2 text-[10px] text-[#9399b2]">
+            <div className="flex flex-col rounded-xl border border-[#344435] bg-[#111612] p-4">
+              <div className="flex items-center justify-between border-b border-[#344435] pb-2 text-xs">
+                <div className="truncate font-medium text-[#e4ebdd]">{image.name}</div>
+                <div className="flex items-center gap-2 text-[10px] text-[#b1bea8]">
                   <span>{image.width} × {image.height} px</span>
                   <span>·</span>
                   <span>{formatBytes(image.size)}</span>
                   <button
                     onClick={() => setImage(null)}
                     title="Remove image"
-                    className="text-[#6c7086] hover:text-[#f38ba8]"
+                    className="text-[#9eac96] hover:text-[#f19aa6]"
                   >
                     <Trash2 size={12} />
                   </button>
@@ -423,7 +423,7 @@ export default function ImageStudioView() {
               </div>
 
               {/* Image Viewport */}
-              <div className="relative my-4 flex min-h-[340px] flex-1 items-center justify-center overflow-hidden rounded-lg bg-[#11111b] p-4">
+              <div className="relative my-4 flex min-h-[340px] flex-1 items-center justify-center overflow-hidden rounded-lg bg-[#0d120f] p-4">
                 {activeTool === 'crop' ? (
                   <div className="relative inline-block select-none rounded p-1">
                     <img
@@ -450,7 +450,7 @@ export default function ImageStudioView() {
 
                     {/* Interactive Draggable & Resizable Crop Box */}
                     <div
-                      className="absolute border-2 border-[#89b4fa] shadow-2xl cursor-move group"
+                      className="absolute border-2 border-[#c8edb6] shadow-2xl cursor-move group"
                       style={{
                         left: `${cropBox.x}%`,
                         top: `${cropBox.y}%`,
@@ -479,7 +479,7 @@ export default function ImageStudioView() {
                         title="Drag to resize top-left"
                         className="absolute -top-3 -left-3 h-6 w-6 flex items-center justify-center cursor-nwse-resize z-20"
                       >
-                        <div className="h-3.5 w-3.5 rounded-full bg-[#89b4fa] border-2 border-white shadow-md hover:scale-125 transition-transform" />
+                        <div className="h-3.5 w-3.5 rounded-full bg-[#c8edb6] border-2 border-white shadow-md hover:scale-125 transition-transform" />
                       </div>
 
                       <div
@@ -488,7 +488,7 @@ export default function ImageStudioView() {
                         title="Drag to resize top-right"
                         className="absolute -top-3 -right-3 h-6 w-6 flex items-center justify-center cursor-nesw-resize z-20"
                       >
-                        <div className="h-3.5 w-3.5 rounded-full bg-[#89b4fa] border-2 border-white shadow-md hover:scale-125 transition-transform" />
+                        <div className="h-3.5 w-3.5 rounded-full bg-[#c8edb6] border-2 border-white shadow-md hover:scale-125 transition-transform" />
                       </div>
 
                       <div
@@ -497,7 +497,7 @@ export default function ImageStudioView() {
                         title="Drag to resize bottom-left"
                         className="absolute -bottom-3 -left-3 h-6 w-6 flex items-center justify-center cursor-nesw-resize z-20"
                       >
-                        <div className="h-3.5 w-3.5 rounded-full bg-[#89b4fa] border-2 border-white shadow-md hover:scale-125 transition-transform" />
+                        <div className="h-3.5 w-3.5 rounded-full bg-[#c8edb6] border-2 border-white shadow-md hover:scale-125 transition-transform" />
                       </div>
 
                       <div
@@ -506,7 +506,7 @@ export default function ImageStudioView() {
                         title="Drag to resize bottom-right"
                         className="absolute -bottom-3 -right-3 h-6 w-6 flex items-center justify-center cursor-nwse-resize z-20"
                       >
-                        <div className="h-3.5 w-3.5 rounded-full bg-[#89b4fa] border-2 border-white shadow-md hover:scale-125 transition-transform" />
+                        <div className="h-3.5 w-3.5 rounded-full bg-[#c8edb6] border-2 border-white shadow-md hover:scale-125 transition-transform" />
                       </div>
 
                       {/* 4 Edge Resize Handles */}
@@ -516,7 +516,7 @@ export default function ImageStudioView() {
                         title="Drag to resize top edge"
                         className="absolute -top-2.5 left-1/2 -translate-x-1/2 h-5 w-12 flex items-center justify-center cursor-ns-resize z-20"
                       >
-                        <div className="h-2 w-8 rounded-full bg-[#89b4fa] border border-white hover:bg-white shadow" />
+                        <div className="h-2 w-8 rounded-full bg-[#c8edb6] border border-white hover:bg-white shadow" />
                       </div>
 
                       <div
@@ -525,7 +525,7 @@ export default function ImageStudioView() {
                         title="Drag to resize bottom edge"
                         className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 h-5 w-12 flex items-center justify-center cursor-ns-resize z-20"
                       >
-                        <div className="h-2 w-8 rounded-full bg-[#89b4fa] border border-white hover:bg-white shadow" />
+                        <div className="h-2 w-8 rounded-full bg-[#c8edb6] border border-white hover:bg-white shadow" />
                       </div>
 
                       <div
@@ -534,7 +534,7 @@ export default function ImageStudioView() {
                         title="Drag to resize left edge"
                         className="absolute -left-2.5 top-1/2 -translate-y-1/2 w-5 h-12 flex items-center justify-center cursor-ew-resize z-20"
                       >
-                        <div className="w-2 h-8 rounded-full bg-[#89b4fa] border border-white hover:bg-white shadow" />
+                        <div className="w-2 h-8 rounded-full bg-[#c8edb6] border border-white hover:bg-white shadow" />
                       </div>
 
                       <div
@@ -543,7 +543,7 @@ export default function ImageStudioView() {
                         title="Drag to resize right edge"
                         className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-12 flex items-center justify-center cursor-ew-resize z-20"
                       >
-                        <div className="w-2 h-8 rounded-full bg-[#89b4fa] border border-white hover:bg-white shadow" />
+                        <div className="w-2 h-8 rounded-full bg-[#c8edb6] border border-white hover:bg-white shadow" />
                       </div>
                     </div>
                   </div>
@@ -560,24 +560,24 @@ export default function ImageStudioView() {
               </div>
 
               {/* Quick Preset Buttons Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#313244] pt-3 text-[10px]">
-                <span className="text-[#6c7086]">Quick Presets:</span>
+              <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#344435] pt-3 text-[10px]">
+                <span className="text-[#9eac96]">Quick Presets:</span>
                 <div className="flex flex-wrap gap-1.5">
                   <button
                     onClick={() => applyPreset('image/jpeg')}
-                    className="rounded border border-[#313244] bg-[#11111b] px-2 py-1 text-[#cdd6f4] hover:border-[#89b4fa]"
+                    className="rounded border border-[#344435] bg-[#0d120f] px-2 py-1 text-[#e4ebdd] hover:border-[#c8edb6]"
                   >
                     Convert to JPG
                   </button>
                   <button
                     onClick={() => applyPreset('image/png')}
-                    className="rounded border border-[#313244] bg-[#11111b] px-2 py-1 text-[#cdd6f4] hover:border-[#89b4fa]"
+                    className="rounded border border-[#344435] bg-[#0d120f] px-2 py-1 text-[#e4ebdd] hover:border-[#c8edb6]"
                   >
                     Convert to PNG
                   </button>
                   <button
                     onClick={() => applyPreset('image/webp')}
-                    className="rounded border border-[#313244] bg-[#11111b] px-2 py-1 text-[#cdd6f4] hover:border-[#89b4fa]"
+                    className="rounded border border-[#344435] bg-[#0d120f] px-2 py-1 text-[#e4ebdd] hover:border-[#c8edb6]"
                   >
                     Convert to WebP
                   </button>
@@ -586,13 +586,13 @@ export default function ImageStudioView() {
             </div>
 
             {/* Sidebar Controls Panel */}
-            <div className="flex flex-col gap-4 rounded-xl border border-[#313244] bg-[#181825] p-4">
+            <div className="flex flex-col gap-4 rounded-xl border border-[#344435] bg-[#111612] p-4">
               {/* 1. FORMAT CONVERTER */}
               {activeTool === 'convert' && (
                 <div className="space-y-4">
-                  <h3 className="text-xs font-bold text-[#cdd6f4]">Convert Image Format</h3>
+                  <h3 className="text-xs font-bold text-[#e4ebdd]">Convert Image Format</h3>
                   <div className="space-y-2">
-                    <label className="text-[10px] text-[#9399b2] block">Target Format</label>
+                    <label className="text-[10px] text-[#b1bea8] block">Target Format</label>
                     <div className="grid grid-cols-3 gap-1.5">
                       {(
                         [
@@ -606,8 +606,8 @@ export default function ImageStudioView() {
                           onClick={() => setTargetFormat(fmt)}
                           className={`rounded border py-1.5 text-xs font-semibold transition-all ${
                             targetFormat === fmt
-                              ? 'border-[#89b4fa] bg-[#89b4fa]/15 text-[#89b4fa]'
-                              : 'border-[#313244] text-[#9399b2]'
+                              ? 'border-[#c8edb6] bg-[#c8edb6]/15 text-[#c8edb6]'
+                              : 'border-[#344435] text-[#b1bea8]'
                           }`}
                         >
                           {label}
@@ -618,9 +618,9 @@ export default function ImageStudioView() {
 
                   {targetFormat !== 'image/png' && (
                     <div className="space-y-1">
-                      <div className="flex justify-between text-[10px] text-[#9399b2]">
+                      <div className="flex justify-between text-[10px] text-[#b1bea8]">
                         <span>Quality</span>
-                        <span className="font-mono text-[#89b4fa] font-bold">{Math.round(quality * 100)}%</span>
+                        <span className="font-mono text-[#c8edb6] font-bold">{Math.round(quality * 100)}%</span>
                       </div>
                       <input
                         type="range"
@@ -629,14 +629,14 @@ export default function ImageStudioView() {
                         step="0.05"
                         value={quality}
                         onChange={e => setQuality(Number(e.target.value))}
-                        className="w-full accent-[#89b4fa]"
+                        className="w-full accent-[#c8edb6]"
                       />
                     </div>
                   )}
 
                   <button
                     onClick={() => executeDownload('convert')}
-                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#89b4fa] py-2.5 text-xs font-bold text-[#11111b] hover:bg-[#89b4fa]/90"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#c8edb6] py-2.5 text-xs font-bold text-[#0d120f] hover:bg-[#c8edb6]/90"
                   >
                     <Download size={14} /> Download Converted File
                   </button>
@@ -646,49 +646,49 @@ export default function ImageStudioView() {
               {/* 2. RESIZE DIMENSIONS */}
               {activeTool === 'resize' && (
                 <div className="space-y-4">
-                  <h3 className="text-xs font-bold text-[#cdd6f4]">Change Dimensions</h3>
+                  <h3 className="text-xs font-bold text-[#e4ebdd]">Change Dimensions</h3>
 
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="text-[10px] text-[#9399b2] block mb-1">Width (px)</label>
+                      <label className="text-[10px] text-[#b1bea8] block mb-1">Width (px)</label>
                       <input
                         type="number"
                         min="1"
                         value={resizeWidth}
                         onChange={e => handleWidthChange(Number(e.target.value))}
-                        className="h-8 w-full rounded border border-[#313244] bg-[#11111b] px-2 font-mono text-xs text-[#cdd6f4]"
+                        className="h-8 w-full rounded border border-[#344435] bg-[#0d120f] px-2 font-mono text-xs text-[#e4ebdd]"
                       />
                     </div>
                     <div>
-                      <label className="text-[10px] text-[#9399b2] block mb-1">Height (px)</label>
+                      <label className="text-[10px] text-[#b1bea8] block mb-1">Height (px)</label>
                       <input
                         type="number"
                         min="1"
                         value={resizeHeight}
                         onChange={e => handleHeightChange(Number(e.target.value))}
-                        className="h-8 w-full rounded border border-[#313244] bg-[#11111b] px-2 font-mono text-xs text-[#cdd6f4]"
+                        className="h-8 w-full rounded border border-[#344435] bg-[#0d120f] px-2 font-mono text-xs text-[#e4ebdd]"
                       />
                     </div>
                   </div>
 
-                  <label className="flex items-center gap-2 text-[10px] text-[#cdd6f4] cursor-pointer">
+                  <label className="flex items-center gap-2 text-[10px] text-[#e4ebdd] cursor-pointer">
                     <input
                       type="checkbox"
                       checked={keepAspect}
                       onChange={e => setKeepAspect(e.target.checked)}
-                      className="accent-[#89b4fa]"
+                      className="accent-[#c8edb6]"
                     />
                     <span>Lock Aspect Ratio ({image ? (image.width / image.height).toFixed(2) : '1.00'}:1)</span>
                   </label>
 
                   <div>
-                    <label className="text-[10px] text-[#9399b2] block mb-1.5">Preset Scales</label>
+                    <label className="text-[10px] text-[#b1bea8] block mb-1.5">Preset Scales</label>
                     <div className="grid grid-cols-4 gap-1">
                       {[25, 50, 75, 150].map(pct => (
                         <button
                           key={pct}
                           onClick={() => applyScalePercent(pct)}
-                          className="rounded border border-[#313244] bg-[#11111b] py-1 text-[10px] text-[#cdd6f4] hover:border-[#89b4fa]"
+                          className="rounded border border-[#344435] bg-[#0d120f] py-1 text-[10px] text-[#e4ebdd] hover:border-[#c8edb6]"
                         >
                           {pct}%
                         </button>
@@ -698,7 +698,7 @@ export default function ImageStudioView() {
 
                   <button
                     onClick={() => executeDownload('resize')}
-                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#89b4fa] py-2.5 text-xs font-bold text-[#11111b] hover:bg-[#89b4fa]/90"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#c8edb6] py-2.5 text-xs font-bold text-[#0d120f] hover:bg-[#c8edb6]/90"
                   >
                     <Download size={14} /> Download Resized Image
                   </button>
@@ -708,20 +708,20 @@ export default function ImageStudioView() {
               {/* 3. COMPRESS QUALITY */}
               {activeTool === 'compress' && (
                 <div className="space-y-4">
-                  <h3 className="text-xs font-bold text-[#cdd6f4]">Compress Image</h3>
+                  <h3 className="text-xs font-bold text-[#e4ebdd]">Compress Image</h3>
 
-                  <div className="rounded-lg border border-[#313244] bg-[#11111b] p-3 text-xs space-y-2">
+                  <div className="rounded-lg border border-[#344435] bg-[#0d120f] p-3 text-xs space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-[#9399b2]">Original Size:</span>
-                      <span className="font-mono text-[#cdd6f4]">{formatBytes(image.size)}</span>
+                      <span className="text-[#b1bea8]">Original Size:</span>
+                      <span className="font-mono text-[#e4ebdd]">{formatBytes(image.size)}</span>
                     </div>
                     {compressedSize !== null && (
                       <div className="flex justify-between">
-                        <span className="text-[#9399b2]">New Estimated:</span>
-                        <span className="font-mono font-bold text-[#a6e3a1]">
+                        <span className="text-[#b1bea8]">New Estimated:</span>
+                        <span className="font-mono font-bold text-[#b5dfa3]">
                           {formatBytes(compressedSize)}
                           {image.size > compressedSize && (
-                            <span className="ml-1 text-[10px] text-[#a6e3a1]">
+                            <span className="ml-1 text-[10px] text-[#b5dfa3]">
                               (-{Math.round(((image.size - compressedSize) / image.size) * 100)}%)
                             </span>
                           )}
@@ -731,9 +731,9 @@ export default function ImageStudioView() {
                   </div>
 
                   <div className="space-y-1">
-                    <div className="flex justify-between text-[10px] text-[#9399b2]">
+                    <div className="flex justify-between text-[10px] text-[#b1bea8]">
                       <span>Compression Level</span>
-                      <span className="font-mono text-[#89b4fa] font-bold">
+                      <span className="font-mono text-[#c8edb6] font-bold">
                         {Math.round(compressQuality * 100)}%
                       </span>
                     </div>
@@ -744,13 +744,13 @@ export default function ImageStudioView() {
                       step="0.05"
                       value={compressQuality}
                       onChange={e => setCompressQuality(Number(e.target.value))}
-                      className="w-full accent-[#89b4fa]"
+                      className="w-full accent-[#c8edb6]"
                     />
                   </div>
 
                   <button
                     onClick={() => executeDownload('compress')}
-                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#89b4fa] py-2.5 text-xs font-bold text-[#11111b] hover:bg-[#89b4fa]/90"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#c8edb6] py-2.5 text-xs font-bold text-[#0d120f] hover:bg-[#c8edb6]/90"
                   >
                     <Download size={14} /> Download Compressed Image
                   </button>
@@ -761,15 +761,15 @@ export default function ImageStudioView() {
               {activeTool === 'crop' && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-bold text-[#cdd6f4]">Crop Area Settings</h3>
-                    <span className="font-mono text-[9px] text-[#89b4fa]">
+                    <h3 className="text-xs font-bold text-[#e4ebdd]">Crop Area Settings</h3>
+                    <span className="font-mono text-[9px] text-[#c8edb6]">
                       {Math.round((cropBox.width / 100) * image.width)} × {Math.round((cropBox.height / 100) * image.height)} px
                     </span>
                   </div>
 
                   {/* Aspect Ratio Presets */}
                   <div className="space-y-1.5">
-                    <label className="text-[10px] text-[#9399b2] block">Aspect Ratio</label>
+                    <label className="text-[10px] text-[#b1bea8] block">Aspect Ratio</label>
                     <div className="grid grid-cols-3 gap-1 text-[10px]">
                       {(
                         [
@@ -796,8 +796,8 @@ export default function ImageStudioView() {
                           }}
                           className={`rounded border py-1 font-medium transition-all ${
                             cropAspect === asp
-                              ? 'border-[#89b4fa] bg-[#89b4fa]/15 text-[#89b4fa]'
-                              : 'border-[#313244] text-[#9399b2] hover:text-[#cdd6f4]'
+                              ? 'border-[#c8edb6] bg-[#c8edb6]/15 text-[#c8edb6]'
+                              : 'border-[#344435] text-[#b1bea8] hover:text-[#e4ebdd]'
                           }`}
                         >
                           {lbl}
@@ -808,23 +808,23 @@ export default function ImageStudioView() {
 
                   {/* Quick Size Presets */}
                   <div className="space-y-1.5">
-                    <label className="text-[10px] text-[#9399b2] block">Quick Coverage Size</label>
+                    <label className="text-[10px] text-[#b1bea8] block">Quick Coverage Size</label>
                     <div className="grid grid-cols-3 gap-1.5 text-[9px]">
                       <button
                         onClick={() => setCropBox({ x: 0, y: 0, width: 100, height: 100 })}
-                        className="rounded border border-[#313244] bg-[#181825] py-1 text-[#cdd6f4] hover:border-[#89b4fa]/50"
+                        className="rounded border border-[#344435] bg-[#111612] py-1 text-[#e4ebdd] hover:border-[#c8edb6]/50"
                       >
                         Full 100%
                       </button>
                       <button
                         onClick={() => setCropBox({ x: 10, y: 10, width: 80, height: 80 })}
-                        className="rounded border border-[#313244] bg-[#181825] py-1 text-[#cdd6f4] hover:border-[#89b4fa]/50"
+                        className="rounded border border-[#344435] bg-[#111612] py-1 text-[#e4ebdd] hover:border-[#c8edb6]/50"
                       >
                         Center 80%
                       </button>
                       <button
                         onClick={() => setCropBox({ x: 25, y: 25, width: 50, height: 50 })}
-                        className="rounded border border-[#313244] bg-[#181825] py-1 text-[#cdd6f4] hover:border-[#89b4fa]/50"
+                        className="rounded border border-[#344435] bg-[#111612] py-1 text-[#e4ebdd] hover:border-[#c8edb6]/50"
                       >
                         Center 50%
                       </button>
@@ -832,11 +832,11 @@ export default function ImageStudioView() {
                   </div>
 
                   {/* Width & Height Dimension Controls */}
-                  <div className="space-y-3 rounded-lg border border-[#313244] bg-[#181825] p-2.5">
+                  <div className="space-y-3 rounded-lg border border-[#344435] bg-[#111612] p-2.5">
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-[10px]">
-                        <span className="text-[#9399b2]">Crop Width:</span>
-                        <div className="flex items-center gap-1 font-mono text-[9px] text-[#cdd6f4]">
+                        <span className="text-[#b1bea8]">Crop Width:</span>
+                        <div className="flex items-center gap-1 font-mono text-[9px] text-[#e4ebdd]">
                           <input
                             type="number"
                             min={5}
@@ -846,7 +846,7 @@ export default function ImageStudioView() {
                               const val = Math.max(5, Math.min(100 - cropBox.x, Number(e.target.value)));
                               setCropBox(prev => ({ ...prev, width: val }));
                             }}
-                            className="w-12 rounded border border-[#313244] bg-[#11111b] px-1 py-0.5 text-right text-[10px]"
+                            className="w-12 rounded border border-[#344435] bg-[#0d120f] px-1 py-0.5 text-right text-[10px]"
                           />
                           <span>% ({Math.round((cropBox.width / 100) * image.width)}px)</span>
                         </div>
@@ -857,14 +857,14 @@ export default function ImageStudioView() {
                         max={100 - cropBox.x}
                         value={cropBox.width}
                         onChange={e => setCropBox(prev => ({ ...prev, width: Number(e.target.value) }))}
-                        className="w-full accent-[#89b4fa]"
+                        className="w-full accent-[#c8edb6]"
                       />
                     </div>
 
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-[10px]">
-                        <span className="text-[#9399b2]">Crop Height:</span>
-                        <div className="flex items-center gap-1 font-mono text-[9px] text-[#cdd6f4]">
+                        <span className="text-[#b1bea8]">Crop Height:</span>
+                        <div className="flex items-center gap-1 font-mono text-[9px] text-[#e4ebdd]">
                           <input
                             type="number"
                             min={5}
@@ -874,7 +874,7 @@ export default function ImageStudioView() {
                               const val = Math.max(5, Math.min(100 - cropBox.y, Number(e.target.value)));
                               setCropBox(prev => ({ ...prev, height: val }));
                             }}
-                            className="w-12 rounded border border-[#313244] bg-[#11111b] px-1 py-0.5 text-right text-[10px]"
+                            className="w-12 rounded border border-[#344435] bg-[#0d120f] px-1 py-0.5 text-right text-[10px]"
                           />
                           <span>% ({Math.round((cropBox.height / 100) * image.height)}px)</span>
                         </div>
@@ -885,43 +885,43 @@ export default function ImageStudioView() {
                         max={100 - cropBox.y}
                         value={cropBox.height}
                         onChange={e => setCropBox(prev => ({ ...prev, height: Number(e.target.value) }))}
-                        className="w-full accent-[#89b4fa]"
+                        className="w-full accent-[#c8edb6]"
                       />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 pt-1 border-t border-[#313244]/40 text-[9px]">
+                    <div className="grid grid-cols-2 gap-2 pt-1 border-t border-[#344435]/40 text-[9px]">
                       <div>
-                        <span className="text-[#9399b2] block mb-0.5">X Offset: {Math.round(cropBox.x)}%</span>
+                        <span className="text-[#b1bea8] block mb-0.5">X Offset: {Math.round(cropBox.x)}%</span>
                         <input
                           type="range"
                           min={0}
                           max={100 - cropBox.width}
                           value={cropBox.x}
                           onChange={e => setCropBox(prev => ({ ...prev, x: Number(e.target.value) }))}
-                          className="w-full accent-[#89b4fa]"
+                          className="w-full accent-[#c8edb6]"
                         />
                       </div>
                       <div>
-                        <span className="text-[#9399b2] block mb-0.5">Y Offset: {Math.round(cropBox.y)}%</span>
+                        <span className="text-[#b1bea8] block mb-0.5">Y Offset: {Math.round(cropBox.y)}%</span>
                         <input
                           type="range"
                           min={0}
                           max={100 - cropBox.height}
                           value={cropBox.y}
                           onChange={e => setCropBox(prev => ({ ...prev, y: Number(e.target.value) }))}
-                          className="w-full accent-[#89b4fa]"
+                          className="w-full accent-[#c8edb6]"
                         />
                       </div>
                     </div>
                   </div>
 
-                  <div className="rounded-lg border border-[#313244] bg-[#11111b] p-2 text-[10px] text-[#9399b2]">
+                  <div className="rounded-lg border border-[#344435] bg-[#0d120f] p-2 text-[10px] text-[#b1bea8]">
                     Drag the circular corner/edge handles on the image preview or use the sliders above to change the crop size.
                   </div>
 
                   <button
                     onClick={() => executeDownload('crop')}
-                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#89b4fa] py-2.5 text-xs font-bold text-[#11111b] hover:bg-[#89b4fa]/90"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#c8edb6] py-2.5 text-xs font-bold text-[#0d120f] hover:bg-[#c8edb6]/90"
                   >
                     <Download size={14} /> Download Cropped Image
                   </button>
@@ -931,15 +931,15 @@ export default function ImageStudioView() {
               {/* 5. FLIP & ROTATE */}
               {activeTool === 'transform' && (
                 <div className="space-y-4">
-                  <h3 className="text-xs font-bold text-[#cdd6f4]">Flip & Rotate</h3>
+                  <h3 className="text-xs font-bold text-[#e4ebdd]">Flip & Rotate</h3>
 
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => setFlipH(v => !v)}
                       className={`flex items-center justify-center gap-1.5 rounded-lg border p-2 text-xs font-medium transition-all ${
                         flipH
-                          ? 'border-[#89b4fa] bg-[#89b4fa]/15 text-[#89b4fa]'
-                          : 'border-[#313244] text-[#cdd6f4]'
+                          ? 'border-[#c8edb6] bg-[#c8edb6]/15 text-[#c8edb6]'
+                          : 'border-[#344435] text-[#e4ebdd]'
                       }`}
                     >
                       <FlipHorizontal size={13} /> Flip Horizontal
@@ -948,8 +948,8 @@ export default function ImageStudioView() {
                       onClick={() => setFlipV(v => !v)}
                       className={`flex items-center justify-center gap-1.5 rounded-lg border p-2 text-xs font-medium transition-all ${
                         flipV
-                          ? 'border-[#89b4fa] bg-[#89b4fa]/15 text-[#89b4fa]'
-                          : 'border-[#313244] text-[#cdd6f4]'
+                          ? 'border-[#c8edb6] bg-[#c8edb6]/15 text-[#c8edb6]'
+                          : 'border-[#344435] text-[#e4ebdd]'
                       }`}
                     >
                       <FlipVertical size={13} /> Flip Vertical
@@ -959,26 +959,26 @@ export default function ImageStudioView() {
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => setRotation(r => (r - 90 + 360) % 360)}
-                      className="flex items-center justify-center gap-1.5 rounded-lg border border-[#313244] p-2 text-xs font-medium text-[#cdd6f4] hover:bg-[#202030]"
+                      className="flex items-center justify-center gap-1.5 rounded-lg border border-[#344435] p-2 text-xs font-medium text-[#e4ebdd] hover:bg-[#202030]"
                     >
                       <RotateCcw size={13} /> Rotate -90°
                     </button>
                     <button
                       onClick={() => setRotation(r => (r + 90) % 360)}
-                      className="flex items-center justify-center gap-1.5 rounded-lg border border-[#313244] p-2 text-xs font-medium text-[#cdd6f4] hover:bg-[#202030]"
+                      className="flex items-center justify-center gap-1.5 rounded-lg border border-[#344435] p-2 text-xs font-medium text-[#e4ebdd] hover:bg-[#202030]"
                     >
                       <RotateCw size={13} /> Rotate +90°
                     </button>
                   </div>
 
-                  <div className="rounded-lg border border-[#313244] bg-[#11111b] p-2.5 text-[10px] text-[#9399b2] flex justify-between">
+                  <div className="rounded-lg border border-[#344435] bg-[#0d120f] p-2.5 text-[10px] text-[#b1bea8] flex justify-between">
                     <span>Current Rotation:</span>
-                    <span className="font-mono text-[#89b4fa] font-bold">{rotation}°</span>
+                    <span className="font-mono text-[#c8edb6] font-bold">{rotation}°</span>
                   </div>
 
                   <button
                     onClick={() => executeDownload('transform')}
-                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#89b4fa] py-2.5 text-xs font-bold text-[#11111b] hover:bg-[#89b4fa]/90"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#c8edb6] py-2.5 text-xs font-bold text-[#0d120f] hover:bg-[#c8edb6]/90"
                   >
                     <Download size={14} /> Download Transformed Image
                   </button>

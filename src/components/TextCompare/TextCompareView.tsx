@@ -1,3 +1,4 @@
+import SyntaxInput from '../Common/SyntaxInput';
 import { useState, useRef } from 'react';
 import MonacoDiffEditor from '../Common/ManagedDiffEditor';
 import {
@@ -67,8 +68,8 @@ function PanelHeader({
       className="flex items-center justify-between px-3 shrink-0"
       style={{
         height: 40,
-        background: 'linear-gradient(180deg, #1c1c30 0%, #181825 100%)',
-        borderBottom: '1px solid #2a2a3e',
+        background: 'linear-gradient(180deg, #1c251d 0%, #111612 100%)',
+        borderBottom: '1px solid #344435',
         borderLeft: side === 'left' ? `3px solid ${color}` : undefined,
         borderRight: side === 'right' ? `3px solid ${color}` : undefined,
       }}
@@ -78,10 +79,10 @@ function PanelHeader({
           className="w-1.5 h-1.5 rounded-full"
           style={{ background: color, boxShadow: `0 0 6px ${color}` }}
         />
-        <span className="text-xs font-semibold text-[#cdd6f4]">{label}</span>
+        <span className="text-xs font-semibold text-[#e4ebdd]">{label}</span>
         {text && (
           <span
-            className="text-[10px] px-1.5 py-0.5 rounded-md text-[#6c7086] font-mono"
+            className="text-[10px] px-1.5 py-0.5 rounded-md text-[#9eac96] font-mono"
             style={{ background: 'rgba(69,71,90,0.35)' }}
           >
             {lines.toLocaleString()} {lines === 1 ? 'line' : 'lines'} · {chars.toLocaleString()} chars
@@ -96,7 +97,7 @@ function PanelHeader({
               <button
                 onClick={onFormat}
                 title="Format & prettify this side (auto-detect JSON/XML/YAML, sort keys)"
-                className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#89b4fa]/10 hover:bg-[#89b4fa]/20 text-[#89b4fa] hover:text-[#b4befe] text-[11px] font-medium transition-all mr-1"
+                className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#c8edb6]/10 hover:bg-[#c8edb6]/20 text-[#c8edb6] hover:text-[#d9f6ca] text-[11px] font-medium transition-all mr-1"
               >
                 <Sparkles size={11} />
                 <span>Format</span>
@@ -105,14 +106,14 @@ function PanelHeader({
             <button
               onClick={onCopy}
               title="Copy"
-              className="p-1.5 rounded-lg hover:bg-[#2a2a3e] text-[#6c7086] hover:text-[#cdd6f4] transition-all"
+              className="p-1.5 rounded-lg hover:bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd] transition-all"
             >
               <Copy size={12} />
             </button>
             <button
               onClick={onClear}
               title="Clear"
-              className="p-1.5 rounded-lg hover:bg-[#2a2a3e] text-[#6c7086] hover:text-[#f38ba8] transition-all"
+              className="p-1.5 rounded-lg hover:bg-[#344435] text-[#9eac96] hover:text-[#f19aa6] transition-all"
             >
               <RotateCcw size={12} />
             </button>
@@ -342,20 +343,21 @@ export default function TextCompareView() {
   // ── Compare view ──────────────────────────────────────────────────────────
   if (comparing) {
     return (
-      <div className="flex flex-col h-full relative">
+      <div className="flex flex-col h-full relative diff-workspace">
+        <button className="diff-mobile-back" onClick={handleBackToEdit}>← Back to edit inputs</button>
         {/* Panel headers */}
-        <div className="flex shrink-0 bg-[#181825] border-b border-[#45475a] overflow-x-auto no-scrollbar items-center">
+        <div className="flex shrink-0 bg-[#111612] border-b border-[#71836b] overflow-x-auto no-scrollbar items-center">
           {/* Left header */}
-          <div className="flex-1 flex items-center justify-between px-3 py-1.5 border-r border-[#45475a] min-w-[220px]">
+          <div className="flex-1 flex items-center justify-between px-3 py-1.5 border-r border-[#71836b] min-w-[220px]">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#f38ba8]" />
-              <span className="text-xs text-[#cdd6f4] font-medium">Original</span>
+              <span className="w-2 h-2 rounded-full bg-[#f19aa6]" />
+              <span className="text-xs text-[#e4ebdd] font-medium">Original</span>
             </div>
             <div className="flex items-center gap-1">
               <button
                 onClick={() => handleFormat('left')}
                 title="Format & sort original"
-                className="flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-[#89b4fa]/10 hover:bg-[#89b4fa]/20 text-[#89b4fa] transition-colors"
+                className="flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-[#c8edb6]/10 hover:bg-[#c8edb6]/20 text-[#c8edb6] transition-colors"
               >
                 <Sparkles size={11} />
                 <span>Format</span>
@@ -363,21 +365,21 @@ export default function TextCompareView() {
               <button
                 onClick={() => handleCopy('left')}
                 title="Copy to clipboard"
-                className="p-1 rounded hover:bg-[#313244] text-[#6c7086] hover:text-[#cdd6f4] transition-colors"
+                className="p-1 rounded hover:bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd] transition-colors"
               >
                 <Copy size={12} />
               </button>
               <button
                 onClick={() => handleDownload('left')}
                 title="Save as file"
-                className="p-1 rounded hover:bg-[#313244] text-[#6c7086] hover:text-[#cdd6f4] transition-colors"
+                className="p-1 rounded hover:bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd] transition-colors"
               >
                 <Download size={12} />
               </button>
               <button
                 onClick={handleBackToEdit}
                 title="Back to edit"
-                className="p-1 rounded hover:bg-[#313244] text-[#6c7086] hover:text-[#cdd6f4] transition-colors"
+                className="p-1 rounded hover:bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd] transition-colors"
               >
                 <RotateCcw size={12} />
               </button>
@@ -385,11 +387,11 @@ export default function TextCompareView() {
           </div>
 
           {/* Center: Format Both & Bidirectional Transfer */}
-          <div className="flex items-center justify-center gap-1.5 px-3 py-1 border-r border-[#45475a] shrink-0 bg-[#181825]">
+          <div className="flex items-center justify-center gap-1.5 px-3 py-1 border-r border-[#71836b] shrink-0 bg-[#111612]">
             <button
               onClick={() => handleFormat('both')}
               title={`Format & align both sides with ${sortJsonKeys ? 'alphabetically sorted keys' : 'standard indent'}`}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-[#89b4fa]/20 text-[#89b4fa] hover:bg-[#89b4fa]/30 border border-[#89b4fa]/40 transition-all shadow-sm"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-[#c8edb6]/20 text-[#c8edb6] hover:bg-[#c8edb6]/30 border border-[#c8edb6]/40 transition-all shadow-sm"
             >
               <Sparkles size={12} />
               <span>Format &amp; Sort Both</span>
@@ -398,7 +400,7 @@ export default function TextCompareView() {
             <button
               onClick={copyLeftToRight}
               title="Copy entire left content → right"
-              className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium bg-[#313244] text-[#6c7086] hover:bg-[#45475a] hover:text-[#89b4fa] transition-colors whitespace-nowrap"
+              className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium bg-[#344435] text-[#9eac96] hover:bg-[#71836b] hover:text-[#c8edb6] transition-colors whitespace-nowrap"
             >
               Left <ArrowRight size={10} />
             </button>
@@ -406,7 +408,7 @@ export default function TextCompareView() {
             <button
               onClick={copyRightToLeft}
               title="Copy entire right content → left"
-              className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium bg-[#313244] text-[#6c7086] hover:bg-[#45475a] hover:text-[#89b4fa] transition-colors whitespace-nowrap"
+              className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium bg-[#344435] text-[#9eac96] hover:bg-[#71836b] hover:text-[#c8edb6] transition-colors whitespace-nowrap"
             >
               <ArrowLeft size={10} /> Right
             </button>
@@ -418,7 +420,7 @@ export default function TextCompareView() {
                   copySelectionTo(selectionSide === 'left' ? 'right' : 'left');
                 }}
                 title={`Insert selected ${selectionSide} lines into ${selectionSide === 'left' ? 'right' : 'left'} panel at cursor`}
-                className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium bg-[rgba(137,180,250,0.12)] text-[#89b4fa] hover:bg-[rgba(137,180,250,0.22)] transition-colors whitespace-nowrap"
+                className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium bg-[rgba(137,180,250,0.12)] text-[#c8edb6] hover:bg-[rgba(137,180,250,0.22)] transition-colors whitespace-nowrap"
               >
                 {selectionSide === 'left' ? (
                   <>Sel <ArrowRight size={10} /> Right</>
@@ -432,14 +434,14 @@ export default function TextCompareView() {
           {/* Right header */}
           <div className="flex-1 flex items-center justify-between px-3 py-1.5 min-w-[260px]">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#a6e3a1]" />
-              <span className="text-xs text-[#cdd6f4] font-medium">Modified</span>
+              <span className="w-2 h-2 rounded-full bg-[#b5dfa3]" />
+              <span className="text-xs text-[#e4ebdd] font-medium">Modified</span>
             </div>
             <div className="flex items-center gap-1">
               <button
                 onClick={() => handleFormat('right')}
                 title="Format & sort modified"
-                className="flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-[#a6e3a1]/10 hover:bg-[#a6e3a1]/20 text-[#a6e3a1] transition-colors"
+                className="flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-[#b5dfa3]/10 hover:bg-[#b5dfa3]/20 text-[#b5dfa3] transition-colors"
               >
                 <Sparkles size={11} />
                 <span>Format</span>
@@ -447,14 +449,14 @@ export default function TextCompareView() {
               <button
                 onClick={() => navigateDiff('prev')}
                 title="Prev diff"
-                className="p-1 rounded hover:bg-[#313244] text-[#6c7086] hover:text-[#cdd6f4] transition-colors"
+                className="p-1 rounded hover:bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd] transition-colors"
               >
                 <ChevronUp size={12} />
               </button>
               <button
                 onClick={() => navigateDiff('next')}
                 title="Next diff"
-                className="p-1 rounded hover:bg-[#313244] text-[#6c7086] hover:text-[#cdd6f4] transition-colors"
+                className="p-1 rounded hover:bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd] transition-colors"
               >
                 <ChevronDown size={12} />
               </button>
@@ -462,8 +464,8 @@ export default function TextCompareView() {
                 onClick={() => setInline(v => !v)}
                 className={`px-2 py-0.5 rounded text-xs transition-colors ${
                   inline
-                    ? 'bg-[#89b4fa] text-[#1e1e2e]'
-                    : 'bg-[#313244] text-[#6c7086] hover:text-[#cdd6f4]'
+                    ? 'bg-[#c8edb6] text-[#171d19]'
+                    : 'bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd]'
                 }`}
               >
                 {inline ? 'Inline' : 'Split'}
@@ -471,14 +473,14 @@ export default function TextCompareView() {
               <button
                 onClick={() => handleCopy('right')}
                 title="Copy to clipboard"
-                className="p-1 rounded hover:bg-[#313244] text-[#6c7086] hover:text-[#cdd6f4] transition-colors"
+                className="p-1 rounded hover:bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd] transition-colors"
               >
                 <Copy size={12} />
               </button>
               <button
                 onClick={() => handleDownload('right')}
                 title="Save as file"
-                className="p-1 rounded hover:bg-[#313244] text-[#6c7086] hover:text-[#cdd6f4] transition-colors"
+                className="p-1 rounded hover:bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd] transition-colors"
               >
                 <Download size={12} />
               </button>
@@ -487,8 +489,8 @@ export default function TextCompareView() {
                 title="Compare settings"
                 className={`p-1 rounded transition-colors ${
                   settingsOpen
-                    ? 'bg-[#89b4fa] text-[#1e1e2e]'
-                    : 'hover:bg-[#313244] text-[#6c7086] hover:text-[#cdd6f4]'
+                    ? 'bg-[#c8edb6] text-[#171d19]'
+                    : 'hover:bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd]'
                 }`}
               >
                 <Settings size={12} />
@@ -499,67 +501,67 @@ export default function TextCompareView() {
 
         {/* Settings panel */}
         {settingsOpen && (
-          <div className="shrink-0 bg-[#24273a] border-b border-[#45475a] px-4 py-2.5">
+          <div className="shrink-0 bg-[#24273a] border-b border-[#71836b] px-4 py-2.5">
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-              <span className="text-xs text-[#6c7086] font-medium shrink-0">Compare settings:</span>
+              <span className="text-xs text-[#9eac96] font-medium shrink-0">Compare settings:</span>
 
-              <label className="flex items-center gap-1.5 text-xs text-[#cdd6f4] cursor-pointer select-none">
+              <label className="flex items-center gap-1.5 text-xs text-[#e4ebdd] cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={settings.ignoreTrimWhitespace}
                   onChange={e => setSetting('ignoreTrimWhitespace', e.target.checked)}
-                  className="accent-[#89b4fa]"
+                  className="accent-[#c8edb6]"
                 />
                 Ignore trailing whitespace
               </label>
 
-              <label className="flex items-center gap-1.5 text-xs text-[#cdd6f4] cursor-pointer select-none">
+              <label className="flex items-center gap-1.5 text-xs text-[#e4ebdd] cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={settings.ignoreLineEndings}
                   onChange={e => setSetting('ignoreLineEndings', e.target.checked)}
-                  className="accent-[#89b4fa]"
+                  className="accent-[#c8edb6]"
                 />
                 Ignore line endings (CR/LF)
               </label>
 
-              <label className="flex items-center gap-1.5 text-xs text-[#cdd6f4] cursor-pointer select-none">
+              <label className="flex items-center gap-1.5 text-xs text-[#e4ebdd] cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={settings.wordDiff}
                   onChange={e => setSetting('wordDiff', e.target.checked)}
-                  className="accent-[#89b4fa]"
+                  className="accent-[#c8edb6]"
                 />
                 Word-level diff
               </label>
 
-              <label className="flex items-center gap-1.5 text-xs text-[#cdd6f4] cursor-pointer select-none">
+              <label className="flex items-center gap-1.5 text-xs text-[#e4ebdd] cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={settings.showWhitespace}
                   onChange={e => setSetting('showWhitespace', e.target.checked)}
-                  className="accent-[#89b4fa]"
+                  className="accent-[#c8edb6]"
                 />
                 Show whitespace characters
               </label>
 
-              <label className="flex items-center gap-1.5 text-xs text-[#cdd6f4] cursor-pointer select-none">
+              <label className="flex items-center gap-1.5 text-xs text-[#e4ebdd] cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={settings.renderIndicators}
                   onChange={e => setSetting('renderIndicators', e.target.checked)}
-                  className="accent-[#89b4fa]"
+                  className="accent-[#c8edb6]"
                 />
                 Show +/− indicators
               </label>
 
               {/* Language Selector */}
-              <div className="flex items-center gap-1.5 text-xs text-[#cdd6f4]">
-                <span className="text-[#6c7086]">Syntax:</span>
+              <div className="flex items-center gap-1.5 text-xs text-[#e4ebdd]">
+                <span className="text-[#9eac96]">Syntax:</span>
                 <select
                   value={diffLanguage}
                   onChange={e => setDiffLanguage(e.target.value as any)}
-                  className="bg-[#181825] border border-[#313244] text-xs px-2 py-0.5 rounded text-[#cdd6f4] focus:outline-none"
+                  className="bg-[#111612] border border-[#344435] text-xs px-2 py-0.5 rounded text-[#e4ebdd] focus:outline-none"
                 >
                   <option value="plaintext">Plaintext</option>
                   <option value="json">JSON</option>
@@ -623,8 +625,8 @@ export default function TextCompareView() {
             className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-xl text-xs font-semibold shadow-2xl flex items-center gap-2 border animate-in fade-in slide-in-from-bottom-2 duration-200"
             style={{
               background: toast.type === 'error' ? '#2e1924' : toast.type === 'warn' ? '#2e2519' : '#192823',
-              borderColor: toast.type === 'error' ? '#f38ba8' : toast.type === 'warn' ? '#fab387' : '#a6e3a1',
-              color: toast.type === 'error' ? '#f38ba8' : toast.type === 'warn' ? '#fab387' : '#a6e3a1',
+              borderColor: toast.type === 'error' ? '#f19aa6' : toast.type === 'warn' ? '#f3c18e' : '#b5dfa3',
+              color: toast.type === 'error' ? '#f19aa6' : toast.type === 'warn' ? '#f3c18e' : '#b5dfa3',
             }}
           >
             {toast.type === 'error' ? <AlertCircle size={14} /> : <Check size={14} />}
@@ -640,14 +642,14 @@ export default function TextCompareView() {
   const rightLines = rightText ? rightText.split('\n').length : 0;
 
   return (
-    <div className="flex flex-col h-full relative">
+    <div className="flex flex-col h-full relative diff-workspace">
       <div className="flex flex-col md:flex-row flex-1 min-h-0">
         {/* Left pane */}
-        <div className="flex-1 flex flex-col" style={{ borderRight: '1px solid #2a2a3e' }}>
+        <div className="flex-1 flex flex-col" style={{ borderRight: '1px solid #344435' }}>
           <PanelHeader
             side="left"
             label="Original Text"
-            color="#f38ba8"
+            color="#f19aa6"
             text={leftText}
             onCopy={() => handleCopy('left')}
             onClear={() => setLeftText('')}
@@ -663,15 +665,16 @@ export default function TextCompareView() {
                     border: '1px solid rgba(243,139,168,0.12)',
                   }}
                 >
-                  <FileText size={22} color="#f38ba8" strokeWidth={1.5} style={{ opacity: 0.5 }} />
+                  <FileText size={22} color="#f19aa6" strokeWidth={1.5} style={{ opacity: 0.5 }} />
                 </div>
                 <div className="text-center">
-                  <p className="text-sm font-medium" style={{ color: '#6c7086' }}>Paste original text</p>
-                  <p className="text-xs mt-1" style={{ color: '#45475a' }}>JSON, XML, HTML, YAML or plain text</p>
+                  <p className="text-sm font-medium" style={{ color: '#9eac96' }}>Paste original text</p>
+                  <p className="text-xs mt-1" style={{ color: '#71836b' }}>JSON, XML, HTML, YAML or plain text</p>
                 </div>
               </div>
             )}
-            <textarea
+            <SyntaxInput
+              aria-label="Original text"
               value={leftText}
               onChange={e => setLeftText(e.target.value)}
               spellCheck={false}
@@ -686,7 +689,7 @@ export default function TextCompareView() {
           <PanelHeader
             side="right"
             label="Modified Text"
-            color="#a6e3a1"
+            color="#b5dfa3"
             text={rightText}
             onCopy={() => handleCopy('right')}
             onClear={() => setRightText('')}
@@ -702,15 +705,16 @@ export default function TextCompareView() {
                     border: '1px solid rgba(166,227,161,0.12)',
                   }}
                 >
-                  <FileText size={22} color="#a6e3a1" strokeWidth={1.5} style={{ opacity: 0.5 }} />
+                  <FileText size={22} color="#b5dfa3" strokeWidth={1.5} style={{ opacity: 0.5 }} />
                 </div>
                 <div className="text-center">
-                  <p className="text-sm font-medium" style={{ color: '#6c7086' }}>Paste modified text</p>
-                  <p className="text-xs mt-1" style={{ color: '#45475a' }}>JSON, XML, HTML, YAML or plain text</p>
+                  <p className="text-sm font-medium" style={{ color: '#9eac96' }}>Paste modified text</p>
+                  <p className="text-xs mt-1" style={{ color: '#71836b' }}>JSON, XML, HTML, YAML or plain text</p>
                 </div>
               </div>
             )}
-            <textarea
+            <SyntaxInput
+              aria-label="Modified text"
               value={rightText}
               onChange={e => setRightText(e.target.value)}
               spellCheck={false}
@@ -725,30 +729,30 @@ export default function TextCompareView() {
       <div
         className="shrink-0 flex items-center justify-between px-6 py-2.5 gap-4 flex-wrap"
         style={{
-          background: 'linear-gradient(180deg, #181825 0%, #141420 100%)',
-          borderTop: '1px solid #2a2a3e',
+          background: 'linear-gradient(180deg, #111612 0%, #141c16 100%)',
+          borderTop: '1px solid #344435',
         }}
       >
         {/* Left stats */}
-        <div className="text-[11px] text-[#6c7086] font-mono shrink-0 min-w-[120px]">
+        <div className="text-[11px] text-[#9eac96] font-mono shrink-0 min-w-[120px]">
           {leftText ? (
             <span>
-              <span className="text-[#f38ba8] font-medium">{leftLines.toLocaleString()}</span> lines ·{' '}
+              <span className="text-[#f19aa6] font-medium">{leftLines.toLocaleString()}</span> lines ·{' '}
               {leftText.length.toLocaleString()} chars
             </span>
           ) : (
-            <span className="text-[#3b3e52]">No original</span>
+            <span className="text-[#9eac96]">No original</span>
           )}
         </div>
 
         {/* Center: Format Controls & Compare Action */}
         <div className="flex items-center gap-3 flex-wrap justify-center">
           {/* Format Control Group */}
-          <div className="flex items-center gap-1.5 bg-[#11111b] border border-[#313244] rounded-xl p-1">
+          <div className="flex items-center gap-1.5 bg-[#0d120f] border border-[#344435] rounded-xl p-1">
             <button
               onClick={() => handleFormat('both')}
               disabled={!leftText.trim() && !rightText.trim()}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#89b4fa]/15 text-[#89b4fa] hover:bg-[#89b4fa]/25 border border-[#89b4fa]/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#c8edb6]/15 text-[#c8edb6] hover:bg-[#c8edb6]/25 border border-[#c8edb6]/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
               title="Auto-format and align both sides with consistent indentation and sorted keys"
             >
               <Sparkles size={13} />
@@ -759,7 +763,7 @@ export default function TextCompareView() {
             <select
               value={formatMode}
               onChange={e => setFormatMode(e.target.value as SupportedFormat)}
-              className="px-2 py-1.5 bg-[#181825] border border-[#313244] rounded-lg text-xs font-medium text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa] cursor-pointer"
+              className="px-2 py-1.5 bg-[#111612] border border-[#344435] rounded-lg text-xs font-medium text-[#e4ebdd] focus:outline-none focus:border-[#c8edb6] cursor-pointer"
             >
               <option value="auto">⚡ Auto-Detect</option>
               <option value="json">{} JSON</option>
@@ -772,8 +776,8 @@ export default function TextCompareView() {
             <label
               className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
                 sortJsonKeys
-                  ? 'bg-[#cba6f7]/15 text-[#cba6f7] border border-[#cba6f7]/30'
-                  : 'text-[#6c7086] hover:text-[#cdd6f4]'
+                  ? 'bg-[#ceb8f6]/15 text-[#ceb8f6] border border-[#ceb8f6]/30'
+                  : 'text-[#9eac96] hover:text-[#e4ebdd]'
               }`}
               title="Alphabetically sort JSON & YAML keys so order differences don't create false diffs"
             >
@@ -788,8 +792,9 @@ export default function TextCompareView() {
             </label>
           </div>
 
-          <div className="h-6 w-px bg-[#313244]" />
+          <div className="h-6 w-px bg-[#344435]" />
 
+          <button className="workbench-sample" onClick={() => { setLeftText('{\n  "project": "PSDevTool",\n  "version": 1,\n  "features": ["compare", "format"],\n  "active": true\n}'); setRightText('{\n  "project": "PSDevTool",\n  "version": 2,\n  "features": ["compare", "format", "explore"],\n  "active": true\n}'); }} title="Try a JSON comparison with sample data">Try an example</button>
           {/* Compare button */}
           <button
             onClick={handleStartCompare}
@@ -798,15 +803,15 @@ export default function TextCompareView() {
             style={
               canCompare
                 ? {
-                    background: 'linear-gradient(135deg, #89b4fa 0%, #74c7ec 100%)',
-                    color: '#1e1e2e',
+                    background: 'linear-gradient(135deg, #c8edb6 0%, #74c7ec 100%)',
+                    color: '#171d19',
                     boxShadow:
                       '0 4px 20px rgba(137,180,250,0.35), 0 1px 0 rgba(255,255,255,0.15) inset',
                   }
                 : {
-                    background: '#1e1e2e',
+                    background: '#171d19',
                     color: '#3d3f55',
-                    border: '1px solid #2a2a3e',
+                    border: '1px solid #344435',
                     cursor: 'not-allowed',
                   }
             }
@@ -821,7 +826,7 @@ export default function TextCompareView() {
                 setLeftText('');
                 setRightText('');
               }}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs transition-all text-[#6c7086] hover:text-[#f38ba8] bg-[#313244]/40 hover:bg-[#313244]"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs transition-all text-[#9eac96] hover:text-[#f19aa6] bg-[#344435]/40 hover:bg-[#344435]"
               title="Clear both inputs"
             >
               <RotateCcw size={11} />
@@ -831,14 +836,14 @@ export default function TextCompareView() {
         </div>
 
         {/* Right stats */}
-        <div className="text-[11px] text-[#6c7086] font-mono shrink-0 min-w-[120px] text-right">
+        <div className="text-[11px] text-[#9eac96] font-mono shrink-0 min-w-[120px] text-right">
           {rightText ? (
             <span>
-              <span className="text-[#a6e3a1] font-medium">{rightLines.toLocaleString()}</span> lines ·{' '}
+              <span className="text-[#b5dfa3] font-medium">{rightLines.toLocaleString()}</span> lines ·{' '}
               {rightText.length.toLocaleString()} chars
             </span>
           ) : (
-            <span className="text-[#3b3e52]">No modified</span>
+            <span className="text-[#9eac96]">No modified</span>
           )}
         </div>
       </div>
@@ -849,8 +854,8 @@ export default function TextCompareView() {
           className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-xl text-xs font-semibold shadow-2xl flex items-center gap-2 border animate-in fade-in slide-in-from-bottom-2 duration-200"
           style={{
             background: toast.type === 'error' ? '#2e1924' : toast.type === 'warn' ? '#2e2519' : '#192823',
-            borderColor: toast.type === 'error' ? '#f38ba8' : toast.type === 'warn' ? '#fab387' : '#a6e3a1',
-            color: toast.type === 'error' ? '#f38ba8' : toast.type === 'warn' ? '#fab387' : '#a6e3a1',
+            borderColor: toast.type === 'error' ? '#f19aa6' : toast.type === 'warn' ? '#f3c18e' : '#b5dfa3',
+            color: toast.type === 'error' ? '#f19aa6' : toast.type === 'warn' ? '#f3c18e' : '#b5dfa3',
           }}
         >
           {toast.type === 'error' ? <AlertCircle size={14} /> : <Check size={14} />}

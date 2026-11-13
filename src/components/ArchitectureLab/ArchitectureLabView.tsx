@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState, useEffect, type DragEvent } from 'react';
-import MonacoEditor from '@monaco-editor/react';
+import MonacoEditor from '../Common/CodeEditor';
 import {
   Cable, Cloud, Copy, Database, Download, GitBranch, Layers3, Network, Play, Pause, Plus,
   Server, Trash2, Users, Workflow, Smartphone, Laptop, Monitor, Tablet, RefreshCw, ZoomIn, ZoomOut,
@@ -184,10 +184,10 @@ function MermaidView() {
   return (
     <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-[minmax(300px,0.8fr)_minmax(0,1.2fr)]">
       {/* Editor Pane */}
-      <div className="flex min-h-0 flex-col border-b border-[#313244] md:border-b-0 md:border-r">
-        <div className="flex items-center justify-between border-b border-[#313244] bg-[#181825] px-4 py-2 text-[11px] text-[#9399b2]">
-          <span className="font-medium text-[#cdd6f4]">Mermaid Code Editor</span>
-          <span className="text-[10px] text-[#a6e3a1]">Auto-loads on edit/paste</span>
+      <div className="flex min-h-0 flex-col border-b border-[#344435] md:border-b-0 md:border-r">
+        <div className="flex items-center justify-between border-b border-[#344435] bg-[#111612] px-4 py-2 text-[11px] text-[#b1bea8]">
+          <span className="font-medium text-[#e4ebdd]">Mermaid Code Editor</span>
+          <span className="text-[10px] text-[#b5dfa3]">Auto-loads on edit/paste</span>
         </div>
         <div className="min-h-0 flex-1">
           <MonacoEditor
@@ -255,25 +255,25 @@ function MermaidView() {
 
       {/* Preview Pane with Zoom, Pan, and Canvas Themes */}
       <div className="flex min-h-0 flex-col">
-        <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#313244] bg-[#181825] px-4 py-2">
+        <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#344435] bg-[#111612] px-4 py-2">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-semibold text-[#cdd6f4]">Diagram Preview</span>
-            <div className="flex items-center gap-1 rounded bg-[#11111b] p-0.5 text-[9px] border border-[#313244]">
+            <span className="text-[11px] font-semibold text-[#e4ebdd]">Diagram Preview</span>
+            <div className="flex items-center gap-1 rounded bg-[#0d120f] p-0.5 text-[9px] border border-[#344435]">
               <button
                 onClick={() => setCanvasBg('grid')}
-                className={`rounded px-1.5 py-0.5 transition-all ${canvasBg === 'grid' ? 'bg-[#313244] text-[#cdd6f4]' : 'text-[#6c7086]'}`}
+                className={`rounded px-1.5 py-0.5 transition-all ${canvasBg === 'grid' ? 'bg-[#344435] text-[#e4ebdd]' : 'text-[#9eac96]'}`}
               >
                 Dot Grid
               </button>
               <button
                 onClick={() => setCanvasBg('light')}
-                className={`rounded px-1.5 py-0.5 transition-all ${canvasBg === 'light' ? 'bg-[#313244] text-[#cdd6f4]' : 'text-[#6c7086]'}`}
+                className={`rounded px-1.5 py-0.5 transition-all ${canvasBg === 'light' ? 'bg-[#344435] text-[#e4ebdd]' : 'text-[#9eac96]'}`}
               >
                 White
               </button>
               <button
                 onClick={() => setCanvasBg('dark')}
-                className={`rounded px-1.5 py-0.5 transition-all ${canvasBg === 'dark' ? 'bg-[#313244] text-[#cdd6f4]' : 'text-[#6c7086]'}`}
+                className={`rounded px-1.5 py-0.5 transition-all ${canvasBg === 'dark' ? 'bg-[#344435] text-[#e4ebdd]' : 'text-[#9eac96]'}`}
               >
                 Dark
               </button>
@@ -282,23 +282,23 @@ function MermaidView() {
 
           {/* Zoom controls & Exports */}
           <div className="flex items-center gap-1.5">
-            <div className="flex items-center rounded border border-[#313244] bg-[#11111b] text-[#9399b2]">
+            <div className="flex items-center rounded border border-[#344435] bg-[#0d120f] text-[#b1bea8]">
               <button
                 onClick={() => setZoom(z => Math.max(0.2, z - 0.15))}
                 title="Zoom Out"
-                className="p-1 hover:text-[#cdd6f4]"
+                className="p-1 hover:text-[#e4ebdd]"
               >
                 <ZoomOut size={13} />
               </button>
-              <span className="px-1.5 font-mono text-[9px] text-[#cdd6f4]">{Math.round(zoom * 100)}%</span>
+              <span className="px-1.5 font-mono text-[9px] text-[#e4ebdd]">{Math.round(zoom * 100)}%</span>
               <button
                 onClick={() => setZoom(z => Math.min(4, z + 0.15))}
                 title="Zoom In"
-                className="p-1 hover:text-[#cdd6f4]"
+                className="p-1 hover:text-[#e4ebdd]"
               >
                 <ZoomIn size={13} />
               </button>
-              <button onClick={resetView} title="Reset View" className="border-l border-[#313244] p-1 hover:text-[#cdd6f4]">
+              <button onClick={resetView} title="Reset View" className="border-l border-[#344435] p-1 hover:text-[#e4ebdd]">
                 <Maximize2 size={12} />
               </button>
             </div>
@@ -306,7 +306,7 @@ function MermaidView() {
             <button
               onClick={() => void renderDiagram(source)}
               disabled={busy}
-              className="flex items-center gap-1 rounded border border-[#89b4fa]/30 bg-[#89b4fa]/10 px-2 py-1 text-[10px] text-[#89b4fa] hover:bg-[#89b4fa]/20 disabled:opacity-40"
+              className="flex items-center gap-1 rounded border border-[#c8edb6]/30 bg-[#c8edb6]/10 px-2 py-1 text-[10px] text-[#c8edb6] hover:bg-[#c8edb6]/20 disabled:opacity-40"
             >
               <RefreshCw size={11} className={busy ? 'animate-spin' : ''} />
               {busy ? 'Rendering' : 'Render'}
@@ -314,14 +314,14 @@ function MermaidView() {
             <button
               onClick={() => downloadFile('architecture-diagram.svg', svg, 'image/svg+xml')}
               disabled={!svg}
-              className="rounded border border-[#313244] px-2 py-1 text-[10px] text-[#cdd6f4] hover:bg-[#252538] disabled:opacity-40"
+              className="rounded border border-[#344435] px-2 py-1 text-[10px] text-[#e4ebdd] hover:bg-[#243025] disabled:opacity-40"
             >
               SVG
             </button>
             <button
               onClick={() => void exportPng()}
               disabled={!svg}
-              className="rounded border border-[#313244] px-2 py-1 text-[10px] text-[#cdd6f4] hover:bg-[#252538] disabled:opacity-40"
+              className="rounded border border-[#344435] px-2 py-1 text-[10px] text-[#e4ebdd] hover:bg-[#243025] disabled:opacity-40"
             >
               PNG
             </button>
@@ -329,7 +329,7 @@ function MermaidView() {
         </div>
 
         {error && (
-          <div role="alert" className="shrink-0 border-b border-[#f38ba8]/30 bg-[#f38ba8]/10 px-4 py-2 text-[11px] text-[#f38ba8]">
+          <div role="alert" className="shrink-0 border-b border-[#f19aa6]/30 bg-[#f19aa6]/10 px-4 py-2 text-[11px] text-[#f19aa6]">
             {error}
           </div>
         )}
@@ -406,7 +406,7 @@ function MermaidView() {
           )}
 
           {/* Touch / Pan hint footer */}
-          <div className="absolute bottom-2 right-2 rounded-md bg-[#181825]/85 px-2 py-1 text-[9px] text-[#9399b2] backdrop-blur border border-[#313244]/60 pointer-events-none">
+          <div className="absolute bottom-2 right-2 rounded-md bg-[#111612]/85 px-2 py-1 text-[9px] text-[#b1bea8] backdrop-blur border border-[#344435]/60 pointer-events-none">
             Scroll to zoom · Drag to pan
           </div>
         </div>
@@ -500,19 +500,19 @@ function ServiceNode({ id, data, selected }: NodeProps<ServiceNodeType>) {
     <div
       className={`min-w-[210px] rounded-lg border shadow-xl transition-all ${
         isBroken
-          ? 'border-[#f38ba8] bg-[#2a131a] ring-2 ring-[#f38ba8]/60 animate-pulse'
+          ? 'border-[#f19aa6] bg-[#2a131a] ring-2 ring-[#f19aa6]/60 animate-pulse'
           : isOverloaded
-          ? 'border-[#fab387] bg-[#291e17] ring-1 ring-[#fab387]'
+          ? 'border-[#f3c18e] bg-[#291e17] ring-1 ring-[#f3c18e]'
           : selected
-          ? 'border-[#89b4fa] bg-[#1b1b2a] ring-1 ring-[#89b4fa]'
-          : 'border-[#313244] bg-[#181825]'
+          ? 'border-[#c8edb6] bg-[#1b1b2a] ring-1 ring-[#c8edb6]'
+          : 'border-[#344435] bg-[#111612]'
       }`}
     >
-      <Handle type="target" position={Position.Left} className="!h-2.5 !w-2.5 !border-2 !border-[#181825] !bg-[#89b4fa]" />
+      <Handle type="target" position={Position.Left} className="!h-2.5 !w-2.5 !border-2 !border-[#111612] !bg-[#c8edb6]" />
 
       {/* Header */}
-      <div className="flex items-center gap-2 border-b border-[#313244] px-3 py-2">
-        <span className="shrink-0 text-[#89b4fa]">
+      <div className="flex items-center gap-2 border-b border-[#344435] px-3 py-2">
+        <span className="shrink-0 text-[#c8edb6]">
           {renderServiceIcon(data.icon, 15)}
         </span>
         <div className="min-w-0 flex-1">
@@ -524,7 +524,7 @@ function ServiceNode({ id, data, selected }: NodeProps<ServiceNodeType>) {
               onChange={e => setTitleInput(e.target.value)}
               onBlur={handleTitleSubmit}
               onKeyDown={e => e.key === 'Enter' && handleTitleSubmit()}
-              className="w-full rounded bg-[#11111b] px-1 text-[11px] font-semibold text-[#cdd6f4] outline-none border border-[#89b4fa]"
+              className="w-full rounded bg-[#0d120f] px-1 text-[11px] font-semibold text-[#e4ebdd] outline-none border border-[#c8edb6]"
             />
           ) : (
             <div
@@ -532,13 +532,13 @@ function ServiceNode({ id, data, selected }: NodeProps<ServiceNodeType>) {
               title="Click to rename"
               className="flex items-center gap-1 group cursor-pointer"
             >
-              <span className="truncate text-[11px] font-semibold text-[#cdd6f4] group-hover:text-[#89b4fa]">
+              <span className="truncate text-[11px] font-semibold text-[#e4ebdd] group-hover:text-[#c8edb6]">
                 {data.title}
               </span>
-              <Edit3 size={9} className="opacity-0 group-hover:opacity-100 text-[#6c7086]" />
+              <Edit3 size={9} className="opacity-0 group-hover:opacity-100 text-[#9eac96]" />
             </div>
           )}
-          <div className="text-[9px] text-[#6c7086]">{data.kind}</div>
+          <div className="text-[9px] text-[#9eac96]">{data.kind}</div>
         </div>
 
         <span
@@ -550,34 +550,34 @@ function ServiceNode({ id, data, selected }: NodeProps<ServiceNodeType>) {
       </div>
 
       {/* Body / Live Metrics */}
-      <div className="grid grid-cols-2 gap-x-2 gap-y-1 p-2 text-[9px] text-[#9399b2]">
+      <div className="grid grid-cols-2 gap-x-2 gap-y-1 p-2 text-[9px] text-[#b1bea8]">
         <span>Capacity</span>
-        <span className="text-right font-mono text-[#cdd6f4]">{(data.capacity * data.replicas).toLocaleString()}/s</span>
+        <span className="text-right font-mono text-[#e4ebdd]">{(data.capacity * data.replicas).toLocaleString()}/s</span>
 
         <span>Replicas</span>
-        <span className="text-right font-mono text-[#cdd6f4]">{data.replicas}</span>
+        <span className="text-right font-mono text-[#e4ebdd]">{data.replicas}</span>
 
         {metrics && (
           <>
-            <span className="border-t border-[#313244] pt-1 text-[#cdd6f4]">Traffic</span>
-            <span className="border-t border-[#313244] pt-1 text-right font-mono font-medium text-[#cdd6f4]">
+            <span className="border-t border-[#344435] pt-1 text-[#e4ebdd]">Traffic</span>
+            <span className="border-t border-[#344435] pt-1 text-right font-mono font-medium text-[#e4ebdd]">
               {Math.round(metrics.requests).toLocaleString()} /s
             </span>
 
             <span>Status</span>
             <span className="text-right font-mono font-bold">
               {isBroken ? (
-                <span className="text-[#f38ba8] flex items-center justify-end gap-1">
+                <span className="text-[#f19aa6] flex items-center justify-end gap-1">
                   <Flame size={10} /> BREAKING
                 </span>
               ) : isOverloaded ? (
-                <span className="text-[#fab387] flex items-center justify-end gap-1">
+                <span className="text-[#f3c18e] flex items-center justify-end gap-1">
                   <AlertTriangle size={10} /> SATURATED
                 </span>
               ) : isDegraded ? (
-                <span className="text-[#f9e2af]">HEAVY LOAD</span>
+                <span className="text-[#f3d58c]">HEAVY LOAD</span>
               ) : (
-                <span className="text-[#a6e3a1] flex items-center justify-end gap-1">
+                <span className="text-[#b5dfa3] flex items-center justify-end gap-1">
                   <CheckCircle2 size={10} /> HEALTHY
                 </span>
               )}
@@ -586,21 +586,21 @@ function ServiceNode({ id, data, selected }: NodeProps<ServiceNodeType>) {
             <span>Utilization</span>
             <span
               className={`text-right font-mono font-medium ${
-                metrics.utilization >= 1 ? 'text-[#f38ba8]' : metrics.utilization > 0.75 ? 'text-[#fab387]' : 'text-[#a6e3a1]'
+                metrics.utilization >= 1 ? 'text-[#f19aa6]' : metrics.utilization > 0.75 ? 'text-[#f3c18e]' : 'text-[#b5dfa3]'
               }`}
             >
               {Math.round(metrics.utilization * 100)}%
             </span>
 
             <span>Latency (P95)</span>
-            <span className={`text-right font-mono ${metrics.p95 > 200 ? 'text-[#f38ba8]' : 'text-[#cdd6f4]'}`}>
+            <span className={`text-right font-mono ${metrics.p95 > 200 ? 'text-[#f19aa6]' : 'text-[#e4ebdd]'}`}>
               {Math.round(metrics.p95)} ms
             </span>
 
             {metrics.failedRequests > 0 && (
               <>
-                <span className="text-[#f38ba8]">Dropped Req</span>
-                <span className="text-right font-mono font-bold text-[#f38ba8]">
+                <span className="text-[#f19aa6]">Dropped Req</span>
+                <span className="text-right font-mono font-bold text-[#f19aa6]">
                   {Math.round(metrics.failedRequests)}/s
                 </span>
               </>
@@ -608,8 +608,8 @@ function ServiceNode({ id, data, selected }: NodeProps<ServiceNodeType>) {
 
             {metrics.queueDepth > 0 && (
               <>
-                <span className="text-[#f9e2af]">Queue Backlog</span>
-                <span className="text-right font-mono text-[#f9e2af]">
+                <span className="text-[#f3d58c]">Queue Backlog</span>
+                <span className="text-right font-mono text-[#f3d58c]">
                   {Math.round(metrics.queueDepth)} msgs
                 </span>
               </>
@@ -618,7 +618,7 @@ function ServiceNode({ id, data, selected }: NodeProps<ServiceNodeType>) {
         )}
       </div>
 
-      <Handle type="source" position={Position.Right} className="!h-2.5 !w-2.5 !border-2 !border-[#181825] !bg-[#89b4fa]" />
+      <Handle type="source" position={Position.Right} className="!h-2.5 !w-2.5 !border-2 !border-[#111612] !bg-[#c8edb6]" />
     </div>
   );
 }
@@ -688,11 +688,11 @@ const INITIAL_SERVICE_NODES: ServiceNodeType[] = [
 ];
 
 const INITIAL_SERVICE_EDGES: Edge[] = [
-  { id: 'web-gw', source: 'web-clients', target: 'gateway', animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: '#89b4fa' }, style: { stroke: '#89b4fa', strokeWidth: 2 } },
-  { id: 'mobile-gw', source: 'mobile-clients', target: 'gateway', animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: '#89b4fa' }, style: { stroke: '#89b4fa', strokeWidth: 2 } },
-  { id: 'gw-compute', source: 'gateway', target: 'compute', animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: '#89b4fa' }, style: { stroke: '#89b4fa', strokeWidth: 2 } },
-  { id: 'compute-db', source: 'compute', target: 'database', animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: '#89b4fa' }, style: { stroke: '#89b4fa', strokeWidth: 2 } },
-  { id: 'compute-cache', source: 'compute', target: 'cache', animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: '#89b4fa' }, style: { stroke: '#89b4fa', strokeWidth: 2 } },
+  { id: 'web-gw', source: 'web-clients', target: 'gateway', animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: '#c8edb6' }, style: { stroke: '#c8edb6', strokeWidth: 2 } },
+  { id: 'mobile-gw', source: 'mobile-clients', target: 'gateway', animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: '#c8edb6' }, style: { stroke: '#c8edb6', strokeWidth: 2 } },
+  { id: 'gw-compute', source: 'gateway', target: 'compute', animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: '#c8edb6' }, style: { stroke: '#c8edb6', strokeWidth: 2 } },
+  { id: 'compute-db', source: 'compute', target: 'database', animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: '#c8edb6' }, style: { stroke: '#c8edb6', strokeWidth: 2 } },
+  { id: 'compute-cache', source: 'compute', target: 'cache', animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: '#c8edb6' }, style: { stroke: '#c8edb6', strokeWidth: 2 } },
 ];
 
 function SystemDesignCanvas() {
@@ -758,8 +758,8 @@ function SystemDesignCanvas() {
         {
           ...connection,
           animated: true,
-          markerEnd: { type: MarkerType.ArrowClosed, color: '#89b4fa' },
-          style: { stroke: '#89b4fa', strokeWidth: 2 },
+          markerEnd: { type: MarkerType.ArrowClosed, color: '#c8edb6' },
+          style: { stroke: '#c8edb6', strokeWidth: 2 },
         },
         current
       )
@@ -883,13 +883,13 @@ function SystemDesignCanvas() {
           ...edge,
           animated: isSimulating,
           style: {
-            stroke: isTargetBroken ? '#f38ba8' : '#89b4fa',
+            stroke: isTargetBroken ? '#f19aa6' : '#c8edb6',
             strokeWidth: isTargetBroken ? 3 : 2,
             strokeDasharray: isTargetBroken ? '5,5' : undefined,
           },
           markerEnd: {
             type: MarkerType.ArrowClosed,
-            color: isTargetBroken ? '#f38ba8' : '#89b4fa',
+            color: isTargetBroken ? '#f19aa6' : '#c8edb6',
           },
         };
       })
@@ -930,25 +930,25 @@ function SystemDesignCanvas() {
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       {/* Simulation Command Center */}
-      <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#313244] bg-[#181825] px-4 py-2">
+      <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#344435] bg-[#111612] px-4 py-2">
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
             <button
               onClick={() => setIsSimulating(!isSimulating)}
               className={`flex items-center gap-1.5 rounded px-2.5 py-1 text-[10px] font-semibold transition-all ${
-                isSimulating ? 'bg-[#a6e3a1]/15 text-[#a6e3a1] border border-[#a6e3a1]/40' : 'bg-[#313244] text-[#cdd6f4]'
+                isSimulating ? 'bg-[#b5dfa3]/15 text-[#b5dfa3] border border-[#b5dfa3]/40' : 'bg-[#344435] text-[#e4ebdd]'
               }`}
             >
               {isSimulating ? <Pause size={12} /> : <Play size={12} />}
               {isSimulating ? 'Simulating' : 'Paused'}
             </button>
-            <div className="flex items-center gap-1 text-[9px] text-[#9399b2] border border-[#313244] rounded bg-[#11111b] px-1.5 py-0.5">
+            <div className="flex items-center gap-1 text-[9px] text-[#b1bea8] border border-[#344435] rounded bg-[#0d120f] px-1.5 py-0.5">
               <span>Speed:</span>
               {[1, 2, 5].map(spd => (
                 <button
                   key={spd}
                   onClick={() => setSimSpeed(spd)}
-                  className={`px-1 rounded ${simSpeed === spd ? 'bg-[#89b4fa] text-[#11111b] font-bold' : 'text-[#6c7086]'}`}
+                  className={`px-1 rounded ${simSpeed === spd ? 'bg-[#c8edb6] text-[#0d120f] font-bold' : 'text-[#9eac96]'}`}
                 >
                   {spd}x
                 </button>
@@ -958,7 +958,7 @@ function SystemDesignCanvas() {
 
           {/* Ingress slider */}
           <div className="flex items-center gap-2">
-            <span className="text-[10px] text-[#9399b2]">Ingress Traffic:</span>
+            <span className="text-[10px] text-[#b1bea8]">Ingress Traffic:</span>
             <input
               type="range"
               min="200"
@@ -966,9 +966,9 @@ function SystemDesignCanvas() {
               step="200"
               value={ingressRps}
               onChange={e => setIngressRps(Number(e.target.value))}
-              className="w-28 accent-[#89b4fa] cursor-pointer"
+              className="w-28 accent-[#c8edb6] cursor-pointer"
             />
-            <span className="font-mono text-[10px] font-bold text-[#89b4fa]">
+            <span className="font-mono text-[10px] font-bold text-[#c8edb6]">
               {ingressRps.toLocaleString()} req/s
             </span>
           </div>
@@ -978,44 +978,44 @@ function SystemDesignCanvas() {
             <button
               onClick={triggerTrafficSpike}
               title="Spike traffic by 4x"
-              className="flex items-center gap-1 rounded border border-[#fab387]/40 bg-[#fab387]/10 px-2 py-1 text-[9px] text-[#fab387] hover:bg-[#fab387]/20"
+              className="flex items-center gap-1 rounded border border-[#f3c18e]/40 bg-[#f3c18e]/10 px-2 py-1 text-[9px] text-[#f3c18e] hover:bg-[#f3c18e]/20"
             >
               <Flame size={11} /> 4x Spike
             </button>
             <button
               onClick={killDatabase}
               title="Cut database connection pool"
-              className="flex items-center gap-1 rounded border border-[#f38ba8]/40 bg-[#f38ba8]/10 px-2 py-1 text-[9px] text-[#f38ba8] hover:bg-[#f38ba8]/20"
+              className="flex items-center gap-1 rounded border border-[#f19aa6]/40 bg-[#f19aa6]/10 px-2 py-1 text-[9px] text-[#f19aa6] hover:bg-[#f19aa6]/20"
             >
               <ShieldAlert size={11} /> Kill DB
             </button>
             <button
               onClick={restoreAll}
               title="Reset all failure states to normal"
-              className="flex items-center gap-1 rounded border border-[#313244] px-2 py-1 text-[9px] text-[#a6e3a1] hover:bg-[#252538]"
+              className="flex items-center gap-1 rounded border border-[#344435] px-2 py-1 text-[9px] text-[#b5dfa3] hover:bg-[#243025]"
             >
               <CheckCircle2 size={11} /> Normal
             </button>
           </div>
         </div>
 
-        <div className="text-[9px] text-[#6c7086]">
+        <div className="text-[9px] text-[#9eac96]">
           Tip: Drag services to canvas · Click node title to rename
         </div>
       </div>
 
       {/* Live Incident Diagnostics Banner */}
       {incidentLog.length > 0 && (
-        <div className="flex items-center gap-2 border-b border-[#313244] bg-[#11111b] px-4 py-1.5 text-[10px]">
-          <span className="font-semibold text-[#89b4fa] uppercase tracking-wider text-[9px]">Live Diagnostics:</span>
+        <div className="flex items-center gap-2 border-b border-[#344435] bg-[#0d120f] px-4 py-1.5 text-[10px]">
+          <span className="font-semibold text-[#c8edb6] uppercase tracking-wider text-[9px]">Live Diagnostics:</span>
           <div className="flex-1 truncate">
             {incidentLog.map((log, i) => (
               <span
                 key={i}
                 className={
                   log.includes('[OUTAGE]') || log.includes('[SATURATION]')
-                    ? 'text-[#f38ba8] font-medium'
-                    : 'text-[#a6e3a1]'
+                    ? 'text-[#f19aa6] font-medium'
+                    : 'text-[#b5dfa3]'
                 }
               >
                 {log}
@@ -1028,15 +1028,15 @@ function SystemDesignCanvas() {
       {/* Main Studio Grid */}
       <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-[230px_minmax(0,1fr)_250px]">
         {/* Service Catalog Sidebar */}
-        <aside className="flex min-h-0 flex-col border-b border-[#313244] bg-[#181825] md:border-b-0 md:border-r">
-          <div className="flex items-center gap-2 border-b border-[#313244] px-3 py-2 text-[11px] font-semibold text-[#cdd6f4]">
-            <Cloud size={13} className="text-[#89b4fa]" />
+        <aside className="flex min-h-0 flex-col border-b border-[#344435] bg-[#111612] md:border-b-0 md:border-r">
+          <div className="flex items-center gap-2 border-b border-[#344435] px-3 py-2 text-[11px] font-semibold text-[#e4ebdd]">
+            <Cloud size={13} className="text-[#c8edb6]" />
             Component Palette
           </div>
           <div className="min-h-0 flex-1 overflow-auto px-2 pb-2">
             {(['Client', 'AWS', 'GCP', 'Azure', 'Generic'] as const).map(provider => (
               <section key={provider} className="mb-2">
-                <h3 className="sticky top-0 z-10 bg-[#181825] px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-[#89b4fa]">
+                <h3 className="sticky top-0 z-10 bg-[#111612] px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-[#c8edb6]">
                   {provider === 'Client' ? 'Clients & Devices' : `${provider} Services`}
                 </h3>
                 {SERVICE_CATALOG.map((service, index) => ({ service, index }))
@@ -1047,16 +1047,16 @@ function SystemDesignCanvas() {
                       draggable
                       onDragStart={e => e.dataTransfer.setData('application/devbench-service', String(index))}
                       onClick={() => addCatalogService(service)}
-                      className="mb-1 flex w-full items-center gap-2 rounded border border-transparent px-2 py-1.5 text-left transition-all hover:border-[#313244] hover:bg-[#202030]"
+                      className="mb-1 flex w-full items-center gap-2 rounded border border-transparent px-2 py-1.5 text-left transition-all hover:border-[#344435] hover:bg-[#202030]"
                     >
-                      <span className="shrink-0 text-[#89b4fa]">
+                      <span className="shrink-0 text-[#c8edb6]">
                         {renderServiceIcon(service.icon, 13)}
                       </span>
                       <div className="min-w-0 flex-1">
-                        <div className="truncate text-[10px] font-medium text-[#cdd6f4]">{service.title}</div>
-                        <div className="text-[8px] text-[#6c7086]">{service.kind}</div>
+                        <div className="truncate text-[10px] font-medium text-[#e4ebdd]">{service.title}</div>
+                        <div className="text-[8px] text-[#9eac96]">{service.kind}</div>
                       </div>
-                      <span className="text-[8px] font-mono text-[#89b4fa]">
+                      <span className="text-[8px] font-mono text-[#c8edb6]">
                         {service.capacity >= 1000 ? `${service.capacity / 1000}k` : service.capacity}
                       </span>
                     </button>
@@ -1079,14 +1079,14 @@ function SystemDesignCanvas() {
             fitView
             deleteKeyCode={['Backspace', 'Delete']}
           >
-            <Background color="#313244" gap={20} size={1} />
+            <Background color="#344435" gap={20} size={1} />
             <Controls />
             <MiniMap<ServiceNodeType>
               nodeColor={node =>
                 node.data.metrics?.isBroken
-                  ? '#f38ba8'
+                  ? '#f19aa6'
                   : node.data.metrics?.utilization && node.data.metrics.utilization >= 1
-                  ? '#fab387'
+                  ? '#f3c18e'
                   : '#5b6f94'
               }
               maskColor="rgba(20,20,31,0.75)"
@@ -1095,25 +1095,25 @@ function SystemDesignCanvas() {
         </div>
 
         {/* Inspector Sidebar */}
-        <aside className="flex min-h-0 flex-col border-t border-[#313244] bg-[#181825] md:border-l md:border-t-0">
-          <div className="flex items-center gap-2 border-b border-[#313244] px-3 py-2 text-[11px] font-semibold text-[#cdd6f4]">
-            <Sliders size={13} className="text-[#89b4fa]" />
+        <aside className="flex min-h-0 flex-col border-t border-[#344435] bg-[#111612] md:border-l md:border-t-0">
+          <div className="flex items-center gap-2 border-b border-[#344435] px-3 py-2 text-[11px] font-semibold text-[#e4ebdd]">
+            <Sliders size={13} className="text-[#c8edb6]" />
             Node Settings
           </div>
           {selectedNode ? (
             <div className="space-y-3 overflow-auto p-3">
               <div>
-                <label className="text-[9px] text-[#9399b2] block mb-1">Service Display Name</label>
+                <label className="text-[9px] text-[#b1bea8] block mb-1">Service Display Name</label>
                 <input
                   type="text"
                   value={selectedNode.data.title}
                   onChange={e => updateSelectedField('title', e.target.value)}
-                  className="h-8 w-full rounded border border-[#313244] bg-[#11111b] px-2 text-[11px] font-semibold text-[#cdd6f4] outline-none focus:border-[#89b4fa]"
+                  className="h-8 w-full rounded border border-[#344435] bg-[#0d120f] px-2 text-[11px] font-semibold text-[#e4ebdd] outline-none focus:border-[#c8edb6]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
-                <label className="flex flex-col gap-1 text-[9px] text-[#9399b2]">
+                <label className="flex flex-col gap-1 text-[9px] text-[#b1bea8]">
                   Capacity / replica
                   <input
                     type="number"
@@ -1121,10 +1121,10 @@ function SystemDesignCanvas() {
                     max="100000"
                     value={selectedNode.data.capacity}
                     onChange={e => updateSelectedField('capacity', Math.max(1, Number(e.target.value)))}
-                    className="h-7 rounded border border-[#313244] bg-[#11111b] px-2 font-mono text-[10px] text-[#cdd6f4]"
+                    className="h-7 rounded border border-[#344435] bg-[#0d120f] px-2 font-mono text-[10px] text-[#e4ebdd]"
                   />
                 </label>
-                <label className="flex flex-col gap-1 text-[9px] text-[#9399b2]">
+                <label className="flex flex-col gap-1 text-[9px] text-[#b1bea8]">
                   Replicas (Scale)
                   <input
                     type="number"
@@ -1132,23 +1132,23 @@ function SystemDesignCanvas() {
                     max="500"
                     value={selectedNode.data.replicas}
                     onChange={e => updateSelectedField('replicas', Math.max(1, Number(e.target.value)))}
-                    className="h-7 rounded border border-[#313244] bg-[#11111b] px-2 font-mono text-[10px] text-[#cdd6f4]"
+                    className="h-7 rounded border border-[#344435] bg-[#0d120f] px-2 font-mono text-[10px] text-[#e4ebdd]"
                   />
                 </label>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
-                <label className="flex flex-col gap-1 text-[9px] text-[#9399b2]">
+                <label className="flex flex-col gap-1 text-[9px] text-[#b1bea8]">
                   Base Latency (ms)
                   <input
                     type="number"
                     min="0"
                     value={selectedNode.data.latency}
                     onChange={e => updateSelectedField('latency', Math.max(0, Number(e.target.value)))}
-                    className="h-7 rounded border border-[#313244] bg-[#11111b] px-2 font-mono text-[10px] text-[#cdd6f4]"
+                    className="h-7 rounded border border-[#344435] bg-[#0d120f] px-2 font-mono text-[10px] text-[#e4ebdd]"
                   />
                 </label>
-                <label className="flex flex-col gap-1 text-[9px] text-[#9399b2]">
+                <label className="flex flex-col gap-1 text-[9px] text-[#b1bea8]">
                   Failure Rate (%)
                   <input
                     type="number"
@@ -1157,14 +1157,14 @@ function SystemDesignCanvas() {
                     step="0.1"
                     value={selectedNode.data.errorRate}
                     onChange={e => updateSelectedField('errorRate', Math.max(0, Number(e.target.value)))}
-                    className="h-7 rounded border border-[#313244] bg-[#11111b] px-2 font-mono text-[10px] text-[#cdd6f4]"
+                    className="h-7 rounded border border-[#344435] bg-[#0d120f] px-2 font-mono text-[10px] text-[#e4ebdd]"
                   />
                 </label>
               </div>
 
               {/* Node status toggle (simulate node crash) */}
-              <div className="border-t border-[#313244] pt-2">
-                <label className="flex items-center justify-between text-[10px] text-[#cdd6f4] cursor-pointer">
+              <div className="border-t border-[#344435] pt-2">
+                <label className="flex items-center justify-between text-[10px] text-[#e4ebdd] cursor-pointer">
                   <span>Simulate Node Failure</span>
                   <input
                     type="checkbox"
@@ -1177,27 +1177,27 @@ function SystemDesignCanvas() {
                         return next;
                       });
                     }}
-                    className="accent-[#f38ba8]"
+                    className="accent-[#f19aa6]"
                   />
                 </label>
               </div>
 
               {selectedNode.data.metrics && (
-                <div className="rounded-lg bg-[#11111b] p-2.5 border border-[#313244] text-[9px] space-y-1">
-                  <div className="font-semibold text-[#89b4fa] mb-1">Live Telemetry</div>
+                <div className="rounded-lg bg-[#0d120f] p-2.5 border border-[#344435] text-[9px] space-y-1">
+                  <div className="font-semibold text-[#c8edb6] mb-1">Live Telemetry</div>
                   <div className="flex justify-between">
-                    <span className="text-[#9399b2]">Current Load:</span>
-                    <span className="font-mono text-[#cdd6f4]">
+                    <span className="text-[#b1bea8]">Current Load:</span>
+                    <span className="font-mono text-[#e4ebdd]">
                       {Math.round(selectedNode.data.metrics.requests).toLocaleString()} req/s
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#9399b2]">P95 Latency:</span>
-                    <span className="font-mono text-[#cdd6f4]">{selectedNode.data.metrics.p95} ms</span>
+                    <span className="text-[#b1bea8]">P95 Latency:</span>
+                    <span className="font-mono text-[#e4ebdd]">{selectedNode.data.metrics.p95} ms</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#9399b2]">Saturation:</span>
-                    <span className="font-mono font-bold text-[#fab387]">
+                    <span className="text-[#b1bea8]">Saturation:</span>
+                    <span className="font-mono font-bold text-[#f3c18e]">
                       {Math.round(selectedNode.data.metrics.utilization * 100)}%
                     </span>
                   </div>
@@ -1210,13 +1210,13 @@ function SystemDesignCanvas() {
                   setEdges(current => current.filter(e => e.source !== selectedNode.id && e.target !== selectedNode.id));
                   setSelectedId('');
                 }}
-                className="flex w-full items-center justify-center gap-1.5 rounded border border-[#f38ba8]/30 py-1.5 text-[10px] text-[#f38ba8] hover:bg-[#f38ba8]/10"
+                className="flex w-full items-center justify-center gap-1.5 rounded border border-[#f19aa6]/30 py-1.5 text-[10px] text-[#f19aa6] hover:bg-[#f19aa6]/10"
               >
                 <Trash2 size={11} /> Delete Service
               </button>
             </div>
           ) : (
-            <div className="p-4 text-[10px] text-[#6c7086] text-center">
+            <div className="p-4 text-[10px] text-[#9eac96] text-center">
               Click a node on the canvas to configure capacity, replicas, latency, or test failure modes.
             </div>
           )}
@@ -1278,7 +1278,7 @@ function DatabaseTableNode({ data, selected }: NodeProps<DbNode>) {
   return (
     <div
       className={`min-w-[230px] overflow-hidden rounded-lg border bg-[#1b1b2a] shadow-xl transition-all ${
-        selected ? 'border-[#89b4fa] ring-2 ring-[#89b4fa]/40' : 'border-[#3a3a50]'
+        selected ? 'border-[#c8edb6] ring-2 ring-[#c8edb6]/40' : 'border-[#3a3a50]'
       }`}
     >
       {/* Table-level target handle on left */}
@@ -1287,20 +1287,20 @@ function DatabaseTableNode({ data, selected }: NodeProps<DbNode>) {
         position={Position.Left}
         id="tbl-left-target"
         title={`Connect to ${data.name}`}
-        className="!h-3 !w-3 !border-2 !border-[#1b1b2a] !bg-[#89b4fa] -left-1.5 hover:!scale-125 transition-transform cursor-crosshair"
+        className="!h-3 !w-3 !border-2 !border-[#1b1b2a] !bg-[#c8edb6] -left-1.5 hover:!scale-125 transition-transform cursor-crosshair"
       />
 
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[#313244] bg-[#252538] px-3 py-2">
+      <div className="flex items-center justify-between border-b border-[#344435] bg-[#243025] px-3 py-2">
         <div className="flex items-center gap-2">
-          <Database size={13} className="text-[#89b4fa]" />
-          <span className="text-[11px] font-bold text-[#cdd6f4]">{data.name}</span>
+          <Database size={13} className="text-[#c8edb6]" />
+          <span className="text-[11px] font-bold text-[#e4ebdd]">{data.name}</span>
         </div>
-        <span className="text-[9px] font-mono text-[#9399b2]">{data.columns.length} cols</span>
+        <span className="text-[9px] font-mono text-[#b1bea8]">{data.columns.length} cols</span>
       </div>
 
       {/* Column Rows with specific left target handle and right source handle */}
-      <div className="divide-y divide-[#313244]/50">
+      <div className="divide-y divide-[#344435]/50">
         {data.columns.map(column => (
           <div
             key={column.id}
@@ -1312,25 +1312,25 @@ function DatabaseTableNode({ data, selected }: NodeProps<DbNode>) {
               position={Position.Left}
               id={`${column.name}__tgt_l`}
               title={`Connect to ${column.name}`}
-              className="!h-2.5 !w-2.5 !border !border-[#1b1b2a] !bg-[#89b4fa] -left-1.5 opacity-70 group-hover:opacity-100 group-hover:!scale-125 transition-all cursor-crosshair"
+              className="!h-2.5 !w-2.5 !border !border-[#1b1b2a] !bg-[#c8edb6] -left-1.5 opacity-70 group-hover:opacity-100 group-hover:!scale-125 transition-all cursor-crosshair"
             />
 
             <div className="flex items-center gap-1.5 min-w-0">
               {column.primaryKey && (
-                <span className="rounded bg-[#f9e2af]/15 px-1 font-mono text-[8px] font-bold text-[#f9e2af]">
+                <span className="rounded bg-[#f3d58c]/15 px-1 font-mono text-[8px] font-bold text-[#f3d58c]">
                   PK
                 </span>
               )}
               {column.foreignKey && (
-                <span className="rounded bg-[#89b4fa]/15 px-1 font-mono text-[8px] font-bold text-[#89b4fa]">
+                <span className="rounded bg-[#c8edb6]/15 px-1 font-mono text-[8px] font-bold text-[#c8edb6]">
                   FK
                 </span>
               )}
-              <span className="truncate font-medium text-[#cdd6f4]">{column.name}</span>
+              <span className="truncate font-medium text-[#e4ebdd]">{column.name}</span>
             </div>
-            <div className="flex items-center gap-1 text-[8px] text-[#9399b2] font-mono">
+            <div className="flex items-center gap-1 text-[8px] text-[#b1bea8] font-mono">
               <span>{column.type}</span>
-              {!column.nullable && <span className="text-[#f38ba8]">NN</span>}
+              {!column.nullable && <span className="text-[#f19aa6]">NN</span>}
             </div>
 
             {/* Column Right Handle (Source) */}
@@ -1339,7 +1339,7 @@ function DatabaseTableNode({ data, selected }: NodeProps<DbNode>) {
               position={Position.Right}
               id={`${column.name}__src_r`}
               title={`Drag relationship from ${column.name}`}
-              className="!h-2.5 !w-2.5 !border !border-[#1b1b2a] !bg-[#89b4fa] -right-1.5 opacity-70 group-hover:opacity-100 group-hover:!scale-125 transition-all cursor-crosshair"
+              className="!h-2.5 !w-2.5 !border !border-[#1b1b2a] !bg-[#c8edb6] -right-1.5 opacity-70 group-hover:opacity-100 group-hover:!scale-125 transition-all cursor-crosshair"
             />
           </div>
         ))}
@@ -1351,7 +1351,7 @@ function DatabaseTableNode({ data, selected }: NodeProps<DbNode>) {
         position={Position.Right}
         id="tbl-right-source"
         title={`Drag relationship from ${data.name}`}
-        className="!h-3 !w-3 !border-2 !border-[#1b1b2a] !bg-[#89b4fa] -right-1.5 hover:!scale-125 transition-transform cursor-crosshair"
+        className="!h-3 !w-3 !border-2 !border-[#1b1b2a] !bg-[#c8edb6] -right-1.5 hover:!scale-125 transition-transform cursor-crosshair"
       />
     </div>
   );
@@ -1399,9 +1399,9 @@ const INITIAL_DB_EDGES: Edge[] = [
     targetHandle: 'user_id__tgt_l',
     label: '1 : N (id → user_id)',
     data: { cardinality: '1:N', direction: 'forward', fromCol: 'id', toCol: 'user_id' },
-    markerEnd: { type: MarkerType.ArrowClosed, color: '#89b4fa' },
-    style: { stroke: '#89b4fa', strokeWidth: 2 },
-    labelStyle: { fill: '#cdd6f4', fontSize: 10, fontWeight: 600 },
+    markerEnd: { type: MarkerType.ArrowClosed, color: '#c8edb6' },
+    style: { stroke: '#c8edb6', strokeWidth: 2 },
+    labelStyle: { fill: '#e4ebdd', fontSize: 10, fontWeight: 600 },
   },
 ];
 
@@ -1646,10 +1646,10 @@ function DatabaseDiagramView() {
     const markerEnd =
       relDirection === 'backward' || relDirection === 'undirected'
         ? undefined
-        : { type: MarkerType.ArrowClosed, color: '#89b4fa' };
+        : { type: MarkerType.ArrowClosed, color: '#c8edb6' };
     const markerStart =
       relDirection === 'backward' || relDirection === 'bidirectional'
-        ? { type: MarkerType.ArrowClosed, color: '#89b4fa' }
+        ? { type: MarkerType.ArrowClosed, color: '#c8edb6' }
         : undefined;
 
     const arrowSymbol =
@@ -1673,8 +1673,8 @@ function DatabaseDiagramView() {
       },
       markerEnd,
       markerStart,
-      style: { stroke: '#89b4fa', strokeWidth: 2 },
-      labelStyle: { fill: '#cdd6f4', fontSize: 10, fontWeight: 600 },
+      style: { stroke: '#c8edb6', strokeWidth: 2 },
+      labelStyle: { fill: '#e4ebdd', fontSize: 10, fontWeight: 600 },
     };
 
     setEdges(current => [...current, newEdge]);
@@ -1785,9 +1785,9 @@ function DatabaseDiagramView() {
       id: edgeId,
       label: `1 : N (${fromCol} ──► ${toCol})`,
       data: { cardinality: '1:N', direction: 'forward', fromCol, toCol },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#89b4fa' },
-      style: { stroke: '#89b4fa', strokeWidth: 2 },
-      labelStyle: { fill: '#cdd6f4', fontSize: 10, fontWeight: 600 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: '#c8edb6' },
+      style: { stroke: '#c8edb6', strokeWidth: 2 },
+      labelStyle: { fill: '#e4ebdd', fontSize: 10, fontWeight: 600 },
     };
 
     setEdges(current => addEdge(newEdge, current));
@@ -1803,16 +1803,16 @@ function DatabaseDiagramView() {
     <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px]">
       {/* Visual Canvas */}
       <div className="flex min-h-0 flex-col">
-        <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#313244] bg-[#181825] px-4 py-2">
+        <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#344435] bg-[#111612] px-4 py-2">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-semibold text-[#cdd6f4]">Interactive Schema Diagram</span>
+            <span className="text-[11px] font-semibold text-[#e4ebdd]">Interactive Schema Diagram</span>
             <button
               onClick={addTable}
-              className="flex items-center gap-1 rounded border border-[#89b4fa]/30 bg-[#89b4fa]/10 px-2.5 py-1 text-[10px] text-[#89b4fa] hover:bg-[#89b4fa]/20"
+              className="flex items-center gap-1 rounded border border-[#c8edb6]/30 bg-[#c8edb6]/10 px-2.5 py-1 text-[10px] text-[#c8edb6] hover:bg-[#c8edb6]/20"
             >
               <Plus size={12} /> Add Table
             </button>
-            <span className="text-[9px] text-[#6c7086]">
+            <span className="text-[9px] text-[#9eac96]">
               {nodes.length} tables · {edges.length} relationships
             </span>
           </div>
@@ -1821,7 +1821,7 @@ function DatabaseDiagramView() {
             <select
               value={dialect}
               onChange={e => setDialect(e.target.value as SqlDialect)}
-              className="h-7 rounded border border-[#313244] bg-[#11111b] px-2 text-[10px] text-[#cdd6f4]"
+              className="h-7 rounded border border-[#344435] bg-[#0d120f] px-2 text-[10px] text-[#e4ebdd]"
             >
               <option value="postgresql">PostgreSQL DDL</option>
               <option value="mysql">MySQL DDL</option>
@@ -1829,7 +1829,7 @@ function DatabaseDiagramView() {
             </select>
             <button
               onClick={() => downloadFile(`schema.${dialect}.sql`, ddl, 'text/sql')}
-              className="flex items-center gap-1 rounded border border-[#313244] px-2.5 py-1 text-[10px] text-[#cdd6f4] hover:bg-[#252538]"
+              className="flex items-center gap-1 rounded border border-[#344435] px-2.5 py-1 text-[10px] text-[#e4ebdd] hover:bg-[#243025]"
             >
               <Download size={11} /> Export SQL
             </button>
@@ -1843,9 +1843,9 @@ function DatabaseDiagramView() {
               e.id === selectedEdgeId
                 ? {
                     ...e,
-                    style: { stroke: '#f9e2af', strokeWidth: 3 },
-                    markerEnd: { type: MarkerType.ArrowClosed, color: '#f9e2af' },
-                    labelStyle: { fill: '#f9e2af', fontSize: 10, fontWeight: 700 },
+                    style: { stroke: '#f3d58c', strokeWidth: 3 },
+                    markerEnd: { type: MarkerType.ArrowClosed, color: '#f3d58c' },
+                    labelStyle: { fill: '#f3d58c', fontSize: 10, fontWeight: 700 },
                   }
                 : e
             )}
@@ -1864,7 +1864,7 @@ function DatabaseDiagramView() {
             fitView
             deleteKeyCode={['Backspace', 'Delete']}
           >
-            <Background color="#313244" gap={20} size={1} />
+            <Background color="#344435" gap={20} size={1} />
             <Controls />
             <MiniMap nodeColor="#596c8d" maskColor="rgba(20,20,31,0.72)" />
           </ReactFlow>
@@ -1872,15 +1872,15 @@ function DatabaseDiagramView() {
       </div>
 
       {/* Inspector Sidebar with Dual Tabs */}
-      <aside className="flex min-h-0 flex-col border-t border-[#313244] bg-[#181825] lg:border-l lg:border-t-0">
+      <aside className="flex min-h-0 flex-col border-t border-[#344435] bg-[#111612] lg:border-l lg:border-t-0">
         {/* Tab switchers */}
-        <div className="flex border-b border-[#313244] bg-[#11111b] p-1 gap-1">
+        <div className="flex border-b border-[#344435] bg-[#0d120f] p-1 gap-1">
           <button
             onClick={() => setSidebarTab('tables')}
             className={`flex-1 rounded py-1.5 text-[10px] font-semibold transition-all ${
               sidebarTab === 'tables'
-                ? 'bg-[#252538] text-[#cdd6f4] shadow-sm'
-                : 'text-[#6c7086] hover:text-[#cdd6f4]'
+                ? 'bg-[#243025] text-[#e4ebdd] shadow-sm'
+                : 'text-[#9eac96] hover:text-[#e4ebdd]'
             }`}
           >
             Tables & Columns
@@ -1889,8 +1889,8 @@ function DatabaseDiagramView() {
             onClick={() => setSidebarTab('relationships')}
             className={`flex-1 rounded py-1.5 text-[10px] font-semibold transition-all flex items-center justify-center gap-1.5 ${
               sidebarTab === 'relationships'
-                ? 'bg-[#252538] text-[#89b4fa] shadow-sm'
-                : 'text-[#6c7086] hover:text-[#cdd6f4]'
+                ? 'bg-[#243025] text-[#c8edb6] shadow-sm'
+                : 'text-[#9eac96] hover:text-[#e4ebdd]'
             }`}
           >
             <GitBranch size={11} /> Relationships ({edges.length})
@@ -1902,8 +1902,8 @@ function DatabaseDiagramView() {
           <div
             className={`flex items-center justify-between px-3 py-1.5 text-[10px] border-b ${
               feedbackMsg.type === 'success'
-                ? 'bg-[#a6e3a1]/10 text-[#a6e3a1] border-[#a6e3a1]/20'
-                : 'bg-[#f38ba8]/10 text-[#f38ba8] border-[#f38ba8]/20'
+                ? 'bg-[#b5dfa3]/10 text-[#b5dfa3] border-[#b5dfa3]/20'
+                : 'bg-[#f19aa6]/10 text-[#f19aa6] border-[#f19aa6]/20'
             }`}
           >
             <span>{feedbackMsg.text}</span>
@@ -1919,7 +1919,7 @@ function DatabaseDiagramView() {
             <>
               {/* Table Selector Dropdown */}
               <div>
-                <label className="text-[9px] text-[#9399b2] block mb-1">Active Table</label>
+                <label className="text-[9px] text-[#b1bea8] block mb-1">Active Table</label>
                 <div className="flex gap-1.5">
                   <select
                     value={selectedId}
@@ -1927,7 +1927,7 @@ function DatabaseDiagramView() {
                       setSelectedId(e.target.value);
                       handleCancelEdit();
                     }}
-                    className="h-8 flex-1 rounded border border-[#313244] bg-[#11111b] px-2 text-[11px] font-bold text-[#cdd6f4]"
+                    className="h-8 flex-1 rounded border border-[#344435] bg-[#0d120f] px-2 text-[11px] font-bold text-[#e4ebdd]"
                   >
                     {nodes.map(n => (
                       <option key={n.id} value={n.id}>
@@ -1938,7 +1938,7 @@ function DatabaseDiagramView() {
                   <button
                     onClick={addTable}
                     title="Add Table"
-                    className="flex h-8 items-center justify-center rounded border border-[#89b4fa]/30 bg-[#89b4fa]/10 px-2 text-[#89b4fa] hover:bg-[#89b4fa]/20"
+                    className="flex h-8 items-center justify-center rounded border border-[#c8edb6]/30 bg-[#c8edb6]/10 px-2 text-[#c8edb6] hover:bg-[#c8edb6]/20"
                   >
                     <Plus size={13} />
                   </button>
@@ -1949,7 +1949,7 @@ function DatabaseDiagramView() {
                 <>
                   {/* Selected Table Name */}
                   <div>
-                    <label className="text-[9px] text-[#9399b2] block mb-1">Rename Table</label>
+                    <label className="text-[9px] text-[#b1bea8] block mb-1">Rename Table</label>
                     <input
                       type="text"
                       value={selectedTable.data.name}
@@ -1960,17 +1960,17 @@ function DatabaseDiagramView() {
                           )
                         )
                       }
-                      className="h-8 w-full rounded border border-[#313244] bg-[#11111b] px-2 text-[11px] font-bold text-[#cdd6f4] outline-none focus:border-[#89b4fa]"
+                      className="h-8 w-full rounded border border-[#344435] bg-[#0d120f] px-2 text-[11px] font-bold text-[#e4ebdd] outline-none focus:border-[#c8edb6]"
                     />
                   </div>
 
                   {/* Columns List with In-Place Edit/Delete */}
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[10px] font-semibold text-[#cdd6f4]">
+                      <span className="text-[10px] font-semibold text-[#e4ebdd]">
                         Columns ({selectedTable.data.columns.length})
                       </span>
-                      <span className="text-[8px] text-[#6c7086]">Click row to edit</span>
+                      <span className="text-[8px] text-[#9eac96]">Click row to edit</span>
                     </div>
 
                     <div className="space-y-1">
@@ -1980,15 +1980,15 @@ function DatabaseDiagramView() {
                           onClick={() => handleStartEditColumn(col)}
                           className={`flex items-center justify-between gap-1 rounded px-2 py-1.5 text-[9px] cursor-pointer transition-all border ${
                             editingColId === col.id
-                              ? 'border-[#89b4fa] bg-[#2a2a40]'
-                              : 'border-transparent bg-[#202030] hover:border-[#313244]'
+                              ? 'border-[#c8edb6] bg-[#2a2a40]'
+                              : 'border-transparent bg-[#202030] hover:border-[#344435]'
                           }`}
                         >
                           <div className="flex items-center gap-1.5 truncate">
-                            {col.primaryKey && <span className="text-[#f9e2af] font-bold">PK</span>}
-                            {col.foreignKey && <span className="text-[#89b4fa] font-bold">FK</span>}
-                            <span className="font-medium text-[#cdd6f4] truncate">{col.name}</span>
-                            <span className="text-[#6c7086]">({col.type})</span>
+                            {col.primaryKey && <span className="text-[#f3d58c] font-bold">PK</span>}
+                            {col.foreignKey && <span className="text-[#c8edb6] font-bold">FK</span>}
+                            <span className="font-medium text-[#e4ebdd] truncate">{col.name}</span>
+                            <span className="text-[#9eac96]">({col.type})</span>
                           </div>
                           <div className="flex items-center gap-1">
                             <button
@@ -1997,7 +1997,7 @@ function DatabaseDiagramView() {
                                 handleStartEditColumn(col);
                               }}
                               title="Edit column"
-                              className="text-[#9399b2] hover:text-[#89b4fa]"
+                              className="text-[#b1bea8] hover:text-[#c8edb6]"
                             >
                               <Edit3 size={11} />
                             </button>
@@ -2014,7 +2014,7 @@ function DatabaseDiagramView() {
                                 if (editingColId === col.id) handleCancelEdit();
                               }}
                               title="Delete column"
-                              className="text-[#6c7086] hover:text-[#f38ba8]"
+                              className="text-[#9eac96] hover:text-[#f19aa6]"
                             >
                               <Trash2 size={11} />
                             </button>
@@ -2025,11 +2025,11 @@ function DatabaseDiagramView() {
                   </div>
 
                   {/* Column Edit / Add Form */}
-                  <div className="rounded-lg border border-[#313244] bg-[#14141f] p-2.5 space-y-2">
-                    <div className="flex items-center justify-between text-[10px] font-semibold text-[#89b4fa]">
+                  <div className="rounded-lg border border-[#344435] bg-[#14141f] p-2.5 space-y-2">
+                    <div className="flex items-center justify-between text-[10px] font-semibold text-[#c8edb6]">
                       <span>{editingColId ? 'Edit Column' : 'Add New Column'}</span>
                       {editingColId && (
-                        <button onClick={handleCancelEdit} className="text-[#9399b2] hover:text-[#cdd6f4]">
+                        <button onClick={handleCancelEdit} className="text-[#b1bea8] hover:text-[#e4ebdd]">
                           <X size={12} />
                         </button>
                       )}
@@ -2037,20 +2037,20 @@ function DatabaseDiagramView() {
 
                     <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <label className="text-[8px] text-[#9399b2] block mb-0.5">Column Name</label>
+                        <label className="text-[8px] text-[#b1bea8] block mb-0.5">Column Name</label>
                         <input
                           type="text"
                           value={colName}
                           onChange={e => setColName(e.target.value)}
-                          className="h-7 w-full rounded border border-[#313244] bg-[#11111b] px-2 text-[9px] text-[#cdd6f4] outline-none"
+                          className="h-7 w-full rounded border border-[#344435] bg-[#0d120f] px-2 text-[9px] text-[#e4ebdd] outline-none"
                         />
                       </div>
                       <div>
-                        <label className="text-[8px] text-[#9399b2] block mb-0.5">Data Type</label>
+                        <label className="text-[8px] text-[#b1bea8] block mb-0.5">Data Type</label>
                         <select
                           value={colType}
                           onChange={e => setColType(e.target.value)}
-                          className="h-7 w-full rounded border border-[#313244] bg-[#11111b] px-1 text-[9px] text-[#cdd6f4]"
+                          className="h-7 w-full rounded border border-[#344435] bg-[#0d120f] px-1 text-[9px] text-[#e4ebdd]"
                         >
                           {DATA_TYPES.map(t => (
                             <option key={t} value={t}>
@@ -2062,35 +2062,35 @@ function DatabaseDiagramView() {
                     </div>
 
                     <div>
-                      <label className="text-[8px] text-[#9399b2] block mb-0.5">Default Value (Optional)</label>
+                      <label className="text-[8px] text-[#b1bea8] block mb-0.5">Default Value (Optional)</label>
                       <input
                         type="text"
                         placeholder="e.g. NOW(), 'active', 0"
                         value={colDefault}
                         onChange={e => setColDefault(e.target.value)}
-                        className="h-7 w-full rounded border border-[#313244] bg-[#11111b] px-2 text-[9px] text-[#cdd6f4] outline-none"
+                        className="h-7 w-full rounded border border-[#344435] bg-[#0d120f] px-2 text-[9px] text-[#e4ebdd] outline-none"
                       />
                     </div>
 
                     {/* Constraints Checkboxes */}
-                    <div className="grid grid-cols-3 gap-1 pt-1 text-[8px] text-[#cdd6f4]">
+                    <div className="grid grid-cols-3 gap-1 pt-1 text-[8px] text-[#e4ebdd]">
                       <label className="flex items-center gap-1 cursor-pointer">
-                        <input type="checkbox" checked={colPk} onChange={e => setColPk(e.target.checked)} className="accent-[#f9e2af]" />
+                        <input type="checkbox" checked={colPk} onChange={e => setColPk(e.target.checked)} className="accent-[#f3d58c]" />
                         <span>Primary (PK)</span>
                       </label>
                       <label className="flex items-center gap-1 cursor-pointer">
-                        <input type="checkbox" checked={colFk} onChange={e => setColFk(e.target.checked)} className="accent-[#89b4fa]" />
+                        <input type="checkbox" checked={colFk} onChange={e => setColFk(e.target.checked)} className="accent-[#c8edb6]" />
                         <span>Foreign (FK)</span>
                       </label>
                       <label className="flex items-center gap-1 cursor-pointer">
-                        <input type="checkbox" checked={colUnique} onChange={e => setColUnique(e.target.checked)} className="accent-[#a6e3a1]" />
+                        <input type="checkbox" checked={colUnique} onChange={e => setColUnique(e.target.checked)} className="accent-[#b5dfa3]" />
                         <span>Unique</span>
                       </label>
                     </div>
 
                     <button
                       onClick={handleSaveColumn}
-                      className="flex w-full items-center justify-center gap-1 rounded bg-[#89b4fa] py-1.5 text-[9px] font-bold text-[#11111b] hover:bg-[#89b4fa]/90"
+                      className="flex w-full items-center justify-center gap-1 rounded bg-[#c8edb6] py-1.5 text-[9px] font-bold text-[#0d120f] hover:bg-[#c8edb6]/90"
                     >
                       {editingColId ? 'Save Column Changes' : 'Add Column to Table'}
                     </button>
@@ -2103,7 +2103,7 @@ function DatabaseDiagramView() {
                       if (other) setRelTarget(other.id);
                       setSidebarTab('relationships');
                     }}
-                    className="flex w-full items-center justify-center gap-1.5 rounded border border-[#89b4fa]/30 bg-[#89b4fa]/10 py-1.5 text-[9px] font-semibold text-[#89b4fa] hover:bg-[#89b4fa]/20"
+                    className="flex w-full items-center justify-center gap-1.5 rounded border border-[#c8edb6]/30 bg-[#c8edb6]/10 py-1.5 text-[9px] font-semibold text-[#c8edb6] hover:bg-[#c8edb6]/20"
                   >
                     <Cable size={11} /> Create Relationship for "{selectedTable.data.name}"
                   </button>
@@ -2119,7 +2119,7 @@ function DatabaseDiagramView() {
                       setEdges(curr => curr.filter(e => e.source !== selectedId && e.target !== selectedId));
                       setSelectedId(nodes.find(n => n.id !== selectedId)?.id || '');
                     }}
-                    className="flex w-full items-center justify-center gap-1 rounded border border-[#f38ba8]/25 py-1 text-[9px] text-[#f38ba8] hover:bg-[#f38ba8]/10"
+                    className="flex w-full items-center justify-center gap-1 rounded border border-[#f19aa6]/25 py-1 text-[9px] text-[#f19aa6] hover:bg-[#f19aa6]/10"
                   >
                     <Trash2 size={10} /> Delete Table "{selectedTable.data.name}"
                   </button>
@@ -2132,19 +2132,19 @@ function DatabaseDiagramView() {
           {sidebarTab === 'relationships' && (
             <>
               {/* Relationship Creator Form */}
-              <div className="rounded-xl border border-[#313244] bg-[#14141f] p-3 space-y-3">
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#cdd6f4]">
-                  <Cable size={13} className="text-[#89b4fa]" />
+              <div className="rounded-xl border border-[#344435] bg-[#14141f] p-3 space-y-3">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#e4ebdd]">
+                  <Cable size={13} className="text-[#c8edb6]" />
                   Create Relationship
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 text-[8px] text-[#9399b2]">
+                <div className="grid grid-cols-2 gap-2 text-[8px] text-[#b1bea8]">
                   <div>
                     <label className="block mb-0.5">Source Table (From)</label>
                     <select
                       value={relSource}
                       onChange={e => handleSourceTableChange(e.target.value)}
-                      className="h-7 w-full rounded border border-[#313244] bg-[#181825] px-1 text-[9px] text-[#cdd6f4]"
+                      className="h-7 w-full rounded border border-[#344435] bg-[#111612] px-1 text-[9px] text-[#e4ebdd]"
                     >
                       {nodes.map(n => (
                         <option key={n.id} value={n.id}>
@@ -2158,7 +2158,7 @@ function DatabaseDiagramView() {
                     <select
                       value={relTarget}
                       onChange={e => handleTargetTableChange(e.target.value)}
-                      className="h-7 w-full rounded border border-[#313244] bg-[#181825] px-1 text-[9px] text-[#cdd6f4]"
+                      className="h-7 w-full rounded border border-[#344435] bg-[#111612] px-1 text-[9px] text-[#e4ebdd]"
                     >
                       {nodes.map(n => (
                         <option key={n.id} value={n.id}>
@@ -2169,13 +2169,13 @@ function DatabaseDiagramView() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 text-[8px] text-[#9399b2]">
+                <div className="grid grid-cols-2 gap-2 text-[8px] text-[#b1bea8]">
                   <div>
                     <label className="block mb-0.5">Source Column (PK/Key)</label>
                     <select
                       value={relFromCol}
                       onChange={e => setRelFromCol(e.target.value)}
-                      className="h-7 w-full rounded border border-[#313244] bg-[#181825] px-1 text-[9px] text-[#cdd6f4]"
+                      className="h-7 w-full rounded border border-[#344435] bg-[#111612] px-1 text-[9px] text-[#e4ebdd]"
                     >
                       {(nodes.find(n => n.id === relSource)?.data.columns ?? []).map(c => (
                         <option key={c.id} value={c.name}>
@@ -2189,7 +2189,7 @@ function DatabaseDiagramView() {
                     <select
                       value={relToCol}
                       onChange={e => setRelToCol(e.target.value)}
-                      className="h-7 w-full rounded border border-[#313244] bg-[#181825] px-1 text-[9px] text-[#cdd6f4]"
+                      className="h-7 w-full rounded border border-[#344435] bg-[#111612] px-1 text-[9px] text-[#e4ebdd]"
                     >
                       {(nodes.find(n => n.id === relTarget)?.data.columns ?? []).map(c => (
                         <option key={c.id} value={c.name}>
@@ -2200,13 +2200,13 @@ function DatabaseDiagramView() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 text-[8px] text-[#9399b2]">
+                <div className="grid grid-cols-2 gap-2 text-[8px] text-[#b1bea8]">
                   <div>
                     <label className="block mb-0.5">Cardinality</label>
                     <select
                       value={relCardinality}
                       onChange={e => setRelCardinality(e.target.value as any)}
-                      className="h-7 w-full rounded border border-[#313244] bg-[#181825] px-1 text-[9px] text-[#cdd6f4]"
+                      className="h-7 w-full rounded border border-[#344435] bg-[#111612] px-1 text-[9px] text-[#e4ebdd]"
                     >
                       <option value="1:N">One to Many (1 : N)</option>
                       <option value="1:1">One to One (1 : 1)</option>
@@ -2219,7 +2219,7 @@ function DatabaseDiagramView() {
                     <select
                       value={relDirection}
                       onChange={e => setRelDirection(e.target.value as any)}
-                      className="h-7 w-full rounded border border-[#313244] bg-[#181825] px-1 text-[9px] text-[#cdd6f4]"
+                      className="h-7 w-full rounded border border-[#344435] bg-[#111612] px-1 text-[9px] text-[#e4ebdd]"
                     >
                       <option value="forward">Forward (→)</option>
                       <option value="backward">Reverse (←)</option>
@@ -2229,12 +2229,12 @@ function DatabaseDiagramView() {
                   </div>
                 </div>
 
-                <label className="flex items-center gap-1.5 text-[8px] text-[#cdd6f4] cursor-pointer">
+                <label className="flex items-center gap-1.5 text-[8px] text-[#e4ebdd] cursor-pointer">
                   <input
                     type="checkbox"
                     checked={relAutoMarkFk}
                     onChange={e => setRelAutoMarkFk(e.target.checked)}
-                    className="accent-[#89b4fa]"
+                    className="accent-[#c8edb6]"
                   />
                   <span>Auto-mark target column as Foreign Key (FK)</span>
                 </label>
@@ -2242,7 +2242,7 @@ function DatabaseDiagramView() {
                 <button
                   onClick={handleAddRelationship}
                   disabled={nodes.length < 1 || (relSource === relTarget && relFromCol === relToCol)}
-                  className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-[#89b4fa] py-2 text-[10px] font-bold text-[#11111b] hover:bg-[#89b4fa]/90 active:scale-[0.99] disabled:opacity-40"
+                  className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-[#c8edb6] py-2 text-[10px] font-bold text-[#0d120f] hover:bg-[#c8edb6]/90 active:scale-[0.99] disabled:opacity-40"
                 >
                   <Cable size={12} /> Connect Tables & Create Relation
                 </button>
@@ -2250,13 +2250,13 @@ function DatabaseDiagramView() {
 
               {/* Active Relationships List */}
               <div className="space-y-2">
-                <div className="flex items-center justify-between text-[10px] font-semibold text-[#cdd6f4]">
+                <div className="flex items-center justify-between text-[10px] font-semibold text-[#e4ebdd]">
                   <span>Active Relationships ({edges.length})</span>
-                  <span className="text-[8px] text-[#6c7086]">Click card to highlight</span>
+                  <span className="text-[8px] text-[#9eac96]">Click card to highlight</span>
                 </div>
 
                 {edges.length === 0 ? (
-                  <div className="rounded-lg border border-dashed border-[#313244] p-3 text-center text-[9px] text-[#6c7086]">
+                  <div className="rounded-lg border border-dashed border-[#344435] p-3 text-center text-[9px] text-[#9eac96]">
                     No relationships created yet. Fill the form above or drag between column dots on the diagram.
                   </div>
                 ) : (
@@ -2275,18 +2275,18 @@ function DatabaseDiagramView() {
                           onClick={() => setSelectedEdgeId(edge.id)}
                           className={`flex flex-col gap-1.5 rounded-lg border p-2 text-[9px] transition-all cursor-pointer ${
                             isSelected
-                              ? 'border-[#f9e2af] bg-[#f9e2af]/10 text-[#cdd6f4]'
-                              : 'border-[#313244] bg-[#14141f] text-[#9399b2] hover:border-[#45475a]'
+                              ? 'border-[#f3d58c] bg-[#f3d58c]/10 text-[#e4ebdd]'
+                              : 'border-[#344435] bg-[#14141f] text-[#b1bea8] hover:border-[#71836b]'
                           }`}
                         >
                           <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-1.5 font-mono text-[9px] text-[#cdd6f4]">
-                              <span className="font-bold text-[#89b4fa]">{srcNode?.data.name || edge.source}.{fromCol}</span>
-                              <span className="rounded bg-[#89b4fa]/20 px-1 text-[8px] text-[#89b4fa] font-sans font-semibold">
+                            <div className="flex items-center gap-1.5 font-mono text-[9px] text-[#e4ebdd]">
+                              <span className="font-bold text-[#c8edb6]">{srcNode?.data.name || edge.source}.{fromCol}</span>
+                              <span className="rounded bg-[#c8edb6]/20 px-1 text-[8px] text-[#c8edb6] font-sans font-semibold">
                                 {card}
                               </span>
                               <span>──►</span>
-                              <span className="font-bold text-[#a6e3a1]">{tgtNode?.data.name || edge.target}.{toCol}</span>
+                              <span className="font-bold text-[#b5dfa3]">{tgtNode?.data.name || edge.target}.{toCol}</span>
                             </div>
 
                             <div className="flex items-center gap-1">
@@ -2296,7 +2296,7 @@ function DatabaseDiagramView() {
                                   handleReverseRelationship(edge);
                                 }}
                                 title="Swap / Reverse direction"
-                                className="rounded p-1 text-[#9399b2] hover:bg-[#313244] hover:text-[#cdd6f4]"
+                                className="rounded p-1 text-[#b1bea8] hover:bg-[#344435] hover:text-[#e4ebdd]"
                               >
                                 <ArrowLeftRight size={11} />
                               </button>
@@ -2306,14 +2306,14 @@ function DatabaseDiagramView() {
                                   handleDeleteRelationship(edge.id);
                                 }}
                                 title="Delete relationship"
-                                className="rounded p-1 text-[#6c7086] hover:bg-[#f38ba8]/15 hover:text-[#f38ba8]"
+                                className="rounded p-1 text-[#9eac96] hover:bg-[#f19aa6]/15 hover:text-[#f19aa6]"
                               >
                                 <Trash2 size={11} />
                               </button>
                             </div>
                           </div>
 
-                          <div className="flex items-center justify-between text-[8px] text-[#6c7086]">
+                          <div className="flex items-center justify-between text-[8px] text-[#9eac96]">
                             <span>Change Cardinality:</span>
                             <div className="flex gap-1">
                               {(['1:N', '1:1', 'N:1', 'N:M'] as const).map(c => (
@@ -2325,8 +2325,8 @@ function DatabaseDiagramView() {
                                   }}
                                   className={`rounded px-1.5 py-0.5 text-[8px] ${
                                     card === c
-                                      ? 'bg-[#89b4fa] text-[#11111b] font-bold'
-                                      : 'bg-[#202030] text-[#9399b2] hover:text-[#cdd6f4]'
+                                      ? 'bg-[#c8edb6] text-[#0d120f] font-bold'
+                                      : 'bg-[#202030] text-[#b1bea8] hover:text-[#e4ebdd]'
                                   }`}
                                 >
                                   {c}
@@ -2345,9 +2345,9 @@ function DatabaseDiagramView() {
         </div>
 
         {/* Live SQL Output */}
-        <section className="flex max-h-48 min-h-32 flex-col border-t border-[#313244]">
-          <div className="flex shrink-0 items-center justify-between border-b border-[#313244] bg-[#181825] px-3 py-1.5">
-            <span className="text-[10px] font-semibold text-[#cdd6f4]">{dialect.toUpperCase()} DDL</span>
+        <section className="flex max-h-48 min-h-32 flex-col border-t border-[#344435]">
+          <div className="flex shrink-0 items-center justify-between border-b border-[#344435] bg-[#111612] px-3 py-1.5">
+            <span className="text-[10px] font-semibold text-[#e4ebdd]">{dialect.toUpperCase()} DDL</span>
             <button
               onClick={async () => {
                 await navigator.clipboard.writeText(ddl);
@@ -2355,15 +2355,15 @@ function DatabaseDiagramView() {
                 setTimeout(() => setCopied(false), 1200);
               }}
               title="Copy SQL"
-              className="rounded border border-[#313244] p-1 text-[#9399b2] hover:text-[#cdd6f4]"
+              className="rounded border border-[#344435] p-1 text-[#b1bea8] hover:text-[#e4ebdd]"
             >
-              {copied ? <CheckCircle2 size={11} className="text-[#a6e3a1]" /> : <Copy size={11} />}
+              {copied ? <CheckCircle2 size={11} className="text-[#b5dfa3]" /> : <Copy size={11} />}
             </button>
           </div>
           <textarea
             readOnly
             value={ddl}
-            className="min-h-0 flex-1 resize-none bg-[#11111b] px-3 py-2 font-mono text-[9px] leading-4 text-[#a6e3a1] outline-none"
+            className="min-h-0 flex-1 resize-none bg-[#0d120f] px-3 py-2 font-mono text-[9px] leading-4 text-[#b5dfa3] outline-none"
           />
         </section>
       </aside>
@@ -2379,17 +2379,17 @@ export default function ArchitectureLabView() {
   const [mode, setMode] = useState<LabMode>('mermaid');
 
   return (
-    <section className="flex h-full min-h-0 flex-col bg-[#1e1e2e] text-[#cdd6f4]">
+    <section className="flex h-full min-h-0 flex-col bg-[#171d19] text-[#e4ebdd]">
       {/* Top Header / Mode Switcher */}
-      <header className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#313244] bg-[#181825] px-3 sm:px-4 py-1.5 sm:py-2">
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-[#344435] bg-[#111612] px-3 sm:px-4 py-1.5 sm:py-2">
         <div>
-          <h1 className="text-xs sm:text-sm font-bold text-[#cdd6f4]">Architecture Lab</h1>
-          <p className="mt-0.5 text-[9px] sm:text-[10px] text-[#6c7086] hidden sm:block">
+          <h1 className="text-xs sm:text-sm font-bold text-[#e4ebdd]">Architecture Lab</h1>
+          <p className="mt-0.5 text-[9px] sm:text-[10px] text-[#9eac96] hidden sm:block">
             Mermaid diagram studio, system design traffic simulator, and database ERD modeler.
           </p>
         </div>
 
-        <div className="flex gap-1 rounded-md border border-[#313244] bg-[#11111b] p-0.5 overflow-x-auto no-scrollbar max-w-full" role="tablist">
+        <div className="flex gap-1 rounded-md border border-[#344435] bg-[#0d120f] p-0.5 overflow-x-auto no-scrollbar max-w-full" role="tablist">
           {(
             [
               ['mermaid', 'Mermaid Studio', <Workflow size={12} key="m" />],
@@ -2404,8 +2404,8 @@ export default function ArchitectureLabView() {
               aria-selected={mode === id}
               className={`flex items-center gap-1.5 rounded px-2.5 py-1 text-[10px] font-medium transition-all ${
                 mode === id
-                  ? 'bg-[#313244] text-[#cdd6f4] shadow-sm'
-                  : 'text-[#6c7086] hover:text-[#cdd6f4]'
+                  ? 'bg-[#344435] text-[#e4ebdd] shadow-sm'
+                  : 'text-[#9eac96] hover:text-[#e4ebdd]'
               }`}
             >
               {icon}

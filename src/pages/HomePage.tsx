@@ -18,7 +18,8 @@ import {
 import type { ViewMode } from "../types";
 import { TOOLS } from "../data/tools";
 import Brand from "../components/Spatial/Brand";
-import SpatialScene from "../components/Spatial/SpatialScene";
+import CharacterGuide from "../components/Guide/CharacterGuide";
+import ThemeChoice from "../components/Guide/ThemeChoice";
 import { tiltCard, resetTilt } from "../components/Spatial/cardMotion";
 import "../spatial.css";
 
@@ -161,7 +162,7 @@ export default function HomePage({
             Workspace <ChevronRight size={13} />
             <span>Overview</span>
           </div>
-          <div className="topbar-actions">
+          <div className="topbar-actions"><ThemeChoice/>
             <span className="local-status">
               <span className="live-dot" /> Built for your browser
             </span>
@@ -215,29 +216,10 @@ export default function HomePage({
               </div>
             </div>
             <div className="hero-art">
-              <SpatialScene />
-              <button
-                className="orbit-tag tag-code"
-                onClick={() => onTool("json")}
-              >
-                <BracesLabel />
-                <span>
-                  make it simple<span className="tag-sub">JSON & YAML</span>
-                </span>
-                <ArrowUpRight size={13} />
-              </button>
-              <button
-                className="orbit-tag tag-diff"
-                onClick={() => onTool("text")}
-              >
-                <Code2 size={18} />
-                <span>
-                  − friction
-                  <br />
-                  <b>+ possibility</b>
-                </span>
-              </button>
-              <span className="art-coordinate">CREATIVITY, IN ORBIT — 001</span>
+              <CharacterGuide stories={["Welcome to PSDevTool, built by Prakash Choudhary. Pick a tool below, or tap me for a starting point.", "Comparing two versions? Open Diff Checker and try its JSON example. Keys, values, and nested brackets have distinct colors.", "Need structured data? JSON & YAML includes source, tree, table, and graph views. Your theme choice follows you between tools."]}/>
+
+
+
             </div>
           </section>
           <section className="tool-section" id="tools">
@@ -411,7 +393,4 @@ export default function HomePage({
       </main>
     </div>
   );
-}
-function BracesLabel() {
-  return <span className="braces-label">{"{ }"}</span>;
 }
