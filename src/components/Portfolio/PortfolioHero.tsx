@@ -86,7 +86,15 @@ export default function PortfolioHero({
               Prakash Choudhary
               <small>Backend · Distributed systems · Applied AI</small>
             </span>
-            <ArrowUpRight size={21} />
+            <a
+              className="portrait-linkedin"
+              href={RESUME.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Open Prakash Choudhary on LinkedIn"
+            >
+              <ArrowUpRight size={21} />
+            </a>
           </figcaption>
         </figure>
         <a

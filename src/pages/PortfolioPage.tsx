@@ -1,3 +1,4 @@
+import ExperienceTimeline from "../components/Portfolio/ExperienceTimeline";
 import PortfolioHero from "../components/Portfolio/PortfolioHero";
 import "../portfolio.css";
 import TechnologyIcon from "../components/Common/TechnologyIcon";
@@ -190,28 +191,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
         <section className="portfolio-section" id="experience">
           <span className="eyebrow muted">THE JOURNEY / 03</span>
           <h2>Professional experience.</h2>
-          <div className="experience-list">
-            {RESUME.experience.map((e, i) => (
-              <details key={e.company} open={i === 0}>
-                <summary>
-                  <span>{e.period}</span>
-                  <div>
-                    <h3>{e.company}</h3>
-                    <p>
-                      {e.role}
-                      {e.current ? " · Current" : ""}
-                    </p>
-                  </div>
-                  <ChevronDown size={16} />
-                </summary>
-                <ul>
-                  {e.bullets.map((b) => (
-                    <li key={b}>{b}</li>
-                  ))}
-                </ul>
-              </details>
-            ))}
-          </div>
+          <ExperienceTimeline />
         </section>
         <section className="portfolio-section" id="skills">
           <span className="eyebrow muted">THE BUILDING BLOCKS / 04</span>

@@ -55,3 +55,13 @@ Validation: build, focused ESLint, eight array-scanner boundary cases, and seven
 ![Array counts](redesign/json.jpg)
 ![Themed builder drawer](redesign/builder.jpg)
 ![Technology marks](redesign/toolkit.jpg)
+
+## Career timeline
+
+Professional experience is presented as a connected timeline with milestone dots, role/date badges, and fully expanded role details. IntersectionObserver follows the portfolio's scroll container and reveals each card once when it enters view. Reduced-motion preferences and print styles keep the content visible without reveal motion. All resume text remains mounted and the data is unchanged.
+
+The portrait-card arrow links directly to Prakash's LinkedIn profile in a new tab, with an accessible link label and keyboard focus treatment.
+
+Validation: production build, focused ESLint, and four Chromium checks for sequential role reveal, LinkedIn click/new-tab navigation, reduced motion, and mobile overflow pass without uncaught browser errors.
+
+![Career timeline](redesign/timeline.jpg)
