@@ -9,8 +9,8 @@
 body {
   margin: 0;
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-  background-color: #1e1e2e;
-  color: #cdd6f4;
+  background-color: #171d19;
+  color: #e4ebdd;
   height: 100vh;
   overflow: hidden;
 }
@@ -34,8 +34,8 @@ body {
   animation: dashMove 0.5s linear infinite;
 }
 
-.diff-orig-line { background: rgba(243, 139, 168, 0.18) !important; border-left: 2px solid #f38ba8; }
-.diff-modi-line { background: rgba(166, 227, 161, 0.18) !important; border-left: 2px solid #a6e3a1; }
+.diff-orig-line { background: rgba(243, 139, 168, 0.18) !important; border-left: 2px solid #f19aa6; }
+.diff-modi-line { background: rgba(166, 227, 161, 0.18) !important; border-left: 2px solid #b5dfa3; }
 
 /* ── About Panel ──────────────────────────────────────────────────────────── */
 .about-panel-slide { animation: aboutSlideIn 0.28s cubic-bezier(0.16,1,0.3,1) both; }
@@ -48,7 +48,7 @@ body {
 .pf-root {
   min-height: 100vh;
   background: #050510;
-  color: #cdd6f4;
+  color: #e4ebdd;
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
   overflow-x: hidden;
 }
@@ -95,7 +95,7 @@ body {
 .pf-hero-name {
   font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 900; letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #ffffff 0%, #89b4fa 50%, #cba6f7 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #c8edb6 50%, #ceb8f6 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   margin-bottom: 8px;
   animation: pfNameIn 0.8s 0.2s ease both;
@@ -142,7 +142,7 @@ body {
   background: rgba(79,142,247,0.08); border: 1px solid rgba(79,142,247,0.2);
 }
 .pf-section-title { font-size: clamp(1.5rem,3vw,2rem); font-weight: 800; color: #fff; margin: 6px 0 8px; }
-.pf-section-sub   { font-size: 13px; color: #45475a; }
+.pf-section-sub   { font-size: 13px; color: #71836b; }
 
 /* Timeline */
 .pf-timeline { position: relative; max-width: 680px; margin: 0 auto; }
@@ -205,15 +205,15 @@ body {
   flex: 1;
   width: 100%;
   height: 100%;
-  background: #1a1a2c;
-  color: #cdd6f4;
+  background: #141a16;
+  color: #e4ebdd;
   font-size: 13px;
   font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
   line-height: 1.7;
   resize: none;
   outline: none;
   padding: 16px 20px;
-  caret-color: #89b4fa;
+  caret-color: #c8edb6;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .tc-textarea:focus {
@@ -222,9 +222,9 @@ body {
 .tc-textarea::placeholder { color: transparent; }
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #181825; }
-::-webkit-scrollbar-thumb { background: #45475a; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #6c7086; }
+::-webkit-scrollbar-track { background: #111612; }
+::-webkit-scrollbar-thumb { background: #71836b; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #9eac96; }
 
 /* ── Welcome Screen ───────────────────────────────────────────────────────── */
 .wsc-enter { animation: wscFadeIn 0.7s ease both; }
@@ -310,3 +310,5 @@ body {
   animation: spinSlow 8s linear infinite;
 }
 
+
+.space-loading { display: grid; place-items: center; height: 100dvh; background: #101211; color: #c8edb6; font: 13px system-ui, sans-serif; letter-spacing: .5px; }

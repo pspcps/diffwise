@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { DiffEditor as MonacoDiffEditor } from '@monaco-editor/react';
+import MonacoDiffEditor from '../Common/ManagedDiffEditor';
 import { FolderOpen, GitCompare, X, Save, FileText } from 'lucide-react';
 import DropZone from '../Common/DropZone';
 import { detectLanguage } from '../../utils/fileUtils';
@@ -40,10 +40,10 @@ const STATUS_BADGE: Record<DiffStatus, string> = {
 };
 
 const STATUS_COLOR: Record<DiffStatus, string> = {
-  added: '#a6e3a1',
-  removed: '#f38ba8',
-  modified: '#f9e2af',
-  identical: '#6c7086',
+  added: '#b5dfa3',
+  removed: '#f19aa6',
+  modified: '#f3d58c',
+  identical: '#9eac96',
 };
 
 export default function FolderCompareView() {
@@ -156,7 +156,7 @@ export default function FolderCompareView() {
     const renderFolderSide = (side: 'left' | 'right') => {
       const files: Record<string, string> | null = side === 'left' ? leftFiles : rightFiles;
       const name = side === 'left' ? leftName : rightName;
-      const colorClass = side === 'left' ? 'text-[#f38ba8]' : 'text-[#a6e3a1]';
+      const colorClass = side === 'left' ? 'text-[#f19aa6]' : 'text-[#b5dfa3]';
       const onLoad = side === 'left'
         ? (f: Record<string, string>, n: string) => { setLeftFiles(f); setLeftName(n); }
         : (f: Record<string, string>, n: string) => { setRightFiles(f); setRightName(n); };
@@ -165,18 +165,18 @@ export default function FolderCompareView() {
       if (files) {
         const paths = Object.keys(files).sort();
         return (
-          <div className="flex flex-col h-full border border-[#45475a] rounded-lg overflow-hidden">
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-[#181825] border-b border-[#45475a] shrink-0">
-              <FolderOpen size={13} className="text-[#89b4fa] shrink-0" />
+          <div className="flex flex-col h-full border border-[#71836b] rounded-lg overflow-hidden">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-[#111612] border-b border-[#71836b] shrink-0">
+              <FolderOpen size={13} className="text-[#c8edb6] shrink-0" />
               <span className={`text-xs font-medium truncate ${colorClass}`}>{name}</span>
-              <span className="ml-auto text-xs text-[#6c7086]">
+              <span className="ml-auto text-xs text-[#9eac96]">
                 {paths.length} files — waiting for {side === 'left' ? 'right' : 'left'} folder…
               </span>
             </div>
-            <div className="flex-1 overflow-y-auto py-1 bg-[#181825]">
+            <div className="flex-1 overflow-y-auto py-1 bg-[#111612]">
               {paths.map(p => (
-                <div key={p} className="flex items-center gap-2 px-3 py-0.5 text-xs text-[#9399b2] hover:bg-[#24273a]">
-                  <FileText size={11} className="text-[#6c7086] shrink-0" />
+                <div key={p} className="flex items-center gap-2 px-3 py-0.5 text-xs text-[#b1bea8] hover:bg-[#24273a]">
+                  <FileText size={11} className="text-[#9eac96] shrink-0" />
                   <span className="truncate">{p}</span>
                 </div>
               ))}
@@ -205,17 +205,17 @@ export default function FolderCompareView() {
   const language = activeTabData ? detectLanguage(activeTabData.name) : 'plaintext';
 
   const renderFileList = (paths: string[], side: 'left' | 'right') => {
-    const colorClass = side === 'left' ? 'text-[#f38ba8]' : 'text-[#a6e3a1]';
+    const colorClass = side === 'left' ? 'text-[#f19aa6]' : 'text-[#b5dfa3]';
     const folderName = side === 'left' ? leftName : rightName;
 
     return (
-      <div className="flex flex-col h-full border border-[#45475a] rounded-lg overflow-hidden">
-        <div className="flex items-center gap-2 px-3 py-1.5 bg-[#181825] border-b border-[#45475a] shrink-0">
-          <FolderOpen size={13} className="text-[#89b4fa] shrink-0" />
+      <div className="flex flex-col h-full border border-[#71836b] rounded-lg overflow-hidden">
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-[#111612] border-b border-[#71836b] shrink-0">
+          <FolderOpen size={13} className="text-[#c8edb6] shrink-0" />
           <span className={`text-xs font-medium truncate ${colorClass}`}>{folderName}</span>
-          <span className="ml-auto text-xs text-[#6c7086]">{paths.length} files</span>
+          <span className="ml-auto text-xs text-[#9eac96]">{paths.length} files</span>
         </div>
-        <div className="flex-1 overflow-y-auto py-1 bg-[#181825]">
+        <div className="flex-1 overflow-y-auto py-1 bg-[#111612]">
           {paths.map(p => {
             const status = getFileStatus(p, leftFiles, rightFiles);
             const hasDiff = status !== 'identical';
@@ -226,17 +226,17 @@ export default function FolderCompareView() {
                 key={p}
                 onClick={() => openFile(p)}
                 className={`flex items-center gap-2 px-3 py-1 text-xs cursor-pointer transition-colors ${
-                  isActive ? 'bg-[#313244]' : isOpen ? 'bg-[rgba(36,39,58,0.7)]' : 'hover:bg-[#24273a]'
+                  isActive ? 'bg-[#344435]' : isOpen ? 'bg-[rgba(36,39,58,0.7)]' : 'hover:bg-[#24273a]'
                 }`}
               >
                 <FileText
                   size={11}
                   className="shrink-0"
-                  style={{ color: hasDiff ? '#f38ba8' : '#6c7086' }}
+                  style={{ color: hasDiff ? '#f19aa6' : '#9eac96' }}
                 />
                 <span
                   className="truncate flex-1"
-                  style={{ color: hasDiff ? '#f38ba8' : '#9399b2' }}
+                  style={{ color: hasDiff ? '#f19aa6' : '#b1bea8' }}
                   title={p}
                 >
                   {p}
@@ -260,21 +260,21 @@ export default function FolderCompareView() {
   return (
     <div className="flex flex-col h-full relative">
       {/* Header */}
-      <div className="flex items-center gap-2 px-3 py-1.5 bg-[#181825] border-b border-[#45475a] shrink-0">
-        <FolderOpen size={13} className="text-[#89b4fa]" />
-        <span className="text-xs text-[#f38ba8] font-medium truncate max-w-[140px]">{leftName}</span>
-        <GitCompare size={11} className="text-[#45475a] shrink-0" />
-        <span className="text-xs text-[#a6e3a1] font-medium truncate max-w-[140px]">{rightName}</span>
+      <div className="flex items-center gap-2 px-3 py-1.5 bg-[#111612] border-b border-[#71836b] shrink-0">
+        <FolderOpen size={13} className="text-[#c8edb6]" />
+        <span className="text-xs text-[#f19aa6] font-medium truncate max-w-[140px]">{leftName}</span>
+        <GitCompare size={11} className="text-[#71836b] shrink-0" />
+        <span className="text-xs text-[#b5dfa3] font-medium truncate max-w-[140px]">{rightName}</span>
         <div className="ml-auto flex items-center gap-3 text-xs shrink-0">
           {activeTab && (
             <button
               onClick={() => setActiveTab(null)}
-              className="text-[#6c7086] hover:text-[#89b4fa] transition-colors"
+              className="text-[#9eac96] hover:text-[#c8edb6] transition-colors"
             >
               ← Files
             </button>
           )}
-          <button onClick={reset} className="text-[#6c7086] hover:text-[#f38ba8] transition-colors">
+          <button onClick={reset} className="text-[#9eac96] hover:text-[#f19aa6] transition-colors">
             Reset
           </button>
         </div>
@@ -282,7 +282,7 @@ export default function FolderCompareView() {
 
       {/* Tab bar */}
       {openTabs.length > 0 && (
-        <div className="flex items-end gap-0 px-2 bg-[#181825] border-b border-[#45475a] overflow-x-auto shrink-0">
+        <div className="flex items-end gap-0 px-2 bg-[#111612] border-b border-[#71836b] overflow-x-auto shrink-0">
           {openTabs.map(tab => {
             const hasChanged = tabChanges[tab.path] ?? false;
             const isActive = activeTab === tab.path;
@@ -291,8 +291,8 @@ export default function FolderCompareView() {
                 key={tab.path}
                 className={`flex items-center gap-1.5 px-2.5 py-1.5 text-xs cursor-pointer transition-colors shrink-0 border-b-2 ${
                   isActive
-                    ? 'bg-[#24273a] text-[#cdd6f4] border-[#89b4fa]'
-                    : 'text-[#6c7086] hover:text-[#9399b2] border-transparent hover:bg-[#1e1e2e]'
+                    ? 'bg-[#24273a] text-[#e4ebdd] border-[#c8edb6]'
+                    : 'text-[#9eac96] hover:text-[#b1bea8] border-transparent hover:bg-[#171d19]'
                 }`}
                 onClick={() => setActiveTab(tab.path)}
               >
@@ -302,11 +302,11 @@ export default function FolderCompareView() {
                 />
                 <span className="max-w-[120px] truncate">{tab.name}</span>
                 {hasChanged && (
-                  <span className="text-[#89b4fa] shrink-0 text-[8px]" title="Unsaved changes">●</span>
+                  <span className="text-[#c8edb6] shrink-0 text-[8px]" title="Unsaved changes">●</span>
                 )}
                 <button
                   onClick={e => { e.stopPropagation(); closeTab(tab.path); }}
-                  className="ml-0.5 p-0.5 rounded hover:bg-[#45475a] text-[#6c7086] hover:text-[#f38ba8] transition-colors shrink-0"
+                  className="ml-0.5 p-0.5 rounded hover:bg-[#71836b] text-[#9eac96] hover:text-[#f19aa6] transition-colors shrink-0"
                 >
                   <X size={10} />
                 </button>
@@ -364,28 +364,28 @@ export default function FolderCompareView() {
       {/* Save dialog */}
       {saveDialog && (
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-[#24273a] border border-[#45475a] rounded-lg p-5 shadow-2xl w-80">
-            <h3 className="text-sm font-medium text-[#cdd6f4] mb-2">Save Changes?</h3>
-            <p className="text-xs text-[#9399b2] mb-5 leading-relaxed">
+          <div className="bg-[#24273a] border border-[#71836b] rounded-lg p-5 shadow-2xl w-80">
+            <h3 className="text-sm font-medium text-[#e4ebdd] mb-2">Save Changes?</h3>
+            <p className="text-xs text-[#b1bea8] mb-5 leading-relaxed">
               Do you want to save changes to{' '}
-              <span className="text-[#89b4fa] font-medium">{saveDialog.fileName}</span>?
+              <span className="text-[#c8edb6] font-medium">{saveDialog.fileName}</span>?
             </p>
             <div className="flex items-center gap-2 justify-end">
               <button
                 onClick={() => { setSaveDialog(null); setPendingClose(null); }}
-                className="px-3 py-1.5 rounded text-xs text-[#6c7086] hover:text-[#cdd6f4] hover:bg-[#313244] transition-colors"
+                className="px-3 py-1.5 rounded text-xs text-[#9eac96] hover:text-[#e4ebdd] hover:bg-[#344435] transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDontSave}
-                className="px-3 py-1.5 rounded text-xs bg-[#313244] text-[#cdd6f4] hover:bg-[#45475a] transition-colors"
+                className="px-3 py-1.5 rounded text-xs bg-[#344435] text-[#e4ebdd] hover:bg-[#71836b] transition-colors"
               >
                 Don't Save
               </button>
               <button
                 onClick={handleSaveAndClose}
-                className="px-3 py-1.5 rounded text-xs bg-[#89b4fa] text-[#1e1e2e] hover:bg-[#74c7ec] transition-colors flex items-center gap-1.5 font-medium"
+                className="px-3 py-1.5 rounded text-xs bg-[#c8edb6] text-[#171d19] hover:bg-[#74c7ec] transition-colors flex items-center gap-1.5 font-medium"
               >
                 <Save size={11} />
                 Save

@@ -1,0 +1,1302 @@
+/* Personal, portrait-led portfolio. Color and motion follow the visitor's theme. */
+.portfolio-space.portfolio-atelier {
+  background:
+    radial-gradient(
+      ellipse at 85% 8%,
+      color-mix(in srgb, var(--theme-vivid, #22c55e) 8%, transparent),
+      transparent 33%
+    ),
+    #0b1010;
+  color: #eef3e9;
+}
+.portfolio-atelier .portfolio-body {
+  max-width: 1240px;
+  padding: 0 42px;
+}
+.portfolio-atelier .portfolio-nav {
+  height: 74px;
+  padding: 0 max(28px, calc((100vw - 1160px) / 2));
+  background: #0b1010db;
+  border-color: #ffffff0c;
+}
+.portfolio-atelier .portfolio-identity {
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+.portfolio-atelier .portfolio-identity img {
+  border: 1px solid color-mix(in srgb, var(--user-accent) 40%, transparent);
+}
+.portfolio-atelier .portfolio-nav nav button {
+  font-size: 11px;
+}
+.portfolio-atelier .portfolio-nav nav button:hover {
+  color: var(--user-accent);
+}
+.atelier-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 60px;
+  align-items: center;
+  min-height: 650px;
+  padding: 58px 0 64px;
+}
+.atelier-hero-copy {
+  position: relative;
+  z-index: 2;
+}
+.hero-intro {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b8c6b3;
+  font-size: 8px;
+  letter-spacing: 1.8px;
+  white-space: nowrap;
+}
+.hero-intro > span:first-child {
+  height: 5px;
+  width: 5px;
+  background: var(--theme-vivid);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--theme-vivid);
+}
+.hero-intro-divider {
+  color: #5d7264;
+  margin: 0 4px;
+}
+.hero-greeting {
+  font:
+    italic 23px Georgia,
+    serif;
+  color: #b6c8b4;
+  margin: 30px 0 9px;
+}
+.atelier-hero h1 {
+  font-size: clamp(55px, 6.5vw, 91px);
+  line-height: 1.02;
+  letter-spacing: -5px;
+  font-weight: 600;
+  margin: 0 0 25px;
+  color: #f1f5ed;
+}
+.atelier-hero h1 > span {
+  background: linear-gradient(
+    110deg,
+    var(--user-accent),
+    #f4fff1 55%,
+    var(--theme-vivid)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.name-dot {
+  color: var(--theme-vivid);
+}
+.hero-position {
+  font-size: 20px;
+  line-height: 1.5;
+  letter-spacing: -0.4px;
+  margin: 0 0 17px;
+  color: #edf3e8;
+  font-weight: 400;
+}
+.hero-position strong {
+  color: #a8b8a3;
+  font-weight: 400;
+}
+.hero-statement {
+  font-size: 12px;
+  line-height: 1.95;
+  color: #93a48e;
+  max-width: 385px;
+  margin: 0;
+}
+.atelier-actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 29px;
+}
+.portfolio-atelier .primary-button {
+  background: var(--user-accent);
+  border-color: var(--user-accent);
+  padding: 13px 18px;
+  border-radius: 7px;
+  box-shadow: 0 5px 25px color-mix(in srgb, var(--theme-vivid) 12%, transparent);
+}
+.hero-resume {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: #d7e2d0 !important;
+}
+.hero-contact {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  border-left: 1px solid #ffffff16;
+  padding-left: 18px;
+  color: #9db296 !important;
+}
+.profile-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: none;
+  border: 0;
+  padding: 16px 0 0;
+  color: #7e9478;
+  font-size: 9px !important;
+}
+.profile-download:hover {
+  color: var(--user-accent);
+}
+.portrait-scene {
+  position: relative;
+  min-width: 0;
+  min-height: 490px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+.portrait-atmosphere {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+}
+.portrait-grid {
+  position: absolute;
+  inset: 0 -40px;
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--theme-vivid) 35%, transparent) 0.6px,
+    transparent 0.6px
+  );
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse, #000, transparent 72%);
+  transform: rotate(-8deg);
+}
+.portrait-glow {
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--theme-vivid) 23%, transparent),
+    transparent 68%
+  );
+  filter: blur(45px);
+  transform: translate(50px, 5px);
+  pointer-events: none;
+}
+.portrait-card {
+  position: relative;
+  width: 330px;
+  max-width: 80%;
+  margin: 0;
+  border: 1px solid color-mix(in srgb, var(--user-accent) 27%, transparent);
+  background: linear-gradient(140deg, #2b392f, #142019);
+  border-radius: 17px;
+  box-shadow:
+    25px 30px 70px #0005,
+    inset 0 1px #ffffff12;
+  transform: rotate(-4deg) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.2s;
+  overflow: hidden;
+  animation: portrait-arrive 0.9s ease both;
+}
+.portrait-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font:
+    6px ui-monospace,
+    monospace;
+  letter-spacing: 1.4px;
+  color: #b4c7aa;
+  padding: 17px 17px 12px;
+}
+.portrait-topline > span:last-child {
+  color: var(--user-accent);
+  white-space: nowrap;
+}
+.portrait-image {
+  position: relative;
+  margin: 0 12px;
+  border-radius: 10px;
+  overflow: hidden;
+  aspect-ratio: 1/1;
+  background: #1c2b21;
+}
+.portrait-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  filter: saturate(0.55) contrast(1.05);
+}
+.portrait-image-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, #11241977, transparent 40%);
+  mix-blend-mode: multiply;
+}
+.portrait-card figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 19px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #e2edda;
+}
+.portrait-card figcaption small {
+  display: block;
+  font:
+    7px/1.6 ui-monospace,
+    monospace;
+  color: #9fb494;
+  margin-top: 5px;
+}
+.portrait-card figcaption > svg {
+  color: var(--user-accent);
+  flex-shrink: 0;
+}
+.contribution-float {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  top: 47px;
+  right: -15px;
+  border: 1px solid color-mix(in srgb, var(--user-accent) 28%, transparent);
+  background: linear-gradient(120deg, #26382ceb, #1a251feb);
+  backdrop-filter: blur(16px);
+  padding: 13px 17px;
+  border-radius: 10px;
+  box-shadow: 0 16px 35px #0004;
+  transform: rotate(4deg);
+  animation: contribution-hover 7s ease-in-out infinite;
+}
+.contribution-float > span:last-child {
+  font-size: 8px;
+  color: #9fb298;
+  line-height: 1.8;
+}
+.contribution-float strong {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #e0edd7;
+}
+.contribution-symbol {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  background: color-mix(in srgb, var(--theme-vivid) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--user-accent) 25%, transparent);
+  color: var(--user-accent);
+  border-radius: 9px;
+}
+.language-dock {
+  position: absolute;
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  left: -15px;
+  bottom: 60px;
+  padding: 12px 16px;
+  background: #18271ee6;
+  backdrop-filter: blur(15px);
+  border: 1px solid color-mix(in srgb, var(--user-accent) 28%, transparent);
+  border-radius: 13px;
+  box-shadow: 0 18px 35px #0004;
+  transform: rotate(3deg);
+}
+.language-dock button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 7px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #ffffff04;
+  color: #96a98e;
+}
+.language-dock .technology-icon {
+  width: 19px;
+  height: 19px;
+  background: #8c9d87;
+}
+.language-dock button.selected {
+  background: color-mix(in srgb, var(--theme-vivid) 15%, transparent);
+  border-color: color-mix(in srgb, var(--user-accent) 40%, transparent);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--theme-vivid) 12%, transparent);
+}
+.language-dock button.selected .technology-icon {
+  background: var(--user-accent);
+}
+.language-dock button:hover {
+  transform: translateY(-4px);
+  border-color: var(--user-accent);
+}
+.portrait-caption {
+  position: absolute;
+  bottom: 0;
+  right: 25px;
+  text-align: right;
+  font-size: 9px;
+  color: #b2c2aa;
+}
+.portrait-caption > .live-dot {
+  margin-right: 6px;
+}
+.portrait-caption small {
+  display: block;
+  font-size: 8px;
+  color: #6e8668;
+  margin-top: 7px;
+}
+.portfolio-atelier .portfolio-stats {
+  padding: 0;
+  border: 0;
+  gap: 12px;
+  margin: 0 0 8px;
+  position: relative;
+}
+.portfolio-atelier .portfolio-stats > div {
+  padding: 20px 23px !important;
+  border: 1px solid #ffffff0c !important;
+  border-radius: 11px;
+  background: linear-gradient(130deg, #20302699, #14201955);
+  box-shadow: inset 0 1px #ffffff04;
+  transition:
+    transform 0.25s,
+    border-color 0.25s;
+}
+.portfolio-atelier .portfolio-stats > div:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(
+    in srgb,
+    var(--theme-vivid) 40%,
+    transparent
+  ) !important;
+}
+.portfolio-atelier .portfolio-stats strong {
+  font-size: 29px;
+  font-weight: 550;
+  color: var(--user-accent);
+  letter-spacing: -1px;
+}
+.portfolio-atelier .portfolio-stats p {
+  font-size: 8px;
+  color: #8da485;
+  letter-spacing: 0.5px;
+  margin-top: 9px;
+}
+.portfolio-atelier .portfolio-section {
+  padding-top: 68px;
+}
+.portfolio-atelier .portfolio-section h2 {
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -1.3px;
+}
+.portfolio-atelier .eyebrow.muted {
+  color: #86a17c;
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+.portfolio-atelier .project-space-card {
+  position: relative;
+  background:
+    radial-gradient(
+      ellipse at 100% 0%,
+      color-mix(in srgb, var(--theme-vivid) 7%, transparent),
+      transparent 60%
+    ),
+    #131c17;
+  border: 1px solid #ffffff12;
+  box-shadow: inset 0 1px #ffffff06;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.portfolio-atelier .project-space-card:hover {
+  border-color: color-mix(in srgb, var(--user-accent) 40%, transparent);
+  box-shadow: 0 18px 40px #0003;
+}
+.project-card-overline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #7b9772;
+  font:
+    7px ui-monospace,
+    monospace;
+  letter-spacing: 1.2px;
+  margin-bottom: 19px;
+}
+.project-card-overline > span:last-child {
+  font-size: 11px;
+  color: #466444;
+}
+.portfolio-atelier .project-space-content {
+  padding: 24px;
+}
+.portfolio-atelier .project-space-content > h3 {
+  font-size: 21px;
+  font-weight: 500;
+  letter-spacing: -0.7px;
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+.portfolio-atelier .project-space-content > p {
+  font-size: 10px;
+  color: #9aac91;
+}
+.portfolio-atelier .project-real-summary {
+  color: #aaba9f !important;
+  font-size: 11px !important;
+  line-height: 1.9 !important;
+}
+.portfolio-atelier .project-tech .technology-chip {
+  font-size: 8px;
+  padding: 5px 7px;
+  background: #ffffff03;
+  border-color: #ffffff0c;
+  color: #a9bf9f;
+  gap: 5px;
+}
+.portfolio-atelier .project-tech .technology-icon {
+  width: 12px;
+  height: 12px;
+}
+.portfolio-atelier .project-details-button {
+  padding-top: 15px;
+  margin-top: 23px;
+  font-size: 10px !important;
+  color: #ccdfc1;
+}
+.portfolio-atelier .portfolio-about {
+  border-bottom: 1px solid #ffffff0c;
+  padding-bottom: 40px;
+  gap: 65px;
+}
+.portfolio-atelier .portfolio-about > p {
+  font-size: 13px;
+  line-height: 2.1;
+  color: #a4b59b;
+}
+.portfolio-atelier .experience-list details {
+  background: linear-gradient(120deg, #18271e99, #121b16);
+  border-color: #ffffff0e;
+  border-radius: 10px;
+  padding: 23px;
+}
+.portfolio-atelier .experience-list details[open] {
+  border-color: color-mix(in srgb, var(--user-accent) 25%, transparent);
+}
+.portfolio-atelier .experience-list summary h3 {
+  font-size: 15px;
+}
+.portfolio-atelier .experience-list summary p {
+  color: #95b189;
+}
+.portfolio-atelier .skill-space-card {
+  background:
+    radial-gradient(
+      ellipse at 100% 0%,
+      color-mix(in srgb, var(--theme-vivid) 7%, transparent),
+      transparent 60%
+    ),
+    #141e18;
+  border-color: #ffffff0f;
+  border-radius: 12px;
+}
+.portfolio-atelier .skill-space-card h3 {
+  font-size: 13px;
+  color: #dcead3;
+}
+.portfolio-atelier .skill-space-card .project-tech .technology-chip {
+  font-size: 10px;
+  padding: 7px 9px;
+}
+.portfolio-atelier .skill-space-card .technology-icon {
+  width: 16px;
+  height: 16px;
+}
+.portfolio-atelier .portfolio-contact {
+  border-radius: 17px;
+  border-color: color-mix(in srgb, var(--user-accent) 22%, transparent);
+  background:
+    radial-gradient(
+      ellipse at 50% 100%,
+      color-mix(in srgb, var(--theme-vivid) 15%, transparent),
+      transparent 75%
+    ),
+    #121c16;
+  padding: 65px 25px;
+}
+.portfolio-atelier .portfolio-contact h2 {
+  font-size: 49px;
+  font-weight: 500;
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+.portfolio-atelier .portfolio-contact h2 em {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 500;
+  color: var(--user-accent);
+}
+.portfolio-atelier .space-footer {
+  padding-bottom: 30px;
+}
+@keyframes portrait-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(20px) rotate(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(-4deg);
+  }
+}
+@keyframes contribution-hover {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -7px;
+  }
+}
+@media (min-width: 1500px) {
+  .atelier-hero {
+    min-height: 710px;
+    gap: 80px;
+  }
+  .portrait-card {
+    width: 355px;
+  }
+  .portrait-scene {
+    min-height: 520px;
+  }
+  .atelier-hero h1 {
+    font-size: 94px;
+  }
+}
+@media (max-width: 1050px) {
+  .atelier-hero {
+    gap: 25px;
+    min-height: 610px;
+  }
+  .atelier-hero h1 {
+    font-size: 70px;
+    letter-spacing: -3.7px;
+  }
+  .portrait-card {
+    width: 280px;
+  }
+  .portrait-scene {
+    min-height: 450px;
+  }
+  .contribution-float {
+    top: 25px;
+    right: -5px;
+    padding: 10px;
+  }
+  .language-dock {
+    left: -5px;
+    bottom: 55px;
+    padding: 9px 11px;
+    gap: 6px;
+  }
+  .language-dock button {
+    width: 29px;
+    height: 29px;
+  }
+  .portrait-caption {
+    right: 10px;
+  }
+  .portfolio-atelier .portfolio-body {
+    padding: 0 30px;
+  }
+  .hero-position {
+    font-size: 18px;
+  }
+  .hero-statement {
+    font-size: 11px;
+  }
+  .portfolio-atelier .portfolio-stats > div {
+    padding: 20px 16px !important;
+  }
+}
+@media (max-width: 760px) {
+  .atelier-hero {
+    gap: 10px;
+    grid-template-columns: 1.05fr 1fr;
+  }
+  .atelier-hero h1 {
+    font-size: 58px;
+    letter-spacing: -3px;
+  }
+  .hero-intro {
+    font-size: 6px;
+    gap: 5px;
+    letter-spacing: 1.2px;
+  }
+  .hero-greeting {
+    font-size: 20px;
+  }
+  .hero-position {
+    font-size: 16px;
+  }
+  .portrait-topline {
+    font-size: 5px;
+    padding: 13px 13px 9px;
+    letter-spacing: 1px;
+  }
+  .portrait-card figcaption {
+    font-size: 10px;
+    padding: 13px;
+  }
+  .portrait-card figcaption small {
+    font-size: 6px;
+  }
+  .portrait-image {
+    margin: 0 9px;
+  }
+  .contribution-float {
+    top: 50px;
+    right: -5px;
+    padding: 8px;
+    gap: 7px;
+  }
+  .contribution-float > span:last-child {
+    font-size: 6px;
+  }
+  .contribution-float strong {
+    font-size: 9px;
+  }
+  .contribution-symbol {
+    width: 25px;
+    height: 25px;
+  }
+  .language-dock {
+    bottom: 70px;
+    gap: 4px;
+    padding: 7px;
+  }
+  .language-dock button {
+    width: 26px;
+    height: 26px;
+    padding: 5px;
+  }
+  .language-dock .technology-icon {
+    width: 16px;
+    height: 16px;
+  }
+  .portrait-scene {
+    min-height: 420px;
+  }
+  .atelier-actions {
+    gap: 15px;
+  }
+  .atelier-actions .primary-button {
+    font-size: 10px !important;
+    padding: 12px 13px;
+    gap: 10px;
+  }
+  .hero-resume {
+    font-size: 10px;
+  }
+  .hero-contact {
+    display: none;
+  }
+  .portfolio-atelier .portfolio-stats strong {
+    font-size: 24px;
+  }
+}
+@media (max-width: 650px) {
+  .portfolio-atelier .portfolio-body {
+    padding: 0 23px;
+  }
+  .portfolio-atelier .portfolio-nav {
+    height: 63px;
+    padding: 0 18px;
+    gap: 10px;
+  }
+  .atelier-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 39px 0 32px;
+    gap: 20px;
+    min-height: 0;
+  }
+  .hero-intro {
+    font-size: 7px;
+    letter-spacing: 1.4px;
+  }
+  .hero-greeting {
+    font-size: 23px;
+    margin-top: 23px;
+  }
+  .atelier-hero h1 {
+    font-size: clamp(61px, 15.8vw, 84px);
+    letter-spacing: -3.8px;
+    margin-bottom: 22px;
+  }
+  .hero-position {
+    font-size: 19px;
+    line-height: 1.5;
+  }
+  .hero-statement {
+    font-size: 12px;
+    max-width: 380px;
+  }
+  .atelier-actions {
+    gap: 22px;
+    margin-top: 25px;
+  }
+  .atelier-actions .primary-button {
+    padding: 13px 17px;
+    font-size: 11px !important;
+  }
+  .hero-resume {
+    font-size: 11px;
+  }
+  .hero-contact {
+    display: grid;
+  }
+  .profile-download {
+    font-size: 9px !important;
+  }
+  .portrait-scene {
+    min-height: 440px;
+    max-width: 400px;
+    width: 100%;
+    align-self: center;
+  }
+  .portrait-card {
+    width: 280px;
+    max-width: 78%;
+  }
+  .portrait-topline {
+    font-size: 6px;
+    padding: 15px 15px 10px;
+  }
+  .portrait-card figcaption {
+    font-size: 12px;
+    padding: 15px;
+  }
+  .portrait-card figcaption small {
+    font-size: 6px;
+  }
+  .contribution-float {
+    right: 0;
+    top: 25px;
+    gap: 9px;
+    padding: 11px 13px;
+  }
+  .contribution-float > span:last-child {
+    font-size: 7px;
+  }
+  .contribution-float strong {
+    font-size: 10px;
+  }
+  .contribution-symbol {
+    width: 29px;
+    height: 29px;
+  }
+  .language-dock {
+    left: 0;
+    bottom: 53px;
+    padding: 10px 13px;
+    gap: 7px;
+  }
+  .language-dock button {
+    width: 30px;
+    height: 30px;
+    padding: 6px;
+  }
+  .language-dock .technology-icon {
+    width: 18px;
+    height: 18px;
+  }
+  .portrait-caption {
+    bottom: 0;
+    right: 8px;
+    font-size: 8px;
+  }
+  .portrait-caption small {
+    font-size: 7px;
+  }
+  .portfolio-atelier .portfolio-stats {
+    gap: 10px;
+    margin-top: 5px;
+  }
+  .portfolio-atelier .portfolio-stats > div {
+    padding: 18px !important;
+  }
+  .portfolio-atelier .portfolio-stats strong {
+    font-size: 26px;
+  }
+  .portfolio-atelier .portfolio-stats p {
+    font-size: 7px;
+  }
+  .portfolio-atelier .portfolio-section {
+    padding-top: 49px;
+  }
+  .portfolio-atelier .portfolio-section h2 {
+    font-size: 28px;
+    letter-spacing: -1px;
+  }
+  .portfolio-atelier .project-space-content {
+    padding: 24px;
+  }
+  .portfolio-atelier .project-space-content > h3 {
+    font-size: 23px;
+  }
+  .portfolio-atelier .project-space-content > p {
+    font-size: 11px;
+  }
+  .portfolio-atelier .project-tech .technology-chip {
+    font-size: 9px;
+  }
+  .portfolio-atelier .portfolio-about {
+    padding-bottom: 27px;
+  }
+  .portfolio-atelier .portfolio-about > p {
+    font-size: 12px;
+  }
+  .portfolio-atelier .portfolio-contact {
+    padding: 42px 20px;
+  }
+  .portfolio-atelier .portfolio-contact h2 {
+    font-size: 37px;
+    letter-spacing: -1.4px;
+  }
+  .portrait-grid {
+    inset: 0 -10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-atelier * {
+    animation: none !important;
+    transition: none !important;
+  }
+  .portrait-card {
+    transform: rotate(-4deg) !important;
+  }
+}
+@keyframes portrait-arrive {
+  from {
+    opacity: 0;
+    translate: 0 20px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+/* Keep theme controls below the portrait, clear of the identity caption. */
+.portfolio-atelier .portrait-scene {
+  min-height: 520px;
+  padding-bottom: 50px;
+}
+.portfolio-atelier .language-dock {
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+}
+.portfolio-atelier .portrait-caption {
+  bottom: -28px;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  text-align: center;
+  white-space: nowrap;
+}
+@media (max-width: 650px) {
+  .portfolio-atelier .portrait-scene {
+    min-height: 470px;
+  }
+  .portfolio-atelier .portrait-caption {
+    bottom: -23px;
+  }
+}
+.experience-timeline {
+  position: relative;
+  list-style: none;
+  padding: 0 0 0 36px;
+  margin: 30px 0 0;
+}
+.experience-timeline:before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 27px;
+  bottom: 30px;
+  width: 1px;
+  background: linear-gradient(
+    var(--user-accent),
+    color-mix(in srgb, var(--theme-vivid) 20%, transparent)
+  );
+  opacity: 0.45;
+}
+.timeline-entry {
+  position: relative;
+  list-style: none;
+  margin: 0 0 28px;
+  transition:
+    opacity 0.65s ease,
+    transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.timeline-entry:last-child {
+  margin-bottom: 0;
+}
+.timeline-ready .timeline-entry:not(.timeline-visible) {
+  opacity: 0;
+  transform: translateY(24px);
+}
+.timeline-node {
+  position: absolute;
+  left: -34px;
+  top: 25px;
+  height: 13px;
+  width: 13px;
+  border-radius: 50%;
+  background: var(--user-accent);
+  border: 3px solid #101b13;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--user-accent) 50%, transparent),
+    0 0 18px color-mix(in srgb, var(--theme-vivid) 30%, transparent);
+  z-index: 1;
+}
+.timeline-card {
+  position: relative;
+  overflow: hidden;
+  padding: 27px 30px;
+  border: 1px solid color-mix(in srgb, var(--user-accent) 18%, transparent);
+  border-radius: 14px;
+  background: linear-gradient(130deg, #1a291fbb, #111b16);
+  box-shadow: inset 0 1px #ffffff05;
+  transition:
+    border-color 0.25s,
+    box-shadow 0.25s;
+}
+.timeline-card:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--theme-vivid), transparent 80%);
+}
+.timeline-card:hover {
+  border-color: color-mix(in srgb, var(--user-accent) 38%, transparent);
+  box-shadow: 0 12px 35px #0002;
+}
+.timeline-card header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+.timeline-period {
+  font:
+    10px ui-monospace,
+    monospace;
+  color: #8ea585;
+  letter-spacing: 0.2px;
+  margin: 0 0 13px;
+}
+.timeline-card h3 {
+  font-size: 18px;
+  font-weight: 550;
+  letter-spacing: -0.45px;
+  color: #e7f0e0;
+  margin: 0 0 10px;
+  line-height: 1.4;
+}
+.timeline-role {
+  display: inline-block;
+  font-size: 10px;
+  color: var(--user-accent);
+  padding: 5px 10px;
+  margin: 0;
+  border: 1px solid color-mix(in srgb, var(--user-accent) 20%, transparent);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--user-accent) 5%, transparent);
+}
+.timeline-current {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  color: var(--user-accent);
+  font-size: 9px;
+  padding-top: 3px;
+}
+.timeline-current > span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--user-accent);
+}
+.timeline-card > ul {
+  list-style: none;
+  padding: 0;
+  margin: 23px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.timeline-card > ul > li {
+  position: relative;
+  padding-left: 16px;
+  color: #b4c5aa;
+  font-size: 12px;
+  line-height: 1.9;
+}
+.timeline-card > ul > li:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--user-accent);
+  opacity: 0.8;
+}
+.portrait-card .portrait-linkedin {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  color: var(--user-accent);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+.portrait-card .portrait-linkedin:hover {
+  background: #ffffff08;
+  border-color: color-mix(in srgb, var(--user-accent) 30%, transparent);
+}
+.portrait-card .portrait-linkedin:focus-visible {
+  outline: 2px solid var(--user-accent);
+  outline-offset: 3px;
+}
+@media (max-width: 650px) {
+  .experience-timeline {
+    padding-left: 24px;
+    margin-top: 23px;
+  }
+  .experience-timeline:before {
+    left: 5px;
+    top: 26px;
+  }
+  .timeline-node {
+    left: -24px;
+    top: 24px;
+    width: 11px;
+    height: 11px;
+    border-width: 2px;
+  }
+  .timeline-card {
+    padding: 21px 18px;
+    border-radius: 11px;
+  }
+  .timeline-card header {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .timeline-card h3 {
+    font-size: 16px;
+  }
+  .timeline-card > ul {
+    margin-top: 19px;
+    gap: 11px;
+  }
+  .timeline-card > ul > li {
+    font-size: 11px;
+    padding-left: 14px;
+  }
+  .timeline-period {
+    font-size: 9px;
+  }
+  .timeline-role {
+    font-size: 9px;
+  }
+  .timeline-current {
+    font-size: 8px;
+    padding-top: 0;
+  }
+  .timeline-entry {
+    margin-bottom: 21px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .timeline-ready .timeline-entry:not(.timeline-visible) {
+    opacity: 1;
+    transform: none;
+  }
+  .timeline-entry,
+  .timeline-card,
+  .portrait-linkedin {
+    transition: none !important;
+  }
+}
+@media print {
+  .timeline-ready .timeline-entry:not(.timeline-visible) {
+    opacity: 1;
+    transform: none;
+  }
+}
+.timeline-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 9px;
+  flex-shrink: 0;
+}
+.timeline-meta .timeline-period {
+  margin: 0;
+  padding: 6px 10px;
+  border: 1px solid #ffffff0a;
+  border-radius: 20px;
+  background: #ffffff03;
+  font-size: 10px;
+}
+.timeline-meta .timeline-current {
+  padding-right: 4px;
+}
+@media (max-width: 650px) {
+  .timeline-card header {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .timeline-meta {
+    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .timeline-meta .timeline-period {
+    font-size: 9px;
+    padding: 5px 9px;
+  }
+}
+.rotating-role {
+  display: inline-block;
+  min-height: 1.5em;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+.role-accessible-summary {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  user-select: none;
+}
+.rotating-role-current {
+  display: inline-flex;
+  align-items: baseline;
+  min-height: 1.5em;
+  color: var(--user-accent);
+  line-height: 1.5;
+}
+.role-caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.85em;
+  background: var(--theme-vivid);
+  margin-left: 7px;
+  align-self: center;
+  opacity: 0.8;
+}
+.motion-enabled .role-caret {
+  animation: role-caret 1.1s steps(1) infinite;
+}
+@keyframes role-caret {
+  0%,
+  48% {
+    opacity: 0.8;
+  }
+  49%,
+  100% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rotating-role-current,
+  .role-caret {
+    animation: none !important;
+  }
+}
+.portfolio-atelier .portfolio-stats {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 650px) {
+  .portfolio-atelier .portfolio-stats > div {
+    padding: 16px 12px !important;
+  }
+  .portfolio-atelier .portfolio-stats strong {
+    font-size: clamp(20px, 5vw, 26px);
+  }
+}
+@media (max-width: 650px) {
+  .portfolio-atelier .portfolio-nav {
+    padding-left: 12px;
+    padding-right: 12px;
+    gap: 8px;
+  }
+  .portfolio-atelier .portfolio-nav .portfolio-identity {
+    padding: 0;
+  }
+  .portfolio-atelier .portfolio-nav nav {
+    gap: 8px;
+  }
+  .portfolio-atelier .portfolio-nav nav button,
+  .portfolio-atelier .portfolio-nav .toolbar-home {
+    padding: 4px 2px;
+  }
+  .hero-intro {
+    flex-wrap: wrap;
+    white-space: normal;
+    row-gap: 6px;
+  }
+}
+@media (max-width: 360px) {
+  .atelier-hero h1 {
+    font-size: clamp(50px, 15.8vw, 58px);
+    letter-spacing: -3px;
+  }
+}

@@ -48,11 +48,11 @@ async function copyToClipboard(text: string): Promise<boolean> {
 }
 
 function getValueColor(val: unknown): string {
-  if (val === null) return 'text-[#f38ba8] italic font-semibold';
-  if (typeof val === 'string') return 'text-[#a6e3a1]';
-  if (typeof val === 'number') return 'text-[#fab387] font-semibold';
-  if (typeof val === 'boolean') return 'text-[#cba6f7] font-semibold';
-  return 'text-[#cdd6f4]';
+  if (val === null) return 'text-[#f19aa6] italic font-semibold';
+  if (typeof val === 'string') return 'text-[#b5dfa3]';
+  if (typeof val === 'number') return 'text-[#f3c18e] font-semibold';
+  if (typeof val === 'boolean') return 'text-[#ceb8f6] font-semibold';
+  return 'text-[#e4ebdd]';
 }
 
 function getValueDisplayString(val: unknown): string {
@@ -134,7 +134,7 @@ function JsonTreeNode({
   return (
     <div className="font-mono text-xs select-text">
       <div
-        className={`flex items-center gap-2 py-1 px-2.5 rounded-lg hover:bg-[#313244]/50 transition-colors group ${
+        className={`flex items-center gap-2 py-1 px-2.5 rounded-lg hover:bg-[#344435]/50 transition-colors group ${
           depth > 0 ? 'ml-4' : ''
         }`}
       >
@@ -142,7 +142,7 @@ function JsonTreeNode({
         {isBranch ? (
           <button
             onClick={() => setIsOpen(v => !v)}
-            className="p-0.5 rounded text-[#9399b2] hover:text-[#cdd6f4] hover:bg-[#313244]"
+            className="p-0.5 rounded text-[#b1bea8] hover:text-[#e4ebdd] hover:bg-[#344435]"
             title={isOpen ? 'Collapse' : 'Expand'}
           >
             {isOpen ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
@@ -152,13 +152,13 @@ function JsonTreeNode({
         )}
 
         {/* Node Key */}
-        <span className="text-[#89b4fa] font-bold shrink-0">{nodeKey}:</span>
+        <span className="text-[#c8edb6] font-bold shrink-0">{nodeKey}:</span>
 
         {/* Value Preview / Leaf Value */}
         {isBranch ? (
           <span
             onClick={() => setIsOpen(v => !v)}
-            className="text-[#6c7086] text-[11px] cursor-pointer hover:text-[#9399b2] select-none"
+            className="text-[#9eac96] text-[11px] cursor-pointer hover:text-[#b1bea8] select-none"
           >
             {Array.isArray(value) ? `[ ${childCount} items ]` : `{ ${childCount} keys }`}
           </span>
@@ -173,13 +173,13 @@ function JsonTreeNode({
               onClick={() => onCopy(rawVal, `val-${path}`)}
               className={`p-1 rounded transition-all shrink-0 ${
                 isValCopied
-                  ? 'bg-[#a6e3a1]/20 text-[#a6e3a1]'
-                  : 'text-[#6c7086] hover:text-[#cdd6f4] hover:bg-[#313244] opacity-70 group-hover:opacity-100'
+                  ? 'bg-[#b5dfa3]/20 text-[#b5dfa3]'
+                  : 'text-[#9eac96] hover:text-[#e4ebdd] hover:bg-[#344435] opacity-70 group-hover:opacity-100'
               }`}
               title={`Copy value: ${rawVal}`}
             >
               {isValCopied ? (
-                <div className="flex items-center gap-1 text-[10px] text-[#a6e3a1] font-sans font-bold">
+                <div className="flex items-center gap-1 text-[10px] text-[#b5dfa3] font-sans font-bold">
                   <Check size={11} /> Copied!
                 </div>
               ) : (
@@ -193,25 +193,25 @@ function JsonTreeNode({
         <div className="ml-auto flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
           <button
             onClick={() => onCopy(nodeKey, `key-${path}`)}
-            className="px-1.5 py-0.5 bg-[#181825] hover:bg-[#313244] border border-[#45475a] rounded text-[10px] text-[#9399b2] hover:text-[#cdd6f4]"
+            className="px-1.5 py-0.5 bg-[#111612] hover:bg-[#344435] border border-[#71836b] rounded text-[10px] text-[#b1bea8] hover:text-[#e4ebdd]"
             title={`Copy key: ${nodeKey}`}
           >
-            {isKeyCopied ? <Check size={10} className="text-[#a6e3a1]" /> : 'Key'}
+            {isKeyCopied ? <Check size={10} className="text-[#b5dfa3]" /> : 'Key'}
           </button>
 
           <button
             onClick={() => onCopy(path, `path-${path}`)}
-            className="px-1.5 py-0.5 bg-[#181825] hover:bg-[#313244] border border-[#45475a] rounded text-[10px] text-[#6c7086] hover:text-[#cdd6f4]"
+            className="px-1.5 py-0.5 bg-[#111612] hover:bg-[#344435] border border-[#71836b] rounded text-[10px] text-[#9eac96] hover:text-[#e4ebdd]"
             title={`Copy path: ${path}`}
           >
-            {isPathCopied ? <Check size={10} className="text-[#a6e3a1]" /> : 'Path'}
+            {isPathCopied ? <Check size={10} className="text-[#b5dfa3]" /> : 'Path'}
           </button>
         </div>
       </div>
 
       {/* Children branches */}
       {isBranch && isOpen && (
-        <div className="border-l border-[#313244]/70 ml-4 pl-1">
+        <div className="border-l border-[#344435]/70 ml-4 pl-1">
           {Array.isArray(value)
             ? value.map((item, idx) => (
                 <JsonTreeNode
@@ -260,14 +260,14 @@ function FormattedCodeView({
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center justify-between text-xs text-[#9399b2] pb-1 border-b border-[#313244]">
+      <div className="flex items-center justify-between text-xs text-[#b1bea8] pb-1 border-b border-[#344435]">
         <span>{lines.length} lines • Formatted JSON</span>
         <button
           onClick={() => setWordWrap(!wordWrap)}
           className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium border ${
             wordWrap
-              ? 'bg-[#89b4fa]/15 text-[#89b4fa] border-[#89b4fa]/30'
-              : 'bg-[#181825] text-[#9399b2] border-[#313244]'
+              ? 'bg-[#c8edb6]/15 text-[#c8edb6] border-[#c8edb6]/30'
+              : 'bg-[#111612] text-[#b1bea8] border-[#344435]'
           }`}
         >
           <WrapText size={12} />
@@ -276,7 +276,7 @@ function FormattedCodeView({
       </div>
 
       <div
-        className={`bg-[#11111b] border border-[#313244] rounded-xl p-3 font-mono text-xs overflow-x-auto ${
+        className={`bg-[#0d120f] border border-[#344435] rounded-xl p-3 font-mono text-xs overflow-x-auto ${
           wordWrap ? 'whitespace-pre-wrap break-all' : 'whitespace-pre'
         }`}
       >
@@ -285,22 +285,22 @@ function FormattedCodeView({
           const isCopied = copiedKey === `line-${lineNum}`;
 
           // Syntax coloring logic
-          let coloredLine = <span className="text-[#cdd6f4]">{line}</span>;
+          let coloredLine = <span className="text-[#e4ebdd]">{line}</span>;
           const colonMatch = line.match(/^(\s*"[^"]+"\s*:)(.*)$/);
           if (colonMatch) {
             const keyPart = colonMatch[1];
             const valPart = colonMatch[2];
-            let valColor = 'text-[#cdd6f4]';
+            let valColor = 'text-[#e4ebdd]';
             const trimmedVal = valPart.trim().replace(/,$/, '');
 
-            if (trimmedVal.startsWith('"')) valColor = 'text-[#a6e3a1]';
-            else if (!isNaN(Number(trimmedVal))) valColor = 'text-[#fab387] font-semibold';
-            else if (trimmedVal === 'true' || trimmedVal === 'false') valColor = 'text-[#cba6f7] font-semibold';
-            else if (trimmedVal === 'null') valColor = 'text-[#f38ba8] italic font-semibold';
+            if (trimmedVal.startsWith('"')) valColor = 'text-[#b5dfa3]';
+            else if (!isNaN(Number(trimmedVal))) valColor = 'text-[#f3c18e] font-semibold';
+            else if (trimmedVal === 'true' || trimmedVal === 'false') valColor = 'text-[#ceb8f6] font-semibold';
+            else if (trimmedVal === 'null') valColor = 'text-[#f19aa6] italic font-semibold';
 
             coloredLine = (
               <span>
-                <span className="text-[#89b4fa] font-semibold">{keyPart}</span>
+                <span className="text-[#c8edb6] font-semibold">{keyPart}</span>
                 <span className={valColor}>{valPart}</span>
               </span>
             );
@@ -309,9 +309,9 @@ function FormattedCodeView({
           return (
             <div
               key={idx}
-              className="group flex items-start hover:bg-[#181825] px-1.5 py-0.5 rounded -mx-1.5"
+              className="group flex items-start hover:bg-[#111612] px-1.5 py-0.5 rounded -mx-1.5"
             >
-              <span className="w-10 text-right pr-4 text-[#585b70] select-none text-[11px] shrink-0 font-mono">
+              <span className="w-10 text-right pr-4 text-[#899980] select-none text-[11px] shrink-0 font-mono">
                 {lineNum}
               </span>
               <div className="flex-1 min-w-0">{coloredLine}</div>
@@ -322,10 +322,10 @@ function FormattedCodeView({
                   const textToCopy = matchVal ? matchVal[1].replace(/^["']|["']$/g, '') : line.trim();
                   onCopy(textToCopy, `line-${lineNum}`);
                 }}
-                className={`opacity-0 group-hover:opacity-100 p-0.5 rounded transition-all text-[#6c7086] hover:text-[#89b4fa] shrink-0 ml-2`}
+                className={`opacity-0 group-hover:opacity-100 p-0.5 rounded transition-all text-[#9eac96] hover:text-[#c8edb6] shrink-0 ml-2`}
                 title="Copy this line value"
               >
-                {isCopied ? <Check size={11} className="text-[#a6e3a1]" /> : <Copy size={11} />}
+                {isCopied ? <Check size={11} className="text-[#b5dfa3]" /> : <Copy size={11} />}
               </button>
             </div>
           );
@@ -394,17 +394,17 @@ export const ApiResponseViewer: React.FC<ApiResponseViewerProps> = ({ response }
   }, [tableData, tableSearch]);
 
   return (
-    <div className="flex-1 flex flex-col min-h-0 bg-[#11111b] overflow-hidden">
+    <div className="flex-1 flex flex-col min-h-0 bg-[#0d120f] overflow-hidden">
       {/* Response Navigation Toolbar */}
-      <div className="flex items-center justify-between px-4 py-2 border-b border-[#313244] bg-[#181825] gap-2 flex-wrap shrink-0">
+      <div className="flex items-center justify-between px-4 py-2 border-b border-[#344435] bg-[#111612] gap-2 flex-wrap shrink-0">
         <div className="flex items-center gap-1.5">
           {response.isJson && (
             <button
               onClick={() => setTab('tree')}
               className={`px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
                 tab === 'tree'
-                  ? 'bg-[#89b4fa]/20 text-[#89b4fa] font-bold border border-[#89b4fa]/30'
-                  : 'text-[#9399b2] hover:text-[#cdd6f4] hover:bg-[#313244]/50'
+                  ? 'bg-[#c8edb6]/20 text-[#c8edb6] font-bold border border-[#c8edb6]/30'
+                  : 'text-[#b1bea8] hover:text-[#e4ebdd] hover:bg-[#344435]/50'
               }`}
             >
               <ListTree size={13} />
@@ -417,8 +417,8 @@ export const ApiResponseViewer: React.FC<ApiResponseViewerProps> = ({ response }
               onClick={() => setTab('pretty')}
               className={`px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
                 tab === 'pretty'
-                  ? 'bg-[#89b4fa]/20 text-[#89b4fa] font-bold border border-[#89b4fa]/30'
-                  : 'text-[#9399b2] hover:text-[#cdd6f4] hover:bg-[#313244]/50'
+                  ? 'bg-[#c8edb6]/20 text-[#c8edb6] font-bold border border-[#c8edb6]/30'
+                  : 'text-[#b1bea8] hover:text-[#e4ebdd] hover:bg-[#344435]/50'
               }`}
             >
               <Code2 size={13} />
@@ -431,8 +431,8 @@ export const ApiResponseViewer: React.FC<ApiResponseViewerProps> = ({ response }
               onClick={() => setTab('table')}
               className={`px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
                 tab === 'table'
-                  ? 'bg-[#89b4fa]/20 text-[#89b4fa] font-bold border border-[#89b4fa]/30'
-                  : 'text-[#9399b2] hover:text-[#cdd6f4] hover:bg-[#313244]/50'
+                  ? 'bg-[#c8edb6]/20 text-[#c8edb6] font-bold border border-[#c8edb6]/30'
+                  : 'text-[#b1bea8] hover:text-[#e4ebdd] hover:bg-[#344435]/50'
               }`}
             >
               <Table2 size={13} />
@@ -444,8 +444,8 @@ export const ApiResponseViewer: React.FC<ApiResponseViewerProps> = ({ response }
             onClick={() => setTab('raw')}
             className={`px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
               tab === 'raw'
-                ? 'bg-[#89b4fa]/20 text-[#89b4fa] font-bold border border-[#89b4fa]/30'
-                : 'text-[#9399b2] hover:text-[#cdd6f4] hover:bg-[#313244]/50'
+                ? 'bg-[#c8edb6]/20 text-[#c8edb6] font-bold border border-[#c8edb6]/30'
+                : 'text-[#b1bea8] hover:text-[#e4ebdd] hover:bg-[#344435]/50'
             }`}
           >
             <FileText size={13} />
@@ -456,8 +456,8 @@ export const ApiResponseViewer: React.FC<ApiResponseViewerProps> = ({ response }
             onClick={() => setTab('headers')}
             className={`px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
               tab === 'headers'
-                ? 'bg-[#89b4fa]/20 text-[#89b4fa] font-bold border border-[#89b4fa]/30'
-                : 'text-[#9399b2] hover:text-[#cdd6f4] hover:bg-[#313244]/50'
+                ? 'bg-[#c8edb6]/20 text-[#c8edb6] font-bold border border-[#c8edb6]/30'
+                : 'text-[#b1bea8] hover:text-[#e4ebdd] hover:bg-[#344435]/50'
             }`}
           >
             <span>Headers ({Object.keys(response.headers).length})</span>
@@ -467,17 +467,17 @@ export const ApiResponseViewer: React.FC<ApiResponseViewerProps> = ({ response }
         {/* Global Action Buttons */}
         <div className="flex items-center gap-2">
           {tab === 'tree' && response.isJson && (
-            <div className="flex items-center gap-1 bg-[#11111b] border border-[#313244] rounded-lg p-0.5">
+            <div className="flex items-center gap-1 bg-[#0d120f] border border-[#344435] rounded-lg p-0.5">
               <button
                 onClick={() => setAllExpanded(true)}
-                className="px-2 py-1 text-[11px] text-[#9399b2] hover:text-[#cdd6f4] flex items-center gap-1"
+                className="px-2 py-1 text-[11px] text-[#b1bea8] hover:text-[#e4ebdd] flex items-center gap-1"
                 title="Expand all nodes"
               >
                 <Maximize2 size={11} /> Expand
               </button>
               <button
                 onClick={() => setAllExpanded(false)}
-                className="px-2 py-1 text-[11px] text-[#9399b2] hover:text-[#cdd6f4] flex items-center gap-1"
+                className="px-2 py-1 text-[11px] text-[#b1bea8] hover:text-[#e4ebdd] flex items-center gap-1"
                 title="Collapse all nodes"
               >
                 <Minimize2 size={11} /> Collapse
@@ -487,17 +487,17 @@ export const ApiResponseViewer: React.FC<ApiResponseViewerProps> = ({ response }
 
           <button
             onClick={() => handleCopy(response.data, 'global-body')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#313244] hover:bg-[#45475a] text-xs font-medium text-[#cdd6f4] border border-[#45475a] transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#344435] hover:bg-[#71836b] text-xs font-medium text-[#e4ebdd] border border-[#71836b] transition-all"
             title="Copy full response"
           >
             {copiedKey === 'global-body' ? (
               <>
-                <Check size={12} className="text-[#a6e3a1]" />
-                <span className="text-[#a6e3a1] font-bold">Copied!</span>
+                <Check size={12} className="text-[#b5dfa3]" />
+                <span className="text-[#b5dfa3] font-bold">Copied!</span>
               </>
             ) : (
               <>
-                <Copy size={12} className="text-[#89b4fa]" />
+                <Copy size={12} className="text-[#c8edb6]" />
                 <span>Copy Full Response</span>
               </>
             )}
@@ -513,22 +513,22 @@ export const ApiResponseViewer: React.FC<ApiResponseViewerProps> = ({ response }
             {/* Search filter input */}
             <div className="flex items-center justify-between gap-3">
               <div className="flex-1 relative max-w-md">
-                <Search size={13} className="absolute left-3 top-2.5 text-[#6c7086]" />
+                <Search size={13} className="absolute left-3 top-2.5 text-[#9eac96]" />
                 <input
                   type="text"
                   placeholder="Search keys, values or paths in JSON..."
                   value={searchFilter}
                   onChange={e => setSearchFilter(e.target.value)}
-                  className="w-full pl-8 pr-3 py-1.5 bg-[#181825] border border-[#313244] rounded-lg text-xs font-mono text-[#cdd6f4] placeholder-[#585b70] focus:outline-none focus:border-[#89b4fa]"
+                  className="w-full pl-8 pr-3 py-1.5 bg-[#111612] border border-[#344435] rounded-lg text-xs font-mono text-[#e4ebdd] placeholder-[#899980] focus:outline-none focus:border-[#c8edb6]"
                 />
               </div>
-              <div className="text-[11px] text-[#6c7086] italic">
+              <div className="text-[11px] text-[#9eac96] italic">
                 Hover any item to copy value, key, or path
               </div>
             </div>
 
             {/* Tree nodes */}
-            <div className="bg-[#181825] border border-[#313244] rounded-xl p-3 min-h-[220px]">
+            <div className="bg-[#111612] border border-[#344435] rounded-xl p-3 min-h-[220px]">
               {typeof response.parsedJson === 'object' && response.parsedJson !== null ? (
                 Array.isArray(response.parsedJson) ? (
                   response.parsedJson.map((item, idx) => (
@@ -559,12 +559,12 @@ export const ApiResponseViewer: React.FC<ApiResponseViewerProps> = ({ response }
                 )
               ) : (
                 <div className="flex items-center gap-2 p-2">
-                  <span className="text-xs font-mono text-[#a6e3a1]">
+                  <span className="text-xs font-mono text-[#b5dfa3]">
                     {String(response.parsedJson)}
                   </span>
                   <button
                     onClick={() => handleCopy(String(response.parsedJson), 'root-val')}
-                    className="p-1 rounded text-[#89b4fa] hover:bg-[#313244]"
+                    className="p-1 rounded text-[#c8edb6] hover:bg-[#344435]"
                   >
                     {copiedKey === 'root-val' ? <Check size={12} /> : <Copy size={12} />}
                   </button>
@@ -587,56 +587,56 @@ export const ApiResponseViewer: React.FC<ApiResponseViewerProps> = ({ response }
         {tab === 'table' && response.isJson && (
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-[#9399b2]">
+              <span className="text-xs text-[#b1bea8]">
                 {filteredTableRows.length} {filteredTableRows.length === 1 ? 'row' : 'rows'}
               </span>
               <div className="relative w-64">
-                <Search size={13} className="absolute left-2.5 top-2 text-[#6c7086]" />
+                <Search size={13} className="absolute left-2.5 top-2 text-[#9eac96]" />
                 <input
                   type="text"
                   placeholder="Filter table rows..."
                   value={tableSearch}
                   onChange={e => setTableSearch(e.target.value)}
-                  className="w-full pl-7 pr-3 py-1 bg-[#181825] border border-[#313244] rounded-lg text-xs text-[#cdd6f4] placeholder-[#585b70] focus:outline-none focus:border-[#89b4fa]"
+                  className="w-full pl-7 pr-3 py-1 bg-[#111612] border border-[#344435] rounded-lg text-xs text-[#e4ebdd] placeholder-[#899980] focus:outline-none focus:border-[#c8edb6]"
                 />
               </div>
             </div>
 
-            <div className="border border-[#313244] rounded-xl overflow-x-auto bg-[#181825]">
+            <div className="border border-[#344435] rounded-xl overflow-x-auto bg-[#111612]">
               <table className="w-full text-left text-xs font-mono">
-                <thead className="bg-[#11111b] border-b border-[#313244] text-[#9399b2]">
+                <thead className="bg-[#0d120f] border-b border-[#344435] text-[#b1bea8]">
                   <tr>
                     <th className="px-3 py-2.5 w-12 text-center">#</th>
                     {tableData.columns.map(c => (
-                      <th key={c} className="px-3 py-2.5 font-bold text-[#89b4fa]">
+                      <th key={c} className="px-3 py-2.5 font-bold text-[#c8edb6]">
                         <div className="flex items-center justify-between gap-1">
                           <span>{c}</span>
                           <button
                             onClick={() => handleCopy(c, `col-${c}`)}
-                            className="opacity-40 hover:opacity-100 p-0.5 text-[#9399b2] hover:text-[#89b4fa]"
+                            className="opacity-40 hover:opacity-100 p-0.5 text-[#b1bea8] hover:text-[#c8edb6]"
                             title={`Copy column name "${c}"`}
                           >
-                            {copiedKey === `col-${c}` ? <Check size={11} className="text-[#a6e3a1]" /> : <Copy size={11} />}
+                            {copiedKey === `col-${c}` ? <Check size={11} className="text-[#b5dfa3]" /> : <Copy size={11} />}
                           </button>
                         </div>
                       </th>
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#313244]">
+                <tbody className="divide-y divide-[#344435]">
                   {filteredTableRows.length === 0 ? (
                     <tr>
                       <td
                         colSpan={tableData.columns.length + 1}
-                        className="px-4 py-8 text-center text-xs text-[#6c7086] italic"
+                        className="px-4 py-8 text-center text-xs text-[#9eac96] italic"
                       >
                         No matching table rows
                       </td>
                     </tr>
                   ) : (
                     filteredTableRows.map((row, idx) => (
-                      <tr key={idx} className="hover:bg-[#11111b]/60 group transition-colors">
-                        <td className="px-3 py-2 text-[#585b70] text-center">{idx + 1}</td>
+                      <tr key={idx} className="hover:bg-[#0d120f]/60 group transition-colors">
+                        <td className="px-3 py-2 text-[#899980] text-center">{idx + 1}</td>
                         {tableData.columns.map(c => {
                           const rawVal =
                             typeof row === 'object' && row !== null
@@ -647,21 +647,21 @@ export const ApiResponseViewer: React.FC<ApiResponseViewerProps> = ({ response }
                           const isCellCopied = copiedKey === `cell-${idx}-${c}`;
 
                           return (
-                            <td key={c} className="px-3 py-2 text-[#cdd6f4] max-w-sm">
+                            <td key={c} className="px-3 py-2 text-[#e4ebdd] max-w-sm">
                               <div className="flex items-center justify-between gap-2">
-                                <span className={`truncate ${isObj ? 'text-[#89b4fa] font-medium' : getValueColor(rawVal)}`}>
+                                <span className={`truncate ${isObj ? 'text-[#c8edb6] font-medium' : getValueColor(rawVal)}`}>
                                   {strVal}
                                 </span>
                                 <button
                                   onClick={() => handleCopy(strVal, `cell-${idx}-${c}`)}
                                   className={`p-1 rounded transition-all shrink-0 ${
                                     isCellCopied
-                                      ? 'bg-[#a6e3a1]/20 text-[#a6e3a1]'
-                                      : 'opacity-0 group-hover:opacity-100 text-[#6c7086] hover:text-[#cdd6f4] hover:bg-[#313244]'
+                                      ? 'bg-[#b5dfa3]/20 text-[#b5dfa3]'
+                                      : 'opacity-0 group-hover:opacity-100 text-[#9eac96] hover:text-[#e4ebdd] hover:bg-[#344435]'
                                   }`}
                                   title={`Copy cell value`}
                                 >
-                                  {isCellCopied ? <Check size={11} className="text-[#a6e3a1]" /> : <Copy size={11} />}
+                                  {isCellCopied ? <Check size={11} className="text-[#b5dfa3]" /> : <Copy size={11} />}
                                 </button>
                               </div>
                             </td>
@@ -679,17 +679,17 @@ export const ApiResponseViewer: React.FC<ApiResponseViewerProps> = ({ response }
         {/* 4. Raw View */}
         {tab === 'raw' && (
           <div className="space-y-2">
-            <div className="flex items-center justify-between text-xs text-[#9399b2] pb-1 border-b border-[#313244]">
+            <div className="flex items-center justify-between text-xs text-[#b1bea8] pb-1 border-b border-[#344435]">
               <span>Raw Response Content ({response.data.length} characters)</span>
               <button
                 onClick={() => handleCopy(response.data, 'raw-all')}
-                className="flex items-center gap-1 text-[11px] text-[#89b4fa] hover:underline"
+                className="flex items-center gap-1 text-[11px] text-[#c8edb6] hover:underline"
               >
                 {copiedKey === 'raw-all' ? <Check size={11} /> : <Copy size={11} />}
                 <span>Copy Raw</span>
               </button>
             </div>
-            <pre className="p-3 bg-[#11111b] border border-[#313244] rounded-xl font-mono text-xs text-[#cdd6f4] leading-relaxed break-all whitespace-pre-wrap selection:bg-[#89b4fa]/30">
+            <pre className="p-3 bg-[#0d120f] border border-[#344435] rounded-xl font-mono text-xs text-[#e4ebdd] leading-relaxed break-all whitespace-pre-wrap selection:bg-[#c8edb6]/30">
               {response.data}
             </pre>
           </div>
@@ -697,9 +697,9 @@ export const ApiResponseViewer: React.FC<ApiResponseViewerProps> = ({ response }
 
         {/* 5. Headers View */}
         {tab === 'headers' && (
-          <div className="border border-[#313244] rounded-xl overflow-hidden divide-y divide-[#313244] bg-[#181825]">
+          <div className="border border-[#344435] rounded-xl overflow-hidden divide-y divide-[#344435] bg-[#111612]">
             {Object.entries(response.headers).length === 0 ? (
-              <div className="p-4 text-center text-xs text-[#6c7086] italic">
+              <div className="p-4 text-center text-xs text-[#9eac96] italic">
                 No response headers returned
               </div>
             ) : (
@@ -710,31 +710,31 @@ export const ApiResponseViewer: React.FC<ApiResponseViewerProps> = ({ response }
                 return (
                   <div
                     key={k}
-                    className="flex items-center justify-between px-3 py-2 text-xs font-mono group hover:bg-[#11111b] transition-colors"
+                    className="flex items-center justify-between px-3 py-2 text-xs font-mono group hover:bg-[#0d120f] transition-colors"
                   >
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[#89b4fa] font-bold">{k}</span>
+                      <span className="text-[#c8edb6] font-bold">{k}</span>
                       <button
                         onClick={() => handleCopy(k, `hdr-key-${k}`)}
-                        className="opacity-0 group-hover:opacity-100 p-0.5 text-[#6c7086] hover:text-[#89b4fa]"
+                        className="opacity-0 group-hover:opacity-100 p-0.5 text-[#9eac96] hover:text-[#c8edb6]"
                         title={`Copy header name "${k}"`}
                       >
-                        {isKeyCopied ? <Check size={10} className="text-[#a6e3a1]" /> : <Copy size={10} />}
+                        {isKeyCopied ? <Check size={10} className="text-[#b5dfa3]" /> : <Copy size={10} />}
                       </button>
                     </div>
 
                     <div className="flex items-center gap-2 max-w-md">
-                      <span className="text-[#cdd6f4] truncate font-mono">{v}</span>
+                      <span className="text-[#e4ebdd] truncate font-mono">{v}</span>
                       <button
                         onClick={() => handleCopy(v, `hdr-val-${k}`)}
                         className={`p-1 rounded transition-all shrink-0 ${
                           isValCopied
-                            ? 'bg-[#a6e3a1]/20 text-[#a6e3a1]'
-                            : 'opacity-0 group-hover:opacity-100 text-[#6c7086] hover:text-[#89b4fa] hover:bg-[#313244]'
+                            ? 'bg-[#b5dfa3]/20 text-[#b5dfa3]'
+                            : 'opacity-0 group-hover:opacity-100 text-[#9eac96] hover:text-[#c8edb6] hover:bg-[#344435]'
                         }`}
                         title="Copy header value"
                       >
-                        {isValCopied ? <Check size={11} className="text-[#a6e3a1]" /> : <Copy size={11} />}
+                        {isValCopied ? <Check size={11} className="text-[#b5dfa3]" /> : <Copy size={11} />}
                       </button>
                     </div>
                   </div>

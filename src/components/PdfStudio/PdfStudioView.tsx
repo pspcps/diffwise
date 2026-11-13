@@ -412,7 +412,7 @@ export default function PdfStudioView() {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // Header decoration
-        ctx.fillStyle = '#1e1e2e';
+        ctx.fillStyle = '#171d19';
         ctx.font = 'bold 36px Inter, sans-serif';
         ctx.fillText(pdfToImgFile.name, 80, 120);
 
@@ -854,26 +854,26 @@ export default function PdfStudioView() {
   };
 
   return (
-    <div className="flex h-full min-h-0 flex-col bg-[#1e1e2e] text-[#cdd6f4]">
+    <div className="flex h-full min-h-0 flex-col bg-[#171d19] text-[#e4ebdd]">
       {/* Top Navigation Bar */}
-      <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#313244] bg-[#181825] px-4 py-2.5">
+      <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#344435] bg-[#111612] px-4 py-2.5">
         <div>
           <div className="flex items-center gap-2">
-            <span className="rounded bg-[#f38ba8]/15 p-1 text-[#f38ba8]">
+            <span className="rounded bg-[#f19aa6]/15 p-1 text-[#f19aa6]">
               <FileText size={16} />
             </span>
-            <h1 className="text-sm font-bold text-[#cdd6f4]">PDF Studio</h1>
-            <span className="rounded border border-[#a6e3a1]/30 bg-[#a6e3a1]/10 px-1.5 py-0.5 text-[9px] font-medium text-[#a6e3a1]">
+            <h1 className="text-sm font-bold text-[#e4ebdd]">PDF Studio</h1>
+            <span className="rounded border border-[#b5dfa3]/30 bg-[#b5dfa3]/10 px-1.5 py-0.5 text-[9px] font-medium text-[#b5dfa3]">
               100% Client-Side Private
             </span>
           </div>
-          <p className="mt-0.5 text-[10px] text-[#6c7086]">
+          <p className="mt-0.5 text-[10px] text-[#9eac96]">
             Merge, split, convert images, unlock, and generate PDFs without uploading files anywhere.
           </p>
         </div>
 
         {/* Tab switchers */}
-        <div className="flex flex-wrap gap-1 rounded-lg border border-[#313244] bg-[#11111b] p-0.5">
+        <div className="flex flex-wrap gap-1 rounded-lg border border-[#344435] bg-[#0d120f] p-0.5">
           {(
             [
               ['merge', 'Merge PDF', <Merge size={12} key="m" />],
@@ -893,8 +893,8 @@ export default function PdfStudioView() {
               }}
               className={`flex items-center gap-1.5 rounded px-2.5 py-1 text-[10px] font-medium transition-all ${
                 activeTool === id
-                  ? 'bg-[#313244] text-[#cdd6f4] shadow-sm'
-                  : 'text-[#6c7086] hover:text-[#cdd6f4]'
+                  ? 'bg-[#344435] text-[#e4ebdd] shadow-sm'
+                  : 'text-[#9eac96] hover:text-[#e4ebdd]'
               }`}
             >
               {icon}
@@ -909,10 +909,10 @@ export default function PdfStudioView() {
         <div
           className={`flex items-center gap-2 border-b px-4 py-2 text-[11px] ${
             statusMsg.type === 'success'
-              ? 'border-[#a6e3a1]/30 bg-[#a6e3a1]/10 text-[#a6e3a1]'
+              ? 'border-[#b5dfa3]/30 bg-[#b5dfa3]/10 text-[#b5dfa3]'
               : statusMsg.type === 'error'
-              ? 'border-[#f38ba8]/30 bg-[#f38ba8]/10 text-[#f38ba8]'
-              : 'border-[#89b4fa]/30 bg-[#89b4fa]/10 text-[#89b4fa]'
+              ? 'border-[#f19aa6]/30 bg-[#f19aa6]/10 text-[#f19aa6]'
+              : 'border-[#c8edb6]/30 bg-[#c8edb6]/10 text-[#c8edb6]'
           }`}
         >
           {statusMsg.type === 'success' ? (
@@ -933,8 +933,8 @@ export default function PdfStudioView() {
           <div className="mx-auto flex w-full max-w-2xl flex-col gap-4">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-sm font-semibold text-[#cdd6f4]">Merge Multiple PDFs</h2>
-                <p className="text-[10px] text-[#6c7086]">
+                <h2 className="text-sm font-semibold text-[#e4ebdd]">Merge Multiple PDFs</h2>
+                <p className="text-[10px] text-[#9eac96]">
                   Reorder files using arrow buttons and combine into a single clean PDF document.
                 </p>
               </div>
@@ -948,7 +948,7 @@ export default function PdfStudioView() {
               />
               <button
                 onClick={() => mergeInputRef.current?.click()}
-                className="flex items-center gap-1.5 rounded border border-[#89b4fa]/30 bg-[#89b4fa]/10 px-3 py-1.5 text-[11px] font-semibold text-[#89b4fa] hover:bg-[#89b4fa]/20"
+                className="flex items-center gap-1.5 rounded border border-[#c8edb6]/30 bg-[#c8edb6]/10 px-3 py-1.5 text-[11px] font-semibold text-[#c8edb6] hover:bg-[#c8edb6]/20"
               >
                 <Plus size={13} /> Add PDF Files
               </button>
@@ -957,24 +957,24 @@ export default function PdfStudioView() {
             {mergeFiles.length === 0 ? (
               <div
                 onClick={() => mergeInputRef.current?.click()}
-                className="flex min-h-[260px] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#313244] bg-[#181825]/50 p-6 text-center transition-all hover:border-[#89b4fa]"
+                className="flex min-h-[260px] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#344435] bg-[#111612]/50 p-6 text-center transition-all hover:border-[#c8edb6]"
               >
-                <Merge size={32} className="text-[#89b4fa] opacity-60" />
-                <div className="text-xs font-semibold text-[#cdd6f4]">Choose PDF files to merge</div>
-                <div className="text-[10px] text-[#6c7086]">or drag and drop multiple PDF files here</div>
+                <Merge size={32} className="text-[#c8edb6] opacity-60" />
+                <div className="text-xs font-semibold text-[#e4ebdd]">Choose PDF files to merge</div>
+                <div className="text-[10px] text-[#9eac96]">or drag and drop multiple PDF files here</div>
               </div>
             ) : (
               <div className="space-y-2">
-                <div className="divide-y divide-[#313244] rounded-lg border border-[#313244] bg-[#181825]">
+                <div className="divide-y divide-[#344435] rounded-lg border border-[#344435] bg-[#111612]">
                   {mergeFiles.map((file, idx) => (
                     <div key={file.id} className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <span className="flex h-5 w-5 items-center justify-center rounded bg-[#313244] text-[9px] font-bold text-[#89b4fa]">
+                        <span className="flex h-5 w-5 items-center justify-center rounded bg-[#344435] text-[9px] font-bold text-[#c8edb6]">
                           {idx + 1}
                         </span>
                         <div className="min-w-0">
-                          <div className="truncate text-[11px] font-medium text-[#cdd6f4]">{file.name}</div>
-                          <div className="text-[9px] text-[#6c7086]">
+                          <div className="truncate text-[11px] font-medium text-[#e4ebdd]">{file.name}</div>
+                          <div className="text-[9px] text-[#9eac96]">
                             {file.pageCount ? `${file.pageCount} pages · ` : ''}
                             {formatBytes(file.size)}
                           </div>
@@ -986,7 +986,7 @@ export default function PdfStudioView() {
                           onClick={() => moveMergeFile(idx, 'up')}
                           disabled={idx === 0}
                           title="Move Up"
-                          className="p-1 text-[#9399b2] hover:text-[#cdd6f4] disabled:opacity-30"
+                          className="p-1 text-[#b1bea8] hover:text-[#e4ebdd] disabled:opacity-30"
                         >
                           <ArrowUp size={13} />
                         </button>
@@ -994,14 +994,14 @@ export default function PdfStudioView() {
                           onClick={() => moveMergeFile(idx, 'down')}
                           disabled={idx === mergeFiles.length - 1}
                           title="Move Down"
-                          className="p-1 text-[#9399b2] hover:text-[#cdd6f4] disabled:opacity-30"
+                          className="p-1 text-[#b1bea8] hover:text-[#e4ebdd] disabled:opacity-30"
                         >
                           <ArrowDown size={13} />
                         </button>
                         <button
                           onClick={() => setMergeFiles(prev => prev.filter(f => f.id !== file.id))}
                           title="Remove file"
-                          className="p-1 text-[#6c7086] hover:text-[#f38ba8]"
+                          className="p-1 text-[#9eac96] hover:text-[#f19aa6]"
                         >
                           <Trash2 size={13} />
                         </button>
@@ -1013,14 +1013,14 @@ export default function PdfStudioView() {
                 <div className="flex justify-between items-center pt-2">
                   <button
                     onClick={() => setMergeFiles([])}
-                    className="text-[10px] text-[#f38ba8] hover:underline"
+                    className="text-[10px] text-[#f19aa6] hover:underline"
                   >
                     Clear All
                   </button>
                   <button
                     onClick={executeMerge}
                     disabled={busy || mergeFiles.length < 2}
-                    className="flex items-center gap-2 rounded-lg bg-[#89b4fa] px-4 py-2 text-xs font-bold text-[#11111b] hover:bg-[#89b4fa]/90 disabled:opacity-50"
+                    className="flex items-center gap-2 rounded-lg bg-[#c8edb6] px-4 py-2 text-xs font-bold text-[#0d120f] hover:bg-[#c8edb6]/90 disabled:opacity-50"
                   >
                     <Download size={13} />
                     {busy ? 'Merging...' : `Merge & Download (${mergeFiles.length} files)`}
@@ -1035,8 +1035,8 @@ export default function PdfStudioView() {
         {activeTool === 'split' && (
           <div className="mx-auto flex w-full max-w-xl flex-col gap-4">
             <div>
-              <h2 className="text-sm font-semibold text-[#cdd6f4]">Split or Extract PDF Pages</h2>
-              <p className="text-[10px] text-[#6c7086]">
+              <h2 className="text-sm font-semibold text-[#e4ebdd]">Split or Extract PDF Pages</h2>
+              <p className="text-[10px] text-[#9eac96]">
                 Extract specific page ranges or split all pages into separate PDF files.
               </p>
             </div>
@@ -1052,60 +1052,60 @@ export default function PdfStudioView() {
             {!splitFile ? (
               <div
                 onClick={() => splitInputRef.current?.click()}
-                className="flex min-h-[260px] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#313244] bg-[#181825]/50 p-6 text-center transition-all hover:border-[#89b4fa]"
+                className="flex min-h-[260px] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#344435] bg-[#111612]/50 p-6 text-center transition-all hover:border-[#c8edb6]"
               >
-                <Split size={32} className="text-[#89b4fa] opacity-60" />
-                <div className="text-xs font-semibold text-[#cdd6f4]">Select a PDF to split</div>
-                <div className="text-[10px] text-[#6c7086]">or drag and drop here</div>
+                <Split size={32} className="text-[#c8edb6] opacity-60" />
+                <div className="text-xs font-semibold text-[#e4ebdd]">Select a PDF to split</div>
+                <div className="text-[10px] text-[#9eac96]">or drag and drop here</div>
               </div>
             ) : (
-              <div className="space-y-4 rounded-xl border border-[#313244] bg-[#181825] p-4">
-                <div className="flex items-center justify-between border-b border-[#313244] pb-3">
+              <div className="space-y-4 rounded-xl border border-[#344435] bg-[#111612] p-4">
+                <div className="flex items-center justify-between border-b border-[#344435] pb-3">
                   <div>
-                    <div className="text-xs font-semibold text-[#cdd6f4]">{splitFile.name}</div>
-                    <div className="text-[10px] text-[#6c7086]">
+                    <div className="text-xs font-semibold text-[#e4ebdd]">{splitFile.name}</div>
+                    <div className="text-[10px] text-[#9eac96]">
                       {splitFile.pageCount} total pages · {formatBytes(splitFile.size)}
                     </div>
                   </div>
                   <button
                     onClick={() => setSplitFile(null)}
-                    className="text-[10px] text-[#f38ba8] hover:underline"
+                    className="text-[10px] text-[#f19aa6] hover:underline"
                   >
                     Choose Different PDF
                   </button>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[11px] font-semibold text-[#cdd6f4] block">Splitting Method</label>
+                  <label className="text-[11px] font-semibold text-[#e4ebdd] block">Splitting Method</label>
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => setSplitMode('range')}
                       className={`rounded-lg border p-2.5 text-left text-xs transition-all ${
                         splitMode === 'range'
-                          ? 'border-[#89b4fa] bg-[#89b4fa]/10 text-[#89b4fa]'
-                          : 'border-[#313244] text-[#9399b2] hover:bg-[#202030]'
+                          ? 'border-[#c8edb6] bg-[#c8edb6]/10 text-[#c8edb6]'
+                          : 'border-[#344435] text-[#b1bea8] hover:bg-[#202030]'
                       }`}
                     >
                       <div className="font-semibold">Extract Pages / Range</div>
-                      <div className="text-[9px] text-[#6c7086] mt-0.5">e.g. 1-3, 5 to a new PDF</div>
+                      <div className="text-[9px] text-[#9eac96] mt-0.5">e.g. 1-3, 5 to a new PDF</div>
                     </button>
                     <button
                       onClick={() => setSplitMode('all')}
                       className={`rounded-lg border p-2.5 text-left text-xs transition-all ${
                         splitMode === 'all'
-                          ? 'border-[#89b4fa] bg-[#89b4fa]/10 text-[#89b4fa]'
-                          : 'border-[#313244] text-[#9399b2] hover:bg-[#202030]'
+                          ? 'border-[#c8edb6] bg-[#c8edb6]/10 text-[#c8edb6]'
+                          : 'border-[#344435] text-[#b1bea8] hover:bg-[#202030]'
                       }`}
                     >
                       <div className="font-semibold">Split into Every Page</div>
-                      <div className="text-[9px] text-[#6c7086] mt-0.5">Separate files in a ZIP</div>
+                      <div className="text-[9px] text-[#9eac96] mt-0.5">Separate files in a ZIP</div>
                     </button>
                   </div>
                 </div>
 
                 {splitMode === 'range' && (
                   <div>
-                    <label className="text-[10px] text-[#9399b2] block mb-1">
+                    <label className="text-[10px] text-[#b1bea8] block mb-1">
                       Pages to extract (comma separated or ranges):
                     </label>
                     <input
@@ -1113,7 +1113,7 @@ export default function PdfStudioView() {
                       value={splitRange}
                       onChange={e => setSplitRange(e.target.value)}
                       placeholder="e.g. 1-2, 4"
-                      className="h-8 w-full rounded border border-[#313244] bg-[#11111b] px-2.5 font-mono text-xs text-[#cdd6f4] outline-none focus:border-[#89b4fa]"
+                      className="h-8 w-full rounded border border-[#344435] bg-[#0d120f] px-2.5 font-mono text-xs text-[#e4ebdd] outline-none focus:border-[#c8edb6]"
                     />
                   </div>
                 )}
@@ -1121,7 +1121,7 @@ export default function PdfStudioView() {
                 <button
                   onClick={executeSplit}
                   disabled={busy}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#89b4fa] py-2 text-xs font-bold text-[#11111b] hover:bg-[#89b4fa]/90 disabled:opacity-50"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#c8edb6] py-2 text-xs font-bold text-[#0d120f] hover:bg-[#c8edb6]/90 disabled:opacity-50"
                 >
                   <Download size={13} />
                   {busy ? 'Splitting...' : splitMode === 'all' ? 'Split All Pages (ZIP)' : 'Extract Pages'}
@@ -1136,8 +1136,8 @@ export default function PdfStudioView() {
           <div className="mx-auto flex w-full max-w-2xl flex-col gap-5 py-4">
             {/* Header */}
             <div className="flex flex-col gap-1 text-center">
-              <h2 className="text-xl font-bold tracking-tight text-[#cdd6f4]">Word to PDF Converter</h2>
-              <p className="text-xs text-[#9399b2]">
+              <h2 className="text-xl font-bold tracking-tight text-[#e4ebdd]">Word to PDF Converter</h2>
+              <p className="text-xs text-[#b1bea8]">
                 Convert Microsoft Word documents to PDF with full accuracy. Tables, fonts, images, and alignments preserved.
               </p>
             </div>
@@ -1154,15 +1154,15 @@ export default function PdfStudioView() {
             {!wordFile && (
               <div
                 onClick={() => wordInputRef.current?.click()}
-                className="group flex min-h-[300px] cursor-pointer flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed border-[#313244] bg-[#181825]/40 p-8 text-center transition-all hover:border-[#89b4fa] hover:bg-[#181825]/80"
+                className="group flex min-h-[300px] cursor-pointer flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed border-[#344435] bg-[#111612]/40 p-8 text-center transition-all hover:border-[#c8edb6] hover:bg-[#111612]/80"
               >
-                <div className="rounded-2xl bg-[#89b4fa]/10 p-5 text-[#89b4fa] transition-transform group-hover:scale-110">
+                <div className="rounded-2xl bg-[#c8edb6]/10 p-5 text-[#c8edb6] transition-transform group-hover:scale-110">
                   <FileCode size={48} />
                 </div>
                 <div>
-                  <div className="text-base font-bold text-[#cdd6f4]">Select Word Document</div>
-                  <div className="mt-1 text-xs text-[#9399b2]">
-                    or drag & drop your <span className="font-semibold text-[#89b4fa]">.docx</span> file here
+                  <div className="text-base font-bold text-[#e4ebdd]">Select Word Document</div>
+                  <div className="mt-1 text-xs text-[#b1bea8]">
+                    or drag & drop your <span className="font-semibold text-[#c8edb6]">.docx</span> file here
                   </div>
                 </div>
 
@@ -1172,35 +1172,35 @@ export default function PdfStudioView() {
                     e.stopPropagation();
                     wordInputRef.current?.click();
                   }}
-                  className="mt-2 flex items-center gap-2 rounded-xl bg-[#89b4fa] px-6 py-2.5 text-xs font-bold text-[#11111b] shadow-lg shadow-[#89b4fa]/20 transition-all hover:bg-[#89b4fa]/90 active:scale-95"
+                  className="mt-2 flex items-center gap-2 rounded-xl bg-[#c8edb6] px-6 py-2.5 text-xs font-bold text-[#0d120f] shadow-lg shadow-[#c8edb6]/20 transition-all hover:bg-[#c8edb6]/90 active:scale-95"
                 >
                   <Plus size={15} /> Choose .docx File
                 </button>
 
-                <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-[10px] text-[#6c7086]">
-                  <span className="rounded-md bg-[#11111b] px-2.5 py-1">✓ Accurate Layout & Spacing</span>
-                  <span className="rounded-md bg-[#11111b] px-2.5 py-1">✓ Tables, Borders & Colors</span>
-                  <span className="rounded-md bg-[#11111b] px-2.5 py-1">✓ Embedded Images</span>
-                  <span className="rounded-md bg-[#11111b] px-2.5 py-1">✓ 100% Private Client-Side</span>
+                <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-[10px] text-[#9eac96]">
+                  <span className="rounded-md bg-[#0d120f] px-2.5 py-1">✓ Accurate Layout & Spacing</span>
+                  <span className="rounded-md bg-[#0d120f] px-2.5 py-1">✓ Tables, Borders & Colors</span>
+                  <span className="rounded-md bg-[#0d120f] px-2.5 py-1">✓ Embedded Images</span>
+                  <span className="rounded-md bg-[#0d120f] px-2.5 py-1">✓ 100% Private Client-Side</span>
                 </div>
               </div>
             )}
 
             {/* State 2: File selected, not yet converted */}
             {wordFile && !wordConvertedPdf && (
-              <div className="space-y-4 rounded-2xl border border-[#313244] bg-[#181825] p-6 shadow-xl">
+              <div className="space-y-4 rounded-2xl border border-[#344435] bg-[#111612] p-6 shadow-xl">
                 {/* File Card */}
-                <div className="flex items-center justify-between rounded-xl border border-[#313244]/80 bg-[#11111b] p-4">
+                <div className="flex items-center justify-between rounded-xl border border-[#344435]/80 bg-[#0d120f] p-4">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#89b4fa]/15 text-[#89b4fa]">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#c8edb6]/15 text-[#c8edb6]">
                       <FileCode size={26} />
                     </div>
                     <div className="min-w-0">
-                      <div className="truncate text-sm font-bold text-[#cdd6f4]">{wordFile.name}</div>
-                      <div className="mt-0.5 flex items-center gap-2 text-[11px] text-[#6c7086]">
+                      <div className="truncate text-sm font-bold text-[#e4ebdd]">{wordFile.name}</div>
+                      <div className="mt-0.5 flex items-center gap-2 text-[11px] text-[#9eac96]">
                         <span>{formatBytes(wordFile.size)}</span>
                         <span>•</span>
-                        <span className="text-[#a6e3a1]">Word Document (.docx)</span>
+                        <span className="text-[#b5dfa3]">Word Document (.docx)</span>
                       </div>
                     </div>
                   </div>
@@ -1211,7 +1211,7 @@ export default function PdfStudioView() {
                       setWordConvertedPdf(null);
                     }}
                     disabled={busy}
-                    className="rounded-lg p-2 text-[#6c7086] transition-colors hover:bg-[#313244] hover:text-[#f38ba8]"
+                    className="rounded-lg p-2 text-[#9eac96] transition-colors hover:bg-[#344435] hover:text-[#f19aa6]"
                     title="Remove file"
                   >
                     <Trash2 size={16} />
@@ -1220,8 +1220,8 @@ export default function PdfStudioView() {
 
                 {/* Progress if converting */}
                 {busy && wordProgress && (
-                  <div className="rounded-xl border border-[#89b4fa]/30 bg-[#89b4fa]/10 p-4 space-y-2">
-                    <div className="flex items-center justify-between text-xs font-semibold text-[#89b4fa]">
+                  <div className="rounded-xl border border-[#c8edb6]/30 bg-[#c8edb6]/10 p-4 space-y-2">
+                    <div className="flex items-center justify-between text-xs font-semibold text-[#c8edb6]">
                       <span className="flex items-center gap-2">
                         <RefreshCw size={14} className="animate-spin" />
                         {wordProgress.label}
@@ -1232,9 +1232,9 @@ export default function PdfStudioView() {
                         </span>
                       )}
                     </div>
-                    <div className="h-2 w-full overflow-hidden rounded-full bg-[#11111b]">
+                    <div className="h-2 w-full overflow-hidden rounded-full bg-[#0d120f]">
                       <div
-                        className="h-full bg-gradient-to-r from-[#89b4fa] to-[#b4befe] transition-all duration-300"
+                        className="h-full bg-gradient-to-r from-[#c8edb6] to-[#d9f6ca] transition-all duration-300"
                         style={{
                           width: `${wordProgress.total ? Math.max(15, (wordProgress.current / wordProgress.total) * 100) : 40}%`,
                         }}
@@ -1248,7 +1248,7 @@ export default function PdfStudioView() {
                   <button
                     onClick={executeWordToPdf}
                     disabled={busy}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#89b4fa] py-3 text-sm font-bold text-[#11111b] shadow-lg shadow-[#89b4fa]/20 transition-all hover:bg-[#89b4fa]/90 active:scale-[0.99] disabled:opacity-50"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#c8edb6] py-3 text-sm font-bold text-[#0d120f] shadow-lg shadow-[#c8edb6]/20 transition-all hover:bg-[#c8edb6]/90 active:scale-[0.99] disabled:opacity-50"
                   >
                     <Sparkles size={16} />
                     {busy ? 'Converting Document...' : 'Convert to PDF'}
@@ -1258,7 +1258,7 @@ export default function PdfStudioView() {
                     <button
                       onClick={handlePrintVectorPdf}
                       disabled={busy}
-                      className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-[#313244] bg-[#11111b] py-2 text-xs font-medium text-[#cdd6f4] transition-colors hover:bg-[#202032] disabled:opacity-50"
+                      className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-[#344435] bg-[#0d120f] py-2 text-xs font-medium text-[#e4ebdd] transition-colors hover:bg-[#202032] disabled:opacity-50"
                       title="Save as PDF using browser's native vector print engine"
                     >
                       <Printer size={13} /> Save via Vector Print
@@ -1266,7 +1266,7 @@ export default function PdfStudioView() {
                     <button
                       onClick={() => wordInputRef.current?.click()}
                       disabled={busy}
-                      className="rounded-xl border border-[#313244] px-4 py-2 text-xs text-[#9399b2] transition-colors hover:bg-[#202032] hover:text-[#cdd6f4] disabled:opacity-50"
+                      className="rounded-xl border border-[#344435] px-4 py-2 text-xs text-[#b1bea8] transition-colors hover:bg-[#202032] hover:text-[#e4ebdd] disabled:opacity-50"
                     >
                       Change File
                     </button>
@@ -1277,25 +1277,25 @@ export default function PdfStudioView() {
 
             {/* State 3: Converted successfully -> Download Card */}
             {wordConvertedPdf && (
-              <div className="space-y-5 rounded-2xl border border-[#a6e3a1]/30 bg-[#181825] p-6 text-center shadow-xl">
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#a6e3a1]/15 text-[#a6e3a1]">
+              <div className="space-y-5 rounded-2xl border border-[#b5dfa3]/30 bg-[#111612] p-6 text-center shadow-xl">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#b5dfa3]/15 text-[#b5dfa3]">
                   <CheckCircle2 size={32} />
                 </div>
 
                 <div>
-                  <h3 className="text-base font-bold text-[#cdd6f4]">Document Converted Successfully!</h3>
-                  <p className="mt-1 text-xs text-[#9399b2]">
+                  <h3 className="text-base font-bold text-[#e4ebdd]">Document Converted Successfully!</h3>
+                  <p className="mt-1 text-xs text-[#b1bea8]">
                     Your Word file has been converted to an accurate PDF with all styles and formatting.
                   </p>
                 </div>
 
-                <div className="mx-auto max-w-md rounded-xl border border-[#313244] bg-[#11111b] p-3 text-left">
+                <div className="mx-auto max-w-md rounded-xl border border-[#344435] bg-[#0d120f] p-3 text-left">
                   <div className="flex items-center justify-between">
                     <div className="min-w-0 pr-2">
-                      <div className="truncate text-xs font-bold text-[#cdd6f4]">{wordConvertedPdf.name}</div>
-                      <div className="mt-0.5 text-[10px] text-[#6c7086]">{formatBytes(wordConvertedPdf.size)}</div>
+                      <div className="truncate text-xs font-bold text-[#e4ebdd]">{wordConvertedPdf.name}</div>
+                      <div className="mt-0.5 text-[10px] text-[#9eac96]">{formatBytes(wordConvertedPdf.size)}</div>
                     </div>
-                    <span className="shrink-0 rounded bg-[#a6e3a1]/15 px-2 py-0.5 text-[10px] font-semibold text-[#a6e3a1]">
+                    <span className="shrink-0 rounded bg-[#b5dfa3]/15 px-2 py-0.5 text-[10px] font-semibold text-[#b5dfa3]">
                       {wordConvertedPdf.pageCount} Page{wordConvertedPdf.pageCount > 1 ? 's' : ''}
                     </span>
                   </div>
@@ -1305,7 +1305,7 @@ export default function PdfStudioView() {
                   <a
                     href={wordConvertedPdf.url}
                     download={wordConvertedPdf.name}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#a6e3a1] py-3 text-sm font-bold text-[#11111b] shadow-lg shadow-[#a6e3a1]/20 transition-all hover:bg-[#a6e3a1]/90 active:scale-[0.99]"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#b5dfa3] py-3 text-sm font-bold text-[#0d120f] shadow-lg shadow-[#b5dfa3]/20 transition-all hover:bg-[#b5dfa3]/90 active:scale-[0.99]"
                   >
                     <Download size={16} /> Download PDF Again
                   </a>
@@ -1313,7 +1313,7 @@ export default function PdfStudioView() {
                   <div className="flex items-center justify-center gap-2 pt-2">
                     <button
                       onClick={handlePrintVectorPdf}
-                      className="flex items-center gap-1.5 rounded-lg border border-[#313244] bg-[#11111b] px-3 py-1.5 text-xs text-[#cdd6f4] hover:bg-[#202032]"
+                      className="flex items-center gap-1.5 rounded-lg border border-[#344435] bg-[#0d120f] px-3 py-1.5 text-xs text-[#e4ebdd] hover:bg-[#202032]"
                     >
                       <Printer size={13} /> Open Vector Print
                     </button>
@@ -1322,7 +1322,7 @@ export default function PdfStudioView() {
                         setWordFile(null);
                         setWordConvertedPdf(null);
                       }}
-                      className="flex items-center gap-1.5 rounded-lg border border-[#313244] bg-[#11111b] px-3 py-1.5 text-xs text-[#89b4fa] hover:bg-[#202032]"
+                      className="flex items-center gap-1.5 rounded-lg border border-[#344435] bg-[#0d120f] px-3 py-1.5 text-xs text-[#c8edb6] hover:bg-[#202032]"
                     >
                       <RotateCcw size={13} /> Convert Another Document
                     </button>
@@ -1338,8 +1338,8 @@ export default function PdfStudioView() {
           <div className="mx-auto flex w-full max-w-2xl flex-col gap-4">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-sm font-semibold text-[#cdd6f4]">Convert Images to PDF</h2>
-                <p className="text-[10px] text-[#6c7086]">
+                <h2 className="text-sm font-semibold text-[#e4ebdd]">Convert Images to PDF</h2>
+                <p className="text-[10px] text-[#9eac96]">
                   JPG, PNG, WebP images compiled into a formatted PDF document.
                 </p>
               </div>
@@ -1353,7 +1353,7 @@ export default function PdfStudioView() {
               />
               <button
                 onClick={() => imgInputRef.current?.click()}
-                className="flex items-center gap-1.5 rounded border border-[#89b4fa]/30 bg-[#89b4fa]/10 px-3 py-1.5 text-[11px] font-semibold text-[#89b4fa] hover:bg-[#89b4fa]/20"
+                className="flex items-center gap-1.5 rounded border border-[#c8edb6]/30 bg-[#c8edb6]/10 px-3 py-1.5 text-[11px] font-semibold text-[#c8edb6] hover:bg-[#c8edb6]/20"
               >
                 <Plus size={13} /> Add Images
               </button>
@@ -1362,22 +1362,22 @@ export default function PdfStudioView() {
             {images.length === 0 ? (
               <div
                 onClick={() => imgInputRef.current?.click()}
-                className="flex min-h-[260px] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#313244] bg-[#181825]/50 p-6 text-center transition-all hover:border-[#89b4fa]"
+                className="flex min-h-[260px] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#344435] bg-[#111612]/50 p-6 text-center transition-all hover:border-[#c8edb6]"
               >
-                <ImageIcon size={32} className="text-[#89b4fa] opacity-60" />
-                <div className="text-xs font-semibold text-[#cdd6f4]">Select images to convert</div>
-                <div className="text-[10px] text-[#6c7086]">Supports JPG, PNG, WebP</div>
+                <ImageIcon size={32} className="text-[#c8edb6] opacity-60" />
+                <div className="text-xs font-semibold text-[#e4ebdd]">Select images to convert</div>
+                <div className="text-[10px] text-[#9eac96]">Supports JPG, PNG, WebP</div>
               </div>
             ) : (
               <div className="space-y-4">
                 {/* Configuration Options */}
-                <div className="grid grid-cols-2 gap-3 rounded-lg border border-[#313244] bg-[#181825] p-3 text-xs">
+                <div className="grid grid-cols-2 gap-3 rounded-lg border border-[#344435] bg-[#111612] p-3 text-xs">
                   <div>
-                    <label className="text-[10px] text-[#9399b2] block mb-1">Page Format</label>
+                    <label className="text-[10px] text-[#b1bea8] block mb-1">Page Format</label>
                     <select
                       value={pageSize}
                       onChange={e => setPageSize(e.target.value as 'A4' | 'LETTER' | 'FIT')}
-                      className="h-7 w-full rounded border border-[#313244] bg-[#11111b] px-2 text-[10px] text-[#cdd6f4]"
+                      className="h-7 w-full rounded border border-[#344435] bg-[#0d120f] px-2 text-[10px] text-[#e4ebdd]"
                     >
                       <option value="A4">A4 Standard</option>
                       <option value="LETTER">US Letter</option>
@@ -1385,11 +1385,11 @@ export default function PdfStudioView() {
                     </select>
                   </div>
                   <div>
-                    <label className="text-[10px] text-[#9399b2] block mb-1">Page Margin</label>
+                    <label className="text-[10px] text-[#b1bea8] block mb-1">Page Margin</label>
                     <select
                       value={margin}
                       onChange={e => setMargin(Number(e.target.value))}
-                      className="h-7 w-full rounded border border-[#313244] bg-[#11111b] px-2 text-[10px] text-[#cdd6f4]"
+                      className="h-7 w-full rounded border border-[#344435] bg-[#0d120f] px-2 text-[10px] text-[#e4ebdd]"
                     >
                       <option value={0}>No Margin (Full Bleed)</option>
                       <option value={20}>Standard Margin (20px)</option>
@@ -1403,13 +1403,13 @@ export default function PdfStudioView() {
                   {images.map(img => (
                     <div
                       key={img.id}
-                      className="group relative overflow-hidden rounded-lg border border-[#313244] bg-[#181825] p-1"
+                      className="group relative overflow-hidden rounded-lg border border-[#344435] bg-[#111612] p-1"
                     >
                       <img src={img.dataUrl} alt={img.name} className="h-24 w-full rounded object-cover" />
-                      <div className="mt-1 truncate text-[9px] text-[#9399b2]">{img.name}</div>
+                      <div className="mt-1 truncate text-[9px] text-[#b1bea8]">{img.name}</div>
                       <button
                         onClick={() => setImages(prev => prev.filter(i => i.id !== img.id))}
-                        className="absolute right-2 top-2 rounded bg-[#11111b]/80 p-1 text-[#f38ba8] opacity-0 transition-opacity group-hover:opacity-100"
+                        className="absolute right-2 top-2 rounded bg-[#0d120f]/80 p-1 text-[#f19aa6] opacity-0 transition-opacity group-hover:opacity-100"
                       >
                         <Trash2 size={11} />
                       </button>
@@ -1418,13 +1418,13 @@ export default function PdfStudioView() {
                 </div>
 
                 <div className="flex justify-between items-center pt-2">
-                  <button onClick={() => setImages([])} className="text-[10px] text-[#f38ba8] hover:underline">
+                  <button onClick={() => setImages([])} className="text-[10px] text-[#f19aa6] hover:underline">
                     Clear All
                   </button>
                   <button
                     onClick={executeImagesToPdf}
                     disabled={busy}
-                    className="flex items-center gap-2 rounded-lg bg-[#89b4fa] px-4 py-2 text-xs font-bold text-[#11111b] hover:bg-[#89b4fa]/90 disabled:opacity-50"
+                    className="flex items-center gap-2 rounded-lg bg-[#c8edb6] px-4 py-2 text-xs font-bold text-[#0d120f] hover:bg-[#c8edb6]/90 disabled:opacity-50"
                   >
                     <Download size={13} />
                     {busy ? 'Creating PDF...' : `Generate PDF (${images.length} images)`}
@@ -1439,8 +1439,8 @@ export default function PdfStudioView() {
         {activeTool === 'pdfToImg' && (
           <div className="mx-auto flex w-full max-w-xl flex-col gap-4">
             <div>
-              <h2 className="text-sm font-semibold text-[#cdd6f4]">Convert PDF to Images</h2>
-              <p className="text-[10px] text-[#6c7086]">
+              <h2 className="text-sm font-semibold text-[#e4ebdd]">Convert PDF to Images</h2>
+              <p className="text-[10px] text-[#9eac96]">
                 Render PDF pages into high-resolution JPG or PNG image files.
               </p>
             </div>
@@ -1456,35 +1456,35 @@ export default function PdfStudioView() {
             {!pdfToImgFile ? (
               <div
                 onClick={() => pdfToImgInputRef.current?.click()}
-                className="flex min-h-[260px] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#313244] bg-[#181825]/50 p-6 text-center transition-all hover:border-[#89b4fa]"
+                className="flex min-h-[260px] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#344435] bg-[#111612]/50 p-6 text-center transition-all hover:border-[#c8edb6]"
               >
-                <Layers size={32} className="text-[#89b4fa] opacity-60" />
-                <div className="text-xs font-semibold text-[#cdd6f4]">Select PDF to extract images</div>
-                <div className="text-[10px] text-[#6c7086]">or drag and drop here</div>
+                <Layers size={32} className="text-[#c8edb6] opacity-60" />
+                <div className="text-xs font-semibold text-[#e4ebdd]">Select PDF to extract images</div>
+                <div className="text-[10px] text-[#9eac96]">or drag and drop here</div>
               </div>
             ) : (
-              <div className="space-y-4 rounded-xl border border-[#313244] bg-[#181825] p-4">
-                <div className="flex items-center justify-between border-b border-[#313244] pb-3">
+              <div className="space-y-4 rounded-xl border border-[#344435] bg-[#111612] p-4">
+                <div className="flex items-center justify-between border-b border-[#344435] pb-3">
                   <div>
-                    <div className="text-xs font-semibold text-[#cdd6f4]">{pdfToImgFile.name}</div>
-                    <div className="text-[10px] text-[#6c7086]">
+                    <div className="text-xs font-semibold text-[#e4ebdd]">{pdfToImgFile.name}</div>
+                    <div className="text-[10px] text-[#9eac96]">
                       {pdfToImgFile.pageCount} pages · {formatBytes(pdfToImgFile.size)}
                     </div>
                   </div>
-                  <button onClick={() => setPdfToImgFile(null)} className="text-[10px] text-[#f38ba8] hover:underline">
+                  <button onClick={() => setPdfToImgFile(null)} className="text-[10px] text-[#f19aa6] hover:underline">
                     Change PDF
                   </button>
                 </div>
 
                 <div>
-                  <label className="text-[10px] text-[#9399b2] block mb-1">Output Image Format</label>
+                  <label className="text-[10px] text-[#b1bea8] block mb-1">Output Image Format</label>
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => setImgFormat('image/png')}
                       className={`rounded-lg border p-2 text-center text-xs font-semibold transition-all ${
                         imgFormat === 'image/png'
-                          ? 'border-[#89b4fa] bg-[#89b4fa]/10 text-[#89b4fa]'
-                          : 'border-[#313244] text-[#9399b2]'
+                          ? 'border-[#c8edb6] bg-[#c8edb6]/10 text-[#c8edb6]'
+                          : 'border-[#344435] text-[#b1bea8]'
                       }`}
                     >
                       PNG (Lossless High Quality)
@@ -1493,8 +1493,8 @@ export default function PdfStudioView() {
                       onClick={() => setImgFormat('image/jpeg')}
                       className={`rounded-lg border p-2 text-center text-xs font-semibold transition-all ${
                         imgFormat === 'image/jpeg'
-                          ? 'border-[#89b4fa] bg-[#89b4fa]/10 text-[#89b4fa]'
-                          : 'border-[#313244] text-[#9399b2]'
+                          ? 'border-[#c8edb6] bg-[#c8edb6]/10 text-[#c8edb6]'
+                          : 'border-[#344435] text-[#b1bea8]'
                       }`}
                     >
                       JPG (Compact File Size)
@@ -1505,7 +1505,7 @@ export default function PdfStudioView() {
                 <button
                   onClick={executePdfToImg}
                   disabled={busy}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#89b4fa] py-2 text-xs font-bold text-[#11111b] hover:bg-[#89b4fa]/90 disabled:opacity-50"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#c8edb6] py-2 text-xs font-bold text-[#0d120f] hover:bg-[#c8edb6]/90 disabled:opacity-50"
                 >
                   <Download size={13} />
                   {busy ? 'Extracting Images...' : 'Convert & Download Images (ZIP)'}
@@ -1519,8 +1519,8 @@ export default function PdfStudioView() {
         {activeTool === 'protect' && (
           <div className="mx-auto flex w-full max-w-xl flex-col gap-4">
             <div>
-              <h2 className="text-sm font-semibold text-[#cdd6f4]">PDF Password Unlocker & Protect</h2>
-              <p className="text-[10px] text-[#6c7086]">
+              <h2 className="text-sm font-semibold text-[#e4ebdd]">PDF Password Unlocker & Protect</h2>
+              <p className="text-[10px] text-[#9eac96]">
                 Remove known passwords or protect your PDF file with custom encryption in browser.
               </p>
             </div>
@@ -1548,16 +1548,16 @@ export default function PdfStudioView() {
             {!securityFile ? (
               <div
                 onClick={() => securityInputRef.current?.click()}
-                className="flex min-h-[220px] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#313244] bg-[#181825]/50 p-6 text-center transition-all hover:border-[#89b4fa]"
+                className="flex min-h-[220px] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#344435] bg-[#111612]/50 p-6 text-center transition-all hover:border-[#c8edb6]"
               >
-                <Lock size={32} className="text-[#89b4fa] opacity-60" />
-                <div className="text-xs font-semibold text-[#cdd6f4]">Select PDF to protect or unlock</div>
+                <Lock size={32} className="text-[#c8edb6] opacity-60" />
+                <div className="text-xs font-semibold text-[#e4ebdd]">Select PDF to protect or unlock</div>
               </div>
             ) : (
-              <div className="space-y-4 rounded-xl border border-[#313244] bg-[#181825] p-4">
-                <div className="flex items-center justify-between border-b border-[#313244] pb-2">
-                  <div className="truncate text-xs font-semibold text-[#cdd6f4]">{securityFile.name}</div>
-                  <button onClick={() => setSecurityFile(null)} className="text-[10px] text-[#f38ba8] hover:underline">
+              <div className="space-y-4 rounded-xl border border-[#344435] bg-[#111612] p-4">
+                <div className="flex items-center justify-between border-b border-[#344435] pb-2">
+                  <div className="truncate text-xs font-semibold text-[#e4ebdd]">{securityFile.name}</div>
+                  <button onClick={() => setSecurityFile(null)} className="text-[10px] text-[#f19aa6] hover:underline">
                     Change PDF
                   </button>
                 </div>
@@ -1567,8 +1567,8 @@ export default function PdfStudioView() {
                     onClick={() => setSecurityAction('protect')}
                     className={`flex items-center justify-center gap-1.5 rounded-lg border p-2 text-xs font-semibold transition-all ${
                       securityAction === 'protect'
-                        ? 'border-[#89b4fa] bg-[#89b4fa]/10 text-[#89b4fa]'
-                        : 'border-[#313244] text-[#9399b2]'
+                        ? 'border-[#c8edb6] bg-[#c8edb6]/10 text-[#c8edb6]'
+                        : 'border-[#344435] text-[#b1bea8]'
                     }`}
                   >
                     <Lock size={12} /> Encrypt / Protect
@@ -1577,8 +1577,8 @@ export default function PdfStudioView() {
                     onClick={() => setSecurityAction('unlock')}
                     className={`flex items-center justify-center gap-1.5 rounded-lg border p-2 text-xs font-semibold transition-all ${
                       securityAction === 'unlock'
-                        ? 'border-[#a6e3a1] bg-[#a6e3a1]/10 text-[#a6e3a1]'
-                        : 'border-[#313244] text-[#9399b2]'
+                        ? 'border-[#b5dfa3] bg-[#b5dfa3]/10 text-[#b5dfa3]'
+                        : 'border-[#344435] text-[#b1bea8]'
                     }`}
                   >
                     <Unlock size={12} /> Unlock / Decrypt
@@ -1587,7 +1587,7 @@ export default function PdfStudioView() {
 
                 <div className="space-y-2">
                   <div>
-                    <label className="text-[10px] text-[#9399b2] block mb-1">
+                    <label className="text-[10px] text-[#b1bea8] block mb-1">
                       {securityAction === 'protect' ? 'Set PDF Password' : 'Enter Current Password'}
                     </label>
                     <input
@@ -1595,19 +1595,19 @@ export default function PdfStudioView() {
                       value={password}
                       onChange={e => setPassword(e.target.value)}
                       placeholder="Enter password"
-                      className="h-8 w-full rounded border border-[#313244] bg-[#11111b] px-2.5 text-xs text-[#cdd6f4] outline-none focus:border-[#89b4fa]"
+                      className="h-8 w-full rounded border border-[#344435] bg-[#0d120f] px-2.5 text-xs text-[#e4ebdd] outline-none focus:border-[#c8edb6]"
                     />
                   </div>
 
                   {securityAction === 'protect' && (
                     <div>
-                      <label className="text-[10px] text-[#9399b2] block mb-1">Confirm Password</label>
+                      <label className="text-[10px] text-[#b1bea8] block mb-1">Confirm Password</label>
                       <input
                         type="password"
                         value={confirmPassword}
                         onChange={e => setConfirmPassword(e.target.value)}
                         placeholder="Re-enter password"
-                        className="h-8 w-full rounded border border-[#313244] bg-[#11111b] px-2.5 text-xs text-[#cdd6f4] outline-none focus:border-[#89b4fa]"
+                        className="h-8 w-full rounded border border-[#344435] bg-[#0d120f] px-2.5 text-xs text-[#e4ebdd] outline-none focus:border-[#c8edb6]"
                       />
                     </div>
                   )}
@@ -1616,7 +1616,7 @@ export default function PdfStudioView() {
                 <button
                   onClick={executeSecurityAction}
                   disabled={busy}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#89b4fa] py-2 text-xs font-bold text-[#11111b] hover:bg-[#89b4fa]/90 disabled:opacity-50"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#c8edb6] py-2 text-xs font-bold text-[#0d120f] hover:bg-[#c8edb6]/90 disabled:opacity-50"
                 >
                   <Download size={13} />
                   {busy ? 'Processing...' : securityAction === 'protect' ? 'Protect & Download' : 'Unlock & Re-save'}
@@ -1630,37 +1630,37 @@ export default function PdfStudioView() {
         {activeTool === 'docToPdf' && (
           <div className="mx-auto flex w-full max-w-2xl flex-col gap-4">
             <div>
-              <h2 className="text-sm font-semibold text-[#cdd6f4]">Generate PDF from Text / Markdown</h2>
-              <p className="text-[10px] text-[#6c7086]">
+              <h2 className="text-sm font-semibold text-[#e4ebdd]">Generate PDF from Text / Markdown</h2>
+              <p className="text-[10px] text-[#9eac96]">
                 Create a formatted, clean PDF document instantly inside your browser.
               </p>
             </div>
 
-            <div className="space-y-3 rounded-xl border border-[#313244] bg-[#181825] p-4">
+            <div className="space-y-3 rounded-xl border border-[#344435] bg-[#111612] p-4">
               <div>
-                <label className="text-[10px] text-[#9399b2] block mb-1">Document Title</label>
+                <label className="text-[10px] text-[#b1bea8] block mb-1">Document Title</label>
                 <input
                   type="text"
                   value={docTitle}
                   onChange={e => setDocTitle(e.target.value)}
-                  className="h-8 w-full rounded border border-[#313244] bg-[#11111b] px-2.5 text-xs font-bold text-[#cdd6f4] outline-none focus:border-[#89b4fa]"
+                  className="h-8 w-full rounded border border-[#344435] bg-[#0d120f] px-2.5 text-xs font-bold text-[#e4ebdd] outline-none focus:border-[#c8edb6]"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] text-[#9399b2] block mb-1">Document Content</label>
+                <label className="text-[10px] text-[#b1bea8] block mb-1">Document Content</label>
                 <textarea
                   rows={9}
                   value={docContent}
                   onChange={e => setDocContent(e.target.value)}
-                  className="w-full rounded border border-[#313244] bg-[#11111b] p-2.5 font-mono text-xs text-[#cdd6f4] outline-none focus:border-[#89b4fa]"
+                  className="w-full rounded border border-[#344435] bg-[#0d120f] p-2.5 font-mono text-xs text-[#e4ebdd] outline-none focus:border-[#c8edb6]"
                 />
               </div>
 
               <button
                 onClick={executeDocToPdf}
                 disabled={busy || !docContent.trim()}
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#89b4fa] py-2 text-xs font-bold text-[#11111b] hover:bg-[#89b4fa]/90 disabled:opacity-50"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#c8edb6] py-2 text-xs font-bold text-[#0d120f] hover:bg-[#c8edb6]/90 disabled:opacity-50"
               >
                 <Download size={13} />
                 {busy ? 'Generating...' : 'Generate & Download PDF'}

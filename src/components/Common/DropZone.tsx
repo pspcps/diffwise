@@ -105,8 +105,8 @@ export default function DropZone({ label, accept = 'file', onFileLoad, onFolderL
       onDrop={handleDrop}
       className={`flex flex-col items-center justify-center h-full gap-3 border-2 border-dashed rounded-lg cursor-pointer transition-all p-6 ${
         dragging
-          ? 'border-[#89b4fa] bg-[rgba(137,180,250,0.05)]'
-          : 'border-[#45475a] hover:border-[#6c7086] hover:bg-[#24273a]'
+          ? 'border-[#c8edb6] bg-[rgba(137,180,250,0.05)]'
+          : 'border-[#71836b] hover:border-[#9eac96] hover:bg-[#24273a]'
       }`}
     >
       <input ref={fileRef} type="file" className="hidden" onChange={handleFileInput} />
@@ -115,16 +115,16 @@ export default function DropZone({ label, accept = 'file', onFileLoad, onFolderL
 
       {fileName ? (
         <>
-          <div className="text-[#89b4fa] font-medium text-sm">{fileName}</div>
-          <div className="text-[#6c7086] text-xs">Click or drop to replace</div>
+          <div className="text-[#c8edb6] font-medium text-sm">{fileName}</div>
+          <div className="text-[#9eac96] text-xs">Click or drop to replace</div>
           <div className="flex gap-2 mt-2">
             <button onClick={() => fileRef.current?.click()}
-              className="flex items-center gap-1 px-3 py-1.5 bg-[#313244] rounded text-xs text-[#cdd6f4] hover:bg-[#45475a] transition-colors">
+              className="flex items-center gap-1 px-3 py-1.5 bg-[#344435] rounded text-xs text-[#e4ebdd] hover:bg-[#71836b] transition-colors">
               <Upload size={12} /> File
             </button>
             {accept === 'folder' && (
               <button onClick={openFolderPicker}
-                className="flex items-center gap-1 px-3 py-1.5 bg-[#313244] rounded text-xs text-[#cdd6f4] hover:bg-[#45475a] transition-colors">
+                className="flex items-center gap-1 px-3 py-1.5 bg-[#344435] rounded text-xs text-[#e4ebdd] hover:bg-[#71836b] transition-colors">
                 <FolderOpen size={12} /> Folder
               </button>
             )}
@@ -132,21 +132,21 @@ export default function DropZone({ label, accept = 'file', onFileLoad, onFolderL
         </>
       ) : (
         <>
-          <div className="w-10 h-10 rounded-full bg-[#313244] flex items-center justify-center">
-            {accept === 'folder' ? <FolderOpen size={20} className="text-[#89b4fa]" /> : <Upload size={20} className="text-[#89b4fa]" />}
+          <div className="w-10 h-10 rounded-full bg-[#344435] flex items-center justify-center">
+            {accept === 'folder' ? <FolderOpen size={20} className="text-[#c8edb6]" /> : <Upload size={20} className="text-[#c8edb6]" />}
           </div>
           <div className="text-center">
-            <div className="text-[#cdd6f4] text-sm font-medium">{label}</div>
-            <div className="text-[#6c7086] text-xs mt-1">Drag & drop or click to browse</div>
+            <div className="text-[#e4ebdd] text-sm font-medium">{label}</div>
+            <div className="text-[#9eac96] text-xs mt-1">Drag & drop or click to browse</div>
           </div>
           <div className="flex gap-2">
             <button onClick={() => fileRef.current?.click()}
-              className="flex items-center gap-1 px-3 py-1.5 bg-[#313244] rounded text-xs text-[#cdd6f4] hover:bg-[#89b4fa] hover:text-[#1e1e2e] transition-colors">
+              className="flex items-center gap-1 px-3 py-1.5 bg-[#344435] rounded text-xs text-[#e4ebdd] hover:bg-[#c8edb6] hover:text-[#171d19] transition-colors">
               <Upload size={12} /> Open File
             </button>
             {accept === 'folder' && (
               <button onClick={openFolderPicker}
-                className="flex items-center gap-1 px-3 py-1.5 bg-[#313244] rounded text-xs text-[#cdd6f4] hover:bg-[#89b4fa] hover:text-[#1e1e2e] transition-colors">
+                className="flex items-center gap-1 px-3 py-1.5 bg-[#344435] rounded text-xs text-[#e4ebdd] hover:bg-[#c8edb6] hover:text-[#171d19] transition-colors">
                 <FolderOpen size={12} /> Open Folder
               </button>
             )}

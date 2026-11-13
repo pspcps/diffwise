@@ -287,33 +287,33 @@ export default function JwtStudioView() {
   }, [tokenInput]);
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-[#181825] text-[#cdd6f4] overflow-hidden">
+    <div className="flex-1 flex flex-col h-full bg-[#111612] text-[#e4ebdd] overflow-hidden">
       {/* Top Bar */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-[#1e1e2e] border-b border-[#313244] gap-3 shrink-0 flex-wrap">
+      <div className="flex items-center justify-between px-4 py-2.5 bg-[#171d19] border-b border-[#344435] gap-3 shrink-0 flex-wrap">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-[#f38ba8]/10 text-[#f38ba8] border border-[#f38ba8]/20">
+          <div className="p-1.5 rounded-lg bg-[#f19aa6]/10 text-[#f19aa6] border border-[#f19aa6]/20">
             <KeyRound size={16} />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-[#cdd6f4]">JWT Debugger &amp; Claims Inspector</h2>
-              <span className="px-2 py-0.5 text-[10px] rounded-full bg-[#a6e3a1]/15 text-[#a6e3a1] font-semibold border border-[#a6e3a1]/30">
-                100% Client-Side Private
+              <h2 className="text-sm font-bold text-[#e4ebdd]">JWT Inspector</h2>
+              <span className="px-2 py-0.5 text-[10px] rounded-full bg-[#b5dfa3]/15 text-[#b5dfa3] font-semibold border border-[#b5dfa3]/30">
+                Local token analysis
               </span>
             </div>
-            <p className="text-[11px] text-[#9399b2]">
+            <p className="text-[11px] text-[#b1bea8]">
               Decode tokens, inspect claims, verify HMAC-SHA256 signatures, and calculate expiration timestamps locally
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[11px] text-[#9399b2]">Samples:</span>
+          <span className="text-[11px] text-[#b1bea8]">Samples:</span>
           {(['valid', 'admin', 'expired'] as const).map(type => (
             <button
               key={type}
               onClick={() => loadSample(type)}
-              className="px-2.5 py-1 rounded-lg bg-[#313244] hover:bg-[#45475a] text-xs font-medium text-[#cdd6f4] border border-[#45475a] transition-all"
+              className="px-2.5 py-1 rounded-lg bg-[#344435] hover:bg-[#71836b] text-xs font-medium text-[#e4ebdd] border border-[#71836b] transition-all"
             >
               {SAMPLE_TOKENS[type].label}
             </button>
@@ -322,19 +322,19 @@ export default function JwtStudioView() {
       </div>
 
       {/* Main Grid: Encoded Token (Left) vs Decoded JSON (Right) */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-[#313244] min-h-0 overflow-y-auto">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-[#344435] min-h-0 overflow-y-auto">
         {/* LEFT COLUMN: ENCODED TOKEN */}
         <div className="flex flex-col p-4 space-y-4 overflow-y-auto">
           {/* Unified Single Box Header */}
           <div className="flex items-center justify-between gap-2 flex-wrap">
             <div className="flex items-center gap-2">
-              <label className="text-xs font-bold text-[#cdd6f4]">Input or Replace JWT String:</label>
-              <div className="flex items-center rounded-lg bg-[#11111b] border border-[#313244] p-0.5 text-[10px]">
+              <label className="text-xs font-bold text-[#e4ebdd]">Input or Replace JWT String:</label>
+              <div className="flex items-center rounded-lg bg-[#0d120f] border border-[#344435] p-0.5 text-[10px]">
                 <button
                   type="button"
                   onClick={() => setIsEditingToken(false)}
                   className={`px-2 py-0.5 rounded font-medium transition-colors ${
-                    !isEditingToken ? 'bg-[#89b4fa]/20 text-[#89b4fa] font-bold' : 'text-[#6c7086] hover:text-[#cdd6f4]'
+                    !isEditingToken ? 'bg-[#c8edb6]/20 text-[#c8edb6] font-bold' : 'text-[#9eac96] hover:text-[#e4ebdd]'
                   }`}
                 >
                   Color-Coded
@@ -343,7 +343,7 @@ export default function JwtStudioView() {
                   type="button"
                   onClick={() => setIsEditingToken(true)}
                   className={`px-2 py-0.5 rounded font-medium transition-colors ${
-                    isEditingToken ? 'bg-[#89b4fa]/20 text-[#89b4fa] font-bold' : 'text-[#6c7086] hover:text-[#cdd6f4]'
+                    isEditingToken ? 'bg-[#c8edb6]/20 text-[#c8edb6] font-bold' : 'text-[#9eac96] hover:text-[#e4ebdd]'
                   }`}
                 >
                   Edit / Paste
@@ -363,7 +363,7 @@ export default function JwtStudioView() {
                     }
                   } catch {}
                 }}
-                className="flex items-center gap-1 text-[11px] text-[#a6e3a1] hover:underline"
+                className="flex items-center gap-1 text-[11px] text-[#b5dfa3] hover:underline"
                 title="Paste from clipboard"
               >
                 <ClipboardPaste size={12} />
@@ -372,7 +372,7 @@ export default function JwtStudioView() {
               <button
                 type="button"
                 onClick={() => handleCopy(tokenInput, 'token')}
-                className="flex items-center gap-1 text-[11px] text-[#89b4fa] hover:underline"
+                className="flex items-center gap-1 text-[11px] text-[#c8edb6] hover:underline"
               >
                 {copiedKey === 'token' ? <Check size={12} /> : <Copy size={12} />}
                 Copy Token
@@ -380,7 +380,7 @@ export default function JwtStudioView() {
               <button
                 type="button"
                 onClick={() => handleCopy(`Authorization: Bearer ${tokenInput}`, 'curl')}
-                className="flex items-center gap-1 text-[11px] text-[#cba6f7] hover:underline"
+                className="flex items-center gap-1 text-[11px] text-[#ceb8f6] hover:underline"
                 title="Copy Authorization: Bearer header"
               >
                 {copiedKey === 'curl' ? <Check size={12} /> : <Terminal size={12} />}
@@ -394,24 +394,24 @@ export default function JwtStudioView() {
             {!isEditingToken ? (
               <div
                 onClick={() => setIsEditingToken(true)}
-                className="p-3.5 bg-[#11111b] rounded-xl border border-[#313244] hover:border-[#89b4fa]/50 font-mono text-xs break-all leading-relaxed min-h-[140px] max-h-[240px] overflow-y-auto cursor-text group relative transition-colors"
+                className="p-3.5 bg-[#0d120f] rounded-xl border border-[#344435] hover:border-[#c8edb6]/50 font-mono text-xs break-all leading-relaxed min-h-[140px] max-h-[240px] overflow-y-auto cursor-text group relative transition-colors"
                 title="Click anywhere to edit or replace JWT string"
               >
                 {tokenInput.trim() ? (
                   <>
-                    <span className="text-[#f38ba8]">{tokenParts.header}</span>
-                    {tokenParts.payload && <span className="text-[#cdd6f4]">.</span>}
-                    <span className="text-[#cba6f7]">{tokenParts.payload}</span>
-                    {tokenParts.signature && <span className="text-[#cdd6f4]">.</span>}
-                    <span className="text-[#89b4fa]">{tokenParts.signature}</span>
+                    <span className="text-[#f19aa6]">{tokenParts.header}</span>
+                    {tokenParts.payload && <span className="text-[#e4ebdd]">.</span>}
+                    <span className="text-[#ceb8f6]">{tokenParts.payload}</span>
+                    {tokenParts.signature && <span className="text-[#e4ebdd]">.</span>}
+                    <span className="text-[#c8edb6]">{tokenParts.signature}</span>
                   </>
                 ) : (
-                  <span className="text-[#585b70] italic">
+                  <span className="text-[#899980] italic">
                     Paste or enter your JWT string here (e.g. eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...)...
                   </span>
                 )}
 
-                <div className="opacity-0 group-hover:opacity-100 absolute top-2 right-2 px-2 py-0.5 rounded bg-[#313244] text-[10px] text-[#89b4fa] transition-opacity pointer-events-none flex items-center gap-1">
+                <div className="opacity-0 group-hover:opacity-100 absolute top-2 right-2 px-2 py-0.5 rounded bg-[#344435] text-[10px] text-[#c8edb6] transition-opacity pointer-events-none flex items-center gap-1">
                   <Edit3 size={11} />
                   <span>Click to edit or paste</span>
                 </div>
@@ -423,14 +423,14 @@ export default function JwtStudioView() {
                   value={tokenInput}
                   onChange={(e) => handleTokenChange(e.target.value)}
                   placeholder="Paste or enter your JWT string here (eyJhbGciOi...)..."
-                  className="w-full h-36 p-3 bg-[#11111b] border border-[#89b4fa] rounded-xl font-mono text-xs text-[#cdd6f4] focus:outline-none resize-none leading-relaxed break-all"
+                  className="w-full h-36 p-3 bg-[#0d120f] border border-[#c8edb6] rounded-xl font-mono text-xs text-[#e4ebdd] focus:outline-none resize-none leading-relaxed break-all"
                 />
                 <div className="flex justify-between items-center">
-                  <span className="text-[10px] text-[#6c7086]">Press Done when finished to view color breakdown</span>
+                  <span className="text-[10px] text-[#9eac96]">Press Done when finished to view color breakdown</span>
                   <button
                     type="button"
                     onClick={() => setIsEditingToken(false)}
-                    className="px-2.5 py-1 rounded bg-[#313244] hover:bg-[#45475a] text-xs font-medium text-[#89b4fa] transition-colors"
+                    className="px-2.5 py-1 rounded bg-[#344435] hover:bg-[#71836b] text-xs font-medium text-[#c8edb6] transition-colors"
                   >
                     Done Editing
                   </button>
@@ -439,54 +439,54 @@ export default function JwtStudioView() {
             )}
 
             {/* Token segment color legend */}
-            <div className="flex items-center gap-3 text-[10px] text-[#9399b2]">
+            <div className="flex items-center gap-3 text-[10px] text-[#b1bea8]">
               <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#f38ba8]" /> Header
+                <span className="w-2.5 h-2.5 rounded-full bg-[#f19aa6]" /> Header
               </span>
               <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#cba6f7]" /> Payload
+                <span className="w-2.5 h-2.5 rounded-full bg-[#ceb8f6]" /> Payload
               </span>
               <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#89b4fa]" /> Signature
+                <span className="w-2.5 h-2.5 rounded-full bg-[#c8edb6]" /> Signature
               </span>
             </div>
           </div>
 
           {parseError && (
-            <div className="p-3 rounded-xl bg-[#f38ba8]/10 border border-[#f38ba8]/30 text-xs text-[#f38ba8] flex items-center gap-2">
+            <div className="p-3 rounded-xl bg-[#f19aa6]/10 border border-[#f19aa6]/30 text-xs text-[#f19aa6] flex items-center gap-2">
               <AlertCircle size={14} className="shrink-0" />
               <span>{parseError}</span>
             </div>
           )}
 
           {/* HMAC-SHA256 Signature Verification Section */}
-          <div className="bg-[#1e1e2e] rounded-xl border border-[#313244] p-3 space-y-3">
+          <div className="bg-[#171d19] rounded-xl border border-[#344435] p-3 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-[#cdd6f4] flex items-center gap-1.5">
-                <Lock size={13} className="text-[#89b4fa]" />
+              <span className="text-xs font-bold text-[#e4ebdd] flex items-center gap-1.5">
+                <Lock size={13} className="text-[#c8edb6]" />
                 HMAC-SHA256 (HS256) Signature Check
               </span>
 
               {signatureStatus === 'valid' && (
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#a6e3a1]/15 text-[#a6e3a1] border border-[#a6e3a1]/30 flex items-center gap-1">
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#b5dfa3]/15 text-[#b5dfa3] border border-[#b5dfa3]/30 flex items-center gap-1">
                   <ShieldCheck size={12} /> Signature Verified
                 </span>
               )}
               {signatureStatus === 'invalid' && (
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#f38ba8]/15 text-[#f38ba8] border border-[#f38ba8]/30 flex items-center gap-1">
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#f19aa6]/15 text-[#f19aa6] border border-[#f19aa6]/30 flex items-center gap-1">
                   <ShieldAlert size={12} /> Invalid Signature
                 </span>
               )}
             </div>
 
             <div className="space-y-1">
-              <label className="text-[11px] text-[#9399b2]">Secret Key / Passphrase:</label>
+              <label className="text-[11px] text-[#b1bea8]">Secret Key / Passphrase:</label>
               <input
                 type="text"
                 value={secretKey}
                 onChange={(e) => handleSecretChange(e.target.value)}
                 placeholder="your-256-bit-secret"
-                className="w-full px-3 py-1.5 bg-[#181825] border border-[#313244] rounded-lg font-mono text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]"
+                className="w-full px-3 py-1.5 bg-[#111612] border border-[#344435] rounded-lg font-mono text-xs text-[#e4ebdd] focus:outline-none focus:border-[#c8edb6]"
               />
             </div>
           </div>
@@ -499,27 +499,27 @@ export default function JwtStudioView() {
             <div
               className={`p-3 rounded-xl border flex items-center justify-between text-xs ${
                 expStatus.isExpired
-                  ? 'bg-[#f38ba8]/10 border-[#f38ba8]/30 text-[#f38ba8]'
-                  : 'bg-[#a6e3a1]/10 border-[#a6e3a1]/30 text-[#a6e3a1]'
+                  ? 'bg-[#f19aa6]/10 border-[#f19aa6]/30 text-[#f19aa6]'
+                  : 'bg-[#b5dfa3]/10 border-[#b5dfa3]/30 text-[#b5dfa3]'
               }`}
             >
               <div className="flex items-center gap-2">
                 <Clock size={15} />
                 <span className="font-bold">{expStatus.text}</span>
               </div>
-              <span className="font-mono text-[11px] text-[#9399b2]">{expStatus.formatted}</span>
+              <span className="font-mono text-[11px] text-[#b1bea8]">{expStatus.formatted}</span>
             </div>
           )}
 
           {/* Decoded Header */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-[#f38ba8] uppercase tracking-wider flex items-center gap-1.5">
+              <span className="text-xs font-bold text-[#f19aa6] uppercase tracking-wider flex items-center gap-1.5">
                 <FileCode size={13} /> Header: Algorithm &amp; Token Type
               </span>
               <button
                 onClick={() => handleCopy(headerJson, 'header')}
-                className="text-[10px] text-[#89b4fa] hover:underline flex items-center gap-1"
+                className="text-[10px] text-[#c8edb6] hover:underline flex items-center gap-1"
               >
                 {copiedKey === 'header' ? <Check size={10} /> : <Copy size={10} />} Copy
               </button>
@@ -527,19 +527,19 @@ export default function JwtStudioView() {
             <textarea
               value={headerJson}
               onChange={(e) => handleJsonEdit(e.target.value, payloadJson)}
-              className="w-full h-24 p-3 bg-[#11111b] border border-[#f38ba8]/30 rounded-xl font-mono text-xs text-[#f38ba8] focus:outline-none focus:border-[#f38ba8] resize-none"
+              className="w-full h-24 p-3 bg-[#0d120f] border border-[#f19aa6]/30 rounded-xl font-mono text-xs text-[#f19aa6] focus:outline-none focus:border-[#f19aa6] resize-none"
             />
           </div>
 
           {/* Decoded Payload */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-[#cba6f7] uppercase tracking-wider flex items-center gap-1.5">
+              <span className="text-xs font-bold text-[#ceb8f6] uppercase tracking-wider flex items-center gap-1.5">
                 <FileCode size={13} /> Payload: Data &amp; Claims
               </span>
               <button
                 onClick={() => handleCopy(payloadJson, 'payload')}
-                className="text-[10px] text-[#89b4fa] hover:underline flex items-center gap-1"
+                className="text-[10px] text-[#c8edb6] hover:underline flex items-center gap-1"
               >
                 {copiedKey === 'payload' ? <Check size={10} /> : <Copy size={10} />} Copy JSON
               </button>
@@ -547,22 +547,22 @@ export default function JwtStudioView() {
             <textarea
               value={payloadJson}
               onChange={(e) => handleJsonEdit(headerJson, e.target.value)}
-              className="w-full h-56 p-3 bg-[#11111b] border border-[#cba6f7]/30 rounded-xl font-mono text-xs text-[#cba6f7] focus:outline-none focus:border-[#cba6f7] resize-none"
+              className="w-full h-56 p-3 bg-[#0d120f] border border-[#ceb8f6]/30 rounded-xl font-mono text-xs text-[#ceb8f6] focus:outline-none focus:border-[#ceb8f6] resize-none"
             />
           </div>
 
           {/* Claims & Payload Values Inspector */}
           {claims && typeof claims === 'object' && Object.keys(claims).length > 0 && (
-            <div className="bg-[#1e1e2e] rounded-xl border border-[#313244] p-3 space-y-2.5">
+            <div className="bg-[#171d19] rounded-xl border border-[#344435] p-3 space-y-2.5">
               <div className="flex items-center justify-between">
-                <div className="text-[11px] font-bold text-[#89b4fa] uppercase tracking-wider flex items-center gap-1.5">
+                <div className="text-[11px] font-bold text-[#c8edb6] uppercase tracking-wider flex items-center gap-1.5">
                   <span>Claims &amp; Payload Values</span>
-                  <span className="text-[10px] font-normal text-[#6c7086]">({Object.keys(claims).length} claims)</span>
+                  <span className="text-[10px] font-normal text-[#9eac96]">({Object.keys(claims).length} claims)</span>
                 </div>
-                <span className="text-[10px] text-[#6c7086]">Click copy icon in front of any value</span>
+                <span className="text-[10px] text-[#9eac96]">Click copy icon in front of any value</span>
               </div>
 
-              <div className="space-y-1.5 text-xs divide-y divide-[#252535]">
+              <div className="space-y-1.5 text-xs divide-y divide-[#2b382c]">
                 {Object.entries(claims).map(([key, val]) => {
                   const isTime = (key === 'exp' || key === 'iat' || key === 'nbf') && typeof val === 'number';
                   const rawValString = typeof val === 'object' && val !== null ? JSON.stringify(val) : String(val);
@@ -572,9 +572,9 @@ export default function JwtStudioView() {
 
                   return (
                     <div key={key} className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 pt-1.5 first:pt-0">
-                      <div className="flex items-center gap-1.5 text-[#9399b2] shrink-0 min-w-[130px]">
-                        <span className="font-mono text-[#cba6f7] font-semibold">{key}</span>
-                        {label && <span className="text-[10px] text-[#6c7086]">({label})</span>}
+                      <div className="flex items-center gap-1.5 text-[#b1bea8] shrink-0 min-w-[130px]">
+                        <span className="font-mono text-[#ceb8f6] font-semibold">{key}</span>
+                        {label && <span className="text-[10px] text-[#9eac96]">({label})</span>}
                       </div>
 
                       <div className="flex items-center gap-1.5 min-w-0 max-w-full overflow-hidden">
@@ -584,18 +584,18 @@ export default function JwtStudioView() {
                           onClick={() => handleCopy(rawValString, `val-${key}`)}
                           className={`flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono border transition-all shrink-0 ${
                             isCopied
-                              ? 'bg-[#a6e3a1]/20 border-[#a6e3a1]/40 text-[#a6e3a1]'
-                              : 'bg-[#181825] border-[#313244] text-[#89b4fa] hover:text-[#cdd6f4] hover:border-[#89b4fa]/50'
+                              ? 'bg-[#b5dfa3]/20 border-[#b5dfa3]/40 text-[#b5dfa3]'
+                              : 'bg-[#111612] border-[#344435] text-[#c8edb6] hover:text-[#e4ebdd] hover:border-[#c8edb6]/50'
                           }`}
                           title={`Copy ${key} value`}
                         >
-                          {isCopied ? <Check size={11} className="text-[#a6e3a1]" /> : <Copy size={11} />}
+                          {isCopied ? <Check size={11} className="text-[#b5dfa3]" /> : <Copy size={11} />}
                           <span>{isCopied ? 'Copied' : 'Copy'}</span>
                         </button>
 
-                        <div className="font-mono text-[#cdd6f4] text-xs truncate" title={rawValString}>
+                        <div className="font-mono text-[#e4ebdd] text-xs truncate" title={rawValString}>
                           <span>{rawValString}</span>
-                          {humanTime && <span className="ml-1.5 text-[10px] text-[#9399b2]">({humanTime})</span>}
+                          {humanTime && <span className="ml-1.5 text-[10px] text-[#b1bea8]">({humanTime})</span>}
                         </div>
                       </div>
                     </div>

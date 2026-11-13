@@ -78,46 +78,46 @@ export default function CaseConverterView() {
   };
 
   return (
-    <section className="flex h-full min-h-0 flex-col bg-[#1e1e2e] text-[#cdd6f4]">
-      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#313244] bg-[#181825] px-4 py-3">
+    <section className="flex h-full min-h-0 flex-col bg-[#171d19] text-[#e4ebdd]">
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#344435] bg-[#111612] px-4 py-3">
         <div>
-          <h1 className="text-sm font-semibold text-[#cdd6f4]">Case Converter</h1>
-          <p className="mt-0.5 text-[11px] text-[#6c7086]">Convert text between writing and identifier styles.</p>
+          <h1 className="text-sm font-semibold text-[#e4ebdd]">Case Converter</h1>
+          <p className="mt-0.5 text-[11px] text-[#9eac96]">Convert text between writing and identifier styles.</p>
         </div>
         <div className="flex flex-wrap gap-1.5" role="group" aria-label="Text case">
           {CASES.map(item => (
             <button key={item.id} onClick={() => setMode(item.id)} aria-pressed={mode === item.id}
-              className={`rounded-md border px-2.5 py-1.5 text-[11px] transition-colors ${mode === item.id ? 'border-[#89b4fa]/40 bg-[#89b4fa]/10 text-[#89b4fa]' : 'border-[#313244] text-[#9399b2] hover:border-[#585b70] hover:text-[#cdd6f4]'}`}>
+              className={`rounded-md border px-2.5 py-1.5 text-[11px] transition-colors ${mode === item.id ? 'border-[#c8edb6]/40 bg-[#c8edb6]/10 text-[#c8edb6]' : 'border-[#344435] text-[#b1bea8] hover:border-[#899980] hover:text-[#e4ebdd]'}`}>
               <span className="mr-1.5 font-mono text-[10px] opacity-70">{item.sample}</span>{item.label}
             </button>
           ))}
         </div>
       </header>
 
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-px bg-[#313244] md:grid-cols-2">
-        <label className="flex min-h-0 flex-col bg-[#1e1e2e]">
-          <span className="shrink-0 px-4 py-2 text-[11px] font-medium text-[#9399b2]">Your text</span>
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-px bg-[#344435] md:grid-cols-2">
+        <label className="flex min-h-0 flex-col bg-[#171d19]">
+          <span className="shrink-0 px-4 py-2 text-[11px] font-medium text-[#b1bea8]">Your text</span>
           <textarea value={input} onChange={event => setInput(event.target.value)}
             placeholder="Paste or type text to convert..." spellCheck={false}
-            className="min-h-0 flex-1 resize-none bg-[#1a1a2c] px-4 py-3 font-mono text-[13px] leading-6 text-[#cdd6f4] outline-none placeholder:text-[#585b70] focus:ring-1 focus:ring-inset focus:ring-[#89b4fa]/20" />
+            className="min-h-0 flex-1 resize-none bg-[#141a16] px-4 py-3 font-mono text-[13px] leading-6 text-[#e4ebdd] outline-none placeholder:text-[#899980] focus:ring-1 focus:ring-inset focus:ring-[#c8edb6]/20" />
         </label>
-        <div className="flex min-h-0 flex-col bg-[#1e1e2e]">
+        <div className="flex min-h-0 flex-col bg-[#171d19]">
           <div className="flex shrink-0 items-center justify-between px-4 py-2">
-            <span className="text-[11px] font-medium text-[#9399b2]">{CASES.find(item => item.id === mode)?.label} result</span>
+            <span className="text-[11px] font-medium text-[#b1bea8]">{CASES.find(item => item.id === mode)?.label} result</span>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] text-[#585b70]">{output.length} characters</span>
+              <span className="text-[10px] text-[#899980]">{output.length} characters</span>
               <button onClick={copyOutput} disabled={!output} title="Copy converted text"
-                className="flex items-center gap-1.5 rounded-md border border-[#313244] px-2.5 py-1 text-[11px] text-[#9399b2] hover:border-[#585b70] hover:text-[#cdd6f4] disabled:opacity-40">
+                className="flex items-center gap-1.5 rounded-md border border-[#344435] px-2.5 py-1 text-[11px] text-[#b1bea8] hover:border-[#899980] hover:text-[#e4ebdd] disabled:opacity-40">
                 <Copy size={12} />{copied ? 'Copied' : 'Copy'}
               </button>
               <button onClick={() => setInput('')} title="Clear text" disabled={!input}
-                className="rounded-md border border-[#313244] p-1.5 text-[#9399b2] hover:border-[#585b70] hover:text-[#cdd6f4] disabled:opacity-40">
+                className="rounded-md border border-[#344435] p-1.5 text-[#b1bea8] hover:border-[#899980] hover:text-[#e4ebdd] disabled:opacity-40">
                 <RotateCcw size={12} />
               </button>
             </div>
           </div>
           <textarea value={output} readOnly aria-label="Converted text"
-            className="min-h-0 flex-1 resize-none bg-[#1a1a2c] px-4 py-3 font-mono text-[13px] leading-6 text-[#a6e3a1] outline-none" />
+            className="min-h-0 flex-1 resize-none bg-[#141a16] px-4 py-3 font-mono text-[13px] leading-6 text-[#b5dfa3] outline-none" />
         </div>
       </div>
     </section>

@@ -1,101 +1,152 @@
-# PSDevTool — Developer Tools for Code & Files
+# PSDevTool
 
-> **Live Production URL**: [https://psdevtool.online/](https://psdevtool.online/)
+**A developer workspace for comparing code, inspecting data, debugging requests, and making measurements tangible.**
 
-**PSDevTool** (DevBench) is an all-in-one, client-side developer workspace designed to streamline everyday software engineering, document processing, and formatting tasks. All operations run directly in your browser with privacy, high performance, and zero server upload dependencies.
+[Open PSDevTool](https://psdevtool.online/) · [Explore the tools](#tools) · [Screenshots](#screenshots) · [Run locally](#run-locally)
 
----
+PSDevTool brings 19 tools into one React and TypeScript application. Compare text and files, work with JSON/XML/YAML, inspect network data, create diagrams, process documents and images, and explore unit conversions with interactive 3D illustrations.
 
-## 🚀 Key Modules & Capabilities
+A compact tool picker and keyboard search keep navigation close at hand. Choose a Node.js, Python, TypeScript, Go, or Rust theme; your theme and motion preference are remembered in your browser.
 
-### 1. 📄 PDF Studio & Word-to-PDF Converter
-- **Word (.docx) to PDF Converter**:
-  - Direct conversion of Microsoft Word documents into accurate, print-ready PDF files.
-  - Complete preservation of OpenXML tables, borders, font weights, colors, embedded figures, alignments, and multi-page pagination.
-  - Automatic download and secondary Vector Print option via the browser's native print engine.
-  - Off-screen rendering engine with cross-origin font protection.
-- **Merge PDF**: Combine multiple PDF files in any order with drag-and-drop reordering.
-- **Split PDF**: Extract specific page ranges or split documents into separate files.
-- **Images to PDF**: Convert collections of JPG, PNG, and WebP images into a single formatted PDF with configurable page size (A4, Letter, Fit) and margins.
-- **PDF to Images**: Extract high-resolution pages as JPG or PNG images bundled in a ZIP download.
-- **Protect & Unlock**: Secure PDFs with AES password protection or decrypt known password-protected PDFs.
-- **Text & Markdown to PDF**: Rapidly generate formatted PDF documents from plain text and markdown notes.
+![Diff Checker showing a syntax-highlighted comparison and changed lines](docs/screenshots/diff-checker.jpg)
 
-### 2. 🖼️ Image Studio
-- **Precision Crop Tool**: Interactive draggable and resizable crop box with 8 corner/edge handles supporting both mouse and touch input. Includes aspect ratio presets (Free, 1:1 Square, 16:9, 4:3, 9:16 Story), quick coverage sizes (Full 100%, Center 80%, Center 50%), and pixel/percentage inputs.
-- **Image Compression**: Adjustable quality slider with real-time estimated file size and percentage savings.
-- **Format Converter**: Instant conversion between PNG, JPEG, and WebP formats.
-- **Transformations**: 90° rotation, horizontal flip, and vertical flip.
-- **Base64 Image Encoder/Decoder**: Two-way conversion between image files, data URLs, CSS background snippets, and HTML `<img>` tags.
+## Tools
 
-### 3. ⚖️ Code & File Comparison (Diff Tools)
-- **Side-by-Side & Unified Diff**: Syntax-aware diff viewer powered by Monaco Editor.
-- **File Compare**: Drag and drop two local files to inspect additions, deletions, modifications, and line statistics.
-- **Formatting & Comparison Options**: Ignore whitespace, ignore letter case, and toggle word wrap.
+### Code and data
 
-### 4. 🏗️ Architecture & Diagram Lab
-- **System Architecture Canvas**: Drag-and-drop visual builder for distributed architectures (clients, APIs, databases, message queues, caches).
-- **Database Schema Designer**: Entity-relationship diagrams with interactive table nodes, column types, keys, and relational cardinality (1:1, 1:N, N:M) with directional handles.
-- **Live Mermaid Diagrams**: Real-time rendering of Mermaid code with high-contrast themes, zoom/pan controls, and SVG export.
+| Tool | What you can do |
+| --- | --- |
+| **Diff Checker** | Compare text side by side, inspect changes, format structured input, and adjust comparison settings. |
+| **File & Folder Diff** | Compare local files and folder contents, then inspect individual differences. |
+| **JSON & YAML** | Format and validate JSON; explore tree, table and graph views; convert JSON ↔ XML/YAML and environment text ↔ JSON. Fold nested code and see array lengths without changing the source. |
+| **Regex Lab** | Test patterns against text, highlight matches, inspect capture groups, and start from presets. |
+| **Markup Studio** | Preview HTML and Markdown, format XML and SQL, and inspect the output. |
 
-### 5. 🔣 JSON & Data Tools
-- **JSON Validator & Formatter**: Syntax verification, error pointer, pretty-print (2 spaces, 4 spaces, tabs), and minification.
-- **Interactive Views**: Collapsible tree inspector and tabular data view.
-- **Converter**: Bidirectional JSON ↔ XML converter with root element management.
+### Network and debugging
 
-### 6. 🔍 Regex Lab
-- **Live Regex Debugger**: Pattern syntax validation and real-time match highlighting across test inputs.
-- **Capture Groups**: Detailed group breakdown with match indices and extracted text.
-- **Pattern Presets**: Quick templates for emails, URLs, IP addresses, dates, phone numbers, and slug validation.
+| Tool | What you can do |
+| --- | --- |
+| **API Desk** | Build HTTP requests, inspect responses, and work with cURL and API specifications. Requests run from your browser and follow its CORS rules. |
+| **HAR Viewer** | Inspect HTTP archives, request timing, headers, payloads, and network waterfalls. |
+| **JWT Debugger** | Decode headers and claims, inspect expiry, and check supported HMAC signatures locally. Decoding alone does not verify a token. |
+| **DebugFlow** | Parse supported logs and stack traces, inspect frames and context, and export a report. Built-in examples cover C#/.NET, Java, Python, and Node.js. |
 
-### 7. 🏷️ Markup Studio & Code Formatters
-- **HTML Sandbox**: Live sandbox preview with isolated iframe rendering.
-- **XML Formatter**: Pretty-print XML documents with customizable indent levels.
-- **SQL Formatter**: Standardize queries across PostgreSQL, MySQL, BigQuery, and SQLite syntax.
+### Create and transform
 
-### 8. 🌐 Utilities
-- **URL Tools**: Encode/decode URLs, parse query parameters into an editable table, and copy normalized strings.
-- **Timezone & Epoch Converter**: Convert Unix timestamps (seconds, milliseconds) to human dates, UTC, ISO 8601, and local timezones.
-- **Case Converter**: Convert text between `camelCase`, `snake_case`, `kebab-case`, `PascalCase`, `UPPER_CASE`, and Title Case.
+| Tool | What you can do |
+| --- | --- |
+| **Architecture Lab** | Render Mermaid diagrams, build system-design simulations, and model database relationships. Simulator results describe the local model. |
+| **PDF Studio** | Merge and split PDFs, convert images or documents to PDF, and use the available extraction and document-processing workflows. |
+| **Image Studio** | Crop, resize, rotate, flip, compress, and convert images. |
 
----
+### Everyday utilities
 
-## 🛠️ Technology Stack
+| Tool | What you can do |
+| --- | --- |
+| **Measure Lab** | Convert 119 units across 17 measurement categories, explore interactive 3D illustrations, calculate 15 geometry shapes, and use six algebra tools with visible formulas. |
+| **Geo Distance** | Place or drag latitude/longitude pins, compare direct and optional driving-route distances, and convert distance units. Also includes batch pairs, bearings and geofence calculations. |
+| **ID Generator** | Generate UUIDs and other supported identifier formats. |
+| **Time Zones** | Convert Unix timestamps and compare times across zones. |
+| **Image Base64** | Encode images into data URLs or decode Base64 image data. |
+| **Case Converter** | Convert text between common prose and programming naming styles. |
+| **URL Tools** | Encode/decode URLs and inspect query parameters. |
 
-- **Framework**: React 19 + TypeScript + Vite
-- **Styling**: Tailwind CSS
-- **Code Editor**: Monaco Editor (`@monaco-editor/react`)
-- **Canvas & Graphing**: React Flow (`@xyflow/react`), Mermaid.js
-- **Document Processing**: `pdf-lib`, `docx-preview`, `jszip`, `html-to-image`
-- **Icons**: Lucide React
+Press **Ctrl+K** or **⌘K** to find a tool by name or keyword. Use the motion control beside the theme selector to pause effects. System reduced-motion preferences are respected.
 
----
+## Screenshots
 
-## 💻 Local Development
+These are real captures of a local production build using sample data. Expand a tool to inspect its interface. The gallery focuses on the tools.
 
-1. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+<details open>
+<summary><strong>JSON Studio — syntax colors, code folding, array counts and a parsed tree</strong></summary>
 
-2. **Start development server**:
-   ```bash
-   npm run dev
-   ```
-   The application runs on `http://localhost:3000`.
+![JSON Studio with formatted sample data, nested array counts, and an expanded tree preview](docs/screenshots/json-studio.jpg)
 
-3. **Compile and typecheck**:
-   ```bash
-   npm run build
-   ```
+</details>
 
-4. **Lint codebase**:
-   ```bash
-   npm run lint
-   ```
+<details>
+<summary><strong>Measure Lab — unit conversion with a live 3D water vessel</strong></summary>
 
----
+![Measure Lab converting liters to milliliters beside an interactive 3D water vessel and a scale slider](docs/screenshots/measure-lab.jpg)
 
-## 🔒 Privacy & Security
+Length, mass, volume, area, temperature, time, speed, pressure, energy, power, angle, digital storage, frequency, force, density, current, and voltage each have an illustration. Convert within compatible dimensions: kilograms to grams, for example. Relating mass to volume requires density.
 
-DevBench operates **100% in the client browser**. Uploaded Word documents, PDFs, images, source code files, and sensitive strings are never sent to external servers or third-party APIs. All processing occurs locally within your device memory.
+Geometry includes plane and solid shapes with applicable area, perimeter, surface-area and volume formulas. Algebra includes linear and quadratic equations, two-equation systems, percentages, and arithmetic/geometric sequences.
+
+</details>
+
+<details>
+<summary><strong>Geo Distance — coordinate pins, direct distance and a driving route</strong></summary>
+
+![OpenStreetMap with A/B coordinate pins, a teal direct path, an orange road route, and separate distance results](docs/screenshots/geo-distance.jpg)
+
+The map uses Leaflet and OpenStreetMap with visible attribution. For points up to 500 km apart, **Get driving route** requests a road path from the free OSRM public service. Direct and road distances stay separate; driving time excludes live traffic. No paid map API key is required.
+
+</details>
+
+<details>
+<summary><strong>DebugFlow — a sample Java stack trace and parsed execution flow</strong></summary>
+
+![DebugFlow showing a Java example log with parsed stack frames, context and execution flow](docs/screenshots/debugflow.jpg)
+
+</details>
+
+<details>
+<summary><strong>Architecture Lab — Mermaid source and its rendered diagram</strong></summary>
+
+![Architecture Lab showing editable Mermaid source alongside the rendered pipeline diagram](docs/screenshots/architecture-lab.jpg)
+
+</details>
+
+## Run locally
+
+Use Node.js **22.12+** or **24 LTS**, with npm. No application environment variables or paid API keys are required for local startup.
+
+```sh
+npm install
+npm run dev
+```
+
+Open **http://localhost:3000**.
+
+The repository also includes `bun.lock`. With Bun installed, you can use `bun install --frozen-lockfile` and `bun run dev` instead.
+
+### Build and check calculations
+
+```sh
+npm run build
+npm run test:measurements
+```
+
+The build runs TypeScript checks and produces `dist/`. The measurement checks exercise conversions, geometry, algebra, coordinate-path edge cases, invalid inputs, and career-date boundaries.
+
+To serve the production build locally:
+
+```sh
+npm run preview -- --host 0.0.0.0 --port 4173
+```
+
+Open **http://localhost:4173**. Deploy `dist/` to a static host such as Vercel. Tool navigation uses hash routes such as `/#/json`, `/#/distance`, and `/#/measure`.
+
+## How data and network access work
+
+- Text/file comparisons, structured-data formatting, log parsing, unit conversions, geometry, algebra, and 3D rendering run in your browser. Local file processing does not require a PSDevTool upload service.
+- **API Desk** contacts the endpoint you choose. Browser CORS restrictions apply.
+- **Geo Distance** requests basemap tiles from OpenStreetMap. Clicking **Get driving route** sends the selected coordinates to OSRM. Public map/routing services require internet access and have no availability guarantee; direct-distance calculations remain local.
+- Monaco and some document-processing resources can load from external CDNs. The hosted app also includes Google Analytics and advertising scripts, so the application is not completely offline or free of third-party network requests.
+- Language theme, motion, and tool-favorite preferences are stored locally in your browser.
+
+Numerical results use JavaScript floating-point arithmetic and are rounded for display. 3D measurement scenes are explanatory illustrations with stated ranges; their visual limits do not cap the conversion result. A WebGL-capable browser enables the 3D scenes; calculations and formulas remain available without WebGL.
+
+## Built with
+
+| Layer | Libraries |
+| --- | --- |
+| Application | React 19, TypeScript, Vite |
+| Interface | Tailwind CSS, custom CSS, Lucide React |
+| Editing and comparison | Monaco Editor, `diff`, Prettier, YAML, XML and SQL formatters |
+| Diagrams and 3D | React Flow, Mermaid, Three.js |
+| Maps and routing | Leaflet, OpenStreetMap tiles, OSRM public routing |
+| Documents and images | `pdf-lib`, `docx-preview`, JSZip, `html-to-image` |
+
+Technology-logo assets include source and license information in [public/technology](public/technology). Detailed implementation and validation notes are in [docs/3d-redesign.md](docs/3d-redesign.md).

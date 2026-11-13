@@ -58,11 +58,11 @@ export default function QuoteBanner() {
         borderBottom: '1px solid rgba(137,180,250,0.08)',
       }}
     >
-      <Quote size={10} style={{ color: '#89b4fa', opacity: 0.6, flexShrink: 0 }} />
-      <p className="flex-1 text-[11px] truncate" style={{ color: '#585b70' }}>
-        <span style={{ color: '#6c7086' }}>{quote.content}</span>
+      <Quote size={10} style={{ color: '#c8edb6', opacity: 0.6, flexShrink: 0 }} />
+      <p className="flex-1 text-[11px] truncate" style={{ color: '#899980' }}>
+        <span style={{ color: '#9eac96' }}>{quote.content}</span>
         <span className="mx-1.5" style={{ color: '#3d3f55' }}>—</span>
-        <span style={{ color: '#45475a' }}>{quote.author}</span>
+        <span style={{ color: '#71836b' }}>{quote.author}</span>
       </p>
       <button
         onClick={() => setDismissed(true)}

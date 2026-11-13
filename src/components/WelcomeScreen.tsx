@@ -8,7 +8,7 @@ const PARTICLES = Array.from({ length: 35 }, (_, i) => ({
   size: Math.random() * 2.5 + 0.5,
   delay: Math.random() * 6,
   duration: Math.random() * 5 + 4,
-  color: ['#89b4fa', '#cba6f7', '#a6e3a1', '#f5c2e7'][i % 4],
+  color: ['#c8edb6', '#ceb8f6', '#b5dfa3', '#f5c2e7'][i % 4],
 }));
 
 export default function WelcomeScreen({ onDone }: { onDone: () => void }) {
@@ -106,16 +106,16 @@ export default function WelcomeScreen({ onDone }: { onDone: () => void }) {
                   border: '1px solid rgba(137,180,250,0.3)',
                   boxShadow: '0 0 24px rgba(137,180,250,0.25), inset 0 1px 0 rgba(255,255,255,0.06)',
                 }}>
-                <GitCompare size={30} color="#89b4fa" />
+                <GitCompare size={30} color="#c8edb6" />
               </div>
             </div>
 
             {/* Welcome label */}
             <div className="wsc-t1 flex flex-col items-center gap-0.5">
-              <span className="text-[10px] tracking-[0.35em] uppercase text-[#45475a] font-medium">Welcome to</span>
+              <span className="text-[10px] tracking-[0.35em] uppercase text-[#71836b] font-medium">Welcome to</span>
               <h1 className="text-5xl font-bold tracking-tight leading-none"
                 style={{
-                  background: 'linear-gradient(130deg, #e2e8f8 0%, #89b4fa 45%, #cba6f7 85%)',
+                  background: 'linear-gradient(130deg, #e2e8f8 0%, #c8edb6 45%, #ceb8f6 85%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                 }}>
@@ -125,7 +125,7 @@ export default function WelcomeScreen({ onDone }: { onDone: () => void }) {
 
             {/* Tagline */}
             <div className="wsc-t2">
-              <p className="text-[#585b70] text-sm leading-relaxed max-w-[260px]">
+              <p className="text-[#899980] text-sm leading-relaxed max-w-[260px]">
                 Compare, convert, debug, and format code.<br />
                 A practical bench for developers.
               </p>
@@ -146,9 +146,9 @@ export default function WelcomeScreen({ onDone }: { onDone: () => void }) {
             {/* CTA */}
             <div className="wsc-t5">
               <button
-                className="px-8 py-2.5 rounded-xl text-sm font-semibold text-[#1e1e2e] transition-all duration-150 hover:scale-105 active:scale-95"
+                className="px-8 py-2.5 rounded-xl text-sm font-semibold text-[#171d19] transition-all duration-150 hover:scale-105 active:scale-95"
                 style={{
-                  background: 'linear-gradient(135deg, #89b4fa 0%, #cba6f7 100%)',
+                  background: 'linear-gradient(135deg, #c8edb6 0%, #ceb8f6 100%)',
                   boxShadow: '0 4px 24px rgba(137,180,250,0.35), 0 1px 0 rgba(255,255,255,0.2) inset',
                 }}
                 onClick={e => { e.stopPropagation(); handleExit(); }}

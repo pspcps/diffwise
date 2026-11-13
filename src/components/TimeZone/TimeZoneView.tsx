@@ -262,32 +262,32 @@ export default function TimeZoneView() {
     const updateZone = isSource ? updateSourceZone : updateTargetZone;
 
     return (
-      <section className="flex min-w-0 flex-col gap-3 border border-[#313244] bg-[#181825] p-4">
+      <section className="flex min-w-0 flex-col gap-3 border border-[#344435] bg-[#111612] p-4">
         <div className="flex items-center justify-between gap-2">
-          <h2 className="text-xs font-semibold text-[#cdd6f4]">{isSource ? 'Source local time' : 'Converted local time'}</h2>
-          <span className="text-[10px] text-[#9399b2]">{zoneName(instant, timeZone)} · {offsetLabel(instant, timeZone)}</span>
+          <h2 className="text-xs font-semibold text-[#e4ebdd]">{isSource ? 'Source local time' : 'Converted local time'}</h2>
+          <span className="text-[10px] text-[#b1bea8]">{zoneName(instant, timeZone)} · {offsetLabel(instant, timeZone)}</span>
         </div>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[10px] text-[#6c7086]">Date and time</span>
+          <span className="text-[10px] text-[#9eac96]">Date and time</span>
           <span className="relative block">
             <input type="text" value={value} onChange={event => updateLocalTime(event.target.value, side)}
               aria-label={`${isSource ? 'Source' : 'Converted'} local date and time`} placeholder="Paste a date, ISO timestamp, or local time"
-              className={`h-11 w-full min-w-0 rounded-md border bg-[#1a1a2c] py-2 pl-3 pr-10 font-mono text-xs text-[#cdd6f4] outline-none focus:border-[#89b4fa]/50 ${error ? 'border-[#f38ba8]/70' : 'border-[#313244]'}`} />
-            <button type="button" onClick={() => openDatePicker(side)} title="Choose date and time" aria-label={`Choose ${isSource ? 'source' : 'converted'} date and time`} className="absolute inset-y-0 right-0 flex w-9 items-center justify-center text-white hover:text-[#89b4fa]"><CalendarDays size={15} /></button>
+              className={`h-11 w-full min-w-0 rounded-md border bg-[#141a16] py-2 pl-3 pr-10 font-mono text-xs text-[#e4ebdd] outline-none focus:border-[#c8edb6]/50 ${error ? 'border-[#f19aa6]/70' : 'border-[#344435]'}`} />
+            <button type="button" onClick={() => openDatePicker(side)} title="Choose date and time" aria-label={`Choose ${isSource ? 'source' : 'converted'} date and time`} className="absolute inset-y-0 right-0 flex w-9 items-center justify-center text-white hover:text-[#c8edb6]"><CalendarDays size={15} /></button>
             <input ref={element => { pickerRefs.current[side] = element; }} type="datetime-local" step="1" value={localDateTime(instant, timeZone)}
               onChange={event => { if (event.target.value) updateLocalTime(event.target.value, side); }} aria-hidden="true" tabIndex={-1}
               className="pointer-events-none absolute right-0 top-0 h-px w-px opacity-0" style={{ colorScheme: 'dark' }} />
           </span>
-          {error && <span role="alert" className="text-[10px] text-[#f38ba8]">{error}</span>}
+          {error && <span role="alert" className="text-[10px] text-[#f19aa6]">{error}</span>}
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[10px] text-[#6c7086]">Time zone</span>
+          <span className="text-[10px] text-[#9eac96]">Time zone</span>
           <select value={timeZone} onChange={event => updateZone(event.target.value)} aria-label={`${isSource ? 'Source' : 'Converted'} time zone`}
-            className="h-10 w-full min-w-0 rounded-md border border-[#313244] bg-[#1a1a2c] px-2 text-[11px] text-[#cdd6f4] outline-none focus:border-[#89b4fa]/50">
+            className="h-10 w-full min-w-0 rounded-md border border-[#344435] bg-[#141a16] px-2 text-[11px] text-[#e4ebdd] outline-none focus:border-[#c8edb6]/50">
             {TIME_ZONES.map(zone => <option key={zone} value={zone}>{zoneLabel(zone)} · {zoneName(instant, zone)} · {offsetLabel(instant, zone)}</option>)}
           </select>
         </label>
-        <p className="min-h-8 text-[10px] leading-4 text-[#6c7086]">
+        <p className="min-h-8 text-[10px] leading-4 text-[#9eac96]">
           {new Intl.DateTimeFormat(undefined, { timeZone, dateStyle: 'full', timeStyle: 'long' }).format(instant)}
         </p>
       </section>
@@ -297,44 +297,44 @@ export default function TimeZoneView() {
   const secondsValue = (instantMs / 1000).toFixed(3).replace(/\.?0+$/, '');
 
   return (
-    <section className="flex h-full min-h-0 flex-col overflow-auto bg-[#1e1e2e] text-[#cdd6f4]">
-      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#313244] bg-[#181825] px-4 py-3">
+    <section className="flex h-full min-h-0 flex-col overflow-auto bg-[#171d19] text-[#e4ebdd]">
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#344435] bg-[#111612] px-4 py-3">
         <div>
           <h1 className="text-sm font-semibold">Time Zone Converter</h1>
-          <p className="mt-0.5 text-[11px] text-[#6c7086]">Edit either local time or the epoch; all three values stay in sync.</p>
+          <p className="mt-0.5 text-[11px] text-[#9eac96]">Edit either local time or the epoch; all three values stay in sync.</p>
         </div>
-        <button onClick={setCurrentTime} className="flex items-center gap-1.5 rounded-md border border-[#313244] px-2.5 py-1.5 text-[11px] text-[#9399b2] hover:border-[#585b70] hover:text-[#cdd6f4]"><Clock3 size={12} />Now</button>
+        <button onClick={setCurrentTime} className="flex items-center gap-1.5 rounded-md border border-[#344435] px-2.5 py-1.5 text-[11px] text-[#b1bea8] hover:border-[#899980] hover:text-[#e4ebdd]"><Clock3 size={12} />Now</button>
       </header>
 
       <div className="mx-auto grid w-full max-w-7xl flex-1 content-center items-stretch gap-3 px-4 py-6 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(220px,0.8fr)_minmax(0,1fr)]">
         {localPanel('source')}
 
-        <section className="flex min-w-0 flex-col justify-center gap-3 border border-[#89b4fa]/30 bg-[#1a1a2c] p-4">
+        <section className="flex min-w-0 flex-col justify-center gap-3 border border-[#c8edb6]/30 bg-[#141a16] p-4">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-xs font-semibold text-[#89b4fa]">Epoch timestamp</h2>
+            <h2 className="text-xs font-semibold text-[#c8edb6]">Epoch timestamp</h2>
             <button onClick={swapZones} title="Swap source and converted time zones" aria-label="Swap time zones"
-              className="flex h-8 w-8 items-center justify-center rounded-md border border-[#313244] text-[#89b4fa] hover:bg-[#89b4fa]/10"><ArrowLeftRight size={14} /></button>
+              className="flex h-8 w-8 items-center justify-center rounded-md border border-[#344435] text-[#c8edb6] hover:bg-[#c8edb6]/10"><ArrowLeftRight size={14} /></button>
           </div>
           <label className="flex flex-col gap-1.5">
-            <span className="text-[10px] text-[#9399b2]">Milliseconds or ISO timestamp</span>
+            <span className="text-[10px] text-[#b1bea8]">Milliseconds or ISO timestamp</span>
             <input type="text" value={epochValue} onChange={event => updateEpoch(event.target.value)} placeholder="Epoch ms, ISO, or browser Date string"
               onBlur={() => { if (epochDateDraft) setEpochDraft(null); }} aria-label="Epoch milliseconds or date string"
-              className={`h-11 w-full min-w-0 rounded-md border bg-[#11111b] px-3 font-mono text-sm text-[#cdd6f4] outline-none focus:border-[#89b4fa]/60 ${epochDraftInvalid ? 'border-[#f38ba8]/70' : 'border-[#313244]'}`} />
-            {epochDraftInvalid && <span role="alert" className="text-[10px] text-[#f38ba8]">Enter seconds, milliseconds, or an ISO 8601 timestamp.</span>}
+              className={`h-11 w-full min-w-0 rounded-md border bg-[#0d120f] px-3 font-mono text-sm text-[#e4ebdd] outline-none focus:border-[#c8edb6]/60 ${epochDraftInvalid ? 'border-[#f19aa6]/70' : 'border-[#344435]'}`} />
+            {epochDraftInvalid && <span role="alert" className="text-[10px] text-[#f19aa6]">Enter seconds, milliseconds, or an ISO 8601 timestamp.</span>}
           </label>
-          <div className="border-t border-[#313244] pt-2 text-[10px] leading-5 text-[#6c7086]">
-            <div>Seconds: <span className="font-mono text-[#cdd6f4]">{secondsValue}</span></div>
-            <div>Milliseconds: <span className="font-mono text-[#cdd6f4]">{instantMs}</span></div>
-            <div className="mt-1 text-[#585b70]">Accepts seconds, milliseconds, ISO, and standard browser/GMT date strings.</div>
+          <div className="border-t border-[#344435] pt-2 text-[10px] leading-5 text-[#9eac96]">
+            <div>Seconds: <span className="font-mono text-[#e4ebdd]">{secondsValue}</span></div>
+            <div>Milliseconds: <span className="font-mono text-[#e4ebdd]">{instantMs}</span></div>
+            <div className="mt-1 text-[#899980]">Accepts seconds, milliseconds, ISO, and standard browser/GMT date strings.</div>
           </div>
         </section>
 
         {localPanel('target')}
 
-        {ambiguous && <div className="flex flex-wrap items-center justify-center gap-2 border border-[#f9e2af]/20 bg-[#181825] p-3 text-[11px] lg:col-span-3">
-          <span className="text-[#f9e2af]">This local time occurs twice because of daylight saving. Choose one:</span>
+        {ambiguous && <div className="flex flex-wrap items-center justify-center gap-2 border border-[#f3d58c]/20 bg-[#111612] p-3 text-[11px] lg:col-span-3">
+          <span className="text-[#f3d58c]">This local time occurs twice because of daylight saving. Choose one:</span>
           {ambiguous.candidates.map((candidate, index) => <button key={candidate.toISOString()} onClick={() => chooseAmbiguousTime(candidate)}
-            className="rounded-md border border-[#313244] px-2.5 py-1.5 text-[#cdd6f4] hover:border-[#89b4fa]/50">{index === 0 ? 'Earlier' : 'Later'} · {zoneName(candidate, ambiguous.side === 'source' ? sourceZone : targetZone)} · {offsetLabel(candidate, ambiguous.side === 'source' ? sourceZone : targetZone)}</button>)}
+            className="rounded-md border border-[#344435] px-2.5 py-1.5 text-[#e4ebdd] hover:border-[#c8edb6]/50">{index === 0 ? 'Earlier' : 'Later'} · {zoneName(candidate, ambiguous.side === 'source' ? sourceZone : targetZone)} · {offsetLabel(candidate, ambiguous.side === 'source' ? sourceZone : targetZone)}</button>)}
         </div>}
       </div>
     </section>

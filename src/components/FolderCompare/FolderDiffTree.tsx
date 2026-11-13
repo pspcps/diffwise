@@ -9,10 +9,10 @@ interface FolderDiffTreeProps {
 }
 
 const statusColors: Record<DiffStatus, string> = {
-  added: '#a6e3a1',
-  removed: '#f38ba8',
-  modified: '#f9e2af',
-  identical: '#6c7086',
+  added: '#b5dfa3',
+  removed: '#f19aa6',
+  modified: '#f3d58c',
+  identical: '#9eac96',
 };
 
 const statusLabels: Record<DiffStatus, string> = {
@@ -42,23 +42,23 @@ function TreeNode({ item, depth, onSelectFile, selectedPath }: TreeNodeProps) {
           else onSelectFile(item);
         }}
         className={`flex items-center gap-1 px-2 py-0.5 cursor-pointer text-xs rounded transition-colors group ${
-          isSelected ? 'bg-[#313244]' : 'hover:bg-[#24273a]'
+          isSelected ? 'bg-[#344435]' : 'hover:bg-[#24273a]'
         }`}
         style={{ paddingLeft: `${8 + depth * 16}px` }}
       >
         {item.isDirectory ? (
           <>
-            <span className="text-[#6c7086] shrink-0">
+            <span className="text-[#9eac96] shrink-0">
               {open ? <ChevronDown size={11} /> : <ChevronRight size={11} />}
             </span>
-            <span style={{ color: '#89b4fa' }} className="shrink-0">
+            <span style={{ color: '#c8edb6' }} className="shrink-0">
               {open ? <FolderOpen size={13} /> : <Folder size={13} />}
             </span>
           </>
         ) : (
           <>
             <span className="w-[11px] shrink-0" />
-            <span style={{ color: '#6c7086' }} className="shrink-0">
+            <span style={{ color: '#9eac96' }} className="shrink-0">
               <File size={13} />
             </span>
           </>
@@ -66,7 +66,7 @@ function TreeNode({ item, depth, onSelectFile, selectedPath }: TreeNodeProps) {
 
         <span
           className="truncate flex-1"
-          style={{ color: item.status === 'identical' ? '#9399b2' : '#cdd6f4' }}
+          style={{ color: item.status === 'identical' ? '#b1bea8' : '#e4ebdd' }}
         >
           {item.name}
         </span>
@@ -116,10 +116,10 @@ export default function FolderDiffTree({ items, onSelectFile, selectedPath }: Fo
   );
 
   return (
-    <div className="flex flex-col h-full bg-[#181825]">
+    <div className="flex flex-col h-full bg-[#111612]">
       {/* Summary bar */}
-      <div className="flex items-center gap-3 px-3 py-2 border-b border-[#45475a] shrink-0">
-        {Object.entries({ added: '#a6e3a1', removed: '#f38ba8', modified: '#f9e2af', identical: '#6c7086' }).map(
+      <div className="flex items-center gap-3 px-3 py-2 border-b border-[#71836b] shrink-0">
+        {Object.entries({ added: '#b5dfa3', removed: '#f19aa6', modified: '#f3d58c', identical: '#9eac96' }).map(
           ([status, color]) =>
             counts[status] ? (
               <span key={status} className="flex items-center gap-1 text-xs" style={{ color }}>

@@ -1,6 +1,8 @@
 import { lazy, Suspense, useState, useEffect } from 'react';
 import './index.css';
 import Toolbar from './components/Layout/Toolbar';
+import WorkbenchHeading from './components/Layout/WorkbenchHeading';
+import './workbench.css';
 import TextCompareView from './components/TextCompare/TextCompareView';
 import FileCompareView from './components/FileCompare/FileCompareView';
 import CaseConverterView from './components/CaseConverter/CaseConverterView';
@@ -12,7 +14,8 @@ import RegexLabView from './components/RegexLab/RegexLabView';
 import UrlToolsView from './components/UrlTools/UrlToolsView';
 import AdBanner from './components/Ads/AdBanner';
 import AboutPanel from './components/About/AboutPanel';
-import PortfolioPage from './pages/PortfolioPage';
+const PortfolioPage = lazy(() => import('./pages/PortfolioPage'));
+const HomePage = lazy(() => import('./pages/HomePage'));
 import type { ViewMode } from './types';
 
 const ArchitectureLabView = lazy(() => import('./components/ArchitectureLab/ArchitectureLabView'));
@@ -23,6 +26,7 @@ const JwtStudioView = lazy(() => import('./components/JwtStudio/JwtStudioView'))
 const UuidStudioView = lazy(() => import('./components/UuidStudio/UuidStudioView'));
 const ApiStudioView = lazy(() => import('./components/ApiStudio/ApiStudioView'));
 const ErrorDebuggerView = lazy(() => import('./components/ErrorDebugger/ErrorDebuggerView'));
+const MeasureLabView = lazy(() => import('./components/MeasureLab/MeasureLabView'));
 const GeoDistanceView = lazy(() => import('./components/GeoDistance/GeoDistanceView'));
 import CommandPalette from './components/CommandPalette/CommandPalette';
 
@@ -119,6 +123,10 @@ const HASH_TO_MODE: Record<string, ViewMode> = {
   '#/stacktrace': 'debug',
   '#/logs': 'debug',
 
+  '#/measure': 'measure',
+  '#/units': 'measure',
+  '#/unit-converter': 'measure',
+  '#/geometry': 'measure',
   '#/distance': 'distance',
   '#/geodistance': 'distance',
   '#/geo-distance': 'distance',
@@ -197,6 +205,10 @@ const MODE_SEO: Record<ViewMode, { title: string; desc: string }> = {
     title: 'DebugFlow — Universal Error & Stack Trace Debugger — PSDevTool',
     desc: 'Analyze logs, exceptions, and stack traces across C#, Java, Python, Node.js, and Go with deterministic root cause analysis and execution flow mapping.',
   },
+  measure: {
+    title: 'Measure Lab — 3D Unit Converter, Geometry & Algebra — PSDevTool',
+    desc: 'Convert length, mass, volume and more with interactive 3D illustrations. Calculate areas, volumes and algebra with visible formulas, locally in your browser.',
+  },
   distance: {
     title: 'Geo Distance & Coordinates Calculator (Lat/Lon Haversine & Vincenty) — PSDevTool',
     desc: 'Calculate distance between two GPS coordinates (latitude and longitude) with high precision using Vincenty WGS-84 and Haversine formulas, coordinate delta breakdown, and travel times.',
@@ -215,7 +227,7 @@ function useHashRoute() {
 
 export default function App() {
   const hash = useHashRoute();
-  const initialMode = HASH_TO_MODE[window.location.hash] || 'text';
+  const initialMode = HASH_TO_MODE[window.location.hash.split('?')[0]] || 'text';
   const [mode, setMode] = useState<ViewMode>(initialMode);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
@@ -232,20 +244,23 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleGlobalKey);
   }, []);
 
+  const routeHash = hash.split('?')[0];
+
   // Sync mode when URL hash changes externally
   useEffect(() => {
-    if (hash && HASH_TO_MODE[hash] && HASH_TO_MODE[hash] !== mode) {
-      setMode(HASH_TO_MODE[hash]);
+    if (routeHash && HASH_TO_MODE[routeHash] && HASH_TO_MODE[routeHash] !== mode) {
+      setMode(HASH_TO_MODE[routeHash]);
     }
   }, [hash]);
 
   // Update dynamic document title and meta description for SEO
   useEffect(() => {
-    if (hash === '#/portfolio') {
-      document.title = 'Prakash Choudhary — Senior Full Stack & Software Engineer';
-      return;
-    }
-    const seo = MODE_SEO[mode];
+    const isHome = !hash || hash === '#/' || hash === '#/home';
+    const seo = hash === '#/portfolio'
+      ? { title: 'Prakash Choudhary — Senior Software Engineer', desc: 'Explore projects, experience, and the engineering work of Prakash Choudhary: cloud-native systems, real-time platforms, and AI products.' }
+      : isHome
+        ? { title: 'PSDevTool — Your Developer Space', desc: 'A thoughtfully crafted developer workspace. Compare code, create diagrams, format data, and explore tools that keep you in flow.' }
+        : MODE_SEO[mode];
     if (seo) {
       document.title = seo.title;
       const descEl = document.querySelector('meta[name="description"]');
@@ -276,11 +291,22 @@ export default function App() {
 
   // Portfolio is a full-page takeover
   if (hash === '#/portfolio') {
-    return <PortfolioPage onBack={goBack} />;
+    return <Suspense fallback={<div className="space-loading">Opening portfolio…</div>}><PortfolioPage onBack={goBack} /></Suspense>;
+  }
+
+  if (!hash || hash === '#/' || hash === '#/home') {
+    return (
+      <>
+        <Suspense fallback={<div className="space-loading">Opening your workspace…</div>}>
+          <HomePage onTool={handleModeChange} onPortfolio={goPortfolio} onSearch={() => setCommandPaletteOpen(true)} />
+        </Suspense>
+        <CommandPalette isOpen={commandPaletteOpen} onClose={() => setCommandPaletteOpen(false)} onSelectTool={handleModeChange} onPortfolio={goPortfolio} />
+      </>
+    );
   }
 
   return (
-    <div className="flex flex-col h-screen bg-[#1e1e2e] text-[#cdd6f4] overflow-hidden">
+    <div className="flex flex-col h-screen bg-[#171d19] text-[#e4ebdd] overflow-hidden">
       {/* About Me slide-in panel */}
       {aboutOpen && (
         <AboutPanel onClose={() => setAboutOpen(false)} onPortfolio={goPortfolio} />
@@ -301,8 +327,9 @@ export default function App() {
         onOpenSearch={() => setCommandPaletteOpen(true)}
       />
 
+      <WorkbenchHeading mode={mode} />
       {/* All views stay mounted or dynamically loaded */}
-      <div className="flex-1 min-h-0 relative">
+      <div className="flex-1 min-h-0 relative workbench-frame">
         <div className={`absolute inset-0 flex flex-col${mode !== 'text' ? ' invisible pointer-events-none' : ''}`}>
           <TextCompareView />
         </div>
@@ -334,7 +361,7 @@ export default function App() {
         {/* Dynamic Heavy Views */}
         {mode === 'har' && (
           <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#9399b2]">Loading HAR Viewer…</div>}>
+            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading HAR Viewer…</div>}>
               <HarViewerView />
             </Suspense>
           </div>
@@ -342,7 +369,7 @@ export default function App() {
 
         {mode === 'api' && (
           <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#9399b2]">Loading ApiDesk Studio…</div>}>
+            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading ApiDesk Studio…</div>}>
               <ApiStudioView />
             </Suspense>
           </div>
@@ -350,7 +377,7 @@ export default function App() {
 
         {mode === 'jwt' && (
           <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#9399b2]">Loading JWT Debugger…</div>}>
+            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading JWT Debugger…</div>}>
               <JwtStudioView />
             </Suspense>
           </div>
@@ -359,7 +386,7 @@ export default function App() {
 
         {mode === 'uuid' && (
           <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#9399b2]">Loading UUID Generator…</div>}>
+            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading UUID Generator…</div>}>
               <UuidStudioView />
             </Suspense>
           </div>
@@ -367,7 +394,7 @@ export default function App() {
 
         {mode === 'architecture' && (
           <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#9399b2]">Loading Architecture Lab…</div>}>
+            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading Architecture Lab…</div>}>
               <ArchitectureLabView />
             </Suspense>
           </div>
@@ -375,7 +402,7 @@ export default function App() {
 
         {mode === 'image_studio' && (
           <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#9399b2]">Loading Image Studio…</div>}>
+            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading Image Studio…</div>}>
               <ImageStudioView />
             </Suspense>
           </div>
@@ -384,7 +411,7 @@ export default function App() {
         {/* DebugFlow Universal Debugger */}
         {mode === 'debug' && (
           <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#9399b2]">Loading DebugFlow…</div>}>
+            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading DebugFlow…</div>}>
               <ErrorDebuggerView />
             </Suspense>
           </div>
@@ -393,8 +420,16 @@ export default function App() {
         {/* Geo Distance & Coordinates Calculator */}
         {mode === 'distance' && (
           <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#9399b2]">Loading Geo Distance Calculator…</div>}>
+            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading Geo Distance Calculator…</div>}>
               <GeoDistanceView />
+            </Suspense>
+          </div>
+        )}
+
+        {mode === 'measure' && (
+          <div className="absolute inset-0 flex flex-col">
+            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading Measure Lab…</div>}>
+              <MeasureLabView />
             </Suspense>
           </div>
         )}
@@ -402,7 +437,7 @@ export default function App() {
         {/* PDF Studio */}
         {mode === 'pdf' && (
           <div className="absolute inset-0 flex flex-col">
-            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#9399b2]">Loading PDF Studio…</div>}>
+            <Suspense fallback={<div className="flex h-full items-center justify-center text-xs text-[#b1bea8]">Loading PDF Studio…</div>}>
               <PdfStudioView />
             </Suspense>
           </div>

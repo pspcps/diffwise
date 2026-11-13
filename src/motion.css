@@ -1,0 +1,330 @@
+@property --user-accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #c8edb6;
+}
+@property --theme-vivid {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #22c55e;
+}
+html.motion-enabled {
+  transition:
+    --user-accent 0.55s ease,
+    --theme-vivid 0.55s ease;
+}
+.site-motion-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 60;
+  pointer-events: none;
+  contain: strict;
+}
+.theme-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.portfolio-nav > .theme-controls {
+  order: 2;
+}
+.motion-toggle {
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--user-accent) 23%, transparent);
+  border-radius: 7px;
+  background: #ffffff03;
+  color: var(--user-accent);
+  cursor: pointer;
+}
+.motion-toggle[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--user-accent) 8%, transparent);
+}
+.motion-toggle:focus-visible {
+  outline: 2px solid var(--user-accent);
+  outline-offset: 3px;
+}
+.motion-toggle:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.motion-enabled .motion-toggle:hover svg {
+  animation: motion-twinkle 0.65s ease;
+}
+.motion-enabled .space-app,
+.motion-enabled .portfolio-space {
+  animation: motion-page 0.4s ease both;
+}
+.motion-enabled .motion-reveal-pending {
+  opacity: 0;
+  transform: translateY(22px);
+}
+.motion-enabled .motion-revealed {
+  animation: motion-section 0.7s cubic-bezier(0.2, 0.75, 0.2, 1) both;
+}
+.motion-enabled .skill-space-card,
+.motion-enabled .timeline-card,
+.motion-enabled .portfolio-stats > div {
+  transform: perspective(1000px) rotateX(var(--motion-rx, 0deg))
+    rotateY(var(--motion-ry, 0deg));
+  transition:
+    transform 0.2s,
+    box-shadow 0.25s,
+    border-color 0.25s;
+}
+.motion-enabled .tool-card,
+.motion-enabled .project-space-card,
+.motion-enabled .skill-space-card,
+.motion-enabled .timeline-card,
+.motion-enabled .portfolio-stats > div {
+  isolation: isolate;
+  position: relative;
+}
+.motion-enabled .tool-card:after,
+.motion-enabled .project-space-card:after,
+.motion-enabled .skill-space-card:after,
+.motion-enabled .timeline-card:after,
+.motion-enabled .portfolio-stats > div:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    220px circle at var(--glow-x, 50%) var(--glow-y, 50%),
+    color-mix(in srgb, var(--user-accent) 11%, transparent),
+    transparent 75%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: -1;
+}
+.motion-enabled .tool-card:hover:after,
+.motion-enabled .project-space-card:hover:after,
+.motion-enabled .skill-space-card:hover:after,
+.motion-enabled .timeline-card:hover:after,
+.motion-enabled .portfolio-stats > div:hover:after {
+  opacity: 1;
+}
+.motion-enabled .primary-button {
+  position: relative;
+  overflow: hidden;
+}
+.motion-enabled .primary-button:after {
+  content: "";
+  position: absolute;
+  inset: -100% -150%;
+  pointer-events: none;
+  background: linear-gradient(
+    110deg,
+    transparent 40%,
+    #ffffff50 50%,
+    transparent 60%
+  );
+  transform: translateX(-60%);
+}
+.motion-enabled .primary-button:hover:after {
+  animation: motion-sheen 0.8s ease;
+}
+.motion-enabled button:active:not(:disabled) {
+  scale: 0.97;
+}
+.motion-enabled button {
+  transition:
+    scale 0.16s,
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+.motion-enabled .technology-chip:hover .technology-icon {
+  transform: translateY(-2px) rotate(-7deg) scale(1.12);
+}
+.technology-icon {
+  transition: transform 0.25s;
+}
+.motion-enabled .language-dock button.selected .technology-icon {
+  animation: motion-mark 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.motion-enabled .character-button:active .character-body {
+  transform: translateY(-5px);
+}
+.character-body {
+  transition: transform 0.25s;
+}
+.motion-enabled .portrait-glow {
+  animation: motion-breathe 8s ease-in-out infinite;
+}
+.motion-enabled .brand-mark:hover {
+  transform: rotate(8deg) scale(1.05);
+}
+@keyframes motion-section {
+  from {
+    opacity: 0;
+    translate: 0 22px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes motion-page {
+  from {
+    opacity: 0.65;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes motion-sheen {
+  from {
+    transform: translateX(-60%);
+  }
+  to {
+    transform: translateX(60%);
+  }
+}
+@keyframes motion-mark {
+  0% {
+    transform: scale(0.75) rotate(-12deg);
+  }
+  65% {
+    transform: scale(1.18) rotate(5deg);
+  }
+  100% {
+    transform: none;
+  }
+}
+@keyframes motion-twinkle {
+  50% {
+    transform: rotate(20deg) scale(1.15);
+  }
+}
+@keyframes motion-breathe {
+  50% {
+    scale: 1.13;
+    opacity: 0.7;
+  }
+}
+.motion-paused *,
+.motion-paused *:before,
+.motion-paused *:after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+.motion-paused .motion-reveal-pending,
+.motion-paused .timeline-ready .timeline-entry:not(.timeline-visible) {
+  opacity: 1 !important;
+  transform: none !important;
+}
+.motion-paused .tool-card,
+.motion-paused .project-space-card,
+.motion-paused .skill-space-card,
+.motion-paused .timeline-card,
+.motion-paused .portfolio-stats > div {
+  transform: none !important;
+}
+.motion-paused .portrait-card {
+  transform: rotate(-4deg) !important;
+}
+@media (max-width: 700px) {
+  .theme-controls {
+    gap: 5px;
+  }
+  .motion-toggle {
+    width: 25px;
+    height: 27px;
+  }
+  .portfolio-nav > .theme-controls {
+    gap: 5px;
+  }
+  .compact-toolbar .tool-picker {
+    max-width: 130px;
+  }
+  .space-topbar {
+    padding-left: 15px;
+    padding-right: 15px;
+    gap: 8px;
+  }
+  .space-topbar .theme-choice select {
+    max-width: 73px;
+  }
+  .space-topbar .topbar-actions {
+    gap: 7px;
+  }
+  .space-topbar .profile-button {
+    width: 26px;
+    height: 26px;
+  }
+  .space-topbar .search-shortcut {
+    padding: 4px;
+  }
+  .space-topbar .space-brand small {
+    letter-spacing: 1px;
+    font-size: 6px;
+  }
+}
+@media (max-width: 360px) {
+  .space-topbar .profile-button {
+    display: none;
+  }
+  .compact-toolbar-actions {
+    gap: 6px;
+  }
+  .compact-toolbar .tool-picker {
+    max-width: 107px;
+  }
+  .compact-toolbar .theme-choice select {
+    max-width: 72px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    transition: none !important;
+  }
+  .site-motion-canvas {
+    display: none;
+  }
+  .motion-reveal-pending {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+@media (max-width: 360px) {
+  .compact-toolbar .toolbar-home[aria-label="All tools"] {
+    display: none;
+  }
+}
+.motion-enabled .builder-panel[open] {
+  animation: motion-panel 0.35s cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+.motion-enabled .project-dialog[open],
+.motion-enabled .animate-fade-in {
+  animation: motion-dialog 0.3s ease both;
+}
+@keyframes motion-panel {
+  from {
+    opacity: 0.4;
+    translate: 28px 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes motion-dialog {
+  from {
+    opacity: 0.4;
+    scale: 0.97;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}

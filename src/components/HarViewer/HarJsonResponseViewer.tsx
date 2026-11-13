@@ -23,11 +23,11 @@ function isObject(val: unknown): val is Record<string, unknown> {
 }
 
 function getValueColor(val: unknown): string {
-  if (val === null) return 'text-[#6c7086]';
-  if (typeof val === 'string') return 'text-[#a6e3a1]';
-  if (typeof val === 'number') return 'text-[#fab387]';
-  if (typeof val === 'boolean') return 'text-[#89b4fa]';
-  return 'text-[#cdd6f4]';
+  if (val === null) return 'text-[#9eac96]';
+  if (typeof val === 'string') return 'text-[#b5dfa3]';
+  if (typeof val === 'number') return 'text-[#f3c18e]';
+  if (typeof val === 'boolean') return 'text-[#c8edb6]';
+  return 'text-[#e4ebdd]';
 }
 
 function getValuePreview(val: unknown): string {
@@ -85,14 +85,14 @@ function TreeNode({
   return (
     <div className="font-mono text-xs select-text">
       <div
-        className={`flex items-center gap-1.5 py-1 px-2 rounded-lg hover:bg-[#313244]/40 transition-colors group ${
+        className={`flex items-center gap-1.5 py-1 px-2 rounded-lg hover:bg-[#344435]/40 transition-colors group ${
           depth > 0 ? 'ml-4' : ''
         }`}
       >
         {isBranch ? (
           <button
             onClick={() => setIsExpanded(v => !v)}
-            className="p-0.5 text-[#9399b2] hover:text-[#cdd6f4]"
+            className="p-0.5 text-[#b1bea8] hover:text-[#e4ebdd]"
           >
             {isExpanded ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
           </button>
@@ -101,11 +101,11 @@ function TreeNode({
         )}
 
         {/* Key */}
-        <span className="text-[#89b4fa] font-semibold">{nodeKey}:</span>
+        <span className="text-[#c8edb6] font-semibold">{nodeKey}:</span>
 
         {/* Value Preview or Leaf Value */}
         {isBranch ? (
-          <span className="text-[#6c7086] text-[11px]">
+          <span className="text-[#9eac96] text-[11px]">
             {Array.isArray(value) ? `[ ${childCount} items ]` : `{ ${childCount} keys }`}
           </span>
         ) : (
@@ -118,11 +118,11 @@ function TreeNode({
               title="Copy this individual value"
               className={`p-0.5 rounded transition-all shrink-0 ${
                 isCopied
-                  ? 'bg-[#a6e3a1]/20 text-[#a6e3a1]'
-                  : 'text-[#6c7086] hover:text-[#cdd6f4] hover:bg-[#313244] opacity-70 group-hover:opacity-100'
+                  ? 'bg-[#b5dfa3]/20 text-[#b5dfa3]'
+                  : 'text-[#9eac96] hover:text-[#e4ebdd] hover:bg-[#344435] opacity-70 group-hover:opacity-100'
               }`}
             >
-              {isCopied ? <Check size={11} className="text-[#a6e3a1]" /> : <Copy size={11} />}
+              {isCopied ? <Check size={11} className="text-[#b5dfa3]" /> : <Copy size={11} />}
             </button>
           </div>
         )}
@@ -134,9 +134,9 @@ function TreeNode({
             <button
               onClick={() => onCopy(typeof value === 'string' ? value : JSON.stringify(value), path)}
               title="Copy value"
-              className="flex items-center gap-1 px-1.5 py-0.5 bg-[#181825] hover:bg-[#313244] border border-[#45475a] rounded text-[10px] text-[#a6adc8] hover:text-[#cdd6f4]"
+              className="flex items-center gap-1 px-1.5 py-0.5 bg-[#111612] hover:bg-[#344435] border border-[#71836b] rounded text-[10px] text-[#c3ceba] hover:text-[#e4ebdd]"
             >
-              {isCopied ? <Check size={10} className="text-[#a6e3a1]" /> : <Copy size={10} />}
+              {isCopied ? <Check size={10} className="text-[#b5dfa3]" /> : <Copy size={10} />}
               <span>{isCopied ? 'Copied' : 'Value'}</span>
             </button>
           )}
@@ -145,16 +145,16 @@ function TreeNode({
           <button
             onClick={() => onCopy(path, `${path}-path`)}
             title={`Copy JSON path (${path})`}
-            className="px-1.5 py-0.5 bg-[#181825] hover:bg-[#313244] border border-[#45475a] rounded text-[10px] text-[#6c7086] hover:text-[#cdd6f4]"
+            className="px-1.5 py-0.5 bg-[#111612] hover:bg-[#344435] border border-[#71836b] rounded text-[10px] text-[#9eac96] hover:text-[#e4ebdd]"
           >
-            {copiedPath === `${path}-path` ? <Check size={10} className="text-[#a6e3a1]" /> : 'Path'}
+            {copiedPath === `${path}-path` ? <Check size={10} className="text-[#b5dfa3]" /> : 'Path'}
           </button>
         </div>
       </div>
 
       {/* Expanded Children */}
       {isBranch && isExpanded && (
-        <div className="border-l border-[#313244]/60 ml-3.5 pl-1">
+        <div className="border-l border-[#344435]/60 ml-3.5 pl-1">
           {Array.isArray(value)
             ? value.map((item, idx) => (
                 <TreeNode
@@ -271,7 +271,7 @@ export default function HarJsonResponseViewer({ responseText, mimeType, size }: 
 
   if (!responseText) {
     return (
-      <div className="text-[#6c7086] text-xs italic p-4 bg-[#181825] rounded-xl border border-[#313244]">
+      <div className="text-[#9eac96] text-xs italic p-4 bg-[#111612] rounded-xl border border-[#344435]">
         No response body captured in this request.
       </div>
     );
@@ -280,14 +280,14 @@ export default function HarJsonResponseViewer({ responseText, mimeType, size }: 
   return (
     <div className="flex flex-col space-y-3 font-sans">
       {/* Response Action Bar */}
-      <div className="flex items-center justify-between gap-2 flex-wrap pb-2 border-b border-[#313244]">
+      <div className="flex items-center justify-between gap-2 flex-wrap pb-2 border-b border-[#344435]">
         {/* Left: format & size info */}
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-bold text-[#a6e3a1] uppercase tracking-wider">
+          <span className="text-[11px] font-bold text-[#b5dfa3] uppercase tracking-wider">
             {isJson ? 'JSON Response' : mimeType || 'Text Content'}
           </span>
           {size !== undefined && (
-            <span className="text-[10px] text-[#6c7086]">
+            <span className="text-[10px] text-[#9eac96]">
               • {size} bytes
             </span>
           )}
@@ -295,11 +295,11 @@ export default function HarJsonResponseViewer({ responseText, mimeType, size }: 
 
         {/* View Mode Switcher (Tree, Table, Raw) */}
         {isJson && (
-          <div className="flex items-center bg-[#181825] border border-[#313244] rounded-lg p-0.5 text-xs">
+          <div className="flex items-center bg-[#111612] border border-[#344435] rounded-lg p-0.5 text-xs">
             <button
               onClick={() => setViewMode('tree')}
               className={`flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium transition-all ${
-                viewMode === 'tree' ? 'bg-[#89b4fa] text-[#11111b] font-bold' : 'text-[#9399b2] hover:text-[#cdd6f4]'
+                viewMode === 'tree' ? 'bg-[#c8edb6] text-[#0d120f] font-bold' : 'text-[#b1bea8] hover:text-[#e4ebdd]'
               }`}
             >
               <GitBranch size={12} />
@@ -308,7 +308,7 @@ export default function HarJsonResponseViewer({ responseText, mimeType, size }: 
             <button
               onClick={() => setViewMode('table')}
               className={`flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium transition-all ${
-                viewMode === 'table' ? 'bg-[#89b4fa] text-[#11111b] font-bold' : 'text-[#9399b2] hover:text-[#cdd6f4]'
+                viewMode === 'table' ? 'bg-[#c8edb6] text-[#0d120f] font-bold' : 'text-[#b1bea8] hover:text-[#e4ebdd]'
               }`}
             >
               <Table2 size={12} />
@@ -317,7 +317,7 @@ export default function HarJsonResponseViewer({ responseText, mimeType, size }: 
             <button
               onClick={() => setViewMode('raw')}
               className={`flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium transition-all ${
-                viewMode === 'raw' ? 'bg-[#89b4fa] text-[#11111b] font-bold' : 'text-[#9399b2] hover:text-[#cdd6f4]'
+                viewMode === 'raw' ? 'bg-[#c8edb6] text-[#0d120f] font-bold' : 'text-[#b1bea8] hover:text-[#e4ebdd]'
               }`}
             >
               <Code2 size={12} />
@@ -329,7 +329,7 @@ export default function HarJsonResponseViewer({ responseText, mimeType, size }: 
         {/* Copy All Button */}
         <button
           onClick={() => handleCopy(responseText, 'all')}
-          className="flex items-center gap-1 text-[11px] text-[#89b4fa] hover:underline"
+          className="flex items-center gap-1 text-[11px] text-[#c8edb6] hover:underline"
         >
           {copiedKey === 'all' ? <Check size={12} /> : <Copy size={12} />}
           Copy Entire Response
@@ -339,20 +339,20 @@ export default function HarJsonResponseViewer({ responseText, mimeType, size }: 
       {/* Search Input for Tree & Table Views */}
       {isJson && viewMode !== 'raw' && (
         <div className="relative">
-          <Search size={13} className="absolute left-3 top-2 text-[#6c7086]" />
+          <Search size={13} className="absolute left-3 top-2 text-[#9eac96]" />
           <input
             type="text"
             placeholder="Search keys, values, or properties in this response..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 bg-[#181825] border border-[#313244] rounded-lg text-xs text-[#cdd6f4] placeholder-[#585b70] focus:outline-none focus:border-[#89b4fa]"
+            className="w-full pl-8 pr-3 py-1.5 bg-[#111612] border border-[#344435] rounded-lg text-xs text-[#e4ebdd] placeholder-[#899980] focus:outline-none focus:border-[#c8edb6]"
           />
         </div>
       )}
 
       {/* VIEW 1: INTERACTIVE TREE WITH 1-CLICK VALUE COPY */}
       {isJson && viewMode === 'tree' && (
-        <div className="bg-[#181825] border border-[#313244] rounded-xl p-3 max-h-[550px] overflow-auto">
+        <div className="bg-[#111612] border border-[#344435] rounded-xl p-3 max-h-[550px] overflow-auto">
           <TreeNode
             nodeKey="root"
             value={parsedData}
@@ -367,12 +367,12 @@ export default function HarJsonResponseViewer({ responseText, mimeType, size }: 
 
       {/* VIEW 2: SEARCHABLE TABLE VIEW FOR JSON ARRAYS & OBJECTS */}
       {isJson && viewMode === 'table' && tableData && (
-        <div className="bg-[#181825] border border-[#313244] rounded-xl overflow-hidden max-h-[550px] flex flex-col">
+        <div className="bg-[#111612] border border-[#344435] rounded-xl overflow-hidden max-h-[550px] flex flex-col">
           <div className="overflow-auto flex-1">
             <table className="w-full text-left text-xs border-collapse">
-              <thead className="sticky top-0 bg-[#1e1e2e] border-b border-[#313244] text-[11px] font-bold text-[#89b4fa]">
+              <thead className="sticky top-0 bg-[#171d19] border-b border-[#344435] text-[11px] font-bold text-[#c8edb6]">
                 <tr>
-                  <th className="px-3 py-2 w-10 text-[#6c7086]">#</th>
+                  <th className="px-3 py-2 w-10 text-[#9eac96]">#</th>
                   {tableData.columns.map(col => (
                     <th key={col} className="px-3 py-2 uppercase tracking-wider">
                       {col}
@@ -380,10 +380,10 @@ export default function HarJsonResponseViewer({ responseText, mimeType, size }: 
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#252535]">
+              <tbody className="divide-y divide-[#2b382c]">
                 {filteredTableRows.length === 0 ? (
                   <tr>
-                    <td colSpan={tableData.columns.length + 1} className="p-6 text-center text-xs text-[#6c7086]">
+                    <td colSpan={tableData.columns.length + 1} className="p-6 text-center text-xs text-[#9eac96]">
                       No rows match &quot;{searchTerm}&quot;
                     </td>
                   </tr>
@@ -392,8 +392,8 @@ export default function HarJsonResponseViewer({ responseText, mimeType, size }: 
                     const isExpanded = expandedTableRows.has(rIdx);
                     return (
                       <Fragment key={rIdx}>
-                        <tr className="hover:bg-[#1e1e2e]/60 transition-colors group">
-                          <td className="px-3 py-2 text-[#585b70] font-mono text-[10px]">
+                        <tr className="hover:bg-[#171d19]/60 transition-colors group">
+                          <td className="px-3 py-2 text-[#899980] font-mono text-[10px]">
                             {rIdx + 1}
                           </td>
                           {tableData.columns.map(col => {
@@ -414,7 +414,7 @@ export default function HarJsonResponseViewer({ responseText, mimeType, size }: 
                                           return next;
                                         });
                                       }}
-                                      className="text-[#89b4fa] hover:underline flex items-center gap-1 font-sans text-[11px]"
+                                      className="text-[#c8edb6] hover:underline flex items-center gap-1 font-sans text-[11px]"
                                     >
                                       {Array.isArray(val) ? `[ ${val.length} items ]` : `{ object }`}
                                     </button>
@@ -428,10 +428,10 @@ export default function HarJsonResponseViewer({ responseText, mimeType, size }: 
                                   <button
                                     onClick={() => handleCopy(valStr, `cell-${rIdx}-${col}`)}
                                     title="Copy cell value"
-                                    className="p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-[#313244] text-[#6c7086] hover:text-[#cdd6f4] transition-opacity shrink-0"
+                                    className="p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-[#344435] text-[#9eac96] hover:text-[#e4ebdd] transition-opacity shrink-0"
                                   >
                                     {copiedKey === `cell-${rIdx}-${col}` ? (
-                                      <Check size={11} className="text-[#a6e3a1]" />
+                                      <Check size={11} className="text-[#b5dfa3]" />
                                     ) : (
                                       <Copy size={11} />
                                     )}
@@ -444,12 +444,12 @@ export default function HarJsonResponseViewer({ responseText, mimeType, size }: 
 
                         {/* Expanded Drawer for Nested JSON in row */}
                         {isExpanded && (
-                          <tr className="bg-[#11111b]/80">
-                            <td colSpan={tableData.columns.length + 1} className="p-3 border-l-2 border-[#89b4fa]">
-                              <div className="text-[10px] font-bold text-[#89b4fa] uppercase mb-1">
+                          <tr className="bg-[#0d120f]/80">
+                            <td colSpan={tableData.columns.length + 1} className="p-3 border-l-2 border-[#c8edb6]">
+                              <div className="text-[10px] font-bold text-[#c8edb6] uppercase mb-1">
                                 Expanded Object Data:
                               </div>
-                              <pre className="text-xs font-mono text-[#a6e3a1] bg-[#181825] p-2 rounded-lg border border-[#313244] overflow-x-auto">
+                              <pre className="text-xs font-mono text-[#b5dfa3] bg-[#111612] p-2 rounded-lg border border-[#344435] overflow-x-auto">
                                 {JSON.stringify(row, null, 2)}
                               </pre>
                             </td>
@@ -467,7 +467,7 @@ export default function HarJsonResponseViewer({ responseText, mimeType, size }: 
 
       {/* VIEW 3: RAW PRETTY-PRINTED JSON */}
       {(!isJson || viewMode === 'raw') && (
-        <pre className="p-3 bg-[#181825] rounded-xl border border-[#313244] text-[#cdd6f4] font-mono text-xs overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-[550px]">
+        <pre className="p-3 bg-[#111612] rounded-xl border border-[#344435] text-[#e4ebdd] font-mono text-xs overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-[550px]">
           {isJson ? JSON.stringify(parsedData, null, 2) : responseText}
         </pre>
       )}

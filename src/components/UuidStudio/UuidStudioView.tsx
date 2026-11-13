@@ -134,31 +134,31 @@ const ID_CONFIGS: Record<IdType, { label: string; desc: string; badge: string; c
     label: 'UUID v4',
     desc: 'Random cryptographic identifier. Industry standard for distributed keys.',
     badge: 'Random',
-    color: '#89b4fa',
+    color: '#c8edb6',
   },
   uuidv7: {
     label: 'UUID v7',
     desc: 'Unix millisecond timestamp prefix + random bits. Best for database indexes & B-Trees.',
     badge: 'Time-Sorted',
-    color: '#a6e3a1',
+    color: '#b5dfa3',
   },
   snowflake: {
     label: 'Snowflake ID',
     desc: 'Twitter & Discord 64-bit integer with 41-bit timestamp, worker ID, and sequence.',
     badge: '64-Bit Integer',
-    color: '#f9e2af',
+    color: '#f3d58c',
   },
   ulid: {
     label: 'ULID',
     desc: 'Universally Unique Lexicographically Sortable Identifier (26 Crockford Base32 characters).',
     badge: 'Sortable Base32',
-    color: '#cba6f7',
+    color: '#ceb8f6',
   },
   nanoid: {
     label: 'NanoID',
     desc: 'Compact, secure, URL-friendly unique ID with custom alphabet support.',
     badge: 'Compact URL-Safe',
-    color: '#fab387',
+    color: '#f3c18e',
   },
   objectid: {
     label: 'Mongo ObjectId',
@@ -170,7 +170,7 @@ const ID_CONFIGS: Record<IdType, { label: string; desc: string; badge: string; c
     label: 'UUID v1',
     desc: 'Time-based UUID combining timestamp with host clock sequence.',
     badge: 'Legacy Timestamp',
-    color: '#b4befe',
+    color: '#d9f6ca',
   },
 };
 
@@ -254,21 +254,21 @@ export default function UuidStudioView() {
   };
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-[#181825] text-[#cdd6f4] overflow-hidden">
+    <div className="flex-1 flex flex-col h-full bg-[#111612] text-[#e4ebdd] overflow-hidden">
       {/* Top Banner */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-[#1e1e2e] border-b border-[#313244] gap-3 shrink-0 flex-wrap">
+      <div className="flex items-center justify-between px-4 py-2.5 bg-[#171d19] border-b border-[#344435] gap-3 shrink-0 flex-wrap">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-[#89b4fa]/10 text-[#89b4fa] border border-[#89b4fa]/20">
+          <div className="p-1.5 rounded-lg bg-[#c8edb6]/10 text-[#c8edb6] border border-[#c8edb6]/20">
             <Fingerprint size={16} />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-[#cdd6f4]">UUID &amp; Unique ID Generator</h2>
-              <span className="px-2 py-0.5 text-[10px] rounded-full bg-[#a6e3a1]/15 text-[#a6e3a1] font-semibold border border-[#a6e3a1]/30">
+              <h2 className="text-sm font-bold text-[#e4ebdd]">UUID &amp; Unique ID Generator</h2>
+              <span className="px-2 py-0.5 text-[10px] rounded-full bg-[#b5dfa3]/15 text-[#b5dfa3] font-semibold border border-[#b5dfa3]/30">
                 100% Cryptographic Client-Side
               </span>
             </div>
-            <p className="text-[11px] text-[#9399b2]">
+            <p className="text-[11px] text-[#b1bea8]">
               Generate UUID v4, UUID v7 (Time-Sorted), Twitter Snowflake, ULID, NanoID, and MongoDB ObjectIds
             </p>
           </div>
@@ -277,7 +277,7 @@ export default function UuidStudioView() {
         <div className="flex items-center gap-2">
           <button
             onClick={generateIds}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#89b4fa] hover:bg-[#b4befe] text-[#11111b] text-xs font-bold shadow-sm transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#c8edb6] hover:bg-[#d9f6ca] text-[#0d120f] text-xs font-bold shadow-sm transition-all"
           >
             <RefreshCw size={13} />
             Regenerate ({batchCount})
@@ -287,10 +287,10 @@ export default function UuidStudioView() {
 
       <div className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden">
         {/* Left Control Sidebar */}
-        <div className="w-full lg:w-80 bg-[#1e1e2e] border-r border-[#313244] p-4 space-y-5 overflow-y-auto shrink-0">
+        <div className="w-full lg:w-80 bg-[#171d19] border-r border-[#344435] p-4 space-y-5 overflow-y-auto shrink-0">
           {/* Generator Type Selector */}
           <div>
-            <label className="text-[11px] font-bold uppercase tracking-wider text-[#9399b2] block mb-2">
+            <label className="text-[11px] font-bold uppercase tracking-wider text-[#b1bea8] block mb-2">
               ID Algorithm
             </label>
             <div className="space-y-1.5">
@@ -303,12 +303,12 @@ export default function UuidStudioView() {
                     onClick={() => setSelectedType(key)}
                     className={`w-full text-left p-2.5 rounded-xl border transition-all ${
                       active
-                        ? 'bg-[#181825] border-[#89b4fa] shadow-sm'
-                        : 'bg-[#181825]/40 border-[#313244] hover:bg-[#181825]'
+                        ? 'bg-[#111612] border-[#c8edb6] shadow-sm'
+                        : 'bg-[#111612]/40 border-[#344435] hover:bg-[#111612]'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-0.5">
-                      <span className="text-xs font-bold text-[#cdd6f4]">{cfg.label}</span>
+                      <span className="text-xs font-bold text-[#e4ebdd]">{cfg.label}</span>
                       <span
                         className="text-[9px] px-1.5 py-0.2 rounded font-mono font-semibold"
                         style={{ backgroundColor: `${cfg.color}15`, color: cfg.color, border: `1px solid ${cfg.color}30` }}
@@ -316,7 +316,7 @@ export default function UuidStudioView() {
                         {cfg.badge}
                       </span>
                     </div>
-                    <p className="text-[10px] text-[#6c7086] line-clamp-2 leading-tight">
+                    <p className="text-[10px] text-[#9eac96] line-clamp-2 leading-tight">
                       {cfg.desc}
                     </p>
                   </button>
@@ -327,18 +327,18 @@ export default function UuidStudioView() {
 
           {/* Batch quantity */}
           <div>
-            <label className="text-[11px] font-bold uppercase tracking-wider text-[#9399b2] block mb-2">
+            <label className="text-[11px] font-bold uppercase tracking-wider text-[#b1bea8] block mb-2">
               Quantity ({batchCount})
             </label>
-            <div className="flex items-center gap-1.5 bg-[#181825] border border-[#313244] rounded-lg p-1">
+            <div className="flex items-center gap-1.5 bg-[#111612] border border-[#344435] rounded-lg p-1">
               {[1, 5, 10, 25, 50].map(cnt => (
                 <button
                   key={cnt}
                   onClick={() => setBatchCount(cnt)}
                   className={`flex-1 py-1 rounded text-xs font-mono font-medium transition-all ${
                     batchCount === cnt
-                      ? 'bg-[#89b4fa] text-[#11111b] font-bold'
-                      : 'text-[#9399b2] hover:text-[#cdd6f4]'
+                      ? 'bg-[#c8edb6] text-[#0d120f] font-bold'
+                      : 'text-[#b1bea8] hover:text-[#e4ebdd]'
                   }`}
                 >
                   {cnt}
@@ -349,47 +349,47 @@ export default function UuidStudioView() {
 
           {/* Formatting Options */}
           <div>
-            <label className="text-[11px] font-bold uppercase tracking-wider text-[#9399b2] block mb-2">
+            <label className="text-[11px] font-bold uppercase tracking-wider text-[#b1bea8] block mb-2">
               Formatting
             </label>
-            <div className="space-y-2 bg-[#181825] border border-[#313244] rounded-xl p-3 text-xs">
+            <div className="space-y-2 bg-[#111612] border border-[#344435] rounded-xl p-3 text-xs">
               <label className="flex items-center justify-between cursor-pointer select-none">
-                <span className="text-[#cdd6f4]">Uppercase Letters</span>
+                <span className="text-[#e4ebdd]">Uppercase Letters</span>
                 <input
                   type="checkbox"
                   checked={isUppercase}
                   onChange={(e) => setIsUppercase(e.target.checked)}
-                  className="rounded border-[#313244] text-[#89b4fa] focus:ring-0"
+                  className="rounded border-[#344435] text-[#c8edb6] focus:ring-0"
                 />
               </label>
 
               <label className="flex items-center justify-between cursor-pointer select-none">
-                <span className="text-[#cdd6f4]">Include Hyphens</span>
+                <span className="text-[#e4ebdd]">Include Hyphens</span>
                 <input
                   type="checkbox"
                   checked={isHyphens}
                   onChange={(e) => setIsHyphens(e.target.checked)}
-                  className="rounded border-[#313244] text-[#89b4fa] focus:ring-0"
+                  className="rounded border-[#344435] text-[#c8edb6] focus:ring-0"
                 />
               </label>
 
               <label className="flex items-center justify-between cursor-pointer select-none">
-                <span className="text-[#cdd6f4]">Surround with Braces &#123; &#125;</span>
+                <span className="text-[#e4ebdd]">Surround with Braces &#123; &#125;</span>
                 <input
                   type="checkbox"
                   checked={isBraces}
                   onChange={(e) => setIsBraces(e.target.checked)}
-                  className="rounded border-[#313244] text-[#89b4fa] focus:ring-0"
+                  className="rounded border-[#344435] text-[#c8edb6] focus:ring-0"
                 />
               </label>
 
               <label className="flex items-center justify-between cursor-pointer select-none">
-                <span className="text-[#cdd6f4]">Enclose in Quotes &quot; &quot;</span>
+                <span className="text-[#e4ebdd]">Enclose in Quotes &quot; &quot;</span>
                 <input
                   type="checkbox"
                   checked={isQuotes}
                   onChange={(e) => setIsQuotes(e.target.checked)}
-                  className="rounded border-[#313244] text-[#89b4fa] focus:ring-0"
+                  className="rounded border-[#344435] text-[#c8edb6] focus:ring-0"
                 />
               </label>
             </div>
@@ -397,10 +397,10 @@ export default function UuidStudioView() {
         </div>
 
         {/* Right Generated IDs Area */}
-        <div className="flex-1 flex flex-col min-h-0 bg-[#181825] p-4 overflow-hidden">
-          <div className="flex items-center justify-between pb-3 border-b border-[#252535] shrink-0">
+        <div className="flex-1 flex flex-col min-h-0 bg-[#111612] p-4 overflow-hidden">
+          <div className="flex items-center justify-between pb-3 border-b border-[#2b382c] shrink-0">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-[#cdd6f4]">
+              <span className="text-xs font-bold text-[#e4ebdd]">
                 Generated {ID_CONFIGS[selectedType].label} ({generatedIds.length})
               </span>
             </div>
@@ -408,30 +408,30 @@ export default function UuidStudioView() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => handleCopy(generatedIds.join('\n'), 'all')}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#313244] hover:bg-[#45475a] text-xs font-medium text-[#cdd6f4] border border-[#45475a] transition-all"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#344435] hover:bg-[#71836b] text-xs font-medium text-[#e4ebdd] border border-[#71836b] transition-all"
               >
-                {copiedKey === 'all' ? <Check size={13} className="text-[#a6e3a1]" /> : <Copy size={13} />}
+                {copiedKey === 'all' ? <Check size={13} className="text-[#b5dfa3]" /> : <Copy size={13} />}
                 Copy All
               </button>
 
-              <div className="flex items-center bg-[#1e1e2e] border border-[#313244] rounded-lg p-0.5 text-xs">
+              <div className="flex items-center bg-[#171d19] border border-[#344435] rounded-lg p-0.5 text-xs">
                 <button
                   onClick={() => downloadAs('txt')}
-                  className="px-2 py-1 text-[#9399b2] hover:text-[#cdd6f4]"
+                  className="px-2 py-1 text-[#b1bea8] hover:text-[#e4ebdd]"
                   title="Download as TXT"
                 >
                   TXT
                 </button>
                 <button
                   onClick={() => downloadAs('json')}
-                  className="px-2 py-1 text-[#9399b2] hover:text-[#cdd6f4]"
+                  className="px-2 py-1 text-[#b1bea8] hover:text-[#e4ebdd]"
                   title="Download as JSON array"
                 >
                   JSON
                 </button>
                 <button
                   onClick={() => downloadAs('csv')}
-                  className="px-2 py-1 text-[#9399b2] hover:text-[#cdd6f4]"
+                  className="px-2 py-1 text-[#b1bea8] hover:text-[#e4ebdd]"
                   title="Download as CSV"
                 >
                   CSV
@@ -445,25 +445,25 @@ export default function UuidStudioView() {
             {generatedIds.map((id, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-[#1e1e2e] border border-[#313244] hover:border-[#89b4fa]/50 transition-all group"
+                className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-[#171d19] border border-[#344435] hover:border-[#c8edb6]/50 transition-all group"
               >
-                <span className="text-[#89b4fa] break-all select-all font-medium">
+                <span className="text-[#c8edb6] break-all select-all font-medium">
                   {id}
                 </span>
 
                 <button
                   onClick={() => handleCopy(id, `id-${index}`)}
-                  className="p-1.5 rounded-lg text-[#6c7086] hover:text-[#cdd6f4] hover:bg-[#313244] opacity-80 group-hover:opacity-100 transition-all shrink-0 ml-2"
+                  className="p-1.5 rounded-lg text-[#9eac96] hover:text-[#e4ebdd] hover:bg-[#344435] opacity-80 group-hover:opacity-100 transition-all shrink-0 ml-2"
                   title="Copy this ID"
                 >
-                  {copiedKey === `id-${index}` ? <Check size={14} className="text-[#a6e3a1]" /> : <Copy size={14} />}
+                  {copiedKey === `id-${index}` ? <Check size={14} className="text-[#b5dfa3]" /> : <Copy size={14} />}
                 </button>
               </div>
             ))}
           </div>
 
           {/* Quick info tip for selected type */}
-          <div className="mt-3 p-3 rounded-xl bg-[#1e1e2e] border border-[#313244] text-[11px] text-[#9399b2] flex items-center justify-between shrink-0">
+          <div className="mt-3 p-3 rounded-xl bg-[#171d19] border border-[#344435] text-[11px] text-[#b1bea8] flex items-center justify-between shrink-0">
             <span>
               💡 <strong>{ID_CONFIGS[selectedType].label}:</strong> {ID_CONFIGS[selectedType].desc}
             </span>
