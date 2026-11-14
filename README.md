@@ -6,9 +6,9 @@
 
 [Open PSDevTool](https://psdevtool.online/) · [Explore the tools](#tools) · [Screenshots](#screenshots) · [Run locally](#run-locally)
 
-PSDevTool brings 19 tools into one React and TypeScript application. Compare text and files, work with JSON/XML/YAML, inspect network data, create diagrams, process documents and images, and explore unit conversions with interactive 3D illustrations.
+PSDevTool brings 20 tools into one React and TypeScript application. Compare text and files, work with JSON/XML/YAML, inspect network data, create diagrams, process documents and images, and explore unit conversions with interactive 3D illustrations.
 
-All 19 tools are visible in the catalog, grouped by task. A compact tool picker, recent-tool shortcuts, and keyboard search keep navigation close at hand. Choose a Node.js, Python, TypeScript, Go, or Rust theme; your theme and motion preference are remembered in your browser.
+All 20 tools are visible in the catalog, grouped by task. A compact tool picker, recent-tool shortcuts, and keyboard search keep navigation close at hand. Choose a Node.js, Python, TypeScript, Go, or Rust theme; your theme and motion preference are remembered in your browser.
 
 ![Diff Checker showing a syntax-highlighted comparison and changed lines](docs/screenshots/diff-checker.jpg)
 
@@ -45,6 +45,7 @@ All 19 tools are visible in the catalog, grouped by task. A compact tool picker,
 
 | Tool | What you can do |
 | --- | --- |
+| **Resume Builder** | Choose ten resume layouts, edit your details and colors, generate an optional website QR, save a local draft across templates, and print A4 or Legal PDFs. |
 | **Measure Lab** | Convert 119 units across 17 measurement categories, explore interactive 3D illustrations, calculate 15 geometry shapes, and use six algebra tools with visible formulas. |
 | **Geo Distance** | Place or drag latitude/longitude pins, compare direct and optional driving-route distances, and convert distance units. Also includes batch pairs, bearings and geofence calculations. |
 | **ID Generator** | Generate UUIDs and other supported identifier formats. |
@@ -122,7 +123,7 @@ npm run test:catalog
 npm run test:seo
 ```
 
-The build runs TypeScript checks and produces `dist/`. The measurement checks exercise conversions, geometry, algebra, coordinate-path edge cases, invalid inputs, and career-date boundaries. Catalog checks protect all 19 tool IDs, shared search metadata, and recent-history validation.
+The build runs TypeScript checks and produces `dist/`. The measurement checks exercise conversions, geometry, algebra, coordinate-path edge cases, invalid inputs, and career-date boundaries. Catalog checks protect all 20 tool IDs, shared search metadata, and recent-history validation.
 
 To serve the production build locally:
 
@@ -130,7 +131,7 @@ To serve the production build locally:
 npm run preview -- --host 0.0.0.0 --port 4173
 ```
 
-Open **http://localhost:4173**. Deploy `dist/` to a static host such as Vercel. Tool pages use clean URLs such as `/tools/json-formatter/`, `/tools/distance-calculator/`, and `/tools/unit-converter/`. Old `/#/...` links still open the corresponding tool and update to its canonical URL. The production build generates static HTML for all 19 tools, the homepage, the portfolio, and a 404 page. Serve the generated directories directly; do not rewrite every URL to the homepage.
+Open **http://localhost:4173**. Deploy `dist/` to a static host such as Vercel. Tool pages use clean URLs such as `/tools/json-formatter/`, `/tools/distance-calculator/`, and `/tools/unit-converter/`. Old `/#/...` links still open the corresponding tool and update to its canonical URL. The production build generates static HTML for all 20 tools, the homepage, the portfolio, and a 404 page. Serve the generated directories directly; do not rewrite every URL to the homepage.
 
 ## How data and network access work
 
@@ -162,3 +163,7 @@ The PS monogram is an editable vector in [public/brand/logo.svg](public/brand/lo
 Each tool has a unique title, description, canonical URL, visible guide, questions and related links. The build renders that content into HTML before JavaScript runs. The sitemap lists clean URLs rather than fragments. Structured data describes the site, tool applications, navigation and the profile without invented ratings. Preview builds use `noindex`; production builds are indexable.
 
 After deploying to `psdevtool.online`, verify the site in Google Search Console and submit `https://psdevtool.online/sitemap.xml`. Optionally set `GOOGLE_SITE_VERIFICATION` in the hosting build environment for HTML-tag verification. Indexing and positions are determined by Google; this implementation does not guarantee a first-page or number-one ranking. See [the SEO deployment checklist](docs/SEO.md).
+
+### Printable resume
+
+The [Resume Builder at `/resume/`](https://psdevtool.online/resume/) page offers ten HTML resume layouts (six single-column and four two-column), each with a focused A4 edition and an expanded [Legal edition](https://psdevtool.online/resume/legal/), a portfolio QR code and Chrome PDF printing. Use Edit mode to customize content, colors and the optional QR, and save your details locally across templates. See [resume documentation](docs/RESUME.md).

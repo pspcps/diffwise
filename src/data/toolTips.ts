@@ -1,5 +1,7 @@
 import type { ViewMode } from "../types";
 export const TOOL_TIPS: Record<ViewMode, string> = {
+  resume:
+    "Choose a resume template, enter Edit mode to customize details, colors and QR, and save your draft on this device for all templates.",
   text: "Try an example loads two JSON documents. Edit either side, then compare to inspect added and removed lines.",
   file: "Choose files or folders from both versions. Select a changed file to inspect its differences.",
   json: "Paste JSON for colored keys and values. Tree reveals nested properties; Table helps compare records; Graph shows relationships.",
@@ -22,7 +24,8 @@ export const TOOL_TIPS: Record<ViewMode, string> = {
   case: "Type or paste your text, then choose a writing or identifier style. The converted result updates immediately.",
   debug:
     "Paste an error or stack trace and select the relevant format. Review the parsed frames and root-cause clues.",
-  measure: "Choose a measurement category, enter a value, and drag the 3D scale. Geometry and Algebra show formulas and working results. Units convert within compatible dimensions.",
+  measure:
+    "Choose a measurement category, enter a value, and drag the 3D scale. Geometry and Algebra show formulas and working results. Units convert within compatible dimensions.",
   distance:
     "Enter the latitude and longitude of both points. Check coordinate signs before comparing the calculated distances.",
   url: "Encode or decode a URL, or inspect its query parameters. Keep an eye on reserved characters when sharing links.",

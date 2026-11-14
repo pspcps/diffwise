@@ -1,4 +1,4 @@
-import { HOME_PAGE, TOOL_PAGES, type SearchPage } from "./pages";
+import { HOME_PAGE, TOOL_PAGES, RESUME_PAGE, type SearchPage } from "./pages";
 export const SITE_ORIGIN = "https://psdevtool.online";
 export function structuredData(page: SearchPage) {
   const publisher = {
@@ -28,14 +28,17 @@ export function structuredData(page: SearchPage) {
     graph.push({
       "@type": "ItemList",
       name: "Developer tools",
-      itemListElement: TOOL_PAGES.map((p, i) => ({
+      itemListElement: [...TOOL_PAGES, RESUME_PAGE].map((p, i) => ({
         "@type": "ListItem",
         position: i + 1,
         name: p.name,
         url: SITE_ORIGIN + p.path,
       })),
     });
-  else if (page.id === "portfolio")
+  else if (
+    page.id === "portfolio" ||
+    (page.id.startsWith("resume-") && page.id !== "resume-legal")
+  )
     graph.push({
       "@type": "ProfilePage",
       "@id": SITE_ORIGIN + page.path,
@@ -54,7 +57,10 @@ export function structuredData(page: SearchPage) {
       name: page.name,
       url: SITE_ORIGIN + page.path,
       description: page.description,
-      applicationCategory: "DeveloperApplication",
+      applicationCategory:
+        page.id === "resume" || page.id === "resume-legal"
+          ? "ProductivityApplication"
+          : "DeveloperApplication",
       operatingSystem: "Web browser",
       browserRequirements: "JavaScript required for interactive tools.",
       isAccessibleForFree: true,

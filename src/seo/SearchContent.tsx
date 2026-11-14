@@ -1,4 +1,10 @@
-import { HOME_PAGE, TOOL_PAGES, pageForId, type SearchPage } from "./pages";
+import {
+  HOME_PAGE,
+  TOOL_PAGES,
+  RESUME_PAGE,
+  pageForId,
+  type SearchPage,
+} from "./pages";
 export default function SearchContent({
   page = HOME_PAGE,
   primary = false,
@@ -49,7 +55,7 @@ export default function SearchContent({
       </header>
       {page.id === "notfound" ? (
         <a className="search-return" href="/">
-          Browse all 19 tools →
+          Browse all 20 tools →
         </a>
       ) : (
         <>
@@ -93,10 +99,10 @@ export default function SearchContent({
             }
           >
             <h3>
-              {page.id === "home" ? "Explore all 19 tools" : "Related tools"}
+              {page.id === "home" ? "Explore all 20 tools" : "Related tools"}
             </h3>
             {(page.id === "home"
-              ? TOOL_PAGES
+              ? [...TOOL_PAGES, RESUME_PAGE]
               : page.related.map((id) => pageForId(id as SearchPage["id"]))
             ).map((p) => (
               <a key={p.id} href={p.path}>

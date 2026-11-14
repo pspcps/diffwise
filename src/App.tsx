@@ -5,6 +5,7 @@ import WorkbenchHeading from "./components/Layout/WorkbenchHeading";
 import "./workbench.css";
 import "./workspace.css";
 import "./seo/seo.css";
+import "./resume.css";
 import { navigateTo, useSiteRoute } from "./seo/routes";
 import { toolPath } from "./seo/pages";
 import { applyPageMetadata } from "./seo/metadata";
@@ -13,6 +14,7 @@ import { rememberTool } from "./utils/toolHistory";
 import ToolWorkspace from "./components/Workspace/ToolWorkspace";
 import AdBanner from "./components/Ads/AdBanner";
 import AboutPanel from "./components/About/AboutPanel";
+const ResumePage = lazy(() => import("./pages/ResumePage"));
 const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
 import type { ViewMode } from "./types";
@@ -22,7 +24,9 @@ import CommandPalette from "./components/CommandPalette/CommandPalette";
 export default function App() {
   const route = useSiteRoute();
   const page = route.page;
-  const isTool = !["home", "portfolio", "notfound"].includes(page.id);
+  const isResume = page.id === "resume" || page.id.startsWith("resume-");
+  const isTool =
+    !isResume && !["home", "portfolio", "notfound"].includes(page.id);
   const initialMode = isTool ? (page.id as ViewMode) : "text";
   const [mode, setMode] = useState<ViewMode>(initialMode);
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -46,7 +50,7 @@ export default function App() {
     if (route.legacy) navigateTo(page.path + route.search, true);
   }, [route.legacy, page.path, route.search]);
   useEffect(() => {
-    if (isTool) {
+    if (isTool || page.id === "resume") {
       rememberTool(page.id as ViewMode);
     }
   }, [isTool, page.id]);
@@ -64,12 +68,28 @@ export default function App() {
   }, [page]);
 
   const handleModeChange = (newMode: ViewMode) => {
+    if (newMode === "resume") {
+      rememberTool("resume");
+      navigateTo("/resume/");
+      return;
+    }
     setMode(newMode);
     navigateTo(toolPath(newMode));
   };
 
   const goPortfolio = () => navigateTo("/portfolio/");
   const goBack = () => navigateTo(toolPath(mode));
+
+  if (isResume)
+    return (
+      <Suspense fallback={<div className="space-loading">Opening resume…</div>}>
+        <ResumePage
+          templateId={
+            page.id.startsWith("resume-") ? page.id.slice(7) : undefined
+          }
+        />
+      </Suspense>
+    );
 
   // Portfolio is a full-page takeover
   if (page.id === "portfolio") {

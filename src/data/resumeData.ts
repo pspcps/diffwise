@@ -3,12 +3,9 @@ export const RESUME = {
   name: "Prakash Choudhary",
   initials: "PC",
   email: "prakash.seervi9460@gmail.com",
-  phone: "+91-8440944580",
+  phone: "",
   linkedin: "https://linkedin.com/in/prakashseervi63",
-  resumeUrl:
-    "https://drive.google.com/file/d/16lvAhHCQe8zniP1_wrmYbEmXkVAjRzb9/view?usp=drivesdk",
-  resumeDownloadUrl:
-    "https://drive.google.com/uc?export=download&id=16lvAhHCQe8zniP1_wrmYbEmXkVAjRzb9",
+  resumeUrl: "/resume/",
   title: "Senior Software Engineer | Backend, Distributed Systems & Applied AI",
   focus:
     "Node.js · TypeScript · Apache Kafka · PostgreSQL · AWS · Google Cloud · AI Agents",
@@ -204,7 +201,7 @@ export const RESUME = {
       bullets: [
         "Built an integrated workspace for code and folder diffs, JSON/YAML inspection, architecture diagrams, PDF/image tools, and debugging utilities.",
         "Used Monaco for editing and comparison, React Flow/Mermaid for diagrams, and browser APIs for document, image, and cryptographic operations.",
-        "Added searchable navigation, persistent themes/favorites, syntax-colored inputs, and contextual guidance across 18 tool surfaces.",
+        "Added searchable navigation, persistent themes/favorites, syntax-colored inputs, and contextual guidance across 20 tool surfaces.",
       ],
     },
     {

@@ -1,5 +1,20 @@
 import type { ViewMode } from "../types";
 export const TOOL_KEYWORDS: Record<ViewMode | "portfolio", string[]> = {
+  resume: [
+    "resume",
+    "résumé",
+    "cv",
+    "curriculum vitae",
+    "career",
+    "ATS",
+    "template",
+    "job",
+    "portfolio",
+    "legal",
+    "A4",
+    "print",
+    "QR",
+  ],
   measure: [
     "units",
     "converter",

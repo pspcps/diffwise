@@ -4,6 +4,7 @@ import { ToolActivity } from "./ToolActivity";
 import { TOOLS } from "../../data/tools";
 
 const VIEWS = {
+  resume: lazy(() => import("../../pages/ResumePage")),
   text: lazy(() => import("../TextCompare/TextCompareView")),
   file: lazy(() => import("../FileCompare/FileCompareView")),
   case: lazy(() => import("../CaseConverter/CaseConverterView")),

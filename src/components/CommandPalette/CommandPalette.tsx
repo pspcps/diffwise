@@ -125,7 +125,7 @@ function SearchDialog({
       <div className="command-hint">
         {query
           ? `${filtered.length} matching destinations`
-          : "All 19 tools · Recently opened tools first"}
+          : "All 20 tools · Recently opened tools first"}
       </div>
       <div
         className="command-results"
