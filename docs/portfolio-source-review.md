@@ -1,6 +1,6 @@
 # Portfolio source review
 
-The ten existing portfolio projects were reviewed against their GitHub repositories. Public implementation links are pinned to the reviewed commits in `src/data/projectCaseStudies.ts`. FleetMind's private README was used only for a high-level summary; private source paths, identifiers, hosts, and configuration are not published.
+The twelve portfolio projects were reviewed against their GitHub repositories. Public implementation links are pinned to the reviewed commits in `src/data/projectCaseStudies.ts`. FleetMind's private README was used only for a high-level summary; private source paths, identifiers, hosts, and configuration are not published.
 
 - Project Drishti: camera capture, Firebase analysis functions, and hackathon progress report. Present as an MVP; do not convert progress estimates into measured model accuracy or production validation.
 - FleetMind: correct the AI stack to AWS Bedrock/Claude, Strands Agents SDK, FastMCP, and FastAPI. Keep repository access private.
@@ -18,3 +18,10 @@ Liquibase PR https://github.com/liquibase/liquibase/pull/2102 is merged (23 Nove
 Existing employer outcomes are user-provided resume claims and were not independently established through personal repositories. Ambiguous tracking-accuracy percentages and SDE promotion ordering were rephrased without guessing new values or chronology. No new performance or business-impact figures were invented.
 
 The downloadable text profile uses standard recruiting headings and descriptive technology keywords. No guaranteed ATS score or recruiting outcome is claimed. Source code inspection does not establish deployment status, test success, or measured performance in the reviewed projects; project applications were not run during this audit.
+
+Two additional projects were appended after the existing ten, in the requested order: RentMeter, then SharpForge.
+
+- RentMeter (`pspcps1/RentMeter`, commit `58be3c44131919fc39928b4358ab58df31de2960`): no README at this revision. Reviewed Android Gradle dependencies, the Room repository, OCR/parser engines, PDF generator and ZIP backup code. Describe Compose/Room rental and billing workflows, CameraX/ML Kit/Tesseract meter processing and local exports. Do not invent OCR accuracy, cloud synchronization, production adoption or runtime benchmarks.
+- SharpForge (`pspcps/SharpForge`, commit `7c41d949945d60b99e827a8929603a39a54ff950`): reviewed README, package entry point, active `electron-main.cjs` handlers and solution/debug/test/language modules. Describe Electron/React/Monaco editing, .NET process execution, netcoredbg DAP, tests, NuGet and Git workflows. The active package entry is `electron-main.cjs`; do not infer that every README language-server claim is wired into that entry point. The desktop app was not installed or run during this review.
+
+Both new case studies have responsibility-based architecture stages and implementation links pinned to these revisions. They are portfolio additions; the focused resume project lists are unchanged.

@@ -443,4 +443,106 @@ export const PROJECT_CASE_STUDIES: Record<string, ProjectCaseStudy> = {
     ],
     access: "Public source",
   },
+  RentMeter: {
+    problem:
+      "Help property owners manage tenant balances and turn meter readings into traceable rent and utility invoices.",
+    engineering:
+      "Room transactions connect readings, invoices and outstanding balances; an on-device OCR pipeline separates image processing from reading validation and billing.",
+    scope:
+      "Native Android implementation reviewed from source. OCR candidates need review, and invoice totals depend on entered readings and configured rates. Android installation, OCR accuracy and runtime performance were not tested in this portfolio review.",
+    access: "Public source",
+    stages: [
+      {
+        title: "Properties and tenancies",
+        description:
+          "Compose screens and reactive Kotlin flows organize properties, units, active leases and tenant check-in/check-out records.",
+      },
+      {
+        title: "Meter capture and OCR",
+        description:
+          "Camera/gallery images are cropped and preprocessed; Tesseract and ML Kit feed a parser that proposes readings and exposes validation warnings.",
+      },
+      {
+        title: "Billing and local ledger",
+        description:
+          "Room-backed transactions store readings and invoices, apply utility rates and previous dues, allocate shared charges, and record payments.",
+      },
+      {
+        title: "Documents and backups",
+        description:
+          "Android PDF generation produces invoices and settlement documents; ZIP export/import combines ledger/settings snapshots with stored media.",
+      },
+    ],
+    sources: [
+      {
+        label: "Android dependencies",
+        url: "https://github.com/pspcps1/RentMeter/blob/58be3c44131919fc39928b4358ab58df31de2960/app/build.gradle.kts",
+      },
+      {
+        label: "Meter OCR pipeline",
+        url: "https://github.com/pspcps1/RentMeter/blob/58be3c44131919fc39928b4358ab58df31de2960/app/src/main/java/com/example/engine/MeterOcrEngine.kt",
+      },
+      {
+        label: "Billing and ledger repository",
+        url: "https://github.com/pspcps1/RentMeter/blob/58be3c44131919fc39928b4358ab58df31de2960/app/src/main/java/com/example/data/repository/RentLedgerRepository.kt",
+      },
+      {
+        label: "PDF invoice generation",
+        url: "https://github.com/pspcps1/RentMeter/blob/58be3c44131919fc39928b4358ab58df31de2960/app/src/main/java/com/example/engine/PdfInvoiceGenerator.kt",
+      },
+      {
+        label: "Backup export/import",
+        url: "https://github.com/pspcps1/RentMeter/blob/58be3c44131919fc39928b4358ab58df31de2960/app/src/main/java/com/example/engine/BackupZipManager.kt",
+      },
+    ],
+  },
+  SharpForge: {
+    problem:
+      "Bring C# editing, .NET project execution, tests and debugging into a lightweight desktop workspace for macOS developers.",
+    engineering:
+      "Electron IPC coordinates local SDK processes, editor state and a Debug Adapter Protocol session, keeping build/test execution and debugger interactions connected to the React interface.",
+    scope:
+      "macOS-focused desktop project reviewed from source. Native build, run and debug workflows require compatible local .NET SDKs and netcoredbg. Source inspection does not establish successful installation or desktop runtime validation.",
+    access: "Public source",
+    stages: [
+      {
+        title: "Solution workspace",
+        description:
+          "An Electron/React shell hosts Monaco editing, solution/project navigation and .sln/.slnx loading.",
+      },
+      {
+        title: ".NET process orchestration",
+        description:
+          "Main-process handlers invoke local dotnet restore, build and run tasks and relay their output back to the workspace.",
+      },
+      {
+        title: "DAP debugging",
+        description:
+          "netcoredbg handles debugger sessions; IPC commands expose breakpoints, stepping, stack frames, variables and expression evaluation.",
+      },
+      {
+        title: "Tests and developer workflows",
+        description:
+          "dotnet test execution and results are combined with NuGet management, terminal commands and Git status/diff inspection.",
+      },
+    ],
+    sources: [
+      {
+        label: "Project dependencies and entry point",
+        url: "https://github.com/pspcps/SharpForge/blob/7c41d949945d60b99e827a8929603a39a54ff950/package.json",
+      },
+      {
+        label: "Desktop process / debugger / test handlers",
+        url: "https://github.com/pspcps/SharpForge/blob/7c41d949945d60b99e827a8929603a39a54ff950/electron-main.cjs",
+      },
+      {
+        label: "Solution parsing",
+        url: "https://github.com/pspcps/SharpForge/blob/7c41d949945d60b99e827a8929603a39a54ff950/src/main/solution-manager.ts",
+      },
+      {
+        label: "DAP session manager",
+        url: "https://github.com/pspcps/SharpForge/blob/7c41d949945d60b99e827a8929603a39a54ff950/src/main/debugger-manager.ts",
+      },
+    ],
+  },
 };

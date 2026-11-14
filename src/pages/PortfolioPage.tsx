@@ -33,7 +33,7 @@ import { PROJECT_CASE_STUDIES } from "../data/projectCaseStudies";
 
 type Project = (typeof RESUME.projects)[number];
 const FILTERS = ["All projects", "AI & agents", "Developer tools"];
-const DEV_PROJECTS = ["PSDevTool", "Kafbat UI", "ApiDesk Studio"];
+const DEV_PROJECTS = ["PSDevTool", "Kafbat UI", "ApiDesk Studio", "SharpForge"];
 export default function PortfolioPage({ onBack }: { onBack: () => void }) {
   useCareerDuration();
   const root = useRef<HTMLDivElement>(null);
