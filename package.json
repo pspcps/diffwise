@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test:measurements": "node scripts/check-measurements.cjs",
     "test:catalog": "node scripts/check-tool-catalog.cjs",
-    "test:seo": "node scripts/check-seo.cjs"
+    "test:seo": "node scripts/check-seo.cjs",
+    "test:structured": "node scripts/check-structured-conversion.cjs"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.12.2",

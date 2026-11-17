@@ -76,7 +76,7 @@ function elementToJson(element: Element): JsonValue {
   if (valueType === 'boolean') return text === 'true';
   if (!children.length && !Object.keys(attributes).length) return text;
 
-  const result: Record<string, JsonValue> = {};
+  const result: Record<string, JsonValue> = Object.create(null);
   if (Object.keys(attributes).length) result['@attributes'] = attributes;
   if (children.length) {
     const grouped = new Map<string, JsonValue[]>();
