@@ -20,7 +20,7 @@ All 20 tools are visible in the catalog, grouped by task. A compact tool picker,
 | --- | --- |
 | **Diff Checker** | Compare text side by side, inspect changes, format structured input, and adjust comparison settings. |
 | **File & Folder Diff** | Compare local files and folder contents, then inspect individual differences. |
-| **JSON & YAML** | Format and validate JSON; explore tree, table and graph views; convert JSON ↔ XML/YAML and environment text ↔ JSON. Fold nested code and see array lengths without changing the source. |
+| **JSON & YAML** | Auto-detect pasted JSON/XML/YAML and convert live in either direction. Sort nested keys, optionally merge ENV parent casing, use colored editors, fold individual objects, inspect array lengths, and copy individual tree values. |
 | **Regex Lab** | Test patterns against text, highlight matches, inspect capture groups, and start from presets. |
 | **Markup Studio** | Preview HTML and Markdown, format XML and SQL, and inspect the output. |
 
@@ -167,3 +167,5 @@ After deploying to `psdevtool.online`, verify the site in Google Search Console 
 ### Printable resume
 
 The [Resume Builder at `/resume/`](https://psdevtool.online/resume/) page offers ten HTML resume layouts (six single-column and four two-column), each with a focused A4 edition and an expanded [Legal edition](https://psdevtool.online/resume/legal/), a portfolio QR code and Chrome PDF printing. Use Edit mode to customize content, colors and the optional QR, and save your details locally across templates. See [resume documentation](docs/RESUME.md).
+
+JSON Studio sorting, parent grouping, live conversion and folding behavior are documented in [Structured data tools](docs/STRUCTURED_DATA.md). Run `npm run test:structured` for parser and sorting checks.

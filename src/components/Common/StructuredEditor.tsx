@@ -1,4 +1,4 @@
-import { useRef, type TextareaHTMLAttributes } from "react";
+import { useEffect, useRef, type TextareaHTMLAttributes } from "react";
 import type { OnMount } from "@monaco-editor/react";
 import { ChevronsDownUp, ChevronsUpDown } from "lucide-react";
 import { jsonArrayLengths } from "../../utils/jsonArrayLengths";
@@ -6,32 +6,62 @@ import CodeEditor from "./CodeEditor";
 type Props = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "onChange"> & {
   onChange: (value: string) => void;
   language?: string;
+  onPasteText?: (value: string) => void;
 };
 export default function StructuredEditor({
   value,
   onChange,
   language = "json",
+  onPasteText,
   "aria-label": label = "Code editor",
 }: Props) {
   const editor = useRef<Parameters<OnMount>[0] | null>(null);
+  const pasteHandler = useRef(onPasteText);
+  useEffect(() => {
+    pasteHandler.current = onPasteText;
+  }, [onPasteText]);
+  const fold = async (action: string) => {
+    const current = editor.current;
+    if (!current?.getModel() || current.getModel()!.isDisposed()) return;
+    current.focus();
+    await current.getAction(action)?.run();
+  };
   return (
     <div className="structured-editor">
       <div className="fold-controls">
         <span>{language.toUpperCase()}</span>
-        <button
-          aria-label={`Fold all ${language}`}
-          onClick={() => editor.current?.getAction("editor.foldAll")?.run()}
-        >
-          <ChevronsDownUp size={13} />
-          <span>Fold</span>
-        </button>
-        <button
-          aria-label={`Unfold all ${language}`}
-          onClick={() => editor.current?.getAction("editor.unfoldAll")?.run()}
-        >
-          <ChevronsUpDown size={13} />
-          <span>Unfold</span>
-        </button>
+        {language !== "dotenv" && (
+          <>
+            <button
+              aria-label={`Fold current object ${language}`}
+              title="Place the cursor in an object, then fold it"
+              onClick={() => void fold("editor.fold")}
+            >
+              Fold object
+            </button>
+            <button
+              aria-label={`Unfold current object ${language}`}
+              title="Expand the object at the cursor"
+              onClick={() => void fold("editor.unfold")}
+            >
+              Unfold object
+            </button>
+            <button
+              aria-label={`Fold all ${language}`}
+              onClick={() => void fold("editor.foldAll")}
+            >
+              <ChevronsDownUp size={13} />
+              <span>Fold all</span>
+            </button>
+            <button
+              aria-label={`Unfold all ${language}`}
+              onClick={() => void fold("editor.unfoldAll")}
+            >
+              <ChevronsUpDown size={13} />
+              <span>Unfold all</span>
+            </button>
+          </>
+        )}
       </div>
       <div className="structured-editor-body">
         <CodeEditor
@@ -40,6 +70,16 @@ export default function StructuredEditor({
           onChange={(v) => onChange(v ?? "")}
           onMount={(e, monaco) => {
             editor.current = e;
+            const paste = e.onDidPaste(() => {
+              queueMicrotask(() => {
+                if (editor.current === e && !e.getModel()?.isDisposed())
+                  pasteHandler.current?.(e.getValue());
+              });
+            });
+            e.onDidDispose(() => {
+              paste.dispose();
+              if (editor.current === e) editor.current = null;
+            });
             if (language !== "json") return;
             const decorations = e.createDecorationsCollection();
             let timer: ReturnType<typeof setTimeout> | undefined;
@@ -87,6 +127,9 @@ export default function StructuredEditor({
           options={{
             ariaLabel: label,
             folding: true,
+            foldingStrategy: "indentation",
+            occurrencesHighlight: "off",
+            unfoldOnClickAfterEndOfLine: true,
             showFoldingControls: "always",
             foldingHighlight: true,
             minimap: { enabled: false },

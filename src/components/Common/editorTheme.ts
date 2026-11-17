@@ -1,6 +1,27 @@
 import type { Monaco } from "@monaco-editor/react";
 export const EDITOR_THEME = "psdev-spatial";
 export function defineEditorTheme(monaco: Monaco) {
+  if (
+    !monaco.languages
+      .getLanguages()
+      .some((language: { id: string }) => language.id === "dotenv")
+  ) {
+    monaco.languages.register({ id: "dotenv", aliases: ["ENV"] });
+    monaco.languages.setMonarchTokensProvider("dotenv", {
+      tokenizer: {
+        root: [
+          [/^\s*(?:#|\/\/).*$/, "comment"],
+          [/^\s*(?:export\s+)?[A-Za-z_][A-Za-z0-9_.]*(?=\s*[=:])/, "type"],
+          [/[=:]/, { token: "delimiter", next: "@value" }],
+        ],
+        value: [
+          [/\s*(?:true|false|null)\s*$/, { token: "keyword", next: "@pop" }],
+          [/\s*-?\d+(?:\.\d+)?\s*$/, { token: "number", next: "@pop" }],
+          [/.*$/, { token: "string", next: "@pop" }],
+        ],
+      },
+    });
+  }
   monaco.editor.defineTheme(EDITOR_THEME, {
     base: "vs-dark",
     inherit: true,

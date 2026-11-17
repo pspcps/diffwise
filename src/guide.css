@@ -1021,3 +1021,5 @@
   padding: 0;
   border: 0;
 }
+
+.fold-controls{overflow-x:auto;white-space:nowrap;flex-shrink:0}.fold-controls button{flex-shrink:0}

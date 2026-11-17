@@ -38,12 +38,12 @@
     "features": [
       "Format or minify valid JSON and inspect parsing errors.",
       "Expand nested objects, view arrays as tables, and inspect array item counts.",
-      "Convert JSON and XML/YAML in either direction using the conversion controls."
+      "Automatically convert pasted JSON, XML or YAML, and group ENV parent keys with optional case-insensitive merging."
     ],
     "steps": [
-      "Paste JSON into the source editor and check the validation status.",
-      "Select Format, or switch to Tree, Table or Graph to explore the structure.",
-      "Open a conversion mode when needed and copy or export the result."
+      "Paste JSON, XML or YAML into JSON Studio; the format is detected and parsed automatically.",
+      "Use Sort keys A–Z to organize keys recursively; arrays retain their item order.",
+      "Choose ENV, XML or YAML to work with a live pair of editors, or inspect and copy individual values in a tree."
     ],
     "faq": [
       {
@@ -52,10 +52,18 @@
       },
       {
         "question": "Can I expand and collapse code?",
-        "answer": "Use the gutter arrows or Fold/Unfold controls. Parsed tree nodes also expand independently. Invalid JSON needs to be corrected before parsed views and counts can update."
+        "answer": "Use gutter arrows or Fold object/Unfold object at the cursor for individual sections, or Fold all/Unfold all for the document. Tree nodes expand independently and provide per-value copy buttons."
+      },
+      {
+        "question": "Can Secret and SECRET environment prefixes become one object?",
+        "answer": "Yes. Merge parent names (ignore case) is enabled by default, so Secret__A and SECRET__B share a parent object. Turn it off when parent-name case matters. Child key names keep their original spelling; repeated exact keys use the last value."
       }
     ],
-    "related": ["text", "markup", "case"]
+    "related": [
+      "text",
+      "markup",
+      "case"
+    ]
   },
   {
     "id": "file",
