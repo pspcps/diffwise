@@ -1,6 +1,6 @@
 # JSON Studio live conversion
 
-JSON Studio accepts JSON, XML and YAML pastes without a separate parse/convert click. Pasting XML or YAML into the main JSON editor opens the matching conversion view automatically; in a conversion view, editing either side updates the other when input is valid. Invalid/incomplete input stays editable, with an error and the last valid counterpart retained. Clearing an active input clears its counterpart.
+JSON Studio accepts JSON, XML and YAML pastes without a separate parse/convert click. Pasting XML or YAML into the main JSON editor opens the matching conversion view automatically; in a conversion view, editing either side updates the other when input is valid. Unrecoverable input stays editable, with an error and the last valid counterpart retained. Clearing an active input clears its counterpart.
 
 ## Environment objects
 
@@ -27,3 +27,9 @@ The ENV result offers **Code** and **Tree & copy values**. Code has gutter foldi
 - Browser checks cover real clipboard paste, automatic cross-format conversion, invalid-input recovery, syntax token colors, fold/unfold recovery, individual object folding, tree copy, sort/grouping preferences and tool switching.
 
 Structured editors use indentation-based folding and disable asynchronous symbol occurrence highlighting, avoiding canceled background requests when a conversion changes the active editor.
+
+## Automatic JSON repair
+
+**Repair JSON automatically** defaults on. The local `jsonrepair` parser recovers common syntax mistakes such as single/unquoted keys, trailing or missing commas, comments and missing closing brackets. Repaired input carries an explicit warning: inferred values and structure must be reviewed. Syntax recovery is not semantic validation and cannot determine the author’s intended values. Turn the option off for strict JSON parsing.
+
+Pasted recoverable JSON is formatted automatically, including in the ENV result pane. Typed incomplete input remains untouched while JSON trees, tables, graphs and the opposite conversion pane use a repaired preview. **Apply repaired JSON to editor** formats that preview for code folding. This distinction keeps the cursor and original input available while editing. Copy JSON copies the repaired preview when repair is active; review the warning before using it. Each object/array keeps its own tree toggle while editing; changing text no longer resets all expanded nodes. Code folding works on the formatted result, with individual and global fold/unfold controls. Unrecoverable JSON is retained and reports an error. Automatic repair is capped at 2 MB; no repair service or input upload is used.

@@ -1,0 +1,13 @@
+const fs=require('node:fs'),ts=require('typescript'),assert=require('node:assert/strict');
+require.extensions['.ts']=(m,f)=>m._compile(ts.transpileModule(fs.readFileSync(f,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,esModuleInterop:true}}).outputText,f);
+const {parseProfileBackup,mergeProfileBackup,makeLibrary}=require('../src/data/resumeProfiles.ts');
+const {createResumeContent,DEFAULT_APPEARANCE}=require('../src/data/resumeDraft.ts');
+const draft={version:1,content:createResumeContent('a4',9),appearance:DEFAULT_APPEARANCE};
+const legacy=parseProfileBackup(JSON.stringify(draft)); assert.equal(legacy.profiles[0].content.phone,'');
+const p={...legacy.profiles[0],id:'backend',name:'Backend',templateId:'technical',paper:'legal'};
+const library=makeLibrary([p],'backend'); assert.deepEqual(parseProfileBackup(JSON.stringify(library)),library);
+const merged=mergeProfileBackup(library.profiles,library);assert.equal(merged.profiles.length,2);assert.notEqual(merged.activeProfileId,'backend');assert.notEqual(merged.profiles[1].name,'Backend');
+merged.profiles[1].content.name='Independent';assert.notEqual(p.content.name,'Independent');
+for (const v of [{...library,activeProfileId:'missing'},{...library,profiles:[p,p]},{...library,profiles:[{...p,paper:'unknown'}]},{...library,profiles:[{...p,templateId:'missing'}]},{...library,profiles:[{...p,appearance:{...DEFAULT_APPEARANCE,background:'url(x)'}}]}]) assert.throws(()=>parseProfileBackup(JSON.stringify(v)));
+assert.throws(()=>parseProfileBackup('x'.repeat(5000001)));assert.throws(()=>mergeProfileBackup(Array(50).fill(p),library));
+console.log('PASS profile/legacy round trips, safe merge, independent copies, active selection, schema and size limits.');

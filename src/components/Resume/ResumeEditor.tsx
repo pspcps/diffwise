@@ -1,12 +1,9 @@
-import { useRef } from "react";
+import { parseProfileBackup } from "../../data/resumeProfiles";
+import type { useResumeProfiles } from "../../hooks/useResumeProfiles";
+import { useRef, useState } from "react";
 import type { ChangeEvent } from "react";
-import type {
-  ResumeContent,
-  ResumeAppearance,
-  ResumeDraft,
-} from "../../data/resumeDraft";
+import type { ResumeContent, ResumeAppearance } from "../../data/resumeDraft";
 import {
-  parseResumeDraft,
   blankResumeContent,
   contrastRatio,
   safeResumeUrl,
@@ -21,7 +18,7 @@ type Props = {
   remember: boolean;
   onRemember: (v: boolean) => void;
   onReset: () => void;
-  onImport: (v: ResumeDraft) => void;
+  profileManager: ReturnType<typeof useResumeProfiles>;
   message: string;
   setMessage: (v: string) => void;
   onClose: () => void;
@@ -43,6 +40,7 @@ function Field({
       {multiline ? (
         <textarea
           value={value}
+          maxLength={20000}
           onChange={(e) => onChange(e.target.value)}
           rows={3}
         />
@@ -55,6 +53,9 @@ function Field({
 export default function ResumeEditor(p: Props) {
   const file = useRef<HTMLInputElement>(null);
   const c = p.content;
+  const pm = p.profileManager;
+  const [profileName, setProfileName] = useState("");
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const field = (
     key: keyof Pick<
       ResumeContent,
@@ -84,20 +85,13 @@ export default function ResumeEditor(p: Props) {
     i: number,
   ) => p.onContent({ ...c, [key]: c[key].filter((_, j) => j !== i) });
   const download = () => {
-    const blob = new Blob(
-      [
-        JSON.stringify(
-          { version: 1, content: c, appearance: p.appearance },
-          null,
-          2,
-        ),
-      ],
-      { type: "application/json" },
-    );
+    const blob = new Blob([JSON.stringify(pm.backup())], {
+      type: "application/json",
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "resume-draft.json";
+    a.download = "resume-profiles-backup.json";
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
@@ -105,9 +99,8 @@ export default function ResumeEditor(p: Props) {
     const f = e.target.files?.[0];
     if (!f) return;
     try {
-      if (f.size > 500000) throw Error("Draft is too large (maximum 500 KB).");
-      p.onImport(parseResumeDraft(await f.text()));
-      p.setMessage("Draft imported.");
+      if (f.size > 5000000) throw Error("Backup is too large (maximum 5 MB).");
+      pm.importBackup(parseProfileBackup(await f.text()));
     } catch (error) {
       p.setMessage(
         error instanceof Error ? error.message : "Could not import this draft.",
@@ -129,6 +122,99 @@ export default function ResumeEditor(p: Props) {
           Done editing
         </button>
       </header>
+      <section className="resume-profile-panel" aria-label="Resume profiles">
+        <h3>Resume profiles</h3>
+        <p>
+          Keep a separate resume for each role. Each profile remembers its
+          content, colors, QR setting, template and paper size.
+        </p>
+        <label className="resume-edit-field">
+          <span>Active profile</span>
+          <select
+            aria-label="Active profile"
+            value={pm.activeId}
+            onChange={(e) => {
+              pm.select(e.target.value);
+              setConfirmDelete(null);
+            }}
+          >
+            {!pm.activeId && (
+              <option value="">Example resume (not saved)</option>
+            )}
+            {pm.profiles.map((profile) => (
+              <option key={profile.id} value={profile.id}>
+                {profile.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="resume-edit-field">
+          <span>Profile name</span>
+          <input
+            maxLength={100}
+            value={profileName}
+            placeholder="e.g. Backend Engineer"
+            onChange={(e) => setProfileName(e.target.value)}
+          />
+        </label>
+        <div className="resume-draft-actions">
+          <button
+            type="button"
+            onClick={() => {
+              pm.create(profileName, false);
+              setProfileName("");
+            }}
+          >
+            New blank profile
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              pm.create(profileName, true);
+              setProfileName("");
+            }}
+          >
+            Duplicate current profile
+          </button>
+          <button
+            type="button"
+            disabled={!profileName.trim()}
+            onClick={() => {
+              pm.rename(profileName);
+              setProfileName("");
+            }}
+          >
+            Rename profile
+          </button>
+          <button
+            type="button"
+            disabled={!pm.activeId}
+            onClick={() => setConfirmDelete(pm.activeId)}
+          >
+            Delete profile
+          </button>
+        </div>
+        {confirmDelete === pm.activeId && confirmDelete && (
+          <div role="group" aria-label="Confirm profile deletion">
+            <p>
+              Delete this profile? Download a backup first if you may need it
+              again.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                pm.remove();
+                setConfirmDelete(null);
+              }}
+            >
+              Confirm delete profile
+            </button>{" "}
+            <button type="button" onClick={() => setConfirmDelete(null)}>
+              Cancel deletion
+            </button>
+          </div>
+        )}
+      </section>
       <div className="resume-draft-actions">
         <label>
           <input
@@ -139,10 +225,10 @@ export default function ResumeEditor(p: Props) {
           Save on this device
         </label>
         <button type="button" onClick={download}>
-          Download draft
+          Download all profiles
         </button>
         <button type="button" onClick={() => file.current?.click()}>
-          Import draft
+          Import profiles / draft
         </button>
         <input
           type="file"
@@ -161,13 +247,15 @@ export default function ResumeEditor(p: Props) {
           Start blank
         </button>
         <button type="button" onClick={p.onReset}>
-          Clear saved draft / reset sample
+          Reset current profile to sample
         </button>
       </div>
       <p className="resume-editor-privacy">
-        Saved drafts stay in this browser’s local storage; they are not uploaded
-        by the editor. Download a backup to move devices. Turning off device
-        saving removes the stored copy.
+        Profiles stay in this browser’s local storage when device saving is
+        enabled; they are not uploaded by the editor. Download all profiles
+        before clearing site data or moving devices. Imports add profiles
+        without replacing existing ones. Turning off device saving removes all
+        stored copies; open profiles remain for this session.
       </p>
       <p role="status" className="resume-editor-status">
         {p.message}
