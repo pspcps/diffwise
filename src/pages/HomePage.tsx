@@ -1,3 +1,4 @@
+import AdBanner from "../components/Ads/AdBanner";
 import SearchContent from "../seo/SearchContent";
 import { toolPath } from "../seo/pages";
 import { useState, type CSSProperties } from "react";
@@ -378,6 +379,7 @@ export default function HomePage({
               View source <ArrowUpRight size={12} />
             </a>
           </footer>
+          <AdBanner />
         </div>
       </main>
     </div>

@@ -1,19 +1,15 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import ToolGuide from "../seo/ToolGuide";
+import SiteFooter from "../seo/SiteFooter";
+import { useEffect, useMemo, useRef } from "react";
 import qrcode from "qrcode-generator";
+import { useResumeProfiles } from "../hooks/useResumeProfiles";
 import ResumeEditor from "../components/Resume/ResumeEditor";
 import {
   createResumeContent,
-  DEFAULT_APPEARANCE,
-  loadResumeDraft,
-  RESUME_STORAGE_KEY,
   safeResumeUrl,
   contrastRatio,
 } from "../data/resumeDraft";
-import type {
-  ResumeContent,
-  ResumeAppearance,
-  ResumeDraft,
-} from "../data/resumeDraft";
+import type { ResumeContent, ResumeAppearance } from "../data/resumeDraft";
 import { ArrowUpRight } from "lucide-react";
 import { useCareerDuration } from "../hooks/useCareerDuration";
 import type { CSSProperties } from "react";
@@ -349,6 +345,8 @@ function Gallery({
             </a>
           ))}
         </div>
+        <ToolGuide toolId="resume" />
+        <SiteFooter />
         <p className="resume-gallery-footer">
           All templates use the same content. No sign-in, no upload, no external
           QR service.
@@ -363,75 +361,27 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
   const baseId = templateId?.replace(/-legal$/, "");
   const template = RESUME_TEMPLATES.find((t) => t.id === baseId);
   const duration = useCareerDuration();
-  const [initial] = useState(loadResumeDraft);
-  const [content, setContent] = useState<ResumeContent | null>(
-    initial?.content || null,
+  const sample = useMemo(
+    () => createResumeContent(paper, duration.years),
+    [paper, duration.years],
   );
-  const [appearance, setAppearance] = useState<ResumeAppearance>(
-    initial?.appearance || DEFAULT_APPEARANCE,
-  );
-  const [remember, setRemember] = useState(Boolean(initial));
-  const [message, setMessage] = useState("");
+  const profiles = useResumeProfiles(sample, template?.id, paper);
+  const {
+    current,
+    content,
+    appearance,
+    remember,
+    message,
+    setMessage,
+    changeContent,
+    changeAppearance,
+    changeRemember,
+    reset,
+  } = profiles;
   const editor = useRef<HTMLDialogElement>(null);
-  const current = useMemo(
-    () => content || createResumeContent(paper, duration.years),
-    [content, paper, duration.years],
-  );
-  const persist = (next: ResumeContent, colors: ResumeAppearance) => {
-    try {
-      localStorage.setItem(
-        RESUME_STORAGE_KEY,
-        JSON.stringify({ version: 1, content: next, appearance: colors }),
-      );
-      setMessage("Saved on this device. Applies to every template.");
-    } catch {
-      setMessage(
-        "Browser storage is unavailable or full. Download a draft backup instead.",
-      );
-    }
-  };
-  const changeContent = (next: ResumeContent) => {
-    setContent(next);
-    if (remember) persist(next, appearance);
-  };
-  const changeAppearance = (next: ResumeAppearance) => {
-    setAppearance(next);
-    if (remember) persist(current, next);
-  };
-  const changeRemember = (next: boolean) => {
-    if (next) {
-      setContent(current);
-      setRemember(true);
-      persist(current, appearance);
-    } else {
-      try {
-        localStorage.removeItem(RESUME_STORAGE_KEY);
-        setRemember(false);
-        setMessage(
-          "Device saving is off. The stored draft was removed; current edits remain open.",
-        );
-      } catch {
-        setMessage(
-          "Could not remove the saved draft. Check browser storage settings.",
-        );
-      }
-    }
-  };
-  const reset = () => {
-    try {
-      localStorage.removeItem(RESUME_STORAGE_KEY);
-      setContent(null);
-      setAppearance(DEFAULT_APPEARANCE);
-      setRemember(false);
-      setMessage("Saved draft cleared. Showing the example resume.");
-    } catch {
-      setMessage("Could not clear browser storage. Check browser settings.");
-    }
-  };
-  const importDraft = (draft: ResumeDraft) => {
-    setContent(draft.content);
-    setAppearance(draft.appearance);
-    if (remember) persist(draft.content, draft.appearance);
+  const cancelEditing = () => {
+    profiles.cancelEditing();
+    editor.current?.close();
   };
 
   useEffect(() => {
@@ -501,7 +451,13 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
             Approx. ATS formatting: {estimateResumeFormatting(template).score}
             /100
           </a>
-          <button type="button" onClick={() => editor.current?.showModal()}>
+          <button
+            type="button"
+            onClick={() => {
+              profiles.beginEditing();
+              editor.current?.showModal();
+            }}
+          >
             Edit resume
           </button>
           <button type="button" onClick={() => window.print()}>
@@ -525,8 +481,13 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
         className="resume-editor-dialog"
         ref={editor}
         aria-label="Edit resume"
+        onCancel={(event) => {
+          event.preventDefault();
+          cancelEditing();
+        }}
       >
         <ResumeEditor
+          key={profiles.editSessionId}
           content={current}
           exampleProjects={createResumeContent(paper, duration.years).projects}
           appearance={appearance}
@@ -536,10 +497,13 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
           remember={remember}
           onRemember={changeRemember}
           onReset={reset}
-          onImport={importDraft}
+          profileManager={profiles}
           message={message}
           setMessage={setMessage}
-          onClose={() => editor.current?.close()}
+          onClose={() => {
+            if (profiles.finishEditing()) editor.current?.close();
+          }}
+          onCancel={cancelEditing}
         />
       </dialog>
       <ResumeDocument

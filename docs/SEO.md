@@ -1,6 +1,6 @@
 # Branding and search deployment
 
-PSDevTool has a PS monogram, matching app/favicons, and build-time HTML for 43 canonical pages: the homepage, 19 tool pages, the portfolio, two paper-specific resume galleries and twenty resume documents. A separate 404 document is excluded from the sitemap and marked noindex.
+PSDevTool has a PS monogram, matching app/favicons, and build-time HTML for 47 canonical pages: the homepage, 19 tool pages, the portfolio, two paper-specific resume galleries and twenty resume documents, plus four site-information pages. A separate 404 document is excluded from the sitemap and marked noindex.
 
 ## What the build produces
 
@@ -26,7 +26,7 @@ On another host, configure genuine 404 responses using `404.html`. For example, 
 4. Use URL Inspection on the homepage and representative tool pages such as `/tools/json-formatter/` and `/tools/distance-calculator/`. Confirm that Google can access them and sees the expected canonical.
 5. Monitor indexing, impressions, queries and click-through rate. Improve useful guides and tool reliability based on real usage and search data.
 
-No Search Console account or verification token was available in this session, so ownership verification, submission and indexing requests have not been performed. Rankings, rich-result presentation and indexing schedules are Google's decisions. Meta keywords, fabricated reviews and repetitive keyword text are not used.
+The owner has reported submitting the sitemap in Search Console. This code does not access that account or independently confirm submission, verification or Google’s indexing decisions. Rankings, rich-result presentation and indexing schedules are Google's decisions. Meta keywords, fabricated reviews and repetitive keyword text are not used.
 
 ## Validation
 
@@ -42,3 +42,7 @@ The SEO check validates all generated pages, metadata, schema, sitemap paths, al
 ## Logo assets
 
 `public/brand/logo.svg` is the vector master. `BrandMark.tsx` uses the same geometry with the chosen theme accent. App PNG sizes are 192/512, Apple touch size is 180, and search/favicon sizes include 16/32/48/96. `favicon.ico` packages the small PNG sizes. `og-image.svg` is the editable sharing-card source and `og-image.png` is its exported version. There is no service worker or offline guarantee implied by the manifest.
+
+## Original content and publisher information
+
+Worked examples and limitations are shared from `src/seo/tool-guides.json` and rendered with `ToolGuide.tsx`. Four information pages use the same static/live content and are linked from shared footers. The sitemap includes them, with accurate WebPage/AboutPage/ContactPage schema rather than treating them as tools. See [AdSense readiness](ADSENSE.md) for account-side requirements; AdSense review and Google Search rankings are separate processes.

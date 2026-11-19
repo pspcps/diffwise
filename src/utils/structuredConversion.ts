@@ -1,3 +1,4 @@
+import { parseJsonWithRecovery } from "./jsonRecovery";
 import YAML from "yaml";
 import formatXml from "xml-formatter";
 import { parseXml, type JsonValue } from "./jsonXml";
@@ -232,14 +233,22 @@ export function jsonToEnvString(
 export function parseStructuredInput(
   text: string,
   allowYamlFlow = false,
+  repairJson = false,
 ): {
   value: JsonValue;
   format: "json" | "xml" | "yaml";
+  repaired?: boolean;
 } {
   try {
     return { value: JSON.parse(text) as JsonValue, format: "json" };
   } catch (error) {
-    if (!allowYamlFlow && (text.trimStart().startsWith("{") || text.trimStart().startsWith("["))) throw error;
+    if (
+      !allowYamlFlow &&
+      (text.trimStart().startsWith("{") || text.trimStart().startsWith("["))
+    ) {
+      if (repairJson) return { ...parseJsonWithRecovery(text), format: "json" };
+      throw error;
+    }
   }
   if (text.trimStart().startsWith("<")) {
     const parsed = parseXml(text);

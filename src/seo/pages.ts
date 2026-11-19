@@ -1,9 +1,11 @@
+import { SITE_INFORMATION, type InformationId } from "./siteInformation";
 import data from "./tool-pages.json";
 import { RESUME_TEMPLATES } from "../data/printResume";
 import type { ViewMode } from "../types";
 export interface SearchPage {
   id:
     | ViewMode
+    | InformationId
     | "home"
     | "portfolio"
     | "resume"
@@ -19,6 +21,18 @@ export interface SearchPage {
   faq: { question: string; answer: string }[];
   related: string[];
 }
+export const INFORMATION_PAGES: SearchPage[] = SITE_INFORMATION.map((p) => ({
+  id: p.id,
+  path: `/${p.id}/`,
+  name: p.name,
+  title: `${p.name} | PSDevTool`,
+  description: p.description,
+  intro: p.description,
+  features: [],
+  steps: [],
+  faq: [],
+  related: [],
+}));
 export const TOOL_PAGES = data as SearchPage[];
 export const HOME_PAGE: SearchPage = {
   id: "home",
@@ -138,8 +152,9 @@ export function pageForId(id: SearchPage["id"]) {
       ? PORTFOLIO_PAGE
       : id === "resume"
         ? RESUME_PAGE
-        : [...RESUME_PAGES, ...TOOL_PAGES].find((p) => p.id === id) ||
-          NOT_FOUND;
+        : [...INFORMATION_PAGES, ...RESUME_PAGES, ...TOOL_PAGES].find(
+            (p) => p.id === id,
+          ) || NOT_FOUND;
 }
 export function toolPath(id: ViewMode) {
   return pageForId(id).path;

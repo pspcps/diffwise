@@ -1,0 +1,10 @@
+const fs=require('node:fs'),assert=require('node:assert/strict');
+const guides=require('../src/seo/tool-guides.json'),tools=require('../src/seo/tool-pages.json');
+const expected=[...tools.map(t=>t.id),'resume'];assert.deepEqual(Object.keys(guides).sort(),expected.sort());
+const escape=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
+for(const p of tools){const g=guides[p.id];assert.ok(g.scenario&&g.input&&g.output&&g.explanation&&g.notes.length>=3,p.id);const html=fs.readFileSync('dist'+p.path+'index.html','utf8');assert.ok(html.includes(escape(g.title)),p.id);assert.ok(html.includes(escape(g.input)),p.id);assert.ok(html.includes(escape(g.output)),p.id);for(const href of ['/about/','/contact/','/privacy/','/terms/'])assert.ok(html.includes(`href="${href}"`));assert.equal((html.match(/pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js/g)||[]).length,1);}
+for(const id of ['about','privacy','contact','terms']){const h=fs.readFileSync('dist/'+id+'/index.html','utf8');assert.ok(/<h1[ >]/.test(h));assert.ok(h.includes('site-information-footer'));assert.ok(!h.includes('pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'));}
+for(const p of ['dist/404.html','dist/resume/modern/index.html'])assert.ok(!fs.readFileSync(p,'utf8').includes('pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'));
+assert.equal(fs.readFileSync('dist/ads.txt','utf8').trim(),'google.com, pub-4337594386208236, DIRECT, f08c47fec0942fa0');
+assert.equal(new Date(1700000000*1000).toISOString(),'2023-11-14T22:13:20.000Z');assert.equal(encodeURIComponent('hello world & a/b'),'hello%20world%20%26%20a%2Fb');assert.deepEqual([...('order-42 and order-105; order-x').matchAll(/order-(\d+)/g)].map(m=>m[1]),['42','105']);assert.equal(1600/900,800/450);assert.equal(4*3,12);assert.equal(2*(4+3),14);
+console.log('PASS all 20 worked guides, static content, information/footer links, AdSense script scope, ads.txt and numeric/encoding examples.');

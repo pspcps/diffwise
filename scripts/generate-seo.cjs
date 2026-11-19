@@ -4,8 +4,10 @@ const ts = require('typescript');
 const React = require('react');
 const {renderToStaticMarkup} = require('react-dom/server');
 for (const extension of ['.ts','.tsx']) require.extensions[extension]=(module,filename)=>module._compile(ts.transpileModule(fs.readFileSync(filename,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true,resolveJsonModule:true}}).outputText,filename);
-const {HOME_PAGE,PORTFOLIO_PAGE,RESUME_PAGE,RESUME_PAGES,NOT_FOUND,TOOL_PAGES}=require('../src/seo/pages.ts');
+const {INFORMATION_PAGES,HOME_PAGE,PORTFOLIO_PAGE,RESUME_PAGE,RESUME_PAGES,NOT_FOUND,TOOL_PAGES}=require('../src/seo/pages.ts');
 const {SITE_ORIGIN,structuredData}=require('../src/seo/metadata.ts');
+const InformationPage=require('../src/seo/InformationPage.tsx').default;
+const {isInformationId}=require('../src/seo/siteInformation.ts');
 const SearchContent=require('../src/seo/SearchContent.tsx').default;
 require.extensions['.css'] = () => {};
 const HomePage=require('../src/pages/HomePage.tsx').default;
@@ -25,20 +27,24 @@ function head(page) {
  tags.push(`<script id="page-structured-data" type="application/ld+json">${JSON.stringify(structuredData(page)).replace(/</g,'\\u003c')}</script>`);
  return '<!-- seo-head:start -->\n'+tags.join('\n')+'\n<!-- seo-head:end -->';
 }
-for(const page of [HOME_PAGE,...TOOL_PAGES,PORTFOLIO_PAGE,RESUME_PAGE,...RESUME_PAGES,NOT_FOUND]) {
+for(const page of [HOME_PAGE,...INFORMATION_PAGES,...TOOL_PAGES,PORTFOLIO_PAGE,RESUME_PAGE,...RESUME_PAGES,NOT_FOUND]) {
  let body;
- if(page.id==='home')body=renderToStaticMarkup(React.createElement(HomePage,{onTool:()=>{},onPortfolio:()=>{},onSearch:()=>{}}));
+ if(isInformationId(page.id))body=renderToStaticMarkup(React.createElement(InformationPage,{id:page.id}));
+ else if(page.id==='home')body=renderToStaticMarkup(React.createElement(HomePage,{onTool:()=>{},onPortfolio:()=>{},onSearch:()=>{}}));
  else if(page.id==='resume'||page.id.startsWith('resume-'))body=renderToStaticMarkup(React.createElement(ResumePage,{templateId:page.id.startsWith('resume-')?page.id.slice(7):undefined}));
  else {
    const guide=renderToStaticMarkup(React.createElement(SearchContent,{page,primary:true}));
    const shell=page.id==='portfolio'||page.id==='notfound'?'':`<section class="static-tool-shell"><nav class="static-shell-nav"><a href="/"><img src="/brand/logo.svg" width="34" height="34" alt="PSDevTool logo"/>PSDevTool.</a><a href="/">All tools</a></nav><div class="static-shell-title">${escape(page.name)}</div><div class="static-shell-body"><p>${escape(page.description)}</p><p>The interactive workspace opens with JavaScript.</p><a href="#how-to-use">Read the tool guide ↓</a></div></section>`;
    body=shell+guide;
  }
- const html=template.replace(/data-indexable="(?:true|false)"/,`data-indexable="${!preview}"`).replace(/<!-- seo-head:start -->[\s\S]*?<!-- seo-head:end -->/,head(page)).replace(/<!-- app-root:start -->[\s\S]*?<!-- app-root:end -->/,`<!-- app-root:start --><div id="root" data-prerendered>${body}</div><!-- app-root:end -->`);
+ let html=template.replace(/data-indexable="(?:true|false)"/,`data-indexable="${!preview}"`).replace(/<!-- seo-head:start -->[\s\S]*?<!-- seo-head:end -->/,head(page)).replace(/<!-- app-root:start -->[\s\S]*?<!-- app-root:end -->/,`<!-- app-root:start --><div id="root" data-prerendered>${body}</div><!-- app-root:end -->`);
+ // AdSense remains on the content-bearing homepage and tool pages. Direct
+ // information, resume and not-found documents do not load its ad script.
+ if(page.id!=='home'&&!TOOL_PAGES.some(p=>p.id===page.id))html=html.replace(/<!-- Google AdSense -->\s*<script[\s\S]*?<\/script>/,'');
  const filename=page.id==='notfound'?path.join(output,'404.html'):path.join(output,page.path,'index.html');
  fs.mkdirSync(path.dirname(filename),{recursive:true});fs.writeFileSync(filename,html);
 }
-const urls=[HOME_PAGE,...TOOL_PAGES,PORTFOLIO_PAGE,RESUME_PAGE,...RESUME_PAGES];
+const urls=[HOME_PAGE,...INFORMATION_PAGES,...TOOL_PAGES,PORTFOLIO_PAGE,RESUME_PAGE,...RESUME_PAGES];
 fs.writeFileSync(path.join(output,'sitemap.xml'),'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+urls.map(p=>`  <url><loc>${SITE_ORIGIN+p.path}</loc></url>`).join('\n')+'\n</urlset>\n');
 fs.writeFileSync(path.join(output,'robots.txt'),preview?'User-agent: *\nDisallow: /\n':'User-agent: *\nAllow: /\n\nSitemap: '+SITE_ORIGIN+'/sitemap.xml\n');
 console.log(`Generated ${urls.length} crawlable pages, a 404 page, sitemap and ${preview?'preview noindex':'production'} metadata.`);

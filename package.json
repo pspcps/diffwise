@@ -11,7 +11,9 @@
     "test:measurements": "node scripts/check-measurements.cjs",
     "test:catalog": "node scripts/check-tool-catalog.cjs",
     "test:seo": "node scripts/check-seo.cjs",
-    "test:structured": "node scripts/check-structured-conversion.cjs"
+    "test:structured": "node scripts/check-structured-conversion.cjs",
+    "test:content": "node scripts/check-site-content.cjs",
+    "test:resume": "node scripts/check-resume-draft.cjs && node scripts/check-resume-profiles.cjs"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.12.2",
@@ -21,6 +23,7 @@
     "diff": "^8.0.4",
     "docx-preview": "^0.4.1",
     "html-to-image": "^1.11.13",
+    "jsonrepair": "^3.15.0",
     "jszip": "^3.10.2",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.8.0",
@@ -29,13 +32,13 @@
     "monaco-editor": "^0.55.1",
     "pdf-lib": "^1.17.1",
     "prettier": "^3.9.10",
+    "qrcode-generator": "^2.0.4",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "sql-formatter": "^15.9.0",
     "three": "^0.186.1",
     "xml-formatter": "^3.7.0",
-    "yaml": "^2.9.1",
-    "qrcode-generator": "^2.0.4"
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",

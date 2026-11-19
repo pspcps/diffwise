@@ -1,3 +1,5 @@
+import ToolGuide from "./ToolGuide";
+import SiteFooter from "./SiteFooter";
 import {
   HOME_PAGE,
   TOOL_PAGES,
@@ -81,6 +83,7 @@ export default function SearchContent({
               )}
             </div>
           )}
+          <ToolGuide toolId={page.id} />
           {!!page.faq.length && (
             <div className="search-faq">
               <h3>Common questions</h3>
@@ -118,16 +121,7 @@ export default function SearchContent({
           )}
         </>
       )}
-      <footer>
-        Built by <a href="/portfolio/">Prakash Choudhary</a> ·{" "}
-        <a
-          href="https://github.com/pspcps/diffwise"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Source and documentation
-        </a>
-      </footer>
+      <SiteFooter />
     </section>
   );
 }
