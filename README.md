@@ -45,7 +45,7 @@ All 20 tools are visible in the catalog, grouped by task. A compact tool picker,
 
 | Tool | What you can do |
 | --- | --- |
-| **Resume Builder** | Choose ten resume layouts, edit your details and colors, generate an optional website QR, save a local draft across templates, and print A4 or Legal PDFs. |
+| **Resume Builder** | Choose ten resume layouts, edit your details and colors, generate an optional website QR, manage named profiles with local saving and backup/import, and print A4 or Legal PDFs. |
 | **Measure Lab** | Convert 119 units across 17 measurement categories, explore interactive 3D illustrations, calculate 15 geometry shapes, and use six algebra tools with visible formulas. |
 | **Geo Distance** | Place or drag latitude/longitude pins, compare direct and optional driving-route distances, and convert distance units. Also includes batch pairs, bearings and geofence calculations. |
 | **ID Generator** | Generate UUIDs and other supported identifier formats. |
@@ -166,7 +166,7 @@ After deploying to `psdevtool.online`, verify the site in Google Search Console 
 
 ### Printable resume
 
-The [Resume Builder at `/resume/`](https://psdevtool.online/resume/) page offers ten HTML resume layouts (six single-column and four two-column), each with a focused A4 edition and an expanded [Legal edition](https://psdevtool.online/resume/legal/), a portfolio QR code and Chrome PDF printing. Use Edit mode to customize content, colors and the optional QR, and save your details locally across templates. See [resume documentation](docs/RESUME.md).
+The [Resume Builder at `/resume/`](https://psdevtool.online/resume/) page offers ten HTML resume layouts (six single-column and four two-column), each with a focused A4 edition and an expanded [Legal edition](https://psdevtool.online/resume/legal/), a portfolio QR code and Chrome PDF printing. Use Edit mode to customize content, colors and the optional QR, manage separate profiles for different roles, and download/import all profiles as a backup. Profiles save locally when enabled and work across all templates. See [resume documentation](docs/RESUME.md).
 
 JSON Studio sorting, parent grouping, live conversion and folding behavior are documented in [Structured data tools](docs/STRUCTURED_DATA.md). Run `npm run test:structured` for parser and sorting checks.
 

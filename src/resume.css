@@ -1160,3 +1160,16 @@
   );
   padding: 0 6px;
 }
+
+.resume-profile-panel { border:1px solid var(--border, #52604f); border-radius:12px; padding:16px; margin:16px 0; }
+.resume-profile-panel h3 { margin:0 0 8px; }
+.resume-profile-panel select { width:100%; padding:10px; border-radius:6px; background:#17201c; color:#e4ebdd; border:1px solid #52604f; }
+.resume-profile-panel .resume-edit-field { margin-top:10px; }
+.resume-profile-panel button:disabled { opacity:.45; cursor:not-allowed; }
+
+.resume-editor-actions { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end; }
+.resume-editor-content > header .resume-editor-cancel { background:#fff; color:#203d2d; }
+@media (max-width:600px) {
+  .resume-editor-content > header { flex-wrap:wrap; }
+  .resume-editor-actions { width:100%; }
+}

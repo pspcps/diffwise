@@ -21,3 +21,11 @@ assert.deepEqual(parseStructuredInput('z: 2\na:\n  z: 1\n  a: 0').value,{z:2,a:{
 const yaml=sortedYamlSource('# heading\nz: 2\na:\n  z: 1\n  a: 0\nitems: [3, 1, 2]\n');assert.ok(yaml.indexOf('a:')<yaml.indexOf('z: 2'));assert.ok(yaml.includes('# heading'));assert.deepEqual(parseStructuredInput(yaml).value.items,[3,1,2]);
 assert.throws(()=>parseStructuredInput('a: 1\na: 2'));assert.throws(()=>jsonCompatibleValue(Infinity));const cyclic={};cyclic.a=cyclic;assert.throws(()=>sort(cyclic),/Cyclic/);
 console.log('PASS shared Secret parents, mixed delimiters, parent-only case merging, collisions, type/quote preservation, safe keys, stable duplicate sorting, arrays, YAML comments and validation.');
+const {parseJsonWithRecovery:recover}=require('../src/utils/jsonRecovery.ts');
+for(const [text,value] of [["{'a':1,}",{a:1}],['{a: 1 b: [2,3]}',{a:1,b:[2,3]}],['{"a":{"b":1}',{a:{b:1}}],['// comment\n{"a":true,}',{a:true}]]) {
+  const r=recover(text);assert.equal(r.repaired,true);assert.deepEqual(r.value,value);assert.throws(()=>recover(text,false));
+}
+assert.equal(recover('{"a":1}').repaired,false);assert.throws(()=>recover('{"a":"\\uZZZZ"}'));assert.throws(()=>recover(''));assert.throws(()=>recover('{'+ 'x'.repeat(2000000)));
+assert.equal(parseStructuredInput('{a:1,}',false,true).repaired,true);assert.throws(()=>parseStructuredInput('{a:1,}',false,false));
+assert.equal({}.polluted,undefined);assert.equal(recover('{"__proto__":{"polluted":true},}').value.__proto__.polluted,true);assert.equal({}.polluted,undefined);
+console.log('PASS JSON recovery for quotes, commas, comments and closing brackets; strict mode, bounds and unrecoverable input.');

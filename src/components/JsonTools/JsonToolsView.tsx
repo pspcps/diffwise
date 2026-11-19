@@ -1,3 +1,4 @@
+import { parseJsonWithRecovery, JSON_REPAIR_WARNING } from "../../utils/jsonRecovery";
 import StructuredEditor from '../Common/StructuredEditor';
 import YAML from 'yaml';
 import { Fragment, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type WheelEvent as ReactWheelEvent } from 'react';
@@ -402,6 +403,8 @@ export default function JsonToolsView() {
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState(false);
   const [autoSortKeys, setAutoSortKeys] = useState(true);
+  const [autoRepair, setAutoRepair] = useState(true);
+  const [repairNotice, setRepairNotice] = useState("");
   const [mergeParentKeys, setMergeParentKeys] = useState(true);
   const [envResultView, setEnvResultView] = useState<"code" | "tree">("code");
   const [envExpanded, setEnvExpanded] = useState<Set<string>>(
@@ -479,7 +482,7 @@ export default function JsonToolsView() {
     try {
       let targetObj: unknown;
       if (envJsonOutput.trim()) {
-        targetObj = JSON.parse(envJsonOutput);
+        targetObj = parseJsonWithRecovery(envJsonOutput, autoRepair).value;
       } else if (valid && parsed !== undefined) {
         targetObj = parsed;
       } else {
@@ -513,9 +516,11 @@ export default function JsonToolsView() {
     text: string,
     pasted = false,
     sortOverride = autoSortKeys,
+    repairOverride = autoRepair,
   ) => {
     setSource(text);
-    resetPreview();
+    setRepairNotice("");
+    if (pasted) resetPreview();
     if (!text.trim()) {
       setXmlSource("");
       setYamlSource("");
@@ -525,9 +530,10 @@ export default function JsonToolsView() {
     }
     try {
       const input = pasted
-        ? parseStructuredInput(text)
-        : { value: JSON.parse(text) as JsonValue, format: "json" };
+        ? parseStructuredInput(text, false, repairOverride)
+        : { ...parseJsonWithRecovery(text, repairOverride), format: "json" };
       const data = ordered(input.value, sortOverride);
+      setRepairNotice(input.repaired ? JSON_REPAIR_WARNING : "");
       if (pasted) setSource(JSON.stringify(data, null, 2));
       if (pasted && view === "editor" && input.format === "xml") {
         setView("xml");
@@ -627,18 +633,20 @@ export default function JsonToolsView() {
     }
     handleConvertEnvToJson(text);
   };
-  const handleEnvJsonChange = (text: string, pasted = false) => {
+  const handleEnvJsonChange = (text: string, pasted = false, repairOverride = autoRepair) => {
     setEnvJsonOutput(text);
+    setRepairNotice("");
     if (!text.trim()) {
       setEnvSource("");
       setEnvError("");
       return;
     }
     try {
-      const value = pasted
-        ? parseStructuredInput(text).value
-        : (JSON.parse(text) as JsonValue);
-      const data = ordered(value);
+      const input = pasted
+        ? parseStructuredInput(text, false, repairOverride)
+        : parseJsonWithRecovery(text, repairOverride);
+      setRepairNotice(input.repaired ? JSON_REPAIR_WARNING : "");
+      const data = ordered(input.value);
       setEnvSource(jsonToEnvString(data, "", nestDoubleUnderscore));
       if (pasted) setEnvJsonOutput(JSON.stringify(data, null, 2));
       setEnvError("");
@@ -646,13 +654,11 @@ export default function JsonToolsView() {
       setEnvError(error instanceof Error ? error.message : "Invalid JSON");
     }
   };
-  let envParsed: JsonValue | undefined;
-  try {
-    if (envJsonOutput.trim())
-      envParsed = JSON.parse(envJsonOutput) as JsonValue;
-  } catch {
-    /* Keep the editor available while JSON is incomplete. */
-  }
+  const envRecovery = useMemo(() => {
+    try { return envJsonOutput.trim() ? { ...parseJsonWithRecovery(envJsonOutput, autoRepair), error: "" } : { value: undefined, repaired: false, error: "" }; }
+    catch (error) { return { value: undefined, repaired: false, error: error instanceof Error ? error.message : "Invalid JSON" }; }
+  }, [envJsonOutput, autoRepair]);
+  const envParsed = envRecovery.value;
   const applyEnvJsonToStudio = () => {
     if (envJsonOutput.trim()) {
       setSource(envJsonOutput);
@@ -662,17 +668,16 @@ export default function JsonToolsView() {
     }
   };
 
-  let parsed: JsonValue | undefined;
-  let parseError = "";
-  try {
-    if (source.trim()) parsed = JSON.parse(source) as JsonValue;
-  } catch (error) {
-    parseError = error instanceof Error ? error.message : "Invalid JSON";
-  }
-
+  const recovery = useMemo(() => {
+    try { return source.trim() ? { ...parseJsonWithRecovery(source, autoRepair), error: "" } : { value: undefined, repaired: false, error: "" }; }
+    catch (error) { return { value: undefined, repaired: false, error: error instanceof Error ? error.message : "Invalid JSON" }; }
+  }, [source, autoRepair]);
+  const parsed = recovery.value;
+  const parseError = recovery.error;
+  const previewRepaired = view === "env" ? envRecovery.repaired : recovery.repaired;
   const activeJsonData = view === "env" ? envParsed : parsed;
   const activeSource = view === "env" ? envJsonOutput : source;
-  const activeParseError = view === "env" ? envError : parseError;
+  const activeParseError = view === "env" ? envRecovery.error || envError : parseError;
   const table =
     activeJsonData === undefined
       ? { columns: [], rows: [], sources: [], label: "" }
@@ -749,7 +754,7 @@ export default function JsonToolsView() {
 
   const copySource = async () => {
     try {
-      await navigator.clipboard.writeText(activeSource);
+      await navigator.clipboard.writeText(previewRepaired && activeJsonData !== undefined ? JSON.stringify(activeJsonData, null, 2) : activeSource);
       setCopyError(false);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1200);
@@ -769,6 +774,9 @@ export default function JsonToolsView() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-1.5">
+          <label className="flex items-center gap-1.5 text-[11px] text-[#b1bea8]">
+            <input type="checkbox" checked={autoRepair} onChange={e => { const enabled = e.target.checked; setAutoRepair(enabled); setRepairNotice(""); if (enabled) { if (view === "env") handleEnvJsonChange(envJsonOutput, false, enabled); else handleJsonChange(source, false, autoSortKeys, enabled); } }} /> Repair JSON automatically
+          </label>
           <label className="flex items-center gap-1.5 text-[11px] text-[#b1bea8]">
             <input
               type="checkbox"
@@ -842,6 +850,11 @@ export default function JsonToolsView() {
         </div>
       </header>
 
+      {(repairNotice || previewRepaired) && <div role="status" className="shrink-0 px-4 py-2 text-xs text-amber-200">
+        <p>{repairNotice || JSON_REPAIR_WARNING}</p>
+        {previewRepaired && <button className="mt-1 underline" onClick={() => { setFormatted(false); setRepairNotice(JSON_REPAIR_WARNING); }}>Apply repaired JSON to editor</button>}
+        {previewRepaired && <p>Original text is kept while typing. Apply the repair to format it and fold individual objects in the code editor.</p>}
+      </div>}
       {conversionNotice && (
         <p
           className="shrink-0 px-4 py-1 text-[10px] text-[#b1bea8]"
@@ -905,7 +918,7 @@ export default function JsonToolsView() {
           {activeValid ? (
             <>
               <Check size={13} className="text-[#b5dfa3]" />
-              <span className="text-[#b5dfa3]">Valid JSON</span>
+              <span className="text-[#b5dfa3]">{previewRepaired || repairNotice ? "Repaired JSON · review warning" : "Valid JSON"}</span>
             </>
           ) : activeParseError ? (
             <>
