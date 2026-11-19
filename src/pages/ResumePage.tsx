@@ -375,6 +375,10 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
     reset,
   } = profiles;
   const editor = useRef<HTMLDialogElement>(null);
+  const cancelEditing = () => {
+    profiles.cancelEditing();
+    editor.current?.close();
+  };
 
   useEffect(() => {
     if (!template) return;
@@ -443,7 +447,13 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
             Approx. ATS formatting: {estimateResumeFormatting(template).score}
             /100
           </a>
-          <button type="button" onClick={() => editor.current?.showModal()}>
+          <button
+            type="button"
+            onClick={() => {
+              profiles.beginEditing();
+              editor.current?.showModal();
+            }}
+          >
             Edit resume
           </button>
           <button type="button" onClick={() => window.print()}>
@@ -467,8 +477,13 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
         className="resume-editor-dialog"
         ref={editor}
         aria-label="Edit resume"
+        onCancel={(event) => {
+          event.preventDefault();
+          cancelEditing();
+        }}
       >
         <ResumeEditor
+          key={profiles.editSessionId}
           content={current}
           exampleProjects={createResumeContent(paper, duration.years).projects}
           appearance={appearance}
@@ -481,7 +496,10 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
           profileManager={profiles}
           message={message}
           setMessage={setMessage}
-          onClose={() => editor.current?.close()}
+          onClose={() => {
+            if (profiles.finishEditing()) editor.current?.close();
+          }}
+          onCancel={cancelEditing}
         />
       </dialog>
       <ResumeDocument

@@ -1,6 +1,6 @@
 import { parseProfileBackup } from "../../data/resumeProfiles";
 import type { useResumeProfiles } from "../../hooks/useResumeProfiles";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent } from "react";
 import type { ResumeContent, ResumeAppearance } from "../../data/resumeDraft";
 import {
@@ -22,6 +22,7 @@ type Props = {
   message: string;
   setMessage: (v: string) => void;
   onClose: () => void;
+  onCancel: () => void;
 };
 function Field({
   label,
@@ -52,6 +53,13 @@ function Field({
 }
 export default function ResumeEditor(p: Props) {
   const file = useRef<HTMLInputElement>(null);
+  const importAlive = useRef(true);
+  useEffect(() => {
+    importAlive.current = true;
+    return () => {
+      importAlive.current = false;
+    };
+  }, []);
   const c = p.content;
   const pm = p.profileManager;
   const [profileName, setProfileName] = useState("");
@@ -100,8 +108,11 @@ export default function ResumeEditor(p: Props) {
     if (!f) return;
     try {
       if (f.size > 5000000) throw Error("Backup is too large (maximum 5 MB).");
-      pm.importBackup(parseProfileBackup(await f.text()));
+      const text = await f.text();
+      if (!importAlive.current) return;
+      pm.importBackup(parseProfileBackup(text));
     } catch (error) {
+      if (!importAlive.current) return;
       p.setMessage(
         error instanceof Error ? error.message : "Could not import this draft.",
       );
@@ -114,13 +125,22 @@ export default function ResumeEditor(p: Props) {
         <div>
           <h2>Edit resume</h2>
           <p>
-            Your details apply to every layout. Longer content may need more
-            than one page.
+            Done editing keeps your changes. Cancel or Escape discards this edit
+            session. Longer content may need more than one page.
           </p>
         </div>
-        <button type="button" onClick={p.onClose}>
-          Done editing
-        </button>
+        <div className="resume-editor-actions">
+          <button
+            type="button"
+            className="resume-editor-cancel"
+            onClick={p.onCancel}
+          >
+            Cancel
+          </button>
+          <button type="button" onClick={p.onClose}>
+            Done editing
+          </button>
+        </div>
       </header>
       <section className="resume-profile-panel" aria-label="Resume profiles">
         <h3>Resume profiles</h3>
@@ -252,10 +272,11 @@ export default function ResumeEditor(p: Props) {
       </div>
       <p className="resume-editor-privacy">
         Profiles stay in this browser’s local storage when device saving is
-        enabled; they are not uploaded by the editor. Download all profiles
-        before clearing site data or moving devices. Imports add profiles
-        without replacing existing ones. Turning off device saving removes all
-        stored copies; open profiles remain for this session.
+        enabled and you choose Done editing; they are not uploaded by the
+        editor. Download all profiles before clearing site data or moving
+        devices. Imports add profiles without replacing existing ones. Turning
+        off device saving removes stored copies after Done editing; open profiles
+        remain for this page session.
       </p>
       <p role="status" className="resume-editor-status">
         {p.message}

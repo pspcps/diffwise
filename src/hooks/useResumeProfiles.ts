@@ -50,6 +50,13 @@ export function useResumeProfiles(
   const [library, setLibrary] = useState<ResumeLibrary | null>(initial);
   const [remember, setRemember] = useState(Boolean(initial));
   const [message, setMessage] = useState("");
+  const [editSession, setEditSession] = useState<{
+    id: string;
+    library: ResumeLibrary | null;
+    remember: boolean;
+    templateId: string;
+    paper: ResumePaper;
+  } | null>(null);
   const active = library?.profiles.find(
     (p) => p.id === library.activeProfileId,
   );
@@ -86,7 +93,7 @@ export function useResumeProfiles(
     }
   }
   useEffect(() => {
-    if (!remember || !library) return;
+    if (editSession || !remember || !library) return;
     try {
       localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(library));
       localStorage.removeItem(RESUME_STORAGE_KEY);
@@ -99,7 +106,7 @@ export function useResumeProfiles(
       );
       return () => cancelAnimationFrame(frame);
     }
-  }, [library, remember]);
+  }, [library, remember, editSession]);
   const snapshot = (): ResumeProfile =>
     active || {
       id: profileId(),
@@ -152,7 +159,7 @@ export function useResumeProfiles(
     if (!switchProfile(makeLibrary([...kept, p], p.id))) return;
     setMessage(
       remember
-        ? "Profile created and saved on this device."
+        ? "Profile created. Choose Done editing to save on this device."
         : "Profile created for this session. Enable device saving to keep it.",
     );
   };
@@ -164,8 +171,10 @@ export function useResumeProfiles(
     else {
       setLibrary(null);
       try {
-        localStorage.removeItem(PROFILE_STORAGE_KEY);
-        localStorage.removeItem(RESUME_STORAGE_KEY);
+        if (!editSession) {
+          localStorage.removeItem(PROFILE_STORAGE_KEY);
+          localStorage.removeItem(RESUME_STORAGE_KEY);
+        }
       } catch {
         setMessage("Could not remove stored profiles. Check browser settings.");
         return;
@@ -174,6 +183,51 @@ export function useResumeProfiles(
     setMessage("Profile deleted. Other profiles are unchanged.");
   };
   return {
+    editSessionId: editSession?.id || "closed",
+    beginEditing: () => {
+      setEditSession({
+        id: profileId(),
+        library: structuredClone(library),
+        remember,
+        templateId: templateId || "modern",
+        paper,
+      });
+      setMessage("");
+    },
+    finishEditing: () => {
+      if (!editSession) return true;
+      try {
+        if (remember && library) {
+          localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(library));
+          localStorage.removeItem(RESUME_STORAGE_KEY);
+        } else if (editSession.remember || (editSession.library && !library)) {
+          localStorage.removeItem(PROFILE_STORAGE_KEY);
+          localStorage.removeItem(RESUME_STORAGE_KEY);
+        }
+      } catch {
+        setMessage(
+          "Could not save your changes on this device. Download a backup, retry, or cancel to restore the previous resume.",
+        );
+        return false;
+      }
+      setEditSession(null);
+      setMessage(
+        remember
+          ? "Changes saved on this device."
+          : "Changes applied for this page session.",
+      );
+      return true;
+    },
+    cancelEditing: () => {
+      if (!editSession) return;
+      setLibrary(editSession.library);
+      setRemember(editSession.remember);
+      setEditSession(null);
+      setMessage("Editing canceled. Previous profiles restored.");
+      navigateTo(
+        `/resume/${editSession.templateId}/${editSession.paper === "legal" ? "legal/" : ""}`,
+      );
+    },
     current,
     content: active?.content || null,
     appearance,
@@ -189,20 +243,27 @@ export function useResumeProfiles(
         setRemember(true);
         const p = snapshot();
         commit(library || makeLibrary([p], p.id));
-        setMessage("All profiles will be saved on this device.");
-      } else
-        try {
-          localStorage.removeItem(PROFILE_STORAGE_KEY);
-          localStorage.removeItem(RESUME_STORAGE_KEY);
+        setMessage("Choose Done editing to save all profiles on this device.");
+      } else {
+        if (editSession) {
           setRemember(false);
           setMessage(
-            "Device saving is off. Open profiles remain in this session; stored copies were removed.",
+            "Device saving will turn off when you choose Done editing. Cancel keeps your previous settings.",
           );
-        } catch {
-          setMessage(
-            "Could not remove stored profiles. Check browser settings.",
-          );
-        }
+        } else
+          try {
+            localStorage.removeItem(PROFILE_STORAGE_KEY);
+            localStorage.removeItem(RESUME_STORAGE_KEY);
+            setRemember(false);
+            setMessage(
+              "Device saving is off. Open profiles remain in this page session.",
+            );
+          } catch {
+            setMessage(
+              "Could not remove stored profiles. Check browser settings.",
+            );
+          }
+      }
     },
     reset: () => {
       update({
@@ -230,7 +291,7 @@ export function useResumeProfiles(
       const next = mergeProfileBackup(library?.profiles || [], incoming);
       if (!switchProfile(next)) return;
       setMessage(
-        `Imported ${incoming.profiles.length} profile(s). Existing profiles were kept.${remember ? " Saved on this device." : " Enable device saving to keep them."}`,
+        `Imported ${incoming.profiles.length} profile(s). Existing profiles were kept.${remember ? " Choose Done editing to save on this device." : " Choose Done editing to apply; enable device saving to keep them after reloading."}`,
       );
     },
   };
