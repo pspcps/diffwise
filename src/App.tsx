@@ -1,3 +1,5 @@
+import InformationPage from "./seo/InformationPage";
+import { isInformationId } from "./seo/siteInformation";
 import { lazy, Suspense, useState, useEffect } from "react";
 import "./index.css";
 import Toolbar from "./components/Layout/Toolbar";
@@ -26,7 +28,9 @@ export default function App() {
   const page = route.page;
   const isResume = page.id === "resume" || page.id.startsWith("resume-");
   const isTool =
-    !isResume && !["home", "portfolio", "notfound"].includes(page.id);
+    !isResume &&
+    !isInformationId(page.id) &&
+    !["home", "portfolio", "notfound"].includes(page.id);
   const initialMode = isTool ? (page.id as ViewMode) : "text";
   const [mode, setMode] = useState<ViewMode>(initialMode);
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -79,6 +83,8 @@ export default function App() {
 
   const goPortfolio = () => navigateTo("/portfolio/");
   const goBack = () => navigateTo(toolPath(mode));
+
+  if (isInformationId(page.id)) return <InformationPage id={page.id} />;
 
   if (isResume)
     return (
@@ -171,9 +177,14 @@ export default function App() {
 
         <WorkbenchHeading mode={mode} />
         <ToolWorkspace mode={mode} />
-        <AdBanner />
+        <nav className="tool-guide-navigation" aria-label="Tool help">
+          <a href="#how-to-use">Guide & worked example ↓</a>
+          <a href="/contact/">Report an issue</a>
+          <a href="/privacy/">Privacy</a>
+        </nav>
       </div>
       <SearchContent page={page} />
+      <AdBanner />
     </div>
   );
 }

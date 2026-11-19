@@ -31,10 +31,10 @@
   {
     "id": "json",
     "path": "/tools/json-formatter/",
-    "name": "JSON & YAML",
-    "title": "JSON Formatter, Validator & YAML Converter | PSDevTool",
+    "name": "JSON & YAML Studio",
+    "title": "JSON & YAML Studio — Formatter, Validator & Converter | PSDevTool",
     "description": "Format and validate JSON, inspect nested data and array lengths, and convert JSON to XML or YAML. Explore tree, table and graph views online.",
-    "intro": "Make nested JSON easier to read, validate and explore. JSON Studio combines a syntax-colored source editor with parsed views, code folding and array-length hints. Conversion modes help move between JSON, XML, YAML and environment text.",
+    "intro": "Make nested JSON easier to read, validate and explore. JSON & YAML Studio combines a syntax-colored source editor with parsed views, code folding and array-length hints. Conversion modes help move between JSON, XML, YAML and environment text.",
     "features": [
       "Format or minify valid JSON and inspect parsing errors.",
       "Expand nested objects, view arrays as tables, and inspect array item counts.",

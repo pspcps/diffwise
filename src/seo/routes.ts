@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from "react";
 import { HASH_TO_MODE } from "./legacyRoutes";
 import {
+  INFORMATION_PAGES,
   HOME_PAGE,
   NOT_FOUND,
   PORTFOLIO_PAGE,
@@ -38,9 +39,12 @@ export function resolveLocation(
       ? HOME_PAGE
       : path === "/portfolio/"
         ? PORTFOLIO_PAGE
-        : [RESUME_PAGE, ...RESUME_PAGES, ...TOOL_PAGES].find(
-            (p) => p.path === path,
-          ) || NOT_FOUND;
+        : [
+            ...INFORMATION_PAGES,
+            RESUME_PAGE,
+            ...RESUME_PAGES,
+            ...TOOL_PAGES,
+          ].find((p) => p.path === path) || NOT_FOUND;
   return { page, legacy: false, search: location.search };
 }
 function subscribe(callback: () => void) {

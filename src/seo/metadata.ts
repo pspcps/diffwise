@@ -1,3 +1,4 @@
+import { isInformationId } from "./siteInformation";
 import { HOME_PAGE, TOOL_PAGES, RESUME_PAGE, type SearchPage } from "./pages";
 export const SITE_ORIGIN = "https://psdevtool.online";
 export function structuredData(page: SearchPage) {
@@ -34,6 +35,20 @@ export function structuredData(page: SearchPage) {
         name: p.name,
         url: SITE_ORIGIN + p.path,
       })),
+    });
+  else if (isInformationId(page.id))
+    graph.push({
+      "@type":
+        page.id === "about"
+          ? "AboutPage"
+          : page.id === "contact"
+            ? "ContactPage"
+            : "WebPage",
+      "@id": SITE_ORIGIN + page.path,
+      url: SITE_ORIGIN + page.path,
+      name: page.name,
+      description: page.description,
+      isPartOf: { "@id": SITE_ORIGIN + "/#website" },
     });
   else if (
     page.id === "portfolio" ||

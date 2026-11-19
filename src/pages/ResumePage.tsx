@@ -1,3 +1,5 @@
+import ToolGuide from "../seo/ToolGuide";
+import SiteFooter from "../seo/SiteFooter";
 import { useEffect, useMemo, useRef, useState } from "react";
 import qrcode from "qrcode-generator";
 import ResumeEditor from "../components/Resume/ResumeEditor";
@@ -349,6 +351,8 @@ function Gallery({
             </a>
           ))}
         </div>
+        <ToolGuide toolId="resume" />
+        <SiteFooter />
         <p className="resume-gallery-footer">
           All templates use the same content. No sign-in, no upload, no external
           QR service.

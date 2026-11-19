@@ -1,0 +1,242 @@
+{
+  "text": {
+    "title": "Compare a configuration change",
+    "scenario": "Use a diff before promoting a configuration file. A small value change can be more important than a large block of reformatting. Start with the raw comparison, then use formatting or whitespace options only if those differences are irrelevant to your review.",
+    "input": "Original: {\"retries\":2,\"timeout\":1000}\nModified: {\"retries\":3,\"timeout\":1000}",
+    "output": "The retries value changes from 2 to 3. The timeout value remains 1000.",
+    "explanation": "When both inputs contain structured text, formatting them consistently makes the changed value easier to locate. Read the surrounding lines before copying a replacement; a diff identifies textual changes and does not decide whether a new setting is safe.",
+    "notes": [
+      "Whitespace-insensitive comparisons can hide changes that matter in indentation-sensitive languages.",
+      "Array order and repeated text can affect alignment. A highlighted deletion/addition is not necessarily a semantic move.",
+      "Large inputs consume browser memory. Split unusually large logs into relevant sections before comparing them."
+    ]
+  },
+  "json": {
+    "title": "Group environment settings into nested JSON",
+    "scenario": "Services often express nested settings with double underscores. Inspect the parent-name grouping option before converting an environment block: a parent named Secret and another named SECRET may represent one logical object, while two differently cased leaf names can still be distinct.",
+    "input": "Secret__A=example-one\nSECRET__B=example-two",
+    "output": "{\n  \"Secret\": {\n    \"A\": \"example-one\",\n    \"B\": \"example-two\"\n  }\n}",
+    "explanation": "With parent-name grouping enabled, both assignments appear under Secret. Turn the option off if your configuration deliberately distinguishes parent casing. Keep Parse types off when values must remain strings; turn it on only when numbers, booleans or structured values should become JSON types.",
+    "notes": [
+      "Sorting rearranges object keys, not array elements. Reordering an array can change its meaning.",
+      "JSON, YAML and XML have different data models. XML attributes, repeated elements and mixed content require conversion conventions; inspect round trips before replacing an original document.",
+      "Use independent tree toggles for nested objects and copy individual values from their nodes. Large or incomplete inputs can still need manual correction; a parsed result does not validate your application schema."
+    ]
+  },
+  "file": {
+    "title": "Review a small release folder",
+    "scenario": "A folder comparison is useful when a build or configuration release contains several files. Compare the same relative directory level on each side so that a shared file is not reported as an addition solely because its parent folder changed.",
+    "input": "Original: config/app.json, README.md\nModified: config/app.json, README.md, config/feature.json",
+    "output": "Inspect config/app.json for modifications. README.md can remain unchanged. config/feature.json is an added file.",
+    "explanation": "First review the file list, then open changed text files to inspect their content. A newly added file can matter even if an existing configuration is identical, because the application may discover it automatically at startup.",
+    "notes": [
+      "Browser directory selection depends on browser support and may require an explicit permission prompt.",
+      "Binary files cannot be interpreted as ordinary text differences. A file match does not establish that two releases behave identically.",
+      "Use a version-control review or a build manifest when you need reproducible release history; this comparison does not create a repository commit."
+    ]
+  },
+  "api": {
+    "title": "Distinguish an HTTP failure from a browser restriction",
+    "scenario": "Before debugging authentication or a request body, establish whether the browser received an HTTP response at all. API Desk runs in a browser and therefore follows browser cross-origin restrictions. A service that works in a terminal can still reject a browser-origin request.",
+    "input": "Method: GET\nExample URL: https://jsonplaceholder.typicode.com/todos/1\nBody: none",
+    "output": "A successful public example response is JSON describing a todo. Inspect the actual status, headers and body returned when you send it.",
+    "explanation": "The example endpoint is a third-party service and its availability is outside PSDevTool’s control. If the browser reports a CORS or network error without a readable HTTP response, changing JSON formatting will not fix the service’s origin policy.",
+    "notes": [
+      "The optional proxy changes who receives your request, including its headers and body. Use synthetic credentials when testing a proxy.",
+      "A 401 response concerns authentication; a 403 can reflect authorization; a CORS failure can prevent the browser from exposing either response.",
+      "Collections and history can remain in browser storage. Remove saved credentials and export only sanitized collections when sharing a reproduction."
+    ]
+  },
+  "har": {
+    "title": "Find a failed request in a HAR capture",
+    "scenario": "A network archive can contain many successful requests surrounding one relevant failure. Start with the user action and time window, then inspect status codes and request timing. Do not assume that the largest transfer caused the visible problem.",
+    "input": "Example sequence:\nGET /app.js → 200\nGET /api/profile → 401\nGET /avatar.png → 200",
+    "output": "The profile request is the first useful authentication lead. Inspect its request headers, response details and timing.",
+    "explanation": "Compare the failed request with a successful call to the same endpoint, if one is available. A status code narrows the investigation, but the application’s response body and server logs are needed to identify the underlying cause.",
+    "notes": [
+      "HAR files can contain tokens, cookies, query parameters and personal data. Review the sanitizer output before sharing a capture.",
+      "Browser exports can omit response bodies or sensitive headers. An absent value is not proof that it was absent on the network.",
+      "Timing data reflects that capture and client environment; it is not a controlled benchmark of the service."
+    ]
+  },
+  "jwt": {
+    "title": "Read token claims without confusing decoding with trust",
+    "scenario": "A JWT payload is encoded, not encrypted. Decoding can help explain an authorization problem, but anyone can construct a payload that names an administrator. Trust requires verifying the signature and applying the application’s issuer, audience and time checks.",
+    "input": "Example decoded claims:\n{\"sub\":\"demo-user\",\"role\":\"reader\",\"exp\":1700000000}",
+    "output": "exp=1700000000 corresponds to 2023-11-14 22:13:20 UTC. Whether the token is expired depends on the current time.",
+    "explanation": "The expiration claim uses Unix seconds. Compare it with UTC and consider any clock-skew allowance in the service. The sample is an explanation of claims, not a usable authentication token or an authorization recommendation.",
+    "notes": [
+      "Local HMAC-SHA256 checks apply only to the supported algorithm and supplied secret. They do not establish that the secret belongs to the issuer you intended.",
+      "Never accept the token’s algorithm declaration as permission to skip verification.",
+      "Use dummy tokens and secrets in shared screenshots, issue reports and copied command examples."
+    ]
+  },
+  "uuid": {
+    "title": "Choose identifiers for the data model",
+    "scenario": "Generate identifiers after deciding how they will be stored and compared. A public identifier, a chronological sort key and a secret credential have different requirements. An identifier being difficult to guess is not sufficient reason to treat it as an authentication secret.",
+    "input": "Task: create a batch of UUIDs for test records.\nKeep the selected UUID format consistent with the database column.",
+    "output": "Each generated value should match the selected format. Copy the batch into test data rather than expecting a particular deterministic UUID.",
+    "explanation": "If your database expects a standard textual UUID, verify the generated string’s format and confirm how the database indexes it. For ordered identifiers, confirm what the ordering property means for your chosen format instead of applying lexical assumptions to every UUID.",
+    "notes": [
+      "Random generation has collision properties, not a universal uniqueness guarantee across all possible systems.",
+      "A browser-generated ID does not reserve a database key. Keep a uniqueness constraint in the system of record.",
+      "Do not use generated IDs as passwords, signing keys or proof that a user is authorized to access a record."
+    ]
+  },
+  "architecture": {
+    "title": "Describe a request and an asynchronous worker",
+    "scenario": "Use a diagram to make one system decision clear. For example, show that an API acknowledges work before a queue-driven worker processes it. Keep the diagram focused on the question you need to discuss rather than treating more nodes as a better architecture.",
+    "input": "flowchart LR\n  Browser --> API\n  API --> Queue\n  Queue --> Worker\n  Worker --> Database",
+    "output": "A left-to-right Mermaid diagram connects Browser, API, Queue, Worker and Database.",
+    "explanation": "The arrows describe a conceptual path. They do not specify delivery guarantees, retries, authorization or transaction boundaries. Add those decisions in a review note or use the simulator to explore assumptions, then validate them in the real system.",
+    "notes": [
+      "The system simulator is a local model, not measured production capacity or verified latency.",
+      "A diagram does not prove a design is secure or fault tolerant. Explicitly discuss retries, timeouts and failure ownership.",
+      "Database relationships need consistent keys and cardinalities. An ERD drawing does not run a migration against your database."
+    ]
+  },
+  "regex": {
+    "title": "Extract an order number from sample text",
+    "scenario": "Build a pattern against small representative examples before using it on a whole log. Include both a string that should match and one that should not, and inspect captured groups rather than checking only whether some match exists.",
+    "input": "Pattern: order-(\\d+)\nFlags: g\nText: order-42 and order-105; order-x",
+    "output": "The full matches are order-42 and order-105. Capture group 1 contains 42 and 105. order-x does not match.",
+    "explanation": "The numeric group accepts one or more digits; it does not accept letters. If only a whole field is valid, anchor the pattern to the start and end of that field. The global flag searches for multiple matches and changes how many results you inspect.",
+    "notes": [
+      "Patterns use the browser’s JavaScript regular-expression behavior; another language or engine can differ.",
+      "A pattern that matches the samples is not proof that it handles every valid or malicious input.",
+      "Backtracking patterns can be expensive. Avoid testing an untrusted complex pattern against an enormous input, and review any risk feedback."
+    ]
+  },
+  "pdf": {
+    "title": "Merge two documents in a deliberate page order",
+    "scenario": "Before merging, record the order in which a reader should see the documents. Review page counts and any preview before downloading the result. Keep the original files so that a visual, font or page-order problem can be reproduced.",
+    "input": "File A: 2 pages\nFile B: 3 pages\nMerge order: A, then B",
+    "output": "The merged document should contain 5 pages: A’s two pages followed by B’s three pages.",
+    "explanation": "Open the downloaded PDF in a separate viewer and check the first page, the join between documents and the final page. If you are extracting pages, confirm that the page numbers refer to document positions rather than printed chapter numbering.",
+    "notes": [
+      "Large PDFs and image-heavy documents can require substantial browser memory.",
+      "Encrypted, damaged or unsupported documents can fail to load. Some conversions may alter layout or fonts.",
+      "Merging or regenerating a PDF can invalidate digital signatures. A conversion is not a guarantee of PDF accessibility, archival conformance or faithful Word pagination."
+    ]
+  },
+  "image_studio": {
+    "title": "Resize a landscape image without stretching it",
+    "scenario": "Decide whether you need to preserve the entire photograph or fill a fixed frame. Resizing with the original aspect ratio preserves the image shape; cropping to a new ratio deliberately removes part of the picture.",
+    "input": "Original dimensions: 1600 × 900\nTarget width with aspect ratio preserved: 800",
+    "output": "The proportional height is 450, producing an 800 × 450 image.",
+    "explanation": "Check the preview after resizing, then choose an export format suitable for the image. A photograph and a small logo can have different format needs. Compare visual quality and downloaded size rather than assuming the highest compression setting is always appropriate.",
+    "notes": [
+      "JPEG does not preserve an alpha transparency channel. Use a compatible format when transparency matters.",
+      "Repeated lossy exports can degrade details. Export from an original whenever possible.",
+      "The resulting dimensions and file size are separate properties. Large pixel dimensions can still be costly to display even when a file compresses well."
+    ]
+  },
+  "time": {
+    "title": "Check seconds, milliseconds and a timezone",
+    "scenario": "Timestamp debugging often starts with a value that has the right digits but the wrong unit. Confirm the unit before interpreting a surprising date. Then compare a UTC representation with the required local timezone.",
+    "input": "Unix seconds: 1700000000\nEquivalent Unix milliseconds: 1700000000000",
+    "output": "UTC: 2023-11-14 22:13:20\nAsia/Kolkata: 2023-11-15 03:43:20",
+    "explanation": "Both timestamps represent the same instant. The date changes in Kolkata because its offset places the local clock after midnight. This does not mean the server stored a different event time.",
+    "notes": [
+      "A timestamp without a timezone or UTC offset can be ambiguous. Record the source system’s convention.",
+      "Daylight-saving offsets depend on the timezone and date; a fixed offset is not a replacement for a region’s timezone rules.",
+      "Browser timezone data and service timestamps can have different update histories. Validate scheduling-critical conversions in the system that will execute the schedule."
+    ]
+  },
+  "base64": {
+    "title": "Understand the size of an embedded image",
+    "scenario": "A data URL lets text carry an image’s bytes and media type. It can help with a small inline asset, but embedding a large image also enlarges the surrounding document and can reduce the benefits of normal image caching.",
+    "input": "For a 3-byte source, Base64 uses 4 encoded characters.\nA data URL also adds a prefix such as data:image/png;base64,",
+    "output": "Approximate encoded length: 4 × ceil(source bytes / 3), plus the data-URL prefix.",
+    "explanation": "Use the preview to verify that the media type and encoded bytes describe the expected image. If the result does not render, inspect the prefix and copied content instead of assuming every Base64 string is an image.",
+    "notes": [
+      "Base64 is an encoding, not encryption or access control.",
+      "Browsers and downstream applications can impose different URL or document-size limits.",
+      "Converting to Base64 does not optimize the image’s resolution or remove confidential visual content."
+    ]
+  },
+  "markup": {
+    "title": "Format a query without changing what it means",
+    "scenario": "Formatting is useful when you need to understand a query before editing it. Choose the appropriate SQL dialect, format the original query and inspect predicates, joins and aliases before modifying business logic.",
+    "input": "select id,name from users where active=true order by name;",
+    "output": "The formatter separates the SELECT columns, FROM clause, WHERE condition and ORDER BY clause using the chosen dialect’s formatting rules.",
+    "explanation": "Compare the formatted result with the original for readability. The tool does not connect to your database or check that a table exists. Use your database’s own query analysis and a safe test environment to assess execution behavior.",
+    "notes": [
+      "Formatting is not SQL injection prevention, a schema validator or a query optimization benchmark.",
+      "Markdown and HTML previews have different rendering and sanitization behavior. Test generated content in its actual destination.",
+      "XML formatting cannot decide which whitespace is meaningful to a consuming application. Keep originals when working with mixed content."
+    ]
+  },
+  "case": {
+    "title": "Prepare an identifier while keeping acronym expectations clear",
+    "scenario": "Case conversion is convenient for names that move between configuration files, JSON properties and code. Inspect how boundaries and abbreviations are handled before automatically renaming a large set of identifiers.",
+    "input": "Input: user profile name\nChoose camel case, snake case or kebab case.",
+    "output": "camelCase: userProfileName\nsnake_case: user_profile_name\nkebab-case: user-profile-name",
+    "explanation": "These examples use uncomplicated words with clear boundaries. Names that contain acronyms, punctuation or non-Latin characters can require a project-specific convention. Changing a key’s spelling can also change how an external API or configuration binder reads it.",
+    "notes": [
+      "Case conversion does not update references in your source code or migrate stored database fields.",
+      "Natural-language capitalization is not a substitute for human editing of names, titles or prose.",
+      "Keep original keys when consuming a case-sensitive external contract."
+    ]
+  },
+  "debug": {
+    "title": "Find the first useful application frame",
+    "scenario": "A stack trace records where an exception was observed, which is not always where the bad state began. Inspect the exception type, its message and the nearest relevant application frame, then follow the call chain using source code and runtime evidence.",
+    "input": "TypeError: Cannot read properties of undefined (reading 'id')\n    at getUser (user.js:12:9)\n    at handleRequest (server.js:28:3)",
+    "output": "The trace points to getUser at user.js line 12, with handleRequest as its caller. Check the value used before reading id.",
+    "explanation": "The extracted line is a useful starting point, not proof of a single root cause. A missing lookup result, an unexpected response shape and a race condition could lead to the same error. Test the relevant path and inspect the original input.",
+    "notes": [
+      "DebugFlow uses deterministic parsing and heuristics. Suggested checks are not a verified production diagnosis.",
+      "Minified or transformed builds can need source maps; the visible line numbers may not match your authored source.",
+      "Logs can contain secrets and personal data. Sanitize a reproduction before copying a report into a public issue."
+    ]
+  },
+  "distance": {
+    "title": "Compare a geographic distance with a driving route",
+    "scenario": "Latitude/longitude distance describes separation on the Earth’s surface. Driving distance follows an available road network and can be longer or unavailable. Use the direct result as a geographic comparison, then request routing only when a road trip is the relevant question.",
+    "input": "Point A: latitude 0°, longitude 0°\nPoint B: latitude 0°, longitude 1°",
+    "output": "The direct great-circle distance is approximately 111.2 km, or 69.1 miles, depending on the Earth-radius model and rounding.",
+    "explanation": "The sample lies on the equator and illustrates a degree of longitude, not a drivable route. A routing service can return no route for ocean coordinates. For real addresses, place pins on reachable roads and compare the returned route distance separately from the direct distance.",
+    "notes": [
+      "A driving result depends on a public routing service, available road data and its limits. It is not a live-traffic prediction or a route for every travel mode.",
+      "Latitude must be between −90° and 90°; longitude must be between −180° and 180°. Swapping them can create a very different location.",
+      "Do not use the visualization as a safety-critical navigation system. Map tiles and routing are provided by external services."
+    ]
+  },
+  "measure": {
+    "title": "Keep dimensions consistent when converting",
+    "scenario": "Start by identifying the physical quantity: length, mass, volume or another category. Units from different dimensions cannot normally be converted with a single fixed multiplier. The optional 3D scene illustrates the quantity while the numeric result remains the reference.",
+    "input": "Length: 180 cm → meters\nMass: 2.5 kg → grams\nRectangle: width 4 m, height 3 m",
+    "output": "180 cm = 1.8 m\n2.5 kg = 2500 g\nRectangle area = 12 m²; perimeter = 14 m",
+    "explanation": "Length scales by one power of the factor; area uses squared units and volume uses cubed units. A centimeter-to-meter conversion cannot be applied unchanged to square centimeters. Check the formula shown for the selected geometry calculation.",
+    "notes": [
+      "Kilograms and liters need a material density to relate mass to volume. A sugar illustration does not supply a universal density.",
+      "The 3D illustration has a display range and can reach its visual limit while the numeric conversion continues.",
+      "Results use floating-point arithmetic and display rounding. Algebra roots and geometry formulas have domain restrictions that must be checked for the selected inputs."
+    ]
+  },
+  "url": {
+    "title": "Encode a query value without encoding the whole URL",
+    "scenario": "Encoding a parameter value and encoding an entire address solve different problems. When a search value contains spaces, ampersands or a slash, encode that value so those characters are not mistaken for the URL’s own separators.",
+    "input": "Query value: hello world & a/b",
+    "output": "Encoded component: hello%20world%20%26%20a%2Fb",
+    "explanation": "The ampersand becomes %26 so it remains part of the value. If you encode an already encoded value again, a percent sign can become %25 and change what the receiver sees. Use the inspector to distinguish the raw URL from decoded parameter values.",
+    "notes": [
+      "Decoding once and repeatedly decoding are different operations; downstream services may interpret them differently.",
+      "A plus sign can represent a space in form-style query encoding, while encodeURIComponent uses %20. Check the convention expected by the receiver.",
+      "Encoding is not validation or sanitization. A well-encoded address can still point to an untrusted destination."
+    ]
+  },
+  "resume": {
+    "title": "Choose a resume layout for the destination",
+    "scenario": "Start with a single-column template when applying through an unfamiliar screening system. Use standard headings and achievement statements supported by your own experience. A two-column design can be useful for direct sharing, but PDF reading order depends on the parser.",
+    "input": "Workflow: choose a template → Edit resume → replace example content → check Print Preview.\nPaper options: focused A4 or expanded Legal.",
+    "output": "A selectable-text PDF containing your own contact information, experience and projects, with an optional portfolio QR and a separate clickable URL.",
+    "explanation": "The example resume is a starting point and must not be submitted as your own experience. Review the printed file’s page count, text order and links. Add only credentials, employment history and metrics you can substantiate.",
+    "notes": [
+      "The displayed ATS figure is an approximate layout heuristic, not an employer’s ATS score or job-match assessment.",
+      "Longer custom content can span several pages. Choosing A4 does not guarantee a one-page resume.",
+      "Local browser saving does not publish a custom resume URL or synchronize to another device. Download an available backup before clearing site data."
+    ]
+  }
+}
