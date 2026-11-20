@@ -1,3 +1,5 @@
+import { migrateResumeEmail } from "./contact";
+import { specializeResume, type ResumeRoleId } from "./resumeRolePresets";
 import {
   PRINT_RESUME,
   LEGAL_PROJECTS,
@@ -56,9 +58,10 @@ export const RESUME_STORAGE_KEY = "psdev-resume-draft-v1";
 export function createResumeContent(
   paper: ResumePaper,
   years: number,
+  role: ResumeRoleId = "general",
 ): ResumeContent {
   const { summary, contribution, ...base } = PRINT_RESUME;
-  return structuredClone({
+  const content = structuredClone({
     ...base,
     summary: summary(years),
     projects: paper === "legal" ? LEGAL_PROJECTS : base.projects,
@@ -69,6 +72,7 @@ export function createResumeContent(
         : []),
     ],
   });
+  return specializeResume(content, role, paper, years);
 }
 export function blankResumeContent(): ResumeContent {
   return {
@@ -163,7 +167,13 @@ export function parseResumeDraft(text: string): ResumeDraft {
     typeof a.showQR !== "boolean"
   )
     throw Error("The draft has missing or invalid fields.");
-  return d as unknown as ResumeDraft;
+  return {
+    ...(d as unknown as ResumeDraft),
+    content: {
+      ...(c as unknown as ResumeContent),
+      email: migrateResumeEmail(c.email as string),
+    },
+  };
 }
 export function loadResumeDraft() {
   if (typeof window === "undefined") return null;

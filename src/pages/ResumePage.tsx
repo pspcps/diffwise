@@ -1,3 +1,4 @@
+import ResumeProfilePicker from "../components/Resume/ResumeProfilePicker";
 import ToolGuide from "../seo/ToolGuide";
 import SiteFooter from "../seo/SiteFooter";
 import { useEffect, useMemo, useRef } from "react";
@@ -12,7 +13,7 @@ import {
 import type { ResumeContent, ResumeAppearance } from "../data/resumeDraft";
 import { ArrowUpRight } from "lucide-react";
 import { useCareerDuration } from "../hooks/useCareerDuration";
-import type { CSSProperties } from "react";
+import type { CSSProperties, MouseEvent, ReactNode } from "react";
 import {
   RESUME_TEMPLATES,
   estimateResumeFormatting,
@@ -21,6 +22,27 @@ import type { ResumeTemplate, ResumePaper } from "../data/printResume";
 import { navigateTo } from "../seo/routes";
 const short = (url: string) =>
   url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+function followResumeLink(event: MouseEvent<HTMLAnchorElement>) {
+  if (
+    event.button !== 0 ||
+    event.metaKey ||
+    event.ctrlKey ||
+    event.altKey ||
+    event.shiftKey
+  )
+    return;
+  event.preventDefault();
+  const link = event.currentTarget;
+  navigateTo(link.pathname + link.search + link.hash);
+  if (link.hash) {
+    const anchor = link.hash.slice(1);
+    requestAnimationFrame(() => {
+      const target = document.getElementById(anchor);
+      if (target instanceof HTMLDetailsElement) target.open = true;
+      target?.scrollIntoView({ block: "start" });
+    });
+  }
+}
 function ResumeDocument({
   template,
   content: resume,
@@ -215,9 +237,13 @@ function ResumeDocument({
 function Gallery({
   paper,
   previewName,
+  previewTitle,
+  profilePicker,
 }: {
   paper: ResumePaper;
   previewName?: string;
+  previewTitle: string;
+  profilePicker: ReactNode;
 }) {
   return (
     <div className="resume-gallery">
@@ -230,16 +256,28 @@ function Gallery({
           <p className="resume-eyebrow">ONE STORY. TEN WAYS TO TELL IT.</p>
           <h1>A resume that opens doors.</h1>
           <p>
-            Choose a layout, then enter Edit mode to make it yours. Save your
-            details on this device and reuse them across every template.
+            Choose a profile and layout, then enter Edit mode to make it yours.
+            Save your details on this device and reuse them across every
+            template. Seven role profiles include a common resume and focused
+            versions for backend, cloud, applied AI, full-stack, architecture
+            and forward-deployed roles.
           </p>
         </div>
+        {profilePicker}
+        <p className="resume-selected-profile" role="status">
+          Showing: {previewTitle}
+        </p>
         <nav className="resume-paper-options" aria-label="Resume paper size">
-          <a href="/resume/" aria-current={paper === "a4" ? "page" : undefined}>
+          <a
+            href="/resume/"
+            onClick={followResumeLink}
+            aria-current={paper === "a4" ? "page" : undefined}
+          >
             A4 · Focused
           </a>
           <a
             href="/resume/legal/"
+            onClick={followResumeLink}
             aria-current={paper === "legal" ? "page" : undefined}
           >
             Legal · Expanded
@@ -292,6 +330,7 @@ function Gallery({
               key={t.id}
               href={`/resume/${t.id}/${paper === "legal" ? "legal/" : ""}`}
               className="resume-template-card"
+              onClick={followResumeLink}
               style={{ "--resume-accent": t.accent } as CSSProperties}
             >
               <div
@@ -301,7 +340,7 @@ function Gallery({
                 <div className="preview-name">
                   {previewName || "PRAKASH CHOUDHARY"}
                 </div>
-                <div className="preview-subtitle">SENIOR SOFTWARE ENGINEER</div>
+                <div className="preview-subtitle">{previewTitle}</div>
                 <div className="preview-contact" />
                 <div className={`preview-body preview-cols-${t.columns}`}>
                   <div>
@@ -365,7 +404,12 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
     () => createResumeContent(paper, duration.years),
     [paper, duration.years],
   );
-  const profiles = useResumeProfiles(sample, template?.id, paper);
+  const profiles = useResumeProfiles(
+    sample,
+    template?.id,
+    paper,
+    duration.years,
+  );
   const {
     current,
     content,
@@ -388,7 +432,7 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
     if (!template) return;
     const applyTitle = () => {
       document.title = content
-        ? `${content.name || "My resume"} — Resume (${template.name}, ${paper === "legal" ? "Legal" : "A4"})`
+        ? `${content.name || "My resume"} — ${content.title || "Resume"} (${template.name}, ${paper === "legal" ? "Legal" : "A4"})`
         : document.querySelector<HTMLMetaElement>('meta[name="title"]')
             ?.content || "Resume Builder";
     };
@@ -404,6 +448,14 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
       <Gallery
         paper={paper}
         previewName={content ? content.name || "YOUR NAME" : undefined}
+        previewTitle={current.title || "YOUR PROFESSIONAL TITLE"}
+        profilePicker={
+          <ResumeProfilePicker
+            profiles={profiles.profiles}
+            activeId={profiles.activeId}
+            onSelect={profiles.viewProfile}
+          />
+        }
       />
     );
   return (
@@ -428,6 +480,11 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
           ← All templates
         </a>
         <div>
+          <ResumeProfilePicker
+            profiles={profiles.profiles}
+            activeId={profiles.activeId}
+            onSelect={profiles.viewProfile}
+          />
           <span>
             {template.name} ·{" "}
             {template.columns === 1 ? "Single column" : "Two columns"}
@@ -447,7 +504,11 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
               <option value="legal">Legal · Expanded</option>
             </select>
           </label>
-          <a className="resume-control-score" href="/resume/#ats-estimate">
+          <a
+            className="resume-control-score"
+            href="/resume/#ats-estimate"
+            onClick={followResumeLink}
+          >
             Approx. ATS formatting: {estimateResumeFormatting(template).score}
             /100
           </a>
@@ -473,8 +534,9 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
       </p>
       {content && (
         <p className="resume-custom-hint">
-          Your custom draft is applied. Longer edits may span multiple pages;
-          check Print Preview.
+          {profiles.isExample
+            ? "Choose a profile above to view this layout for a different role. Use Edit resume to customize its details."
+            : "Your saved content is applied. Longer edits may span multiple pages; check Print Preview."}
         </p>
       )}
       <dialog
@@ -489,7 +551,10 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
         <ResumeEditor
           key={profiles.editSessionId}
           content={current}
-          exampleProjects={createResumeContent(paper, duration.years).projects}
+          exampleProjects={
+            createResumeContent(paper, duration.years, profiles.exampleRole)
+              .projects
+          }
           appearance={appearance}
           accent={template.accent}
           onContent={changeContent}

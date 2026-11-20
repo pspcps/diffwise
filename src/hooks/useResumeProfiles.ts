@@ -1,4 +1,12 @@
-import { useEffect, useState } from "react";
+import { createResumeContent } from "../data/resumeDraft";
+import { isResumeRole } from "../data/resumeRolePresets";
+import {
+  createDefaultResumeLibrary,
+  migrateOwnerRoleExamples,
+  refreshRoleExamples,
+  addRoleExamples,
+} from "../data/resumePresetLibrary";
+import { useEffect, useMemo, useState } from "react";
 import {
   DEFAULT_APPEARANCE,
   RESUME_STORAGE_KEY,
@@ -22,18 +30,31 @@ export function useResumeProfiles(
   sample: ResumeContent,
   templateId: string | undefined,
   paper: ResumePaper,
+  years: number,
 ) {
   const [initial] = useState(() => {
     try {
       const raw = localStorage.getItem(PROFILE_STORAGE_KEY);
-      if (raw) return parseProfileBackup(raw);
+      if (raw)
+        return {
+          library: migrateOwnerRoleExamples(
+            parseProfileBackup(raw),
+            paper,
+            years,
+          ),
+          remember: true,
+        };
     } catch {
       /* Preserve unreadable storage; an explicit save can replace it. */
     }
     const legacy = loadResumeDraft();
-    if (!legacy) return null;
+    if (!legacy)
+      return {
+        library: createDefaultResumeLibrary(paper, years),
+        remember: false,
+      };
     const id = profileId();
-    return makeLibrary(
+    const library = makeLibrary(
       [
         {
           content: legacy.content,
@@ -46,9 +67,21 @@ export function useResumeProfiles(
       ],
       id,
     );
+    return {
+      library: migrateOwnerRoleExamples(library, paper, years),
+      remember: true,
+    };
   });
-  const [library, setLibrary] = useState<ResumeLibrary | null>(initial);
-  const [remember, setRemember] = useState(Boolean(initial));
+  const [storedLibrary, setLibrary] = useState<ResumeLibrary | null>(
+    initial.library,
+  );
+  const library = useMemo(
+    () => refreshRoleExamples(storedLibrary, years),
+    [storedLibrary, years],
+  );
+  const [remember, setRemember] = useState(initial.remember);
+  const rebuild = (profiles: ResumeProfile[], activeId: string) =>
+    makeLibrary(profiles, activeId, library?.roleDefaultsAdded);
   const [message, setMessage] = useState("");
   const [editSession, setEditSession] = useState<{
     id: string;
@@ -62,6 +95,11 @@ export function useResumeProfiles(
   );
   const current = active?.content || sample;
   const appearance = active?.appearance || DEFAULT_APPEARANCE;
+  const roleFromId = active?.id.startsWith("preset:")
+    ? active.id.slice(7)
+    : undefined;
+  const exampleRole =
+    active?.presetRole || (isResumeRole(roleFromId) ? roleFromId : "general");
   const commit = (next: ResumeLibrary | null) => {
     try {
       if (next) parseProfileBackup(JSON.stringify(next));
@@ -83,7 +121,7 @@ export function useResumeProfiles(
     if (templateId && library && active) {
       if (active.templateId !== templateId || active.paper !== paper)
         setLibrary(
-          makeLibrary(
+          rebuild(
             library.profiles.map((p) =>
               p.id === active.id ? { ...p, templateId, paper } : p,
             ),
@@ -118,8 +156,9 @@ export function useResumeProfiles(
     };
   const update = (patch: Partial<ResumeProfile>) => {
     const p = { ...snapshot(), ...patch };
+    if (patch.content && patch.presetRole === undefined) delete p.presetRole;
     commit(
-      makeLibrary(
+      rebuild(
         active
           ? library!.profiles.map((v) => (v.id === p.id ? p : v))
           : [...(library?.profiles || []), p],
@@ -149,6 +188,7 @@ export function useResumeProfiles(
       name:
         name.trim().slice(0, 100) || (duplicate ? "Resume copy" : "New resume"),
       content: duplicate ? current : blankResumeContent(),
+      presetRole: undefined,
     });
     // Preserve the current sample/edits before opening another profile.
     const kept = active ? profiles : [...profiles, snapshot()];
@@ -156,7 +196,7 @@ export function useResumeProfiles(
       setMessage("Maximum 50 profiles.");
       return;
     }
-    if (!switchProfile(makeLibrary([...kept, p], p.id))) return;
+    if (!switchProfile(rebuild([...kept, p], p.id))) return;
     setMessage(
       remember
         ? "Profile created. Choose Done editing to save on this device."
@@ -166,8 +206,7 @@ export function useResumeProfiles(
   const remove = () => {
     if (!active || !library) return;
     const remaining = library.profiles.filter((p) => p.id !== active.id);
-    if (remaining.length)
-      switchProfile(makeLibrary(remaining, remaining[0].id));
+    if (remaining.length) switchProfile(rebuild(remaining, remaining[0].id));
     else {
       setLibrary(null);
       try {
@@ -235,6 +274,26 @@ export function useResumeProfiles(
     message,
     setMessage,
     profiles: library?.profiles || [],
+    isExample: Boolean(active?.presetRole),
+    exampleRole,
+    addRoleExamples: () => {
+      try {
+        const p = snapshot();
+        if (
+          !commit(addRoleExamples(library || rebuild([p], p.id), paper, years))
+        )
+          return;
+        setMessage(
+          "Missing example roles added. Existing profiles were kept. Choose Done editing to apply.",
+        );
+      } catch (error) {
+        setMessage(
+          error instanceof Error
+            ? error.message
+            : "Could not add role examples.",
+        );
+      }
+    },
     activeId: active?.id || "",
     changeContent: (content: ResumeContent) => update({ content }),
     changeAppearance: (appearance: ResumeAppearance) => update({ appearance }),
@@ -242,7 +301,7 @@ export function useResumeProfiles(
       if (save) {
         setRemember(true);
         const p = snapshot();
-        commit(library || makeLibrary([p], p.id));
+        commit(library || rebuild([p], p.id));
         setMessage("Choose Done editing to save all profiles on this device.");
       } else {
         if (editSession) {
@@ -267,7 +326,8 @@ export function useResumeProfiles(
     },
     reset: () => {
       update({
-        content: structuredClone(sample),
+        content: createResumeContent(paper, years, exampleRole),
+        presetRole: exampleRole,
         appearance: { ...DEFAULT_APPEARANCE },
       });
       setMessage(
@@ -279,16 +339,37 @@ export function useResumeProfiles(
     rename: (name: string) => {
       if (name.trim()) update({ name: name.trim().slice(0, 100) });
     },
+    viewProfile: (id: string) => {
+      if (!library || editSession || !library.profiles.some((p) => p.id === id))
+        return;
+      commit({
+        ...library,
+        activeProfileId: id,
+        profiles: library.profiles.map((p) =>
+          p.id === id
+            ? {
+                ...p,
+                templateId: templateId || p.templateId,
+                paper,
+              }
+            : p,
+        ),
+      });
+    },
     select: (id: string) => {
       if (library?.profiles.some((p) => p.id === id))
         switchProfile({ ...library, activeProfileId: id });
     },
     backup: () => {
       const p = snapshot();
-      return library || makeLibrary([p], p.id);
+      return library || rebuild([p], p.id);
     },
     importBackup: (incoming: ResumeLibrary) => {
-      const next = mergeProfileBackup(library?.profiles || [], incoming);
+      const next = mergeProfileBackup(
+        library?.profiles || [],
+        incoming,
+        library?.roleDefaultsAdded,
+      );
       if (!switchProfile(next)) return;
       setMessage(
         `Imported ${incoming.profiles.length} profile(s). Existing profiles were kept.${remember ? " Choose Done editing to save on this device." : " Choose Done editing to apply; enable device saving to keep them after reloading."}`,
