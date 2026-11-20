@@ -24,3 +24,6 @@ const full=makeLibrary(Array.from({length:50},(_,i)=>({...p,id:'p'+i})), 'p0');a
 const removed=makeLibrary(defaults.profiles.filter(p=>p.id!=='preset:cloud'),defaults.activeProfileId,true);assert.equal(migrateOwnerRoleExamples(removed,'a4',9).profiles.length,6);assert.equal(addRoleExamples(removed,'a4',9).profiles.length,7);
 const imported=mergeProfileBackup([],defaults);assert.ok(imported.profiles.every(p=>!p.presetRole));assert.deepEqual(imported.profiles[0].content,defaults.profiles[0].content);assert.throws(()=>parseProfileBackup(JSON.stringify({...defaults,profiles:[{...defaults.profiles[0],presetRole:'made-up-role'}]})));
 console.log('PASS seven role defaults, targeted content, dates/titles, independent examples, dynamic years, safe existing-user migration and contact replacement.');
+
+const collision=makeLibrary([{...p,name:'Backend Engineer'}],p.id);const withExamples=addRoleExamples(collision,'a4',9);assert.equal(new Set(withExamples.profiles.map(p=>p.name)).size,withExamples.profiles.length);assert.equal(withExamples.profiles[0].name,'Backend Engineer');
+console.log('PASS example names disambiguate existing custom profile names.');

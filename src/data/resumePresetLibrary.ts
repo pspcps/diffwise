@@ -35,6 +35,13 @@ export function addRoleExamples(
       (includeGeneral || p.presetRole !== "general") &&
       !library.profiles.some((existing) => existing.id === p.id),
   );
+  const names = new Set(library.profiles.map((p) => p.name));
+  for (const example of examples) {
+    const base = example.name;
+    let n = 1;
+    while (names.has(example.name)) example.name = `${base} (example ${n++})`;
+    names.add(example.name);
+  }
   if (library.profiles.length + examples.length > 50)
     throw Error("Make room for the role examples first (maximum 50 profiles).");
   const next = makeLibrary(
