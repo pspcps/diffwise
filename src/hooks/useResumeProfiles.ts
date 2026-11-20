@@ -339,6 +339,23 @@ export function useResumeProfiles(
     rename: (name: string) => {
       if (name.trim()) update({ name: name.trim().slice(0, 100) });
     },
+    viewProfile: (id: string) => {
+      if (!library || editSession || !library.profiles.some((p) => p.id === id))
+        return;
+      commit({
+        ...library,
+        activeProfileId: id,
+        profiles: library.profiles.map((p) =>
+          p.id === id
+            ? {
+                ...p,
+                templateId: templateId || p.templateId,
+                paper,
+              }
+            : p,
+        ),
+      });
+    },
     select: (id: string) => {
       if (library?.profiles.some((p) => p.id === id))
         switchProfile({ ...library, activeProfileId: id });
