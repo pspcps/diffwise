@@ -66,3 +66,11 @@ Unedited examples regenerate their content from the current career duration, inc
 The owner requested a new professional email, `prakash63kumar@gmail.com`. The portfolio, public contact page, generated HTML/PDF examples and defaults share `src/data/contact.ts`. Older stored drafts and imported backups replace the exact former owner email in the contact field. Other email addresses and unrelated personal details are preserved. The former address remains only as the explicit migration comparison in source; previously downloaded PDFs and Git history are not rewritten.
 
 The optional version 2 backup fields `presetRole` and `roleDefaultsAdded` distinguish unedited examples and remember that defaults were seeded. Version 1 drafts and older version 2 libraries remain accepted. Storage is still opt-in, and profile edits remain staged until **Done editing**. Cancel/Escape restores the previous session state.
+
+## Simplified editor layout
+
+The editor opens on **Content**, so contact details and summary are available immediately. A compact Active profile selector stays at the top; Cancel and Done editing remain visible while the form scrolls. Four keyboard-accessible tabs separate Content, Appearance, Profiles and Save & backup. Arrow keys and Home/End move between tabs. Content sections use native accordions, with consistent input columns and compact repeatable entries.
+
+Use **Appearance** for colors, contrast feedback and the portfolio QR. Use **Profiles** to rename the selected profile, create a new blank version or duplicate it. A newly created version can be renamed afterward; the name field reflects the selected profile instead of starting blank. Restore/reset actions are grouped under a disclosure, and deletion retains its confirmation. **Save & backup** contains device saving, download/import and storage information, rather than mixing them into the content form.
+
+Switching tabs does not apply, discard or reset edits. Profile management, imports and saving remain staged until Done editing, and Cancel/Escape restore the previous session. The existing per-profile layouts, backup compatibility and print exclusions are unchanged. The editor itself never appears in the exported resume PDF.
