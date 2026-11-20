@@ -17,7 +17,7 @@ export const PRINT_RESUME = {
   github: "https://github.com/pspcps",
   portfolio: PORTFOLIO_URL,
   summary(years = getCareerDuration().years) {
-    return `Senior Software Engineer with ${years}+ years building full-stack applications, backend microservices and event-driven systems. Specializes in React, Node.js, TypeScript, Kafka and PostgreSQL on AWS and Google Cloud. Led 4–6 engineers; designed a platform saving ~$1M annually. Builds multi-agent AI and retrieval-augmented generation (RAG) solutions.`;
+    return `Senior software engineer with ${years}+ years building React applications, Node.js/TypeScript services and Kafka data pipelines on AWS and Google Cloud. Led teams of 4–6 engineers; designed reverse geocoding with OpenStreetMap and Redis, saving approximately $1M annually. Recent projects include multi-agent AI and retrieval-augmented generation (RAG).`;
   },
   skills: [
     [
@@ -40,20 +40,21 @@ export const PRINT_RESUME = {
   experience: [
     {
       company: "Lytx India Technologies",
-      role: "Senior Software Engineer (SDE III)",
+      role: "Senior Software Engineer",
       period: "Oct 2024 – Present",
       bullets: [
-        "Architected a high-throughput OpenStreetMap/Redis reverse-geocoding service, replacing Google Maps API usage and saving ~$1M per year.",
+        "Architected an OpenStreetMap/Redis reverse-geocoding service, replacing Google Maps API usage and saving approximately $1M annually.",
         "Built an AI-driven diagnostic tool using device connectivity and movement data, accelerating support issue resolution by 40%.",
-        "Reduced non-critical alert noise by 60%; introduced batched database inserts, reducing database errors by 60–70%.",
+        "Reduced non-critical alert noise by 60% through event muting.",
+        "Introduced batched database inserts, reducing database errors by 60–70%.",
       ],
     },
     {
       company: "Pluralsight India Pvt. Ltd.",
-      role: "Software Engineer (SDE II / SDE III)",
+      role: "Software Engineer",
       period: "Nov 2022 – Oct 2024",
       bullets: [
-        "Designed Kafka content-tracking pipelines with exactly-once/at-least-once semantics; monitored consumer health and lag using Grafana and OpsGenie.",
+        "Designed Kafka content-tracking pipelines; monitored consumer health and lag with Grafana and OpsGenie to investigate production issues.",
         "Optimized 100+ complex SQL queries, reducing execution times by 60–70%.",
       ],
     },

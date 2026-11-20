@@ -1,3 +1,4 @@
+import { CONTACT_EMAIL } from "../data/contact";
 export type InformationId = "about" | "privacy" | "contact" | "terms";
 export interface InformationSection {
   heading: string;
@@ -149,8 +150,8 @@ export const SITE_INFORMATION: InformationPage[] = [
         ],
         links: [
           {
-            label: "Email Prakash: prakash.seervi9460@gmail.com",
-            href: "mailto:prakash.seervi9460@gmail.com",
+            label: `Email Prakash: ${CONTACT_EMAIL}`,
+            href: `mailto:${CONTACT_EMAIL}`,
           },
           {
             label: "Open the GitHub issue tracker",

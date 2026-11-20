@@ -231,7 +231,10 @@ function Gallery({
           <h1>A resume that opens doors.</h1>
           <p>
             Choose a layout, then enter Edit mode to make it yours. Save your
-            details on this device and reuse them across every template.
+            details on this device and reuse them across every template. Seven
+            role profiles include a common resume and focused versions for
+            backend, cloud, applied AI, full-stack, architecture and
+            forward-deployed roles.
           </p>
         </div>
         <nav className="resume-paper-options" aria-label="Resume paper size">
@@ -365,7 +368,12 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
     () => createResumeContent(paper, duration.years),
     [paper, duration.years],
   );
-  const profiles = useResumeProfiles(sample, template?.id, paper);
+  const profiles = useResumeProfiles(
+    sample,
+    template?.id,
+    paper,
+    duration.years,
+  );
   const {
     current,
     content,
@@ -388,7 +396,7 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
     if (!template) return;
     const applyTitle = () => {
       document.title = content
-        ? `${content.name || "My resume"} — Resume (${template.name}, ${paper === "legal" ? "Legal" : "A4"})`
+        ? `${content.name || "My resume"} — ${content.title || "Resume"} (${template.name}, ${paper === "legal" ? "Legal" : "A4"})`
         : document.querySelector<HTMLMetaElement>('meta[name="title"]')
             ?.content || "Resume Builder";
     };
@@ -473,8 +481,9 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
       </p>
       {content && (
         <p className="resume-custom-hint">
-          Your custom draft is applied. Longer edits may span multiple pages;
-          check Print Preview.
+          {profiles.isExample
+            ? "Role examples are available in Edit resume. Choose a profile for the job you are targeting."
+            : "Your saved content is applied. Longer edits may span multiple pages; check Print Preview."}
         </p>
       )}
       <dialog
@@ -489,7 +498,10 @@ export default function ResumePage({ templateId }: { templateId?: string }) {
         <ResumeEditor
           key={profiles.editSessionId}
           content={current}
-          exampleProjects={createResumeContent(paper, duration.years).projects}
+          exampleProjects={
+            createResumeContent(paper, duration.years, profiles.exampleRole)
+              .projects
+          }
           appearance={appearance}
           accent={template.accent}
           onContent={changeContent}

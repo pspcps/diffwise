@@ -1,3 +1,4 @@
+import { isResumeRole, type ResumeRoleId } from "./resumeRolePresets";
 import { parseResumeDraft, type ResumeDraft } from "./resumeDraft";
 import { RESUME_TEMPLATES, type ResumePaper } from "./printResume";
 export const PROFILE_STORAGE_KEY = "psdev-resume-profiles-v2";
@@ -6,23 +7,28 @@ export interface ResumeProfile extends Omit<ResumeDraft, "version"> {
   name: string;
   templateId: string;
   paper: ResumePaper;
+  /** Present only for an unedited example; editing detaches it. */
+  presetRole?: ResumeRoleId;
 }
 export interface ResumeLibrary {
   version: 2;
   kind: "psdev-resume-profiles";
   activeProfileId: string;
   profiles: ResumeProfile[];
+  roleDefaultsAdded?: true;
 }
 export const profileId = () => crypto.randomUUID();
 export function makeLibrary(
   profiles: ResumeProfile[],
   activeProfileId: string,
+  roleDefaultsAdded?: true,
 ): ResumeLibrary {
   return {
     version: 2,
     kind: "psdev-resume-profiles",
     profiles,
     activeProfileId,
+    ...(roleDefaultsAdded ? { roleDefaultsAdded: true as const } : {}),
   };
 }
 export function parseProfileBackup(text: string): ResumeLibrary {
@@ -51,7 +57,8 @@ export function parseProfileBackup(text: string): ResumeLibrary {
     value.kind !== "psdev-resume-profiles" ||
     !Array.isArray(value.profiles) ||
     !value.profiles.length ||
-    value.profiles.length > 50
+    value.profiles.length > 50 ||
+    (value.roleDefaultsAdded !== undefined && value.roleDefaultsAdded !== true)
   )
     throw Error("Choose a resume profiles backup or a version 1 resume draft.");
   const ids = new Set<string>();
@@ -66,7 +73,8 @@ export function parseProfileBackup(text: string): ResumeLibrary {
       !p.name.trim() ||
       p.name.length > 100 ||
       !RESUME_TEMPLATES.some((t) => t.id === p.templateId) ||
-      !["a4", "legal"].includes(p.paper)
+      !["a4", "legal"].includes(p.paper) ||
+      (p.presetRole !== undefined && !isResumeRole(p.presetRole))
     )
       throw Error(
         "Backup contains an invalid profile, duplicate ID, or unsupported layout.",
@@ -86,15 +94,17 @@ export function parseProfileBackup(text: string): ResumeLibrary {
       name: p.name.trim(),
       templateId: p.templateId,
       paper: p.paper,
+      ...(p.presetRole !== undefined ? { presetRole: p.presetRole } : {}),
     };
   });
   if (!ids.has(value.activeProfileId))
     throw Error("Backup has no valid active profile.");
-  return makeLibrary(profiles, value.activeProfileId);
+  return makeLibrary(profiles, value.activeProfileId, value.roleDefaultsAdded);
 }
 export function mergeProfileBackup(
   existing: ResumeProfile[],
   incoming: ResumeLibrary,
+  roleDefaultsAdded?: true,
 ): ResumeLibrary {
   if (existing.length + incoming.profiles.length > 50)
     throw Error(
@@ -109,7 +119,15 @@ export function mergeProfileBackup(
     let n = 1;
     while (names.has(name)) name = `${p.name.slice(0, 80)} (imported ${n++})`;
     names.add(name);
-    return structuredClone({ ...p, id, name });
+    const copy = structuredClone({ ...p, id, name });
+    // An import restores captured data, including manually edited backup text.
+    // It must never regenerate a different person's resume from an example tag.
+    delete copy.presetRole;
+    return copy;
   });
-  return makeLibrary([...existing, ...added], active);
+  return makeLibrary(
+    [...existing, ...added],
+    active,
+    roleDefaultsAdded || incoming.roleDefaultsAdded,
+  );
 }

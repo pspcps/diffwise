@@ -40,13 +40,18 @@ function Field({
       <span>{label}</span>
       {multiline ? (
         <textarea
+          aria-label={label}
           value={value}
           maxLength={20000}
           onChange={(e) => onChange(e.target.value)}
           rows={3}
         />
       ) : (
-        <input value={value} onChange={(e) => onChange(e.target.value)} />
+        <input
+          aria-label={label}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
       )}
     </label>
   );
@@ -146,7 +151,9 @@ export default function ResumeEditor(p: Props) {
         <h3>Resume profiles</h3>
         <p>
           Keep a separate resume for each role. Each profile remembers its
-          content, colors, QR setting, template and paper size.
+          content, colors, QR setting, template and paper size. The seven
+          example roles emphasize different parts of Prakash’s documented work;
+          held employment titles and dates stay the same.
         </p>
         <label className="resume-edit-field">
           <span>Active profile</span>
@@ -159,7 +166,7 @@ export default function ResumeEditor(p: Props) {
             }}
           >
             {!pm.activeId && (
-              <option value="">Example resume (not saved)</option>
+              <option value="">Common example (not saved)</option>
             )}
             {pm.profiles.map((profile) => (
               <option key={profile.id} value={profile.id}>
@@ -168,6 +175,9 @@ export default function ResumeEditor(p: Props) {
             ))}
           </select>
         </label>
+        <button type="button" onClick={pm.addRoleExamples}>
+          Restore missing role examples
+        </button>
         <label className="resume-edit-field">
           <span>Profile name</span>
           <input
@@ -275,8 +285,8 @@ export default function ResumeEditor(p: Props) {
         enabled and you choose Done editing; they are not uploaded by the
         editor. Download all profiles before clearing site data or moving
         devices. Imports add profiles without replacing existing ones. Turning
-        off device saving removes stored copies after Done editing; open profiles
-        remain for this page session.
+        off device saving removes stored copies after Done editing; open
+        profiles remain for this page session.
       </p>
       <p role="status" className="resume-editor-status">
         {p.message}

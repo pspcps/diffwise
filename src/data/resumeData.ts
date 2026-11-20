@@ -1,8 +1,9 @@
+import { CONTACT_EMAIL } from "./contact";
 import { getCareerDuration } from "../utils/careerDuration";
 export const RESUME = {
   name: "Prakash Choudhary",
   initials: "PC",
-  email: "prakash.seervi9460@gmail.com",
+  email: CONTACT_EMAIL,
   phone: "",
   linkedin: "https://linkedin.com/in/prakashseervi63",
   resumeUrl: "/resume/",
