@@ -164,12 +164,28 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
                       </span>
                     ))}
                   </div>
-                  <button
-                    className="project-details-button"
-                    onClick={() => setSelected(p)}
-                  >
-                    View case study <ArrowUpRight size={17} />
-                  </button>
+                  <div className="project-card-actions">
+                    <button
+                      className="project-details-button"
+                      onClick={() => setSelected(p)}
+                    >
+                      View case study <ArrowUpRight size={17} />
+                    </button>
+                    {p.github ? (
+                      <a
+                        className="project-source-link"
+                        href={p.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`View ${p.title} source on GitHub (opens in a new tab)`}
+                      >
+                        <GitFork size={15} aria-hidden="true" /> GitHub
+                        <ArrowUpRight size={14} aria-hidden="true" />
+                      </a>
+                    ) : (
+                      <span className="project-source-private">Private source</span>
+                    )}
+                  </div>
                 </div>
               </article>
             ))}

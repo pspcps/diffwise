@@ -4,7 +4,7 @@ export const PORTFOLIO_URL = "https://psdevtool.online/portfolio/";
 const DRISHTI_PROJECT = {
   name: "Project Drishti",
   tech: "React, Firebase, Vertex AI Vision, Gemini",
-  url: "https://github.com/pspcps/project-drishti",
+  url: "https://github.com/pspcps/Agentic-Project-Drishti",
   detail:
     "Built camera-frame analysis and Firestore-backed incident, zone and responder workflows for an AI-assisted crowd-safety dashboard.",
 };
