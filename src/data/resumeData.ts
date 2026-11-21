@@ -144,18 +144,18 @@ export const RESUME = {
       period: "May 2026 – Present",
       tech: [
         "React",
-        "Firebase Functions",
+        "FastAPI",
         "Firestore",
         "Vertex AI Vision",
         "Gemini",
         "Cloud Run",
       ],
       color: "#4f8ef7",
-      github: "https://github.com/pspcps/project-drishti",
+      github: "https://github.com/pspcps/Agentic-Project-Drishti",
       bullets: [
         "Built a camera-to-analysis workflow that sends sampled frames through Vertex AI Vision and Gemini for crowd and hazard assessment.",
         "Connected analysis results to Firestore-backed incident, zone, and responder workflows with a React operations dashboard.",
-        "Organized perception, incident management, and responder assignment into separate backend functions.",
+        "Separated the React frontend, FastAPI agent services, and database setup, with MCP tools for incident and responder operations.",
       ],
     },
     {

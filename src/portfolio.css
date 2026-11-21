@@ -484,11 +484,47 @@
   width: 12px;
   height: 12px;
 }
-.portfolio-atelier .project-details-button {
-  padding-top: 15px;
+.project-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
   margin-top: 23px;
-  font-size: 10px !important;
-  color: #ccdfc1;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.portfolio-atelier .project-card-actions .project-details-button,
+.portfolio-atelier .project-source-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: auto;
+  min-height: 44px;
+  padding: 8px 0;
+  margin: 0;
+  border: 0;
+  border-radius: 5px;
+  font-size: 12px !important;
+  color: inherit;
+  text-decoration: none;
+}
+.portfolio-atelier .project-source-link {
+  color: var(--user-accent);
+}
+.portfolio-atelier .project-card-actions button:hover,
+.portfolio-atelier .project-source-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.project-card-actions :is(button, a):focus-visible {
+  outline: 2px solid var(--user-accent);
+  outline-offset: 4px;
+}
+.project-source-private {
+  color: #9aac91;
+  font-size: 11px;
 }
 .portfolio-atelier .portfolio-about {
   border-bottom: 1px solid #ffffff0c;

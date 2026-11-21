@@ -13,7 +13,7 @@ export const PROJECT_CASE_STUDIES: Record<string, ProjectCaseStudy> = {
     engineering:
       "Integration of multimodal inference with operational state, incident handling, and a live dashboard.",
     scope:
-      "Hackathon/MVP implementation. Repository documentation distinguishes implemented incident workflows from incomplete forecasting and advanced features; autonomy percentages are project estimates, not benchmark results.",
+      "Agentic MVP organized into frontend, backend, and database setup modules. Backend import paths require repair before a reproducible startup; detection quality, forecasting, and end-to-end reliability have not been independently evaluated.",
     stages: [
       {
         title: "Camera capture",
@@ -28,7 +28,7 @@ export const PROJECT_CASE_STUDIES: Record<string, ProjectCaseStudy> = {
       {
         title: "Incident workflows",
         description:
-          "Firebase Functions manage incidents, zones, and responder assignments in Firestore.",
+          "FastAPI agent services and MCP tools implement Firestore-backed incident, zone, and responder operations.",
       },
       {
         title: "Operations dashboard",
@@ -38,16 +38,16 @@ export const PROJECT_CASE_STUDIES: Record<string, ProjectCaseStudy> = {
     ],
     sources: [
       {
-        label: "ProjectDrishti_Hackathon_Report.md",
-        url: "https://github.com/pspcps/project-drishti/blob/d27e86569fce1de4240cb957dc6a6b55319c16e3/ProjectDrishti_Hackathon_Report.md",
+        label: "frontend/src/components/CameraCapture.jsx",
+        url: "https://github.com/pspcps/Agentic-Project-Drishti/blob/ffac5447a38f0cd29b9897b4e7e642827421f44a/frontend/src/components/CameraCapture.jsx",
       },
       {
-        label: "src/components/CameraCapture.jsx",
-        url: "https://github.com/pspcps/project-drishti/blob/d27e86569fce1de4240cb957dc6a6b55319c16e3/src/components/CameraCapture.jsx",
+        label: "backend/main.py",
+        url: "https://github.com/pspcps/Agentic-Project-Drishti/blob/ffac5447a38f0cd29b9897b4e7e642827421f44a/backend/main.py",
       },
       {
-        label: "drishti-mvp-functions/analyzeWithGemini.js",
-        url: "https://github.com/pspcps/project-drishti/blob/d27e86569fce1de4240cb957dc6a6b55319c16e3/drishti-mvp-functions/analyzeWithGemini.js",
+        label: "backend/MCP_tools/db_tools.py",
+        url: "https://github.com/pspcps/Agentic-Project-Drishti/blob/ffac5447a38f0cd29b9897b4e7e642827421f44a/backend/MCP_tools/db_tools.py",
       },
     ],
     access: "Public source",
