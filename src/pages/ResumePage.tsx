@@ -20,6 +20,7 @@ import {
 } from "../data/printResume";
 import type { ResumeTemplate, ResumePaper } from "../data/printResume";
 import { navigateTo } from "../seo/routes";
+import { IS_VSCODE } from "../platform/environment";
 const short = (url: string) =>
   url.replace(/^https?:\/\//, "").replace(/\/$/, "");
 function followResumeLink(event: MouseEvent<HTMLAnchorElement>) {
@@ -57,7 +58,7 @@ function ResumeDocument({
   const portfolioUrl = safeResumeUrl(resume.portfolio);
   const qrSource = useMemo(() => {
     if (!portfolioUrl) return null;
-    if (portfolioUrl === "https://psdevtool.online/portfolio/")
+    if (!IS_VSCODE && portfolioUrl === "https://psdevtool.online/portfolio/")
       return "/resume/portfolio-qr.svg";
     try {
       const qr = qrcode(0, "M");

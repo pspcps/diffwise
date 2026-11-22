@@ -173,3 +173,9 @@ JSON Studio sorting, parent grouping, live conversion and folding behavior are d
 ### Site information and AdSense
 
 The site includes [About](https://psdevtool.online/about/), [Contact](https://psdevtool.online/contact/), [Privacy](https://psdevtool.online/privacy/) and [Terms](https://psdevtool.online/terms/) pages, original worked tool examples and an `ads.txt` record matching the configured publisher. The manual ad slot is unconfigured; Auto Ads, consent messages, account notices and review requests are managed in AdSense. See [the readiness and deployment guide](docs/ADSENSE.md). These changes do not guarantee AdSense approval or a Google search ranking.
+
+## VS Code extension
+
+Use all 20 tools inside an editor tab with the locally installable PSDevTool VSIX. The extension includes a categorized native sidebar, tool search, bundled Monaco editors, clipboard access, native export dialogs, and explicit editor-selection import.
+
+See [extension installation and development instructions](vscode-extension/README.md). Build with `npm run package:extension` after installing the root and extension dependencies. API calls and maps still require network access; printing uses an exported HTML file and the browser’s print dialog.

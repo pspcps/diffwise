@@ -1,0 +1,198 @@
+body {
+  padding: 0;
+  background: var(--vscode-editor-background, #171d19);
+}
+.vscode-workspace {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 0;
+  color: #e4ebdd;
+  background: #171d19;
+}
+.vscode-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #344435;
+  flex-shrink: 0;
+}
+.vscode-toolbar strong {
+  font-size: 16px;
+  margin-right: auto;
+}
+.vscode-toolbar strong span {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  color: #a8b5a1;
+  margin-top: 2px;
+}
+.vscode-toolbar input,
+.vscode-toolbar select {
+  font: inherit;
+  color: inherit;
+  background: #101612;
+  border: 1px solid #52674e;
+  border-radius: 5px;
+  padding: 7px;
+  max-width: 100%;
+}
+.vscode-toolbar .theme-choice {
+  padding: 0;
+}
+.vscode-toolbar .theme-choice > span {
+  display: none;
+}
+.vscode-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.vscode-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.vscode-search input {
+  width: 140px;
+  font-size: 12px;
+}
+.vscode-search-results {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 12px;
+  border-bottom: 1px solid #344435;
+}
+.vscode-search-results button,
+.vscode-selection button {
+  padding: 6px 10px;
+  border: 1px solid #52674e;
+  border-radius: 5px;
+  background: #253429;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.vscode-notice,
+.vscode-selection {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #52674e;
+  background: #253429;
+  font-size: 12px;
+}
+.vscode-notice > button {
+  margin-left: auto;
+}
+.vscode-selection > span {
+  flex: 1;
+  min-width: 200px;
+}
+.vscode-tool-description {
+  padding: 8px 16px;
+  border-bottom: 1px solid #344435;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.vscode-tool-description h1 {
+  font-size: 14px;
+  font-weight: 600;
+}
+.vscode-tool-description p,
+.vscode-tool-description small {
+  font-size: 11px;
+  color: #a8b5a1;
+  margin: 0;
+}
+.vscode-workspace .workbench-frame {
+  min-height: 0;
+  flex: 1;
+}
+.vscode-tools {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+.vscode-tools[hidden] {
+  display: none;
+}
+.vscode-resume {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+}
+.vscode-footer {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 5px 16px;
+  font-size: 10px;
+  color: #a8b5a1;
+  border-top: 1px solid #344435;
+  flex-shrink: 0;
+}
+.vscode-footer > span {
+  margin-right: auto;
+}
+.vscode-footer a,
+.vscode-footer button {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.vscode-workspace :is(button, a, input, select):focus-visible {
+  outline: 2px solid var(--user-accent);
+  outline-offset: 2px;
+}
+.vscode-workspace .site-information-footer,
+.vscode-workspace .tool-guide,
+.vscode-workspace .resume-gallery-nav {
+  display: none;
+}
+@media (max-width: 650px) {
+  .vscode-toolbar {
+    gap: 8px;
+    padding: 8px;
+  }
+  .vscode-search {
+    display: none;
+  }
+  .vscode-toolbar strong span {
+    display: none;
+  }
+  .vscode-picker {
+    flex: 1;
+  }
+  .vscode-picker select {
+    width: 100%;
+  }
+  .vscode-tool-description p {
+    display: none;
+  }
+  .vscode-footer > span {
+    font-size: 9px;
+  }
+}
+@media print {
+  .vscode-toolbar,
+  .vscode-footer,
+  .vscode-tool-description,
+  .vscode-notice,
+  .vscode-selection {
+    display: none !important;
+  }
+  .vscode-workspace,
+  .vscode-resume {
+    height: auto !important;
+    overflow: visible !important;
+  }
+}

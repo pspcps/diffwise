@@ -1,0 +1,122 @@
+[
+  {
+    "id": "text",
+    "name": "Diff Checker",
+    "path": "/tools/diff-checker/",
+    "category": "Compare & format"
+  },
+  {
+    "id": "json",
+    "name": "JSON & YAML Studio",
+    "path": "/tools/json-formatter/",
+    "category": "Compare & format"
+  },
+  {
+    "id": "file",
+    "name": "File & Folder Diff",
+    "path": "/tools/file-folder-diff/",
+    "category": "Compare & format"
+  },
+  {
+    "id": "regex",
+    "name": "Regex Lab",
+    "path": "/tools/regex-tester/",
+    "category": "Compare & format"
+  },
+  {
+    "id": "markup",
+    "name": "Markup Studio",
+    "path": "/tools/html-xml-sql-formatter/",
+    "category": "Compare & format"
+  },
+  {
+    "id": "case",
+    "name": "Case Converter",
+    "path": "/tools/text-case-converter/",
+    "category": "Compare & format"
+  },
+  {
+    "id": "api",
+    "name": "API Desk",
+    "path": "/tools/api-client/",
+    "category": "Inspect & debug"
+  },
+  {
+    "id": "har",
+    "name": "HAR Viewer",
+    "path": "/tools/har-viewer/",
+    "category": "Inspect & debug"
+  },
+  {
+    "id": "jwt",
+    "name": "JWT Debugger",
+    "path": "/tools/jwt-debugger/",
+    "category": "Inspect & debug"
+  },
+  {
+    "id": "debug",
+    "name": "DebugFlow",
+    "path": "/tools/stack-trace-analyzer/",
+    "category": "Inspect & debug"
+  },
+  {
+    "id": "architecture",
+    "name": "Architecture Lab",
+    "path": "/tools/architecture-diagram/",
+    "category": "Create & transform"
+  },
+  {
+    "id": "pdf",
+    "name": "PDF Studio",
+    "path": "/tools/pdf-tools/",
+    "category": "Create & transform"
+  },
+  {
+    "id": "image_studio",
+    "name": "Image Studio",
+    "path": "/tools/image-tools/",
+    "category": "Create & transform"
+  },
+  {
+    "id": "base64",
+    "name": "Image Base64",
+    "path": "/tools/image-base64/",
+    "category": "Create & transform"
+  },
+  {
+    "id": "resume",
+    "name": "Resume Builder",
+    "path": "/resume/",
+    "category": "Create & transform"
+  },
+  {
+    "id": "uuid",
+    "name": "ID Generator",
+    "path": "/tools/uuid-generator/",
+    "category": "Calculate & convert"
+  },
+  {
+    "id": "time",
+    "name": "Time Zones",
+    "path": "/tools/time-zone-converter/",
+    "category": "Calculate & convert"
+  },
+  {
+    "id": "distance",
+    "name": "Geo Distance",
+    "path": "/tools/distance-calculator/",
+    "category": "Calculate & convert"
+  },
+  {
+    "id": "measure",
+    "name": "Measure Lab",
+    "path": "/tools/unit-converter/",
+    "category": "Calculate & convert"
+  },
+  {
+    "id": "url",
+    "name": "URL Tools",
+    "path": "/tools/url-encoder-decoder/",
+    "category": "Calculate & convert"
+  }
+]

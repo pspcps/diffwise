@@ -1,0 +1,34 @@
+{
+  "name": "psdevtool",
+  "displayName": "PSDevTool — Developer Toolkit",
+  "description": "20 developer tools in one local workspace: JSON/YAML, diff, APIs, JWT, regex, PDFs, diagrams, units and resumes.",
+  "version": "0.1.0",
+  "publisher": "pspcps",
+  "license": "UNLICENSED",
+  "engines": { "vscode": "^1.95.0" },
+  "categories": ["Other", "Formatters", "Visualization"],
+  "keywords": ["json", "yaml", "diff", "developer tools", "jwt"],
+  "repository": { "type": "git", "url": "https://github.com/pspcps/diffwise.git", "directory": "vscode-extension" },
+  "homepage": "https://psdevtool.online/",
+  "bugs": { "url": "https://github.com/pspcps/diffwise/issues" },
+  "icon": "media/icon.png",
+  "main": "./src/extension.cjs",
+  "activationEvents": ["onWebviewPanel:psdevtool.workspace"],
+  "capabilities": { "untrustedWorkspaces": { "supported": true }, "virtualWorkspaces": true },
+  "extensionKind": ["ui"],
+  "contributes": {
+    "commands": [
+      { "command": "psdevtool.open", "title": "PSDevTool: Open Toolkit", "icon": "$(tools)" },
+      { "command": "psdevtool.chooseTool", "title": "PSDevTool: Choose Tool", "icon": "$(search)" },
+      { "command": "psdevtool.openSelection", "title": "PSDevTool: Open Selection in Toolkit" }
+    ],
+    "viewsContainers": { "activitybar": [{ "id": "psdevtool", "title": "PSDevTool", "icon": "media/activity.svg" }] },
+    "views": { "psdevtool": [{ "id": "psdevtool.tools", "name": "Developer Tools" }] },
+    "menus": {
+      "editor/context": [{ "command": "psdevtool.openSelection", "group": "navigation@90", "when": "editorHasSelection" }],
+      "view/title": [{ "command": "psdevtool.open", "when": "view == psdevtool.tools", "group": "navigation" }]
+    }
+  },
+  "scripts": { "package": "vsce package --no-dependencies --out psdevtool-0.1.0.vsix", "test": "node --test test/*.test.cjs" },
+  "devDependencies": { "@vscode/vsce": "3.7.1" }
+}

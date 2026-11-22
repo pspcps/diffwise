@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { IS_VSCODE } from '../../platform/environment';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import JSZip from 'jszip';
 import { toPng, toJpeg } from 'html-to-image';
@@ -726,6 +727,16 @@ export default function PdfStudioView() {
           </html>
         `);
         doc.close();
+
+        if (IS_VSCODE) {
+          try {
+            const { exportPrintDocument } = await import('../../vscode/bridge');
+            await exportPrintDocument(doc);
+          } finally {
+            iframe.remove();
+          }
+          return;
+        }
 
         setTimeout(() => {
           iframe.contentWindow?.focus();
