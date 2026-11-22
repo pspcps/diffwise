@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react";
 import { HASH_TO_MODE } from "./legacyRoutes";
+import { IS_VSCODE } from "../platform/environment";
 import {
   INFORMATION_PAGES,
   HOME_PAGE,
@@ -19,6 +20,11 @@ export interface SiteRoute {
 export function resolveLocation(
   location: Pick<Location, "pathname" | "search" | "hash">,
 ): SiteRoute {
+  // A webview cannot change its resource pathname; keep canonical routes in its hash.
+  if (IS_VSCODE && location.hash.startsWith("#/")) {
+    const url = new URL(location.hash.slice(1), "https://psdevtool.invalid");
+    return resolveLocation({ pathname: url.pathname, search: url.search, hash: url.hash });
+  }
   const key = location.hash.split("?")[0];
   if (key.startsWith("#/")) {
     const search = location.hash.includes("?")
@@ -62,6 +68,8 @@ export function useSiteRoute() {
 }
 export function navigateTo(path: string, replace = false) {
   if (!path.startsWith("/") || path.startsWith("//")) return;
-  history[replace ? "replaceState" : "pushState"]({}, "", path);
+  // Use the document URL, not <base> (which points to a different resource origin).
+  const target = IS_VSCODE ? window.location.href.split("#")[0] + `#${path}` : path;
+  history[replace ? "replaceState" : "pushState"]({}, "", target);
   window.dispatchEvent(new PopStateEvent("popstate"));
 }

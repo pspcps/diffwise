@@ -1,3 +1,4 @@
+import RegexWorker from "../../workers/regexWorker?worker&inline";
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import MonacoEditor from '../Common/CodeEditor';
 import { parseRegExpLiteral, visitRegExpAST } from '@eslint-community/regexpp';
@@ -122,7 +123,7 @@ export default function RegexLabView() {
         return;
       }
       try {
-        worker = new Worker(new URL('../../workers/regexWorker.ts', import.meta.url), { type: 'module' });
+        worker = new RegexWorker();
         watchdog = window.setTimeout(() => {
           worker?.terminate();
           worker = null;
