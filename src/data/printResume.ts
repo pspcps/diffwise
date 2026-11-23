@@ -108,13 +108,61 @@ export const PRINT_RESUME = {
   certification: "AWS Cloud Practitioner",
 };
 export const LEGAL_PROJECTS = [
-  ...PRINT_RESUME.projects,
+  {
+    ...PRINT_RESUME.projects[0],
+    category: "Applied AI",
+    detail:
+      "Built Claude/MCP fleet diagnostics over DynamoDB, MySQL and New Relic, with a React dashboard.",
+  },
+  {
+    ...DRISHTI_PROJECT,
+    category: "Applied AI",
+    detail:
+      "Built validated Gemini image analysis with uncertainty handling, operator review and scripted regressions.",
+  },
+  {
+    ...PRINT_RESUME.projects[3],
+    category: "Backend & Developer Tools",
+    detail:
+      "Built Kafka administration and Kubernetes workers, plus a development-branch PostgreSQL replay guard and recovery lab.",
+  },
+  {
+    ...PRINT_RESUME.projects[2],
+    category: "Backend & Developer Tools",
+    detail:
+      "Built 20 browser tools with Monaco, worker-based processing and saved profiles; packaged a VS Code extension.",
+  },
+  {
+    name: "Ask My Docs",
+    tech: "Python, SQLite, NumPy, Ollama, Flask",
+    url: "https://github.com/pspcps/ask-my-docs",
+    detail:
+      "Built versioned local RAG with durable indexing, page/excerpt citations, abstention and a recorded evaluation.",
+    category: "Applied AI",
+  },
+  {
+    name: "Wealth Management Portfolio Tracker",
+    tech: "Kotlin, Compose, Room",
+    url: "https://github.com/pspcps/Wealth-Management-Portfolio-Tracker",
+    detail:
+      "Built local portfolio and cash-flow tracking with XIRR/TWRR analytics, accounting rules and financial tests.",
+    category: "Android Applications",
+  },
+  {
+    name: "RentMeter",
+    tech: "Kotlin, Compose, Room, CameraX, ML Kit",
+    url: "https://github.com/pspcps1/RentMeter",
+    detail:
+      "Built a rental ledger with meter OCR, utility billing, tenant documents, reminders and portable backups.",
+    category: "Android Applications",
+  },
   {
     name: "ApiDesk Studio",
     tech: "React, Node.js, Express, Electron",
     url: "https://github.com/pspcps/ApiDesk-Studio",
     detail:
-      "Built REST/GraphQL workflows, a local request proxy, Autocannon load testing and regression execution with streamed logs.",
+      "Built REST/GraphQL workflows, a local request proxy, load testing and regression execution with streamed logs.",
+    category: "Backend & Developer Tools",
   },
 ];
 export const ADDITIONAL_CONTRIBUTIONS = [

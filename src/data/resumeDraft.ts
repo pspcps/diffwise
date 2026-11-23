@@ -27,6 +27,7 @@ export interface ResumeContent {
     tech: string;
     url: string | null;
     detail: string;
+    category?: string;
   }[];
   education: {
     degree: string;
@@ -152,6 +153,8 @@ export function parseResumeDraft(text: string): ResumeDraft {
       (v) =>
         record(v) &&
         strings(v, ["name", "tech", "detail"]) &&
+        (v.category === undefined ||
+          (typeof v.category === "string" && v.category.length <= 80)) &&
         (v.url === null || string(v.url)),
     ) ||
     !list(

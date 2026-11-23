@@ -119,7 +119,7 @@ export const RESUME_PAGES: SearchPage[] = RESUME_TEMPLATES.flatMap((t) => [
     path: `/resume/${t.id}/legal/`,
     name: `${t.name} Legal resume`,
     title: `Prakash Choudhary — Resume (${t.name}, Legal)`,
-    description: `Prakash Choudhary’s expanded ${t.name.toLowerCase()} resume on Legal paper: engineering experience, five projects, four open-source contributions, skills and education.`,
+    description: `Prakash Choudhary’s expanded ${t.name.toLowerCase()} resume on Legal paper: engineering experience, eight curated projects, four open-source contributions, skills and education.`,
   },
 ]);
 RESUME_PAGES.push({
@@ -129,7 +129,7 @@ RESUME_PAGES.push({
   name: "Legal resume templates",
   title: "Prakash Choudhary — Expanded Legal Resume Templates",
   description:
-    "Explore ten expanded Legal-size HTML resume templates for Prakash Choudhary, featuring engineering experience, five projects and four open-source contributions.",
+    "Explore ten expanded Legal-size HTML resume templates for Prakash Choudhary, featuring engineering experience, eight curated projects and four open-source contributions.",
 });
 export const NOT_FOUND: SearchPage = {
   id: "notfound",

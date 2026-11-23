@@ -1314,6 +1314,20 @@
 .resume-page[data-paper="legal"] .resume-paper {
   width: 215.9mm;
   min-height: 355.6mm;
+  padding: 8.5mm;
+  font-size: 9.2pt;
+  line-height: 1.18;
+}
+.resume-page[data-paper="legal"] .resume-project-group-heading {
+  font-size: 8.8pt;
+  font-weight: 700;
+  letter-spacing: 0.35px;
+  color: var(--resume-accent);
+  margin: 6px 0 2px;
+  break-after: avoid;
+}
+.resume-page[data-paper="legal"] .resume-project h3 {
+  font-size: 9.5pt;
 }
 .resume-extra-contribution {
   margin-top: 3px !important;
@@ -1334,10 +1348,23 @@
   .resume-page[data-paper="legal"] .resume-paper {
     width: 215.9mm;
     min-height: 0;
-    padding: 10mm;
+    padding: 8.5mm;
   }
   .resume-page[data-paper="legal"] .resume-paper h2 {
-    margin-top: 6px;
+    margin-top: 4px;
+    margin-bottom: 3px;
+  }
+  .resume-page[data-paper="legal"] .resume-paper .resume-project {
+    margin-top: 3px;
+  }
+  .resume-page[data-paper="legal"] .resume-paper .resume-job {
+    margin-top: 4px;
+  }
+  .resume-page[data-paper="legal"] .resume-paper li {
+    margin-bottom: 1px;
+  }
+  .resume-page[data-paper="legal"] .resume-project-group-heading {
+    margin: 4px 0 1px;
   }
 }
 /* Expanded two-column editions use a full-width project section for readable detail. */
