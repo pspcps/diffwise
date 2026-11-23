@@ -10,7 +10,7 @@ const DRISHTI_PROJECT = {
 };
 export const PRINT_RESUME = {
   name: RESUME.name,
-  title: "Senior Software Engineer | Backend, Distributed Systems & Applied AI",
+  title: "Senior Software Engineer | Full-Stack, Distributed Systems & Applied AI",
   email: RESUME.email,
   phone: RESUME.phone,
   linkedin: RESUME.linkedin,
