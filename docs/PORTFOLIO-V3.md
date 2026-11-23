@@ -8,6 +8,8 @@ Visual inspiration: [David Heckhoff’s portfolio](https://david-hckh.com/) and 
 
 ## Experience
 
+- The developer faces the monitors; body rotation is separate from the chair, keeping the chair back behind the seated character. The resting hand reaches toward the keyboard.
+
 - The original Three.js scene uses procedural geometry: desk, seated developer with glasses and a waving hand, monitor, laptop, notebook, cup, books, lamp, plant and a small server tower.
 - The laptop uses the selected language’s existing local technology logo. Changing language rebuilds the scene with that language’s accent and disposes the previous resources.
 - Drag with a mouse, use Rotate left/right and Reset view, or select The work / The journey / Say hello. The monitor/laptop, notebook and cup also link to those sections through raycasting.

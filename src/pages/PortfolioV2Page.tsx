@@ -1,4 +1,10 @@
-import { useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactNode,
+} from "react";
 import {
   Braces,
   BriefcaseBusiness,
@@ -23,6 +29,7 @@ import TechnologyIcon from "../components/Common/TechnologyIcon";
 import ThemeChoice from "../components/Guide/ThemeChoice";
 import RotatingRole from "../components/Portfolio/RotatingRole";
 import { useCareerDuration } from "../hooks/useCareerDuration";
+import { activePortfolioSection } from "../utils/portfolioScroll";
 import "../portfolio-v2.css";
 
 const TABS = ["About", "Experience", "Projects", "Toolkit", "Contact"] as const;
@@ -114,23 +121,13 @@ const FOCUS = [
     text: "AWS and Google Cloud applications, container delivery, observability and infrastructure cost optimization.",
   },
 ];
-function Panel({
-  name,
-  active,
-  children,
-}: {
-  name: Tab;
-  active: Tab;
-  children: ReactNode;
-}) {
+function Panel({ name, children }: { name: Tab; children: ReactNode }) {
   return (
     <section
       className="v2-panel"
       id={`v2-${name.toLowerCase()}`}
-      role="tabpanel"
+      role="region"
       aria-labelledby={`v2-tab-${name.toLowerCase()}`}
-      hidden={active !== name}
-      tabIndex={0}
     >
       <header className="v2-section-heading">
         <p className="v2-eyebrow">
@@ -250,12 +247,51 @@ export default function PortfolioV2Page() {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>("All work");
   const [contactsOpen, setContactsOpen] = useState(false);
   const nav = useRef<HTMLElement>(null);
+  const root = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const element = root.current;
+    if (!element) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const sections = TABS.map((name) => ({
+        id: name,
+        top:
+          element
+            .querySelector(`#v2-${name.toLowerCase()}`)
+            ?.getBoundingClientRect().top ?? Infinity,
+      }));
+      const next = activePortfolioSection(
+        sections,
+        element.getBoundingClientRect().top +
+          (nav.current?.offsetHeight ?? 70) +
+          28,
+        element.scrollTop + element.clientHeight >= element.scrollHeight - 2,
+      );
+      if (next) setActive(next as Tab);
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    element.addEventListener("scroll", schedule, { passive: true });
+    const resize = new ResizeObserver(schedule);
+    resize.observe(element);
+    element
+      .querySelectorAll(".v2-panel")
+      .forEach((section) => resize.observe(section));
+    schedule();
+    return () => {
+      cancelAnimationFrame(frame);
+      resize.disconnect();
+      element.removeEventListener("scroll", schedule);
+    };
+  }, []);
   const projects = RESUME.projects.filter(
     (p) => filter === "All work" || category(p) === filter,
   );
   function selectTab(tab: Tab) {
     setActive(tab);
-    nav.current?.scrollIntoView({
+    root.current?.querySelector(`#v2-${tab.toLowerCase()}`)?.scrollIntoView({
       block: "start",
       behavior: motionEnabled ? "smooth" : "instant",
     });
@@ -278,7 +314,7 @@ export default function PortfolioV2Page() {
     nav.current?.querySelectorAll<HTMLButtonElement>("button")[next]?.focus();
   }
   return (
-    <div className="portfolio-v2">
+    <div className="portfolio-v2" ref={root}>
       <a className="v2-skip" href="#v2-main">
         Skip to portfolio content
       </a>
@@ -391,20 +427,13 @@ export default function PortfolioV2Page() {
           </p>
         </aside>
         <main className="v2-main" id="v2-main" tabIndex={-1}>
-          <nav
-            className="v2-tabs"
-            aria-label="Portfolio sections"
-            role="tablist"
-            ref={nav}
-          >
+          <nav className="v2-tabs" aria-label="Portfolio sections" ref={nav}>
             {TABS.map((tab) => (
               <button
                 key={tab}
                 id={`v2-tab-${tab.toLowerCase()}`}
-                role="tab"
                 aria-controls={`v2-${tab.toLowerCase()}`}
-                aria-selected={active === tab}
-                tabIndex={active === tab ? 0 : -1}
+                aria-current={active === tab ? "location" : undefined}
                 onKeyDown={(e) => moveTab(e, tab)}
                 onClick={() => selectTab(tab)}
               >
@@ -412,7 +441,7 @@ export default function PortfolioV2Page() {
               </button>
             ))}
           </nav>
-          <Panel name="About" active={active}>
+          <Panel name="About">
             <div className="v2-intro">
               <p className="v2-lead">
                 Thoughtful interfaces.
@@ -484,7 +513,7 @@ export default function PortfolioV2Page() {
               </button>
             </section>
           </Panel>
-          <Panel name="Experience" active={active}>
+          <Panel name="Experience">
             <p className="v2-section-intro">
               {duration.label} years of building, learning and taking
               responsibility for the systems behind the product.
@@ -553,7 +582,7 @@ export default function PortfolioV2Page() {
               </div>
             </section>
           </Panel>
-          <Panel name="Projects" active={active}>
+          <Panel name="Projects">
             <p className="v2-section-intro">
               Working software across AI, developer platforms and everyday
               applications. Public repositories are linked directly; private
@@ -594,7 +623,7 @@ export default function PortfolioV2Page() {
               engineering details for implementation evidence.
             </p>
           </Panel>
-          <Panel name="Toolkit" active={active}>
+          <Panel name="Toolkit">
             <p className="v2-section-intro">
               The technologies I work with across applications, infrastructure
               and recent AI projects. Chosen for the problem, rather than a
@@ -619,7 +648,7 @@ export default function PortfolioV2Page() {
               ))}
             </div>
           </Panel>
-          <Panel name="Contact" active={active}>
+          <Panel name="Contact">
             <div className="v2-contact-hero">
               <span className="v2-icon-box">
                 <MessageSquare size={30} />

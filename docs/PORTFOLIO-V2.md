@@ -12,7 +12,7 @@
 
 The project previews are workflow illustrations, labeled as such, rather than screenshots or claimed production dashboards. The source of truth for projects remains `src/data/resumeData.ts` and `src/data/projectCaseStudies.ts`. Experience continues to be calculated from 2 January 2017. No phone number is displayed.
 
-The shared language theme and motion controls retain their existing local-storage behavior. Tabs support Left/Right, Home and End keys, selected-tab focus and labeled panels. Hidden panels are removed from keyboard navigation. The layout switches from a sticky desktop profile sidebar to an expandable profile on smaller screens. Motion can be paused and respects system reduced-motion settings.
+The shared language theme and motion controls retain their existing local-storage behavior. The page scrolls continuously through About, Experience, Projects, Toolkit and Contact. Navigation buttons scroll to each section and the active item follows scrolling in either direction. Left/Right, Home and End keys remain supported. A sticky navigation layer stays above the content at every breakpoint. All sections remain visible; no tab panels are hidden. The layout switches from a sticky desktop profile sidebar to an expandable profile on smaller screens. Motion can be paused and respects system reduced-motion settings.
 
 ## Routing and indexing
 

@@ -328,16 +328,20 @@ export default function DeskScene({
       leg.position.x = Math.cos((i * Math.PI * 2) / 5) * 0.3;
       leg.position.z = Math.sin((i * Math.PI * 2) / 5) * 0.3;
     }
-    const torso = ball(0.48, accent, 0, 1.72, 0, developer);
+    // Rotate the person, not the chair: monitors are along negative Z.
+    const seated = new THREE.Group();
+    seated.rotation.y = Math.PI;
+    developer.add(seated);
+    const torso = ball(0.48, accent, 0, 1.72, 0, seated);
     torso.scale.set(1, 0.95, 0.65);
-    cylinder(0.15, 0.15, 0.27, skin, 0, 2.14, -0.02, developer);
-    const head = ball(0.39, skin, 0, 2.49, -0.03, developer);
+    cylinder(0.15, 0.15, 0.27, skin, 0, 2.14, -0.02, seated);
+    const head = ball(0.39, skin, 0, 2.49, -0.03, seated);
     head.scale.set(0.92, 1.05, 0.9);
-    const hairCap = ball(0.4, hair, 0, 2.67, -0.02, developer);
+    const hairCap = ball(0.4, hair, 0, 2.67, -0.02, seated);
     hairCap.scale.set(0.95, 0.65, 0.92);
-    ball(0.08, skin, -0.36, 2.48, -0.02, developer);
-    ball(0.08, skin, 0.36, 2.48, -0.02, developer);
-    // Face looks toward the camera; the monitors remain behind the developer.
+    ball(0.08, skin, -0.36, 2.48, -0.02, seated);
+    ball(0.08, skin, 0.36, 2.48, -0.02, seated);
+    // The body faces the screens; the independent chair back stays behind it.
     const specs = material("#213c40");
     for (const x of [-0.16, 0.16]) {
       const frame = mesh(
@@ -346,35 +350,35 @@ export default function DeskScene({
         x,
         2.52,
         0.293,
-        developer,
+        seated,
       );
       frame.scale.y = 0.82;
-      ball(0.026, hair, x, 2.52, 0.327, developer);
+      ball(0.026, hair, x, 2.52, 0.327, seated);
     }
-    box(0.08, 0.025, 0.025, specs, 0, 2.52, 0.31, developer);
+    box(0.08, 0.025, 0.025, specs, 0, 2.52, 0.31, seated);
     const smile = mesh(
       new THREE.TorusGeometry(0.09, 0.012, 6, 16, Math.PI),
       clay,
       0,
       2.35,
       0.32,
-      developer,
+      seated,
     );
     smile.rotation.z = Math.PI;
-    const leftArm = box(0.18, 0.48, 0.19, accent, -0.48, 1.8, -0.12, developer);
-    leftArm.rotation.z = -0.4;
-    ball(0.12, skin, -0.56, 1.58, -0.21, developer);
+    const leftArm = box(0.18, 0.52, 0.19, accent, 0.4, 1.96, 0.28, seated);
+    leftArm.rotation.x = 1;
+    ball(0.12, skin, 0.4, 2.13, 0.57, seated);
     const wave = new THREE.Group();
-    wave.position.set(0.44, 1.93, 0);
-    developer.add(wave);
+    wave.position.set(-0.44, 1.93, 0);
+    seated.add(wave);
     const forearm = box(0.17, 0.5, 0.18, accent, 0.09, 0.21, 0, wave);
     forearm.rotation.z = -0.3;
     ball(0.125, skin, 0.16, 0.53, 0, wave);
     for (let i = 0; i < 4; i++)
       cylinder(0.026, 0.027, 0.17, skin, 0.08 + i * 0.05, 0.65, 0, wave);
     for (const x of [-0.22, 0.22]) {
-      box(0.23, 0.5, 0.28, navy, x, 0.91, 0.08, developer);
-      const shoe = ball(0.2, paper, x, 0.63, 0.28, developer);
+      box(0.23, 0.5, 0.28, navy, x, 0.91, 0.08, seated);
+      const shoe = ball(0.2, paper, x, 0.63, 0.28, seated);
       shoe.scale.set(0.7, 0.5, 1.3);
     }
     // Plant, books and a small server tower give this engineer’s desk its own identity.

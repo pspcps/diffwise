@@ -304,7 +304,7 @@
   min-width: 0;
   position: relative;
   min-height: 820px;
-  overflow: hidden;
+  overflow: visible;
 }
 .v2-tabs {
   display: flex;
@@ -330,10 +330,10 @@
   position: relative;
   min-height: 30px;
 }
-.v2-tabs button[aria-selected="true"] {
+.v2-tabs button[aria-current="location"] {
   color: var(--v2-accent);
 }
-.v2-tabs button[aria-selected="true"]:after {
+.v2-tabs button[aria-current="location"]:after {
   content: "";
   position: absolute;
   height: 3px;
@@ -1022,9 +1022,6 @@
 .v2-main {
   scroll-margin-top: 22px;
 }
-.motion-enabled .v2-panel:not([hidden]) {
-  animation: v2-reveal 0.4s ease both;
-}
 .motion-enabled .v2-project {
   animation: v2-reveal 0.4s ease both;
 }
@@ -1053,27 +1050,6 @@
 @keyframes v2-caret {
   50% {
     opacity: 0;
-  }
-}
-@media (min-width: 1250px) {
-  .v2-tabs {
-    position: absolute;
-    top: 0;
-    right: 0;
-    max-width: 65%;
-  }
-  .v2-panel {
-    padding-top: 32px;
-  }
-  .v2-section-heading {
-    max-width: 40%;
-  }
-  .v2-section-heading h2 {
-    white-space: nowrap;
-    margin-top: 0;
-  }
-  .v2-section-heading .v2-eyebrow {
-    display: none;
   }
 }
 @media (max-width: 1100px) {
@@ -1368,7 +1344,7 @@
     min-height: 38px;
     flex: 1;
   }
-  .v2-tabs button[aria-selected="true"]:after {
+  .v2-tabs button[aria-current="location"]:after {
     bottom: -5px;
     left: 10px;
     right: 10px;
@@ -1529,6 +1505,39 @@
 .portfolio-v2 .v2-contact-line :is(a, p),
 .portfolio-v2 .v2-contact-line:first-of-type a {
   font-size: 0.875rem;
+}
+
+/* Keep the navigation above every panel, including animated/transformed content. */
+.portfolio-v2 .v2-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  isolation: isolate;
+  width: 100%;
+  max-width: none;
+  border-radius: 21px 21px 0 0;
+  box-shadow: 0 6px 18px #0002;
+}
+.portfolio-v2 .v2-panel {
+  scroll-margin-top: 88px;
+  border-top: 1px solid var(--v2-border);
+}
+.portfolio-v2 .v2-panel:first-of-type {
+  border-top: 0;
+}
+.portfolio-v2 .v2-panel + .v2-panel {
+  padding-top: 38px;
+}
+.portfolio-v2 .v2-main {
+  overflow: visible;
+}
+@media (max-width: 580px) {
+  .portfolio-v2 .v2-tabs {
+    border-radius: 16px 16px 0 0;
+  }
+  .portfolio-v2 .v2-panel {
+    scroll-margin-top: 82px;
+  }
 }
 
 .v2-footer > div {
