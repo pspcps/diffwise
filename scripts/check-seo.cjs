@@ -3,12 +3,12 @@ const path=require('node:path');
 const assert=require('node:assert/strict');
 const ts=require('typescript');
 require.extensions['.ts']=(module,filename)=>module._compile(ts.transpileModule(fs.readFileSync(filename,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,esModuleInterop:true,resolveJsonModule:true}}).outputText,filename);
-const {INFORMATION_PAGES,HOME_PAGE,PORTFOLIO_PAGE,RESUME_PAGE,RESUME_PAGES,TOOL_PAGES}=require('../src/seo/pages.ts');
+const {INFORMATION_PAGES,HOME_PAGE,PORTFOLIO_PAGE,PORTFOLIO_V2_PAGE,RESUME_PAGE,RESUME_PAGES,TOOL_PAGES}=require('../src/seo/pages.ts');
 const {resolveLocation}=require('../src/seo/routes.ts');
 const {HASH_TO_MODE}=require('../src/seo/legacyRoutes.ts');
 const root=path.resolve(__dirname,'..'),dist=path.join(root,'dist');
 const escape=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-const pages=[HOME_PAGE,...INFORMATION_PAGES,...TOOL_PAGES,PORTFOLIO_PAGE,RESUME_PAGE,...RESUME_PAGES];
+const pages=[HOME_PAGE,...INFORMATION_PAGES,...TOOL_PAGES,PORTFOLIO_PAGE,PORTFOLIO_V2_PAGE,RESUME_PAGE,...RESUME_PAGES];
 const titles=new Set(),canonicals=new Set();
 assert.equal(TOOL_PAGES.length,19);let preview;
 for(const p of pages){
@@ -19,7 +19,7 @@ for(const p of pages){
  assert.ok(html.includes('og-image.png'));assert.ok(/<h1[ >]/.test(html));assert.ok(html.includes('data-prerendered'));assert.ok(html.includes('type="module"'));assert.ok(!html.includes('name="keywords"'));
  const schema=JSON.parse(html.match(/<script id="page-structured-data" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);assert.ok(!JSON.stringify(schema).includes('aggregateRating'));assert.ok(Array.isArray(schema['@graph']));
  if(p.id==='home')assert.equal(schema['@graph'].find(n=>n['@type']==='ItemList').itemListElement.length,20);
- else if(!INFORMATION_PAGES.some(i=>i.id===p.id)&&p.id!=='portfolio'&&p.id!=='resume'&&!p.id.startsWith('resume-')){const app=schema['@graph'].find(n=>n['@type']==='WebApplication');assert.equal(app.url,'https://psdevtool.online'+p.path);assert.deepEqual(app.featureList,p.features);assert.ok(p.steps.length>=3&&p.faq.length>=2);for(const item of p.faq)assert.ok(html.includes(escape(item.question)));}
+ else if(!INFORMATION_PAGES.some(i=>i.id===p.id)&&p.id!=='portfolio'&&p.id!=='portfolio-v2'&&p.id!=='resume'&&!p.id.startsWith('resume-')){const app=schema['@graph'].find(n=>n['@type']==='WebApplication');assert.equal(app.url,'https://psdevtool.online'+p.path);assert.deepEqual(app.featureList,p.features);assert.ok(p.steps.length>=3&&p.faq.length>=2);for(const item of p.faq)assert.ok(html.includes(escape(item.question)));}
  const route=resolveLocation({pathname:p.path,search:'',hash:''});assert.equal(route.page.id,p.id);
  assert.ok(html.includes(`name="robots" content="${isPreview?'noindex, follow':'index, follow, max-image-preview:large'}"`));
 }

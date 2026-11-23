@@ -17,6 +17,7 @@ import ToolWorkspace from "./components/Workspace/ToolWorkspace";
 import AdBanner from "./components/Ads/AdBanner";
 import AboutPanel from "./components/About/AboutPanel";
 const ResumePage = lazy(() => import("./pages/ResumePage"));
+const PortfolioV2Page = lazy(() => import("./pages/PortfolioV2Page"));
 const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
 import type { ViewMode } from "./types";
@@ -30,7 +31,7 @@ export default function App() {
   const isTool =
     !isResume &&
     !isInformationId(page.id) &&
-    !["home", "portfolio", "notfound"].includes(page.id);
+    !["home", "portfolio", "portfolio-v2", "notfound"].includes(page.id);
   const initialMode = isTool ? (page.id as ViewMode) : "text";
   const [mode, setMode] = useState<ViewMode>(initialMode);
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -94,6 +95,15 @@ export default function App() {
             page.id.startsWith("resume-") ? page.id.slice(7) : undefined
           }
         />
+      </Suspense>
+    );
+
+  if (page.id === "portfolio-v2")
+    return (
+      <Suspense
+        fallback={<div className="space-loading">Opening portfolio…</div>}
+      >
+        <PortfolioV2Page />
       </Suspense>
     );
 

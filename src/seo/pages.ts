@@ -8,6 +8,7 @@ export interface SearchPage {
     | InformationId
     | "home"
     | "portfolio"
+    | "portfolio-v2"
     | "resume"
     | `resume-${string}`
     | "notfound";
@@ -90,6 +91,15 @@ export const PORTFOLIO_PAGE: SearchPage = {
   faq: [],
   related: ["text", "json", "measure"],
 };
+export const PORTFOLIO_V2_PAGE: SearchPage = {
+  ...PORTFOLIO_PAGE,
+  id: "portfolio-v2",
+  path: "/portfolio/v2/",
+  name: "Prakash Choudhary · Portfolio v2",
+  title: "Prakash Choudhary — Full-Stack & Applied AI Portfolio",
+  description:
+    "Explore Prakash Choudhary’s full-stack, distributed systems, cloud and applied AI work in a focused portfolio with project sources, experience and technical skills.",
+};
 export const RESUME_PAGE: SearchPage = {
   ...PORTFOLIO_PAGE,
   id: "resume",
@@ -150,11 +160,13 @@ export function pageForId(id: SearchPage["id"]) {
     ? HOME_PAGE
     : id === "portfolio"
       ? PORTFOLIO_PAGE
-      : id === "resume"
-        ? RESUME_PAGE
-        : [...INFORMATION_PAGES, ...RESUME_PAGES, ...TOOL_PAGES].find(
-            (p) => p.id === id,
-          ) || NOT_FOUND;
+      : id === "portfolio-v2"
+        ? PORTFOLIO_V2_PAGE
+        : id === "resume"
+          ? RESUME_PAGE
+          : [...INFORMATION_PAGES, ...RESUME_PAGES, ...TOOL_PAGES].find(
+              (p) => p.id === id,
+            ) || NOT_FOUND;
 }
 export function toolPath(id: ViewMode) {
   return pageForId(id).path;

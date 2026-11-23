@@ -1353,3 +1353,17 @@
     letter-spacing: -3px;
   }
 }
+
+.portfolio-atelier .portfolio-version-link {
+  color: var(--user-accent, #c8edb6);
+  font-size: 14px;
+  text-decoration: none;
+  border: 1px solid color-mix(in srgb, var(--user-accent, #c8edb6) 35%, transparent);
+  border-radius: 8px;
+  padding: 8px 13px;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 20px;
+  min-height: 40px;
+}
+.portfolio-atelier .portfolio-version-link:hover { background: #ffffff09; }
