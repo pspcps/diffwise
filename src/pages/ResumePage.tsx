@@ -61,6 +61,19 @@ function ResumeDocument({
   appearance: ResumeAppearance;
   paper: ResumePaper;
 }) {
+  const grouped =
+    paper === "legal" && resume.projects.some((p) => p.category?.trim());
+  const projectGroups = resume.projects.reduce<
+    { category: string | null; projects: ResumeContent["projects"] }[]
+  >((groups, project) => {
+    const category = grouped
+      ? project.category?.trim() || "Additional projects"
+      : null;
+    const group = groups.find((g) => g.category === category);
+    if (group) group.projects.push(project);
+    else groups.push({ category, projects: [project] });
+    return groups;
+  }, []);
   const portfolioUrl = safeResumeUrl(resume.portfolio);
   const qrSource = useMemo(() => {
     if (!portfolioUrl) return null;
@@ -185,22 +198,34 @@ function ResumeDocument({
         </section>
         <section className="resume-projects">
           <h2>Engineering Projects</h2>
-          {resume.projects.map((project) => (
-            <section className="resume-project" key={project.name}>
-              <h3>
-                {project.name}
-                <span> | {project.tech}</span>
-              </h3>
-              <p>{project.detail}</p>
-              {project.url && (
-                <a
-                  className="resume-project-link"
-                  href={safeResumeUrl(project.url)}
-                >
-                  {short(project.url)}
-                </a>
+          {projectGroups.map((group) => (
+            <div
+              className="resume-project-group"
+              key={group.category || "ungrouped"}
+            >
+              {group.category && (
+                <h3 className="resume-project-group-heading">
+                  {group.category}
+                </h3>
               )}
-            </section>
+              {group.projects.map((project) => (
+                <section className="resume-project" key={project.name}>
+                  <h3>
+                    {project.name}
+                    <span> | {project.tech}</span>
+                  </h3>
+                  <p>{project.detail}</p>
+                  {project.url && (
+                    <a
+                      className="resume-project-link"
+                      href={safeResumeUrl(project.url)}
+                    >
+                      {short(project.url)}
+                    </a>
+                  )}
+                </section>
+              ))}
+            </div>
           ))}
         </section>
         {paper === "legal" && (

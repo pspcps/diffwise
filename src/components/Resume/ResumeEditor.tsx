@@ -46,12 +46,14 @@ function Field({
   onChange,
   multiline = false,
   wide = false,
+  maxLength = 20000,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   multiline?: boolean;
   wide?: boolean;
+  maxLength?: number;
 }) {
   return (
     <label
@@ -62,7 +64,7 @@ function Field({
         <textarea
           aria-label={label}
           value={value}
-          maxLength={20000}
+          maxLength={maxLength}
           onChange={(e) => onChange(e.target.value)}
           rows={3}
         />
@@ -70,6 +72,7 @@ function Field({
         <input
           aria-label={label}
           value={value}
+          maxLength={maxLength}
           onChange={(e) => onChange(e.target.value)}
         />
       )}
@@ -384,6 +387,10 @@ export default function ResumeEditor(p: Props) {
           </details>
           <details name={`${tabsId}-content`}>
             <summary>Engineering projects</summary>
+            <p>
+              Optional project groups appear on Legal paper. Leave groups blank
+              for a flat list.
+            </p>
             {c.projects.map((project, i) => (
               <div className="resume-edit-item" key={i}>
                 <header className="resume-item-heading">
@@ -398,23 +405,26 @@ export default function ResumeEditor(p: Props) {
                   </button>
                 </header>
                 <div className="resume-edit-grid">
-                  {(["name", "tech", "url", "detail"] as const).map((key) => (
-                    <Field
-                      key={key}
-                      label={`${key === "name" ? "Project name" : key === "tech" ? "Technologies" : key === "url" ? "Repository / project URL" : "Project description"} ${i + 1}`}
-                      value={project[key] || ""}
-                      multiline={key === "detail"}
-                      wide={key === "url"}
-                      onChange={(v) =>
-                        p.onContent({
-                          ...c,
-                          projects: c.projects.map((x, j) =>
-                            j === i ? { ...x, [key]: v } : x,
-                          ),
-                        })
-                      }
-                    />
-                  ))}
+                  {(["name", "tech", "url", "category", "detail"] as const).map(
+                    (key) => (
+                      <Field
+                        key={key}
+                        label={`${key === "name" ? "Project name" : key === "tech" ? "Technologies" : key === "url" ? "Repository / project URL" : key === "category" ? "Project group (Legal, optional)" : "Project description"} ${i + 1}`}
+                        value={project[key] || ""}
+                        maxLength={key === "category" ? 80 : 20000}
+                        multiline={key === "detail"}
+                        wide={key === "url"}
+                        onChange={(v) =>
+                          p.onContent({
+                            ...c,
+                            projects: c.projects.map((x, j) =>
+                              j === i ? { ...x, [key]: v } : x,
+                            ),
+                          })
+                        }
+                      />
+                    ),
+                  )}
                 </div>
               </div>
             ))}

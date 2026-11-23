@@ -228,9 +228,15 @@ export function specializeResume(
   next.title = titles[role];
   next.summary = summaries[role](years);
   next.skills = structuredClone(skills[role]);
-  next.projects = order[role]
-    .slice(0, paper === "legal" ? 5 : 4)
-    .map((name) => structuredClone(projects[name]));
+  next.projects =
+    paper === "legal"
+      ? [
+          ...new Set([...order[role], ...LEGAL_PROJECTS.map((p) => p.name)]),
+        ].flatMap((name) => {
+          const project = LEGAL_PROJECTS.find((p) => p.name === name);
+          return project ? [structuredClone(project)] : [];
+        })
+      : order[role].slice(0, 4).map((name) => structuredClone(projects[name]));
   // Target roles change emphasis, never employers, dates or held job titles.
   if (role === "backend" || role === "cloud" || role === "architect") {
     const first = next.experience[0];
