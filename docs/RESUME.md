@@ -5,6 +5,8 @@
 - Single column: `/resume/classic/`, `/resume/modern/`, `/resume/executive/`, `/resume/minimal/`, `/resume/technical/`, `/resume/compact/`.
 - Two columns: `/resume/sidebar/`, `/resume/editorial/`, `/resume/blueprint/`, `/resume/studio/`.
 
+The gallery has a compact profile/paper setup bar, a Modern starter shortcut and filters for all layouts, single-column layouts or two-column layouts. The template previews appear before the detailed formatting explanation; **About formatting estimates** opens that explanation on demand. Filters are local to the gallery and do not change saved profile contents. Layout cards keep the selected profile and paper when opening a resume.
+
 The portfolio’s Resume links point to the gallery. PDF export uses the browser print command; the unused external Google Drive download URL has been removed.
 
 ## Expanded Legal edition
