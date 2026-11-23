@@ -325,6 +325,7 @@ export default function PortfolioV2Page() {
         </a>
         <div className="v2-top-actions">
           <a href="/portfolio/">Original portfolio</a>
+          <a href="/portfolio/v3/">3D portfolio v3</a>
           <ThemeChoice />
         </div>
       </div>
@@ -708,6 +709,7 @@ export default function PortfolioV2Page() {
         <span>Prakash Choudhary · Built with care.</span>
         <div>
           <a href="/portfolio/">Original portfolio</a>
+          <a href="/portfolio/v3/">3D portfolio v3</a>
           <a href="/">Developer tools</a>
           <a href="/about/">About PSDevTool</a>
         </div>

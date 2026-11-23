@@ -1367,3 +1367,5 @@
   min-height: 40px;
 }
 .portfolio-atelier .portfolio-version-link:hover { background: #ffffff09; }
+
+.portfolio-atelier .portfolio-studio-link { margin-left: 10px; }

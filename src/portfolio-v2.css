@@ -1539,3 +1539,7 @@
     scroll-margin-top: 82px;
   }
 }
+
+.v2-footer > div {
+  flex-wrap: wrap;
+}

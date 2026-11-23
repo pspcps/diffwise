@@ -1,0 +1,20 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const ts=require('typescript');
+require.extensions['.ts']=(module,filename)=>module._compile(ts.transpileModule(fs.readFileSync(filename,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,esModuleInterop:true,resolveJsonModule:true}}).outputText,filename);
+const {RESUME}=require('../src/data/resumeData.ts');
+const {resolveLocation}=require('../src/seo/routes.ts');
+const {getCareerDuration}=require('../src/utils/careerDuration.ts');
+const html=fs.readFileSync('dist/portfolio/v3/index.html','utf8');
+const escape=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
+for(const [path,id] of [['/portfolio/','portfolio'],['/portfolio/v2/','portfolio-v2'],['/portfolio/v3/','portfolio-v3']])assert.equal(resolveLocation({pathname:path,search:'',hash:''}).page.id,id);
+const legacy=resolveLocation({pathname:'/',search:'',hash:'#/portfolio/v3'});assert.equal(legacy.page.id,'portfolio-v3');assert.equal(legacy.legacy,true);
+assert.equal((html.match(/class="v3-project"/g)||[]).length,12);
+for(const project of RESUME.projects){assert.ok(html.includes(escape(project.title)),project.title);if(project.github)assert.ok(html.includes(`href="${project.github}"`),project.title+' source');}
+for(const employer of RESUME.experience)assert.ok(html.includes(escape(employer.company)));
+for(const section of ['projects','experience','contact'])assert.ok(html.includes(`id="v3-${section}"`));
+assert.ok(html.includes(getCareerDuration().label));assert.ok(html.includes(RESUME.email));assert.ok(html.includes(`href="${RESUME.linkedin}"`));assert.ok(html.includes('AI-DLC'));assert.ok(html.includes('Private repository'));assert.ok(html.includes('Project illustration'));
+assert.ok(html.includes('href="/portfolio/"'));assert.ok(html.includes('href="/portfolio/v2/"'));assert.ok(html.includes('href="/resume/"'));
+assert.ok(html.includes('href="https://david-hckh.com/"'));assert.ok(!html.includes('pagead2.googlesyndication.com'));
+const schema=JSON.parse(html.match(/<script id="page-structured-data" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);assert.ok(schema['@graph'].some(node=>node['@type']==='ProfilePage'));
+console.log('PASS portfolio v3 clean/legacy and retained routes, twelve source-linked projects, experience, dynamic career duration, contact, illustrations, attribution, ProfilePage and ad-free document.');
