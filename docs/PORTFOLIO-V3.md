@@ -12,6 +12,7 @@ Visual inspiration: [David Heckhoff’s portfolio](https://david-hckh.com/) and 
 
 - The original Three.js scene uses procedural geometry: desk, seated developer with glasses and a waving hand, monitor, laptop, notebook, cup, books, lamp, plant and a small server tower.
 - The laptop uses the selected language’s existing local technology logo. Changing language rebuilds the scene with that language’s accent and disposes the previous resources.
+- The desk rotates slowly by default when site motion is enabled. **Auto-rotate** toggles rotation. Dragging, rotating manually or resetting pauses it, so the controls stay predictable. Global motion pause and system reduced-motion preferences stop automatic rotation. The shared Studio homepage receives the same controls.
 - Drag with a mouse, use Rotate left/right and Reset view, or select The work / The journey / Say hello. The monitor/laptop, notebook and cup also link to those sections through raycasting.
 - Touch scrolling is retained with `touch-action: pan-y`; scene shortcuts are ordinary buttons and remain usable when WebGL is unavailable.
 - An original SVG fallback stays visible until the first rendered frame, and returns on WebGL context loss. Resource loading does not gate the text or project links.
