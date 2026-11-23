@@ -2,11 +2,11 @@
 
 The homepage defaults to **Classic** and `/portfolio/` defaults to **V3 Studio**. These defaults are deterministic. Refreshing does not shuffle either experience.
 
-Both homepages have a design selector and a **Surprise me** action. Every portfolio version has a **V1 Original / V2 Profile / V3 Studio** selector and the same Surprise me action. Selecting a design or using Surprise me remembers the result in local storage, independently for the homepage and portfolio. Surprise me chooses a different available design; ordinary renders and refreshes never invoke random selection.
+Every homepage and portfolio design has one fixed **shuffle icon** at the top-right. Clicking it chooses a different available design and remembers the result in local storage, independently for the homepage and portfolio. The current design is named in the tooltip and accessibility label. There are no visible design dropdowns or Surprise me text labels. Ordinary renders and refreshes never invoke random selection.
 
-The portfolio renders the selected version directly at `/portfolio/`, without redirecting to a versioned URL. Existing `/portfolio/v1/`, `/portfolio/v2/` and `/portfolio/v3/` links remain supported. Selecting another version from one of those direct links returns to `/portfolio/` with that preference applied. The original portfolio is V1.
+The portfolio renders the selected version directly at `/portfolio/`, without redirecting to a versioned URL. Existing `/portfolio/v1/`, `/portfolio/v2/` and `/portfolio/v3/` links remain supported. Using the shuffle icon from one of those direct links returns to `/portfolio/` with that preference applied. The original portfolio is V1.
 
-`/?design=classic` and `/?design=studio` remain explicit preview/selection links. Selecting a design through the header removes that query parameter while preserving other URL parameters. When storage is blocked or contains invalid data, stable defaults still work and manual choices remain active for the currently mounted page. No cookies or tracking identifiers are added. The previous automatically assigned session-storage choices are ignored; only the new preference keys are used.
+`/?design=classic` and `/?design=studio` remain explicit preview/selection links. Using the shuffle icon removes that query parameter while preserving other URL parameters. When storage is blocked or contains invalid data, stable defaults still work and manual choices remain active for the currently mounted page. No cookies or tracking identifiers are added. The previous automatically assigned session-storage choices are ignored; only the new preference keys are used.
 
 ## Studio homepage
 
