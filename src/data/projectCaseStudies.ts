@@ -4,6 +4,7 @@ export interface ProjectCaseStudy {
   scope: string;
   access: string;
   stages: { title: string; description: string }[];
+  evidence?: string;
   sources: { label: string; url: string }[];
 }
 export const PROJECT_CASE_STUDIES: Record<string, ProjectCaseStudy> = {
@@ -11,46 +12,51 @@ export const PROJECT_CASE_STUDIES: Record<string, ProjectCaseStudy> = {
     problem:
       "Help venue operators turn camera observations into actionable incident and responder information.",
     engineering:
-      "Integration of multimodal inference with operational state, incident handling, and a live dashboard.",
+      "Input validation, structured model findings, explicit uncertainty/error semantics and operator-controlled side effects.",
     scope:
-      "Agentic MVP organized into frontend, backend, and database setup modules. Backend import paths require repair before a reproducible startup; detection quality, forecasting, and end-to-end reliability have not been independently evaluated.",
+      "Still-image MVP. The recorded 12-case run uses scripted responses and synthetic images; it tests software behavior, not live detection accuracy. Video and multi-source fusion remain planned; forecasting and automated handoff are experimental.",
     stages: [
       {
-        title: "Camera capture",
+        title: "Validated upload",
         description:
-          "React samples webcam or mobile camera frames for analysis.",
+          "A required zone and one JPEG/PNG pass size/type/pixel checks through a signed Cloud Storage upload.",
       },
       {
-        title: "Perception and reasoning",
+        title: "Structured inference",
         description:
-          "Vertex AI Vision and Gemini analyze images and produce structured crowd/risk observations.",
+          "Gemini findings are schema-validated, with a 20-second transport timeout and at most one transient retry.",
       },
       {
-        title: "Incident workflows",
+        title: "Operator decision",
         description:
-          "FastAPI agent services and MCP tools implement Firestore-backed incident, zone, and responder operations.",
+          "Detected, no-detection, uncertain and failed outcomes are distinct; uncertain and failed results skip automation.",
       },
       {
-        title: "Operations dashboard",
+        title: "Evaluation",
         description:
-          "React displays operational state and incident/responder information.",
+          "Synthetic inputs and injected failures exercise API/software behavior; live model evaluation is a separate optional run.",
       },
     ],
     sources: [
       {
-        label: "frontend/src/components/CameraCapture.jsx",
-        url: "https://github.com/pspcps/Agentic-Project-Drishti/blob/ffac5447a38f0cd29b9897b4e7e642827421f44a/frontend/src/components/CameraCapture.jsx",
+        label: "README.md",
+        url: "https://github.com/pspcps/Agentic-Project-Drishti/blob/dba2457fc2c13daf205e7f50709483db0181086d/README.md",
       },
       {
-        label: "backend/main.py",
-        url: "https://github.com/pspcps/Agentic-Project-Drishti/blob/ffac5447a38f0cd29b9897b4e7e642827421f44a/backend/main.py",
+        label: "backend/utils/image_analysis.py",
+        url: "https://github.com/pspcps/Agentic-Project-Drishti/blob/dba2457fc2c13daf205e7f50709483db0181086d/backend/utils/image_analysis.py",
       },
       {
-        label: "backend/MCP_tools/db_tools.py",
-        url: "https://github.com/pspcps/Agentic-Project-Drishti/blob/ffac5447a38f0cd29b9897b4e7e642827421f44a/backend/MCP_tools/db_tools.py",
+        label: "backend/evaluation/run.py",
+        url: "https://github.com/pspcps/Agentic-Project-Drishti/blob/dba2457fc2c13daf205e7f50709483db0181086d/backend/evaluation/run.py",
+      },
+      {
+        label: "backend/evaluation/test_api.py",
+        url: "https://github.com/pspcps/Agentic-Project-Drishti/blob/dba2457fc2c13daf205e7f50709483db0181086d/backend/evaluation/test_api.py",
       },
     ],
     access: "Public source",
+    evidence: "12 scripted cases · live accuracy unmeasured",
   },
   FleetMind: {
     problem:
@@ -90,7 +96,7 @@ export const PROJECT_CASE_STUDIES: Record<string, ProjectCaseStudy> = {
     engineering:
       "Reusable editor lifecycle management, lazy-loaded modules, semantic navigation, and browser-based processing.",
     scope:
-      "Local file transformations run in the browser. API testing explicitly contacts user-selected endpoints, and optional analytics, ads, or editor assets may use the network. No unmeasured FPS or throughput guarantees.",
+      "Local file transformations run in the browser; API requests and maps explicitly use the network. The hosted site can load analytics/ads. A locally bundled VS Code extension with native clipboard/save dialogs is available in open PR #11, not yet merged to master.",
     stages: [
       {
         title: "Input and navigation",
@@ -116,193 +122,169 @@ export const PROJECT_CASE_STUDIES: Record<string, ProjectCaseStudy> = {
     sources: [
       {
         label: "src/App.tsx",
-        url: "https://github.com/pspcps/diffwise/blob/2c87f1f2098277758cff613e497bdeb2b29e0b18/src/App.tsx",
+        url: "https://github.com/pspcps/diffwise/blob/6c21119be125bd5c01c7c41c20152c36aac67dc3/src/App.tsx",
       },
       {
         label: "src/components/TextCompare/TextCompareView.tsx",
-        url: "https://github.com/pspcps/diffwise/blob/2c87f1f2098277758cff613e497bdeb2b29e0b18/src/components/TextCompare/TextCompareView.tsx",
+        url: "https://github.com/pspcps/diffwise/blob/6c21119be125bd5c01c7c41c20152c36aac67dc3/src/components/TextCompare/TextCompareView.tsx",
       },
       {
         label: "src/components/JsonTools/JsonToolsView.tsx",
-        url: "https://github.com/pspcps/diffwise/blob/2c87f1f2098277758cff613e497bdeb2b29e0b18/src/components/JsonTools/JsonToolsView.tsx",
+        url: "https://github.com/pspcps/diffwise/blob/6c21119be125bd5c01c7c41c20152c36aac67dc3/src/components/JsonTools/JsonToolsView.tsx",
+      },
+      {
+        label: "VS Code extension — open PR #11",
+        url: "https://github.com/pspcps/diffwise/pull/11",
       },
     ],
     access: "Public source",
-  },
-  "Kafbat UI": {
-    problem:
-      "Bring Kafka cluster administration, message inspection, and data-replication jobs into one control plane.",
-    engineering:
-      "Separation of the management API from replication workers, extensible destination adapters, and explicit job/error state.",
-    scope:
-      "Source includes deployment and worker implementations. The review did not establish production load, memory use, p95 latency, or message throughput; controlled performance benchmarks are not included.",
-    stages: [
-      {
-        title: "Management UI",
-        description:
-          "Next.js exposes Kafka administration and replication job controls.",
-      },
-      {
-        title: "Go control plane",
-        description:
-          "Gin/Sarama handlers manage clusters, schemas, authentication, and job metadata.",
-      },
-      {
-        title: "Replication workers",
-        description:
-          "Kubernetes client-go provisions Python consumers for replication jobs.",
-      },
-      {
-        title: "Destination adapters",
-        description:
-          "Workers map messages into configured relational or MongoDB destinations and record errors/metrics.",
-      },
-    ],
-    sources: [
-      {
-        label: "backend/go.mod",
-        url: "https://github.com/pspcps/kafkaUI/blob/7d77c949eb7ed81b787c494bace5b350d109d9e7/backend/go.mod",
-      },
-      {
-        label: "backend/internal/k8s/client.go",
-        url: "https://github.com/pspcps/kafkaUI/blob/7d77c949eb7ed81b787c494bace5b350d109d9e7/backend/internal/k8s/client.go",
-      },
-      {
-        label: "worker/main.py",
-        url: "https://github.com/pspcps/kafkaUI/blob/7d77c949eb7ed81b787c494bace5b350d109d9e7/worker/main.py",
-      },
-      {
-        label: "worker/destinations/postgresql.py",
-        url: "https://github.com/pspcps/kafkaUI/blob/7d77c949eb7ed81b787c494bace5b350d109d9e7/worker/destinations/postgresql.py",
-      },
-    ],
-    access: "Public source",
+    evidence: "20 tools · VS Code extension in open PR",
   },
   "Resume AI": {
     problem:
-      "Turn an uploaded resume into structured skills, improvement suggestions, and potential job-role matches.",
+      "Help applicants compare vacancy requirements against their actual resume evidence and review tailored wording before export.",
     engineering:
-      "Structured model output parsing and defensive normalization between the AI backend and frontend.",
+      "Bounded model/tool execution, verified identity, source-access validation and human-approved rewrites.",
     scope:
-      "Scores are model-generated resume-quality estimates, not independently validated ATS results or hiring predictions.",
+      "Gemini returns evidence coverage rather than a calibrated ATS score or hiring prediction. Source references and report schemas are checked, but semantic support and proposed wording still require human review. Sample activity is prerecorded; live analysis requires configured Vertex AI access.",
     stages: [
       {
-        title: "Resume upload",
-        description: "The frontend uploads a resume for backend analysis.",
-      },
-      {
-        title: "Text extraction",
-        description: "Firebase Functions extract PDF or plain-text content.",
-      },
-      {
-        title: "Gemini analysis",
+        title: "Verified inputs",
         description:
-          "Vertex AI generates structured feedback, skill extraction, and suggested job roles.",
+          "Firebase ID tokens and bounded PDF/text inputs are validated; caller-selected user IDs and storage paths are rejected.",
       },
       {
-        title: "Career interface",
+        title: "Read-only evidence tools",
         description:
-          "React renders results and resume-building or job-match views.",
+          "Gemini reads the vacancy, pages through resume lines and searches supplied content within model-turn/tool-call budgets.",
+      },
+      {
+        title: "Validated report and coach",
+        description:
+          "The server rejects out-of-range or unread citations. React shows requirement evidence, tool activity and document-aware Career Coach replies.",
+      },
+      {
+        title: "Review and export",
+        description:
+          "Users review introduced terms, approve rewrites and export a PSDevTool-compatible profile or open the tailored resume builder.",
       },
     ],
     sources: [
       {
-        label: "functions/analyzeResume.js",
-        url: "https://github.com/pspcps/resume-ai/blob/88d9369812596e42bb782fbcc6f1932766c13362/functions/analyzeResume.js",
+        label: "functions/applicationAgent.js",
+        url: "https://github.com/pspcps/resume-ai/blob/6ccad996d830d391ad836135df6db0e8ebfa7625/functions/applicationAgent.js",
       },
       {
-        label: "src/pages/AnalysisPage.tsx",
-        url: "https://github.com/pspcps/resume-ai/blob/88d9369812596e42bb782fbcc6f1932766c13362/src/pages/AnalysisPage.tsx",
+        label: "functions/evidence.js",
+        url: "https://github.com/pspcps/resume-ai/blob/6ccad996d830d391ad836135df6db0e8ebfa7625/functions/evidence.js",
       },
       {
-        label: "src/pages/ResumeBuilderPage.tsx",
-        url: "https://github.com/pspcps/resume-ai/blob/88d9369812596e42bb782fbcc6f1932766c13362/src/pages/ResumeBuilderPage.tsx",
+        label: "functions/applicationAgent.test.js",
+        url: "https://github.com/pspcps/resume-ai/blob/6ccad996d830d391ad836135df6db0e8ebfa7625/functions/applicationAgent.test.js",
+      },
+      {
+        label: "src/psDevTool.ts",
+        url: "https://github.com/pspcps/resume-ai/blob/6ccad996d830d391ad836135df6db0e8ebfa7625/src/psDevTool.ts",
       },
     ],
     access: "Public source",
+    evidence: "Agent/schema tests · evidence-backed rewrite approval",
   },
   "Ask My Docs": {
     problem:
-      "Make personal PDFs and notes searchable through questions using locally hosted model inference.",
+      "Maintain a local document library whose answers can be checked against the current source version and page.",
     engineering:
-      "Document ingestion, embedding persistence, retrieval configuration, and grounded prompt construction.",
+      "Durable indexing leases, atomic version publication, exact cosine retrieval, embedding compatibility and source-resolved citations.",
     scope:
-      "Local inference still depends on model downloads, local services, and sufficient machine resources; generated answers require review.",
+      "Local-library design using SQLite/NumPy, not a distributed vector database. The checked-in CPU baseline reports retrieval, citation support, answer completeness, abstention and latency on a small corpus. It records incomplete answers as well as successes; it is not a general accuracy guarantee. Remote Ollama hosts receive document text.",
     stages: [
       {
-        title: "Document ingestion",
+        title: "Queued lifecycle",
         description:
-          "A document processor loads supported files and prepares chunks.",
+          "Upload/update/rebuild jobs record content hashes and versions; identical content deduplicates and failed updates preserve the last ready version.",
       },
       {
-        title: "Embedding and persistence",
+        title: "Shared index",
         description:
-          "Ollama embeddings are stored in a persistent Chroma collection.",
+          "One SQLite WAL database stores source bytes, chunks, job leases and normalized vectors for both Streamlit and Flask.",
       },
       {
-        title: "Context retrieval",
+        title: "Retrieved evidence",
         description:
-          "LangChain retrieves relevant chunks for the user question.",
+          "NumPy cosine search selects current-version passages; incompatible embedding versions require a rebuild.",
       },
       {
-        title: "Local answer",
+        title: "Cited answer or abstention",
         description:
-          "An Ollama model answers with supplied context through Streamlit or the API.",
+          "Ollama returns references resolved to retrieved chunks, pages and excerpts. The evaluator records retrieval, fact matching, abstention and latency separately.",
       },
     ],
     sources: [
       {
-        label: "app.py",
-        url: "https://github.com/pspcps/ask-my-docs/blob/24a25ab78faceaa6622ed4d8d6ca4bda24fa38a9/app.py",
+        label: "service.py",
+        url: "https://github.com/pspcps/ask-my-docs/blob/fb3291f071ca98a26259a697b6677bfc817a44fe/service.py",
       },
       {
-        label: "data_ingest.py",
-        url: "https://github.com/pspcps/ask-my-docs/blob/24a25ab78faceaa6622ed4d8d6ca4bda24fa38a9/data_ingest.py",
+        label: "test_integration.py",
+        url: "https://github.com/pspcps/ask-my-docs/blob/fb3291f071ca98a26259a697b6677bfc817a44fe/test_integration.py",
       },
       {
-        label: "api.py",
-        url: "https://github.com/pspcps/ask-my-docs/blob/24a25ab78faceaa6622ed4d8d6ca4bda24fa38a9/api.py",
+        label: "evaluate.py",
+        url: "https://github.com/pspcps/ask-my-docs/blob/fb3291f071ca98a26259a697b6677bfc817a44fe/evaluate.py",
+      },
+      {
+        label: "evaluations/baseline-v1.json",
+        url: "https://github.com/pspcps/ask-my-docs/blob/fb3291f071ca98a26259a697b6677bfc817a44fe/evaluations/baseline-v1.json",
       },
     ],
     access: "Public source",
+    evidence: "Lifecycle tests · recorded 8-question Ollama baseline",
   },
   "Safety App": {
     problem:
-      "Explore frame-based analysis of in-cabin behavior and road-facing hazards without a hosted vision-model API.",
+      "Let reviewers inspect local video observations as evidence-backed events rather than treating individual model flags as final decisions.",
     engineering:
-      "Video-to-frame processing, local multimodal inference, structured-output parsing, and distinct analysis modes.",
+      "Job isolation, durable state/retry, temporal grouping, reviewer decisions and event-level evaluation.",
     scope:
-      "Prototype for assisted inspection. Model-produced flags and confidence fields are not validated safety measurements or a certified driver-monitoring system.",
+      "Two local worker slots and bounded media processing are implemented. Scripted regression tests verify concurrent job/review behavior. The evaluator supports held-out interval labels, but representative model precision/recall and false-alert rates have not been established. Private job URLs act as bearer links; local deployment is assumed.",
     stages: [
       {
-        title: "Upload",
-        description: "Flask accepts an image or video and analysis category.",
-      },
-      {
-        title: "Frame extraction",
-        description: "FFmpeg samples video frames at a configured rate.",
-      },
-      {
-        title: "Vision inference",
+        title: "Isolated job",
         description:
-          "Ollama runs llama3.2-vision with category-specific prompts.",
+          "Flask records a bounded upload in its own persistent job directory with progress, cancellation and retry.",
       },
       {
-        title: "Result inspection",
-        description: "Jinja pages display summaries and parsed model flags.",
+        title: "Bounded local processing",
+        description:
+          "FFmpeg/FFprobe sample bounded video input; Ollama produces per-frame observations with a model-call timeout.",
+      },
+      {
+        title: "Temporal event review",
+        description:
+          "Consecutive positives form timestamped events with evidence frames; reviewers accept or dismiss them before exporting reports.",
+      },
+      {
+        title: "Event evaluation",
+        description:
+          "A development/held-out manifest runner calculates temporal matching, precision/recall, false alerts per hour and processing speed.",
       },
     ],
     sources: [
       {
-        label: "app.py",
-        url: "https://github.com/pspcps/safety_app/blob/7d109272e9d05c227725a029bc2ec778468e470e/app.py",
+        label: "workbench.py",
+        url: "https://github.com/pspcps/safety_app/blob/0d2676102f84185e10f6fe9d5432ac68bb02868c/workbench.py",
       },
       {
-        label: "templates/result.html",
-        url: "https://github.com/pspcps/safety_app/blob/7d109272e9d05c227725a029bc2ec778468e470e/templates/result.html",
+        label: "tests/test_workbench.py",
+        url: "https://github.com/pspcps/safety_app/blob/0d2676102f84185e10f6fe9d5432ac68bb02868c/tests/test_workbench.py",
+      },
+      {
+        label: "evaluate.py",
+        url: "https://github.com/pspcps/safety_app/blob/0d2676102f84185e10f6fe9d5432ac68bb02868c/evaluate.py",
       },
     ],
     access: "Public source",
+    evidence: "Concurrent-job regressions · event evaluator",
   },
   InkMind: {
     problem:
@@ -402,9 +384,9 @@ export const PROJECT_CASE_STUDIES: Record<string, ProjectCaseStudy> = {
     problem:
       "Give individuals a consolidated view of assets, cash flows, expenses, liabilities, and investment performance.",
     engineering:
-      "MVVM with reactive StateFlow/Flow, financial domain logic separated from UI, and unit tests for calculations and privacy behavior.",
+      "Unified financial accounting rules separate balance-sheet liabilities, market returns, capital flows and loan interest; reactive ViewModels connect them to local persistence.",
     scope:
-      "Financial calculations depend on user-entered data and assumptions. Repository tests were inspected, not executed in this web workspace.",
+      "Native Android source and financial tests reviewed, not executed in this web workspace. Calculations depend on entered data and financial assumptions. README showcase images are explicitly labeled UI mockups, not runtime screenshots.",
     stages: [
       {
         title: "Compose interface",
@@ -419,7 +401,7 @@ export const PROJECT_CASE_STUDIES: Record<string, ProjectCaseStudy> = {
       {
         title: "Financial domain",
         description:
-          "Kotlin engines calculate cash-flow-aware returns, XIRR, and planning scenarios.",
+          "Kotlin engines separate assets/liabilities, internal transfers and loan principal/interest, and compute XIRR/TWRR and cash-flow reports.",
       },
       {
         title: "Local persistence",
@@ -429,19 +411,21 @@ export const PROJECT_CASE_STUDIES: Record<string, ProjectCaseStudy> = {
     ],
     sources: [
       {
-        label: "app/build.gradle.kts",
-        url: "https://github.com/pspcps/Wealth-Management-Portfolio-Tracker/blob/019e7b4a2ea442a69778f86a78874c01be1b6d6f/app/build.gradle.kts",
-      },
-      {
-        label: "app/src/main/java/com/example/domain/finance/XirrEngine.kt",
-        url: "https://github.com/pspcps/Wealth-Management-Portfolio-Tracker/blob/019e7b4a2ea442a69778f86a78874c01be1b6d6f/app/src/main/java/com/example/domain/finance/XirrEngine.kt",
+        label:
+          "app/src/main/java/com/example/domain/engine/UnifiedFinancialEngine.kt",
+        url: "https://github.com/pspcps/Wealth-Management-Portfolio-Tracker/blob/28f9d1fe832e9b7936cb5b6003843fca3b880e40/app/src/main/java/com/example/domain/engine/UnifiedFinancialEngine.kt",
       },
       {
         label: "app/src/test/java/com/example/PortfolioCalculationsTest.kt",
-        url: "https://github.com/pspcps/Wealth-Management-Portfolio-Tracker/blob/019e7b4a2ea442a69778f86a78874c01be1b6d6f/app/src/test/java/com/example/PortfolioCalculationsTest.kt",
+        url: "https://github.com/pspcps/Wealth-Management-Portfolio-Tracker/blob/28f9d1fe832e9b7936cb5b6003843fca3b880e40/app/src/test/java/com/example/PortfolioCalculationsTest.kt",
+      },
+      {
+        label: "README.md",
+        url: "https://github.com/pspcps/Wealth-Management-Portfolio-Tracker/blob/28f9d1fe832e9b7936cb5b6003843fca3b880e40/README.md",
       },
     ],
     access: "Public source",
+    evidence: "Unified financial engine · calculation tests",
   },
   RentMeter: {
     problem:
@@ -470,79 +454,128 @@ export const PROJECT_CASE_STUDIES: Record<string, ProjectCaseStudy> = {
       {
         title: "Documents and backups",
         description:
-          "Android PDF generation produces invoices and settlement documents; ZIP export/import combines ledger/settings snapshots with stored media.",
+          "PDF invoices, dual-signature agreement images and scheduled bill-preparation reminders complement ZIP backup/restore of the ledger and private media.",
       },
     ],
     sources: [
       {
-        label: "Android dependencies",
-        url: "https://github.com/pspcps1/RentMeter/blob/58be3c44131919fc39928b4358ab58df31de2960/app/build.gradle.kts",
+        label:
+          "app/src/main/java/com/example/data/repository/RentLedgerRepository.kt",
+        url: "https://github.com/pspcps1/RentMeter/blob/a7eec4bf21349a598da651f20819a0828813422c/app/src/main/java/com/example/data/repository/RentLedgerRepository.kt",
       },
       {
-        label: "Meter OCR pipeline",
-        url: "https://github.com/pspcps1/RentMeter/blob/58be3c44131919fc39928b4358ab58df31de2960/app/src/main/java/com/example/engine/MeterOcrEngine.kt",
+        label: "app/src/main/java/com/example/engine/RentReminderManager.kt",
+        url: "https://github.com/pspcps1/RentMeter/blob/a7eec4bf21349a598da651f20819a0828813422c/app/src/main/java/com/example/engine/RentReminderManager.kt",
       },
       {
-        label: "Billing and ledger repository",
-        url: "https://github.com/pspcps1/RentMeter/blob/58be3c44131919fc39928b4358ab58df31de2960/app/src/main/java/com/example/data/repository/RentLedgerRepository.kt",
+        label: "app/src/main/java/com/example/engine/RentAgreementGenerator.kt",
+        url: "https://github.com/pspcps1/RentMeter/blob/a7eec4bf21349a598da651f20819a0828813422c/app/src/main/java/com/example/engine/RentAgreementGenerator.kt",
       },
       {
-        label: "PDF invoice generation",
-        url: "https://github.com/pspcps1/RentMeter/blob/58be3c44131919fc39928b4358ab58df31de2960/app/src/main/java/com/example/engine/PdfInvoiceGenerator.kt",
-      },
-      {
-        label: "Backup export/import",
-        url: "https://github.com/pspcps1/RentMeter/blob/58be3c44131919fc39928b4358ab58df31de2960/app/src/main/java/com/example/engine/BackupZipManager.kt",
+        label: "app/src/test/java/com/example/ExampleRobolectricTest.kt",
+        url: "https://github.com/pspcps1/RentMeter/blob/a7eec4bf21349a598da651f20819a0828813422c/app/src/test/java/com/example/ExampleRobolectricTest.kt",
       },
     ],
+    evidence: "Transactional billing · Robolectric/Compose tests",
   },
-  SharpForge: {
+  KafkaUI: {
     problem:
-      "Bring C# editing, .NET project execution, tests and debugging into a lightweight desktop workspace for macOS developers.",
+      "Bring Kafka cluster administration, message inspection, and data-replication jobs into one control plane.",
     engineering:
-      "Electron IPC coordinates local SDK processes, editor state and a Debug Adapter Protocol session, keeping build/test execution and debugger interactions connected to the React interface.",
+      "Separate Go control plane and Python workers, with newer development-branch work making destination acknowledgment, replay identities and offset commits explicit.",
     scope:
-      "macOS-focused desktop project reviewed from source. Native build, run and debug workflows require compatible local .NET SDKs and netcoredbg. Source inspection does not establish successful installation or desktop runtime validation.",
+      "Main retains the older commit-on-insert-error policy. The delivery-contract branch adds bounded retries/pause, acknowledged DLQ handling and a transactional PostgreSQL replay guard. Its recorded lab covers one local Kafka/PostgreSQL setup; other destination adapters are disabled in that branch. No end-to-end exactly-once or general throughput guarantee.",
+    stages: [
+      {
+        title: "Control plane",
+        description:
+          "Next.js and Go/Gin expose clusters, messages, consumer groups, schemas and replication job controls.",
+      },
+      {
+        title: "Worker orchestration",
+        description:
+          "Kubernetes provisions Python consumers. Main and the delivery-contract branch have different failure behavior.",
+      },
+      {
+        title: "Delivery-contract branch",
+        description:
+          "PostgreSQL business writes and source-identity ledger entries share a transaction; offset commits follow acknowledgment. Bounded retry, pause and optional acknowledged DLQ paths are explicit.",
+      },
+      {
+        title: "Reproduction lab",
+        description:
+          "A published branch report covers eight failure/replay scenarios and 4,000 records at 200/s offered load. Hardware, topology, timings and limitations accompany the raw samples.",
+      },
+    ],
+    sources: [
+      {
+        label: "Default branch overview",
+        url: "https://github.com/pspcps/kafkaUI/blob/a7319aec9a4d3186178dd0b7e203e477b7d0c304/README.md",
+      },
+      {
+        label: "Delivery contract — development branch",
+        url: "https://github.com/pspcps/kafkaUI/blob/2b48b6084281c0c76d29e10f580e5ca87c42c40c/docs/DELIVERY_CONTRACT.md",
+      },
+      {
+        label: "Executable recovery lab — development branch",
+        url: "https://github.com/pspcps/kafkaUI/blob/2b48b6084281c0c76d29e10f580e5ca87c42c40c/docs/DELIVERY_LAB.md",
+      },
+      {
+        label: "Recorded offered-load run — development branch",
+        url: "https://github.com/pspcps/kafkaUI/blob/2b48b6084281c0c76d29e10f580e5ca87c42c40c/docs/benchmarks/20261122T161829Z-dc6d21/README.md",
+      },
+    ],
+    access: "Public source",
+    evidence: "Development branch: recovery lab + recorded load test",
+  },
+  "Cairn IDE": {
+    problem:
+      "Give C#/.NET developers a connected editing, execution, debugging and investigation workbench on macOS.",
+    engineering:
+      "Electron process/IPC boundaries, DAP debugging, optional Roslyn dependency resolution and integrated developer tooling.",
+    scope:
+      "Cairn IDE is the current product name; the repository remains SharpForge. It is experimental: full active-editor LSP, crash recovery, download verification and signed/notarized macOS releases remain incomplete. CI and browser/.NET checks do not establish packaged macOS acceptance.",
     access: "Public source",
     stages: [
       {
-        title: "Solution workspace",
+        title: "Editor and solution",
         description:
-          "An Electron/React shell hosts Monaco editing, solution/project navigation and .sln/.slnx loading.",
+          "Electron/React hosts local Monaco assets and .sln/.slnx project browsing.",
       },
       {
-        title: ".NET process orchestration",
+        title: ".NET and DAP",
         description:
-          "Main-process handlers invoke local dotnet restore, build and run tasks and relay their output back to the workspace.",
+          "Local SDK processes and netcoredbg expose builds, tests, breakpoints and runtime inspection through IPC.",
       },
       {
-        title: "DAP debugging",
+        title: "Dependency intelligence",
         description:
-          "netcoredbg handles debugger sessions; IPC commands expose breakpoints, stepping, stack frames, variables and expression evaluation.",
+          "Project/package/type/call views support navigation and impact exploration; optional Roslyn resolution adds compiler-derived relationships.",
       },
       {
-        title: "Tests and developer workflows",
+        title: "Developer workbench",
         description:
-          "dotnet test execution and results are combined with NuGet management, terminal commands and Git status/diff inspection.",
+          "API, log, Git, quality and local utilities run alongside independent PTY terminals; feature and release documents state remaining limits.",
       },
     ],
     sources: [
       {
-        label: "Project dependencies and entry point",
-        url: "https://github.com/pspcps/SharpForge/blob/7c41d949945d60b99e827a8929603a39a54ff950/package.json",
+        label: "docs/ADVANCED_TOOLS.md",
+        url: "https://github.com/pspcps/SharpForge/blob/fc37e678844b7cdeba53e91594b88a4ff9c66a7f/docs/ADVANCED_TOOLS.md",
       },
       {
-        label: "Desktop process / debugger / test handlers",
-        url: "https://github.com/pspcps/SharpForge/blob/7c41d949945d60b99e827a8929603a39a54ff950/electron-main.cjs",
+        label: "docs/FEATURE_STATUS.md",
+        url: "https://github.com/pspcps/SharpForge/blob/fc37e678844b7cdeba53e91594b88a4ff9c66a7f/docs/FEATURE_STATUS.md",
       },
       {
-        label: "Solution parsing",
-        url: "https://github.com/pspcps/SharpForge/blob/7c41d949945d60b99e827a8929603a39a54ff950/src/main/solution-manager.ts",
+        label: "docs/RELEASE_CHECKS.md",
+        url: "https://github.com/pspcps/SharpForge/blob/fc37e678844b7cdeba53e91594b88a4ff9c66a7f/docs/RELEASE_CHECKS.md",
       },
       {
-        label: "DAP session manager",
-        url: "https://github.com/pspcps/SharpForge/blob/7c41d949945d60b99e827a8929603a39a54ff950/src/main/debugger-manager.ts",
+        label: ".github/workflows/verify.yml",
+        url: "https://github.com/pspcps/SharpForge/blob/fc37e678844b7cdeba53e91594b88a4ff9c66a7f/.github/workflows/verify.yml",
       },
     ],
+    evidence: "CI + browser/.NET checks · experimental macOS app",
   },
 };

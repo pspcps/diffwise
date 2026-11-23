@@ -11,7 +11,7 @@ export const RESUME = {
   focus:
     "Node.js · TypeScript · Apache Kafka · PostgreSQL · AWS · Google Cloud · AI Agents",
   get summary() {
-    return `Senior Software Engineer with ${getCareerDuration().years}+ years of experience building backend services, event-driven systems, and cloud-native applications. Specializes in Node.js, TypeScript, Apache Kafka, PostgreSQL, AWS, and Google Cloud. Led teams of 4–6 engineers and designed a reverse-geocoding platform with approximately $1M in annual cost savings. Personal projects span multi-agent fleet diagnostics, Kafka data replication, local retrieval-augmented generation (RAG), developer tools, and Android financial analytics.`;
+    return `Senior Software Engineer with ${getCareerDuration().years}+ years of experience building React applications, Node.js/TypeScript services, event-driven systems, and cloud-native applications. Specializes in Apache Kafka, PostgreSQL, AWS, and Google Cloud. Led teams of 4–6 engineers and designed a reverse-geocoding platform with approximately $1M in annual cost savings. Personal projects span multi-agent fleet diagnostics, Kafka data replication, local retrieval-augmented generation (RAG), developer tools, and Android financial analytics.`;
   },
   stats: [
     {
@@ -140,22 +140,25 @@ export const RESUME = {
   projects: [
     {
       title: "Project Drishti",
-      subtitle: "AI-assisted crowd monitoring and incident response",
-      period: "May 2026 – Present",
+      subtitle:
+        "Still-image hazard review with explicit uncertainty and failure states",
+      period: "2025 – 2026",
       tech: [
         "React",
+        "Python",
         "FastAPI",
-        "Firestore",
-        "Vertex AI Vision",
+        "Vertex AI",
         "Gemini",
+        "Firestore",
+        "Cloud Storage",
         "Cloud Run",
       ],
       color: "#4f8ef7",
       github: "https://github.com/pspcps/Agentic-Project-Drishti",
       bullets: [
-        "Built a camera-to-analysis workflow that sends sampled frames through Vertex AI Vision and Gemini for crowd and hazard assessment.",
-        "Connected analysis results to Firestore-backed incident, zone, and responder workflows with a React operations dashboard.",
-        "Separated the React frontend, FastAPI agent services, and database setup, with MCP tools for incident and responder operations.",
+        "Built a zone-scoped JPEG/PNG analysis workflow with signed uploads, image validation, structured Gemini findings and operator review.",
+        "Distinguished detected hazards, clear negatives, uncertain findings and model failures; bounded transient retries and skipped automation for uncertain or failed analyses.",
+        "Added a 12-case scripted evaluation and HTTP regressions; live model accuracy and event-footage performance remain unmeasured.",
       ],
     },
     {
@@ -202,12 +205,12 @@ export const RESUME = {
       bullets: [
         "Built an integrated workspace for code and folder diffs, JSON/YAML inspection, architecture diagrams, PDF/image tools, and debugging utilities.",
         "Used Monaco for editing and comparison, React Flow/Mermaid for diagrams, and browser APIs for document, image, and cryptographic operations.",
-        "Added searchable navigation, persistent themes/favorites, syntax-colored inputs, and contextual guidance across 20 tool surfaces.",
+        "Added a 20-tool catalog, syntax-aware editors, saved themes, resume profiles and JSON backup/import; a bundled VS Code extension is available in an open PR.",
       ],
     },
     {
-      title: "Kafbat UI",
-      subtitle: "Kafka administration and streaming replication",
+      title: "KafkaUI",
+      subtitle: "Independent Kafka administration and replication platform",
       period: "2026",
       tech: [
         "Go",
@@ -225,9 +228,9 @@ export const RESUME = {
       color: "#f97316",
       github: "https://github.com/pspcps/kafkaUI",
       bullets: [
-        "Implemented a Go/Gin API and Next.js interface for brokers, topics, messages, consumer groups, and replication job management.",
-        "Added Kubernetes deployment orchestration for Python Kafka consumers with PostgreSQL, MySQL, SQL Server, and MongoDB destination adapters.",
-        "Implemented JWT authentication, schema validation, job-error persistence, and worker metrics as separate backend concerns.",
+        "Built a Go/Gin control plane and Next.js workspace for Kafka clusters, messages, consumer groups and Kubernetes-managed replication jobs.",
+        "Implemented authentication, schema validation, job errors and operational controls; the newer delivery-contract branch adds bounded retries and a transactional PostgreSQL replay ledger.",
+        "Published a development-branch Kafka/PostgreSQL lab with eight recovery scenarios and a contextualized offered-load report; these changes are not yet on main.",
       ],
     },
     {
@@ -248,14 +251,14 @@ export const RESUME = {
       color: "#10b981",
       github: "https://github.com/pspcps/Wealth-Management-Portfolio-Tracker",
       bullets: [
-        "Built a native Android app with Jetpack Compose screens and Room-backed repositories for portfolio and personal-finance records.",
-        "Implemented monthly valuations, contribution-aware growth, and XIRR analytics alongside financial calculators and recurring cash-flow tracking.",
-        "Added credit-card statement PDF parsing, local backup/restore, balance masking, and optional PIN/biometric app locking.",
+        "Built an offline-first Compose/Room finance app with a unified engine separating assets, liabilities, capital transfers, loan principal and interest.",
+        "Implemented XIRR/TWRR analytics, monthly snapshot carry-forward, cash-flow reporting and a categorized financial-calculator workspace.",
+        "Added on-device statement parsing, multi-domain backups and privacy controls, with financial calculation tests; README showcase images are labeled UI mockups.",
       ],
     },
     {
       title: "RentMeter",
-      subtitle: "Android rental ledger with meter OCR and utility billing",
+      subtitle: "Offline Android rental ledger, meter OCR and tenant documents",
       period: "2026",
       tech: [
         "Kotlin",
@@ -270,30 +273,31 @@ export const RESUME = {
       color: "#14b8a6",
       github: "https://github.com/pspcps1/RentMeter",
       bullets: [
-        "Built property, unit and tenancy workflows with rent/utility invoices, payment tracking and shared-expense allocation in a Room-backed Android app.",
-        "Implemented meter-photo cropping and preprocessing, Tesseract/ML Kit OCR, and reading-candidate parsing with manual-entry support.",
-        "Generated PDF invoices and checkout settlements, with ZIP backups combining ledger/settings snapshots and stored meter photos.",
+        "Built a Room-backed rental ledger with configurable metered, tenant-paid and included utilities, expense allocation and transactional invoice/check-out workflows.",
+        "Added CameraX/ML Kit/Tesseract reading candidates, tenant document storage, dual-signature agreement images and configurable rent-preparation reminders.",
+        "Included PDF invoices, private-media ZIP backups and Robolectric/Compose tests covering billing rules and crop gestures; device OCR accuracy is not benchmarked.",
       ],
     },
     {
-      title: "SharpForge",
-      subtitle: "C#/.NET desktop IDE with build, test and debugging workflows",
+      title: "Cairn IDE",
+      subtitle: "Experimental C#/.NET desktop IDE, formerly SharpForge",
       period: "2026",
       tech: [
         "Electron",
         "React",
         "TypeScript",
-        "C#",
-        ".NET",
+        "C# / .NET",
         "Monaco Editor",
+        "Roslyn",
         "DAP / netcoredbg",
+        "PTY terminals",
       ],
       color: "#a78bfa",
       github: "https://github.com/pspcps/SharpForge",
       bullets: [
-        "Built a macOS-focused Electron/React IDE with Monaco editing and support for .sln/.slnx solution and project workflows.",
-        "Integrated dotnet build/run/test tasks and netcoredbg debugging through Electron IPC, including breakpoints, stepping and variable inspection.",
-        "Added NuGet management, test-result inspection, integrated terminal commands and Git status/diff workflows in the desktop workspace.",
+        "Built an Electron/React IDE with .NET build/test workflows, netcoredbg debugging and a developer workbench for APIs, logs, Git and local utilities.",
+        "Added project/package/type/call dependency views with optional Roslyn resolution, source navigation, impact tracing and test/coverage inspection.",
+        "Included local Monaco workers, interactive PTY terminals and automated checks; full active-editor LSP, crash recovery and signed macOS distribution remain roadmap work.",
       ],
     },
     {
@@ -319,41 +323,41 @@ export const RESUME = {
     },
     {
       title: "Resume AI",
-      subtitle: "AI-assisted resume analysis and career guidance",
-      period: "May 2026 – Present",
+      subtitle: "Evidence-backed Gemini application assistant and career coach",
+      period: "2025 – 2026",
       tech: [
         "React",
         "TypeScript",
         "Firebase Functions",
-        "Firestore",
-        "Cloud Storage",
+        "Firebase Auth",
         "Vertex AI",
-        "Gemini 2.5 Pro",
+        "Gemini",
+        "Function calling",
       ],
       color: "#8b5cf6",
       github: "https://github.com/pspcps/resume-ai",
       bullets: [
-        "Implemented PDF/text extraction and Gemini 2.5 Pro analysis through Vertex AI in Firebase Functions.",
-        "Normalized generated JSON into skills, strengths, weaknesses, prioritized suggestions, and role recommendations.",
-        "Built React upload, analysis, job-match, and resume-builder screens around the analysis workflow.",
+        "Built a bounded Gemini tool-calling workflow that compares a vacancy against resume lines and returns supported, partial or missing evidence.",
+        "Validated cited line access, report structure and Firebase identity; surfaced tool activity, explicit failures and user-approved rewrites.",
+        "Added a document-aware Career Coach, sample workflow and PSDevTool-compatible profile export; requirement coverage is not an employer ATS score.",
       ],
     },
     {
       title: "Ask My Docs",
-      subtitle: "Local document question answering with RAG",
+      subtitle: "Source-cited local RAG with a versioned document lifecycle",
       period: "2026",
-      tech: ["Python", "Streamlit", "LangChain", "Ollama", "ChromaDB", "Flask"],
+      tech: ["Python", "Streamlit", "Flask", "SQLite / WAL", "NumPy", "Ollama"],
       color: "#10b981",
       github: "https://github.com/pspcps/ask-my-docs",
       bullets: [
-        "Implemented document loading/chunking and Ollama embeddings with a persistent Chroma vector store.",
-        "Built a retrieval-augmented question-answering chain that supplies retrieved document context to a local Ollama model.",
-        "Provided a Streamlit interface and a separate Flask API entry point for document queries.",
+        "Built one persistent SQLite-backed library shared by Streamlit, Flask and an indexing worker, with content hashes, versions and atomic index publication.",
+        "Added duplicate detection, failed-job retry, update/delete/rebuild workflows, embedding-model compatibility checks and page/excerpt citations with abstention.",
+        "Published lifecycle integration tests and an eight-question CPU/Ollama baseline that records retrieval, answer quality, abstention and latency separately.",
       ],
     },
     {
       title: "Safety App",
-      subtitle: "Local vision-model safety analysis prototype",
+      subtitle: "Durable local video-event review with timestamped evidence",
       period: "2026",
       tech: [
         "Python",
@@ -366,9 +370,9 @@ export const RESUME = {
       color: "#ec4899",
       github: "https://github.com/pspcps/safety_app",
       bullets: [
-        "Built a Flask upload workflow for images and videos, with configurable FFmpeg frame sampling.",
-        "Called a local llama3.2-vision model using separate prompts for in-cabin behavior and road-facing hazards.",
-        "Parsed narrative summaries and JSON flags for presentation in server-rendered result pages.",
+        "Built a two-slot local worker with isolated persistent jobs, bounded FFmpeg extraction, retry, restart recovery and cancellation.",
+        "Grouped local vision-model observations into timestamped events; added evidence frames, accept/dismiss review and auditable JSON reports.",
+        "Added concurrent-workflow regressions and an event-level evaluation runner; representative held-out model quality remains unmeasured.",
       ],
     },
     {

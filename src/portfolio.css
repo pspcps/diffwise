@@ -444,7 +444,7 @@
   align-items: center;
   color: #7b9772;
   font:
-    7px ui-monospace,
+    9px ui-monospace,
     monospace;
   letter-spacing: 1.2px;
   margin-bottom: 19px;
@@ -455,6 +455,9 @@
 }
 .portfolio-atelier .project-space-content {
   padding: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 .portfolio-atelier .project-space-content > h3 {
   font-size: 21px;
@@ -464,16 +467,27 @@
   margin-bottom: 10px;
 }
 .portfolio-atelier .project-space-content > p {
-  font-size: 10px;
+  font-size: 12px;
   color: #9aac91;
 }
 .portfolio-atelier .project-real-summary {
   color: #aaba9f !important;
-  font-size: 11px !important;
+  font-size: 13px !important;
   line-height: 1.9 !important;
 }
+.portfolio-atelier .project-space-content > .project-evidence-summary {
+  color: #bbcbb2;
+  font-size: 11px;
+  line-height: 1.7;
+  margin: 12px 0 0;
+}
+.project-evidence-summary > span {
+  color: var(--user-accent);
+  font-weight: 600;
+  margin-right: 5px;
+}
 .portfolio-atelier .project-tech .technology-chip {
-  font-size: 8px;
+  font-size: 10px;
   padding: 5px 7px;
   background: #ffffff03;
   border-color: #ffffff0c;
@@ -484,13 +498,16 @@
   width: 12px;
   height: 12px;
 }
+.portfolio-atelier .project-tech {
+  margin-bottom: 23px;
+}
 .project-card-actions {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px 12px;
-  margin-top: 23px;
+  margin-top: auto;
   padding-top: 10px;
   border-top: 1px solid var(--border);
 }

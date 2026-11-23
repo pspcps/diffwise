@@ -48,17 +48,17 @@ const projects: Record<string, ResumeContent["projects"][number]> =
   Object.fromEntries(LEGAL_PROJECTS.map((p) => [p.name, p]));
 projects["Ask My Docs"] = {
   name: "Ask My Docs",
-  tech: "Python, Streamlit, LangChain, Ollama, ChromaDB",
+  tech: "Python, Streamlit, Flask, SQLite, NumPy, Ollama",
   url: "https://github.com/pspcps/ask-my-docs",
   detail:
-    "Built local document question answering with document chunking, Ollama embeddings, persistent Chroma retrieval and Streamlit/Flask interfaces.",
+    "Built versioned SQLite-backed RAG with durable indexing, page/excerpt citations, abstention and a recorded eight-question Ollama evaluation.",
 };
 projects["Resume AI"] = {
   name: "Resume AI",
   tech: "React, TypeScript, Firebase, Vertex AI, Gemini",
   url: "https://github.com/pspcps/resume-ai",
   detail:
-    "Built PDF/text extraction and Gemini analysis in Firebase Functions, with normalized skills and suggestions surfaced in React upload and analysis screens.",
+    "Built a bounded Gemini agent with source-validated resume evidence, verified identity, approved rewrites and PSDevTool-compatible profile export.",
 };
 const summaries: Record<
   Exclude<ResumeRoleId, "general">,
@@ -69,7 +69,7 @@ const summaries: Record<
   cloud: (y) =>
     `Senior software engineer with ${y}+ years of experience in application engineering. Builds services on AWS and Google Cloud, with Docker, Kubernetes-managed data workers and Grafana and OpsGenie monitoring. Designed an OpenStreetMap/Redis service saving approximately $1M annually; builds containerized agent APIs and cloud-connected React applications.`,
   ai: (y) =>
-    `Senior software engineer with ${y}+ years in application engineering, with recent work in applied AI. Builds Claude agents on AWS Bedrock, MCP-connected data tools and local retrieval-augmented generation with Ollama and ChromaDB. Delivered AI-assisted diagnostics and React interfaces for working with operational data.`,
+    `Senior software engineer with ${y}+ years in application engineering, with recent applied AI work in Bedrock/Claude agents, MCP integrations and local RAG. Builds React interfaces, evidence-backed tool workflows and versioned document retrieval with Ollama, SQLite and NumPy. Delivered AI-assisted operational diagnostics.`,
   fullstack: (y) =>
     `Senior software engineer with ${y}+ years building React applications and Node.js/TypeScript services backed by Kafka and SQL databases. Delivered CRM platforms and payment integrations across 3+ enterprise systems. Builds complete browser and cloud workflows, including developer tools, AI-assisted applications and API clients.`,
   architect: (y) =>
@@ -119,7 +119,7 @@ const skills: Record<Exclude<ResumeRoleId, "general">, string[][]> = {
     ],
     [
       "Retrieval & applications",
-      "LangChain, Ollama, ChromaDB, document retrieval, React",
+      "Ollama, SQLite, NumPy, ChromaDB, document retrieval, evaluation, React",
     ],
     [
       "Languages & APIs",
@@ -181,14 +181,14 @@ const skills: Record<Exclude<ResumeRoleId, "general">, string[][]> = {
 };
 const order: Record<Exclude<ResumeRoleId, "general">, string[]> = {
   backend: [
-    "Kafbat UI",
+    "KafkaUI",
     "FleetMind",
     "ApiDesk Studio",
     "PSDevTool",
     "Project Drishti",
   ],
   cloud: [
-    "Kafbat UI",
+    "KafkaUI",
     "FleetMind",
     "Project Drishti",
     "ApiDesk Studio",
@@ -198,12 +198,12 @@ const order: Record<Exclude<ResumeRoleId, "general">, string[]> = {
   fullstack: [
     "PSDevTool",
     "Project Drishti",
-    "Kafbat UI",
+    "KafkaUI",
     "ApiDesk Studio",
     "FleetMind",
   ],
   architect: [
-    "Kafbat UI",
+    "KafkaUI",
     "FleetMind",
     "ApiDesk Studio",
     "PSDevTool",
@@ -214,7 +214,7 @@ const order: Record<Exclude<ResumeRoleId, "general">, string[]> = {
     "Project Drishti",
     "ApiDesk Studio",
     "PSDevTool",
-    "Kafbat UI",
+    "KafkaUI",
   ],
 };
 export function specializeResume(
