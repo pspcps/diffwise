@@ -83,6 +83,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
         <button className="toolbar-home" onClick={onBack}>
           <ArrowLeft size={14} /> Back to tools
         </button>
+        <PortfolioVersionSwitcher fallback="v1" />
       </header>
       {!selected && (
         <CharacterGuide
@@ -96,7 +97,6 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
         />
       )}
       <main className="portfolio-body">
-        <PortfolioVersionSwitcher fallback="v1" />
         <PortfolioHero onExplore={() => scrollTo("projects")} />
         <section className="portfolio-stats" aria-label="Career highlights">
           {RESUME.stats.map((s) => (

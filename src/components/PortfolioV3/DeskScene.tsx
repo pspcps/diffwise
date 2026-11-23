@@ -1,10 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   BookOpen,
   Code2,
   MessageCircle,
   RotateCcw,
   RotateCw,
+  Pause,
+  Play,
 } from "lucide-react";
 import * as THREE from "three";
 import { useMotion } from "../Motion/MotionContext";
@@ -27,6 +29,8 @@ export default function DeskScene({
   } | null>(null);
   const onExploreRef = useRef(onExplore);
   const motionRef = useRef(false);
+  const [autoRotate, setAutoRotate] = useState(true);
+  const autoRotateRef = useRef(true);
   const { enabled } = useMotion();
   const { theme } = useLanguageTheme();
   useEffect(() => {
@@ -35,6 +39,13 @@ export default function DeskScene({
   useEffect(() => {
     motionRef.current = enabled;
   }, [enabled]);
+  useEffect(() => {
+    autoRotateRef.current = autoRotate;
+  }, [autoRotate]);
+  function pauseRotation() {
+    autoRotateRef.current = false;
+    setAutoRotate(false);
+  }
   useEffect(() => {
     const element = host.current;
     if (!element) return;
@@ -455,6 +466,8 @@ export default function DeskScene({
     const pointer = new THREE.Vector2();
     const down = (event: PointerEvent) => {
       if (event.pointerType !== "mouse" || event.button !== 0) return;
+      autoRotateRef.current = false;
+      setAutoRotate(false);
       dragStart = event.clientX;
       dragOrigin = targetRotation;
       moved = 0;
@@ -544,6 +557,8 @@ export default function DeskScene({
       last = now;
       if (!visible || document.hidden || lost) return;
       elapsed += delta;
+      if (motionRef.current && autoRotateRef.current && dragStart === null)
+        targetRotation += delta * 0.12;
       desk.rotation.y += (targetRotation - desk.rotation.y) * 0.12;
       wave.rotation.z = motionRef.current
         ? -0.12 + Math.sin(elapsed * 2) * 0.12
@@ -637,18 +652,46 @@ export default function DeskScene({
         <span>Make yourself at home.</span>
         <div>
           <button
-            onClick={() => runtime.current?.rotate(-0.3)}
+            onClick={() => {
+              pauseRotation();
+              runtime.current?.rotate(-0.3);
+            }}
             aria-label="Rotate desk left"
           >
             <RotateCcw size={17} />
           </button>
           <button
-            onClick={() => runtime.current?.rotate(0.3)}
+            onClick={() => {
+              pauseRotation();
+              runtime.current?.rotate(0.3);
+            }}
             aria-label="Rotate desk right"
           >
             <RotateCw size={17} />
           </button>
-          <button onClick={() => runtime.current?.reset()}>Reset view</button>
+          <button
+            type="button"
+            aria-label="Auto-rotate desk"
+            aria-pressed={enabled && autoRotate}
+            disabled={!enabled}
+            title={
+              enabled
+                ? "Toggle automatic desk rotation"
+                : "Enable site animations to use auto-rotation"
+            }
+            onClick={() => setAutoRotate((value) => !value)}
+          >
+            {enabled && autoRotate ? <Pause size={15} /> : <Play size={15} />}
+            Auto-rotate
+          </button>
+          <button
+            onClick={() => {
+              pauseRotation();
+              runtime.current?.reset();
+            }}
+          >
+            Reset view
+          </button>
         </div>
       </div>
       <div className="v3-desk-shortcuts" aria-label="Explore from the desk">

@@ -1760,3 +1760,25 @@
   animation: none !important;
   transition: none !important;
 }
+.v3-scene-controls > div {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.v3-scene-controls button[aria-pressed="true"] {
+  background: #24353b;
+  color: #f5f1e8;
+  border-color: #24353b;
+}
+.v3-scene-controls button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.v3-scene-controls button {
+  gap: 5px;
+}
+@media (max-width: 580px) {
+  .v3-scene-controls {
+    flex-wrap: wrap;
+    padding-inline: 12px;
+  }
+}
