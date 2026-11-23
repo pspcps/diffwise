@@ -52,7 +52,9 @@ export function structuredData(page: SearchPage) {
     });
   else if (
     page.id === "portfolio" ||
+    page.id === "portfolio-v1" ||
     page.id === "portfolio-v2" ||
+    page.id === "portfolio-v3" ||
     (page.id.startsWith("resume-") && page.id !== "resume-legal")
   )
     graph.push({

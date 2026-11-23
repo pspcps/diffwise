@@ -324,7 +324,8 @@ export default function PortfolioV2Page() {
           <span className="v2-top-label">Portfolio</span>
         </a>
         <div className="v2-top-actions">
-          <a href="/portfolio/">Original portfolio</a>
+          <a href="/portfolio/v1/">Original portfolio</a>
+          <a href="/portfolio/v3/">3D portfolio v3</a>
           <ThemeChoice />
         </div>
       </div>
@@ -707,7 +708,8 @@ export default function PortfolioV2Page() {
       <footer className="v2-footer">
         <span>Prakash Choudhary · Built with care.</span>
         <div>
-          <a href="/portfolio/">Original portfolio</a>
+          <a href="/portfolio/v1/">Original portfolio</a>
+          <a href="/portfolio/v3/">3D portfolio v3</a>
           <a href="/">Developer tools</a>
           <a href="/about/">About PSDevTool</a>
         </div>

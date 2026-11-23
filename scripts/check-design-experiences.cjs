@@ -1,0 +1,16 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),ts=require('typescript');
+for(const extension of ['.ts','.tsx'])require.extensions[extension]=(module,filename)=>module._compile(ts.transpileModule(fs.readFileSync(filename,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true,resolveJsonModule:true}}).outputText,filename);
+require.extensions['.css']=()=>{};
+const {chooseDesign,HOME_DESIGNS,PORTFOLIO_DESIGNS}=require('../src/utils/designExperience.ts');
+for(const [value,expected] of [[0,'v1'],[.34,'v2'],[.67,'v3'],[.999,'v3']])assert.equal(chooseDesign(PORTFOLIO_DESIGNS,'p',undefined,undefined,()=>value),expected);
+assert.equal(chooseDesign(HOME_DESIGNS,'h',undefined,null,()=>0),'classic');assert.equal(chooseDesign(HOME_DESIGNS,'h',undefined,null,()=>.75),'studio');
+const saved=new Map(),store={getItem:key=>saved.get(key)||null,setItem:(key,value)=>saved.set(key,value)};
+assert.equal(chooseDesign(HOME_DESIGNS,'h',store,null,()=>.75),'studio');assert.equal(chooseDesign(HOME_DESIGNS,'h',store,null,()=>0),'studio');
+assert.equal(chooseDesign(HOME_DESIGNS,'h',store,'classic',()=>.75),'classic');assert.equal(chooseDesign(HOME_DESIGNS,'h',store,null,()=>.75),'classic');
+saved.set('p','invalid');assert.equal(chooseDesign(PORTFOLIO_DESIGNS,'p',store,null,()=>.34),'v2');assert.equal(saved.get('h'),'classic');
+assert.equal(chooseDesign(HOME_DESIGNS,'x',{getItem(){throw Error('blocked')},setItem(){throw Error('blocked')}},null,()=>.75),'studio');
+const {resolveLocation}=require('../src/seo/routes.ts');for(const version of PORTFOLIO_DESIGNS)assert.equal(resolveLocation({pathname:`/portfolio/${version}/`,search:'',hash:''}).page.id,`portfolio-${version}`);
+const React=require('react'),{renderToStaticMarkup}=require('react-dom/server');const Studio=require('../src/pages/StudioHomePage.tsx').default;const html=renderToStaticMarkup(React.createElement(Studio,{onTool(){},onPortfolio(){},onSearch(){}}));
+const {TOOLS}=require('../src/data/tools.ts'),{toolPath}=require('../src/seo/pages.ts');assert.equal((html.match(/class="studio-tool-card"/g)||[]).length,20);for(const tool of TOOLS)assert.ok(html.includes(`href="${toolPath(tool.id)}"`),tool.name);
+assert.ok(html.includes('aria-label="Search tools"'));assert.ok(html.includes('aria-label="Homepage design"'));assert.ok(html.includes('Favorites'));assert.ok(html.includes('href="/privacy/"'));
+console.log('PASS random design buckets, session consistency, explicit override, independent choices, blocked storage, three direct portfolio routes and all twenty Studio tools.');

@@ -12,14 +12,25 @@ import { navigateTo, useSiteRoute } from "./seo/routes";
 import { toolPath } from "./seo/pages";
 import { applyPageMetadata } from "./seo/metadata";
 import SearchContent from "./seo/SearchContent";
+import {
+  browserSession,
+  chooseDesign,
+  PORTFOLIO_DESIGNS,
+} from "./utils/designExperience";
 import { rememberTool } from "./utils/toolHistory";
 import ToolWorkspace from "./components/Workspace/ToolWorkspace";
 import AdBanner from "./components/Ads/AdBanner";
 import AboutPanel from "./components/About/AboutPanel";
 const ResumePage = lazy(() => import("./pages/ResumePage"));
+const PortfolioV3Page = lazy(() => import("./pages/PortfolioV3Page"));
 const PortfolioV2Page = lazy(() => import("./pages/PortfolioV2Page"));
 const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
-const HomePage = lazy(() => import("./pages/HomePage"));
+const HomeExperience = lazy(
+  () => import("./components/Experience/HomeExperience"),
+);
+const PortfolioEntry = lazy(
+  () => import("./components/Experience/PortfolioEntry"),
+);
 import type { ViewMode } from "./types";
 
 import CommandPalette from "./components/CommandPalette/CommandPalette";
@@ -31,7 +42,14 @@ export default function App() {
   const isTool =
     !isResume &&
     !isInformationId(page.id) &&
-    !["home", "portfolio", "portfolio-v2", "notfound"].includes(page.id);
+    ![
+      "home",
+      "portfolio",
+      "portfolio-v1",
+      "portfolio-v2",
+      "portfolio-v3",
+      "notfound",
+    ].includes(page.id);
   const initialMode = isTool ? (page.id as ViewMode) : "text";
   const [mode, setMode] = useState<ViewMode>(initialMode);
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -59,6 +77,16 @@ export default function App() {
       rememberTool(page.id as ViewMode);
     }
   }, [isTool, page.id]);
+  useEffect(() => {
+    if (page.id.startsWith("portfolio-v")) {
+      chooseDesign(
+        PORTFOLIO_DESIGNS,
+        "psdev-portfolio-design-v1",
+        browserSession(),
+        page.id.slice("portfolio-".length),
+      );
+    }
+  }, [page.id]);
   useEffect(() => {
     applyPageMetadata(page);
     const tracker = (
@@ -98,6 +126,15 @@ export default function App() {
       </Suspense>
     );
 
+  if (page.id === "portfolio-v3")
+    return (
+      <Suspense
+        fallback={<div className="space-loading">Opening the studio…</div>}
+      >
+        <PortfolioV3Page />
+      </Suspense>
+    );
+
   if (page.id === "portfolio-v2")
     return (
       <Suspense
@@ -107,8 +144,21 @@ export default function App() {
       </Suspense>
     );
 
+  if (page.id === "portfolio")
+    return (
+      <Suspense
+        fallback={<div className="space-loading">Opening portfolio…</div>}
+      >
+        {route.legacy ? (
+          <div className="space-loading">Opening portfolio…</div>
+        ) : (
+          <PortfolioEntry />
+        )}
+      </Suspense>
+    );
+
   // Portfolio is a full-page takeover
-  if (page.id === "portfolio") {
+  if (page.id === "portfolio-v1") {
     return (
       <Suspense
         fallback={<div className="space-loading">Opening portfolio…</div>}
@@ -126,7 +176,9 @@ export default function App() {
             <div className="space-loading">Opening your workspace…</div>
           }
         >
-          <HomePage
+          <HomeExperience
+            key={route.search}
+            search={route.search}
             onTool={handleModeChange}
             onPortfolio={goPortfolio}
             onSearch={() => setCommandPaletteOpen(true)}
