@@ -514,6 +514,23 @@
 .studio-home .search-content a {
   color: #315d3b;
 }
+.studio-home .search-eyebrow {
+  color: #315d3b;
+}
+.studio-home .search-tool-links > a {
+  color: #243d31;
+  background: #e3eadb;
+  border-color: #9dad9f;
+  font-size: 0.875rem;
+}
+.studio-home .search-tool-links > a:hover {
+  color: #ffffff;
+  background: #243d31;
+  border-color: #243d31;
+}
+.studio-home .search-content :is(a, summary):focus-visible {
+  outline-color: #315d3b;
+}
 .studio-home .site-footer {
   color: #586e5e;
 }
