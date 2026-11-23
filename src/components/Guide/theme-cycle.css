@@ -1,0 +1,44 @@
+.theme-controls .language-theme-cycle {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid #71887b;
+  border-radius: 50%;
+  background: #24353b;
+  color: var(--user-accent, #c8edb6);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.theme-controls .language-theme-cycle:hover {
+  background: #385159;
+}
+.theme-controls .language-theme-cycle:focus-visible {
+  outline: 3px solid #82aaa2;
+  outline-offset: 4px;
+}
+.language-theme-cycle .technology-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: currentColor;
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+}
+.language-theme-cycle .technology-monogram {
+  font:
+    700 12px system-ui,
+    sans-serif;
+}
+@media (max-width: 580px) {
+  .theme-controls .language-theme-cycle {
+    width: 32px;
+    height: 32px;
+  }
+}

@@ -1,4 +1,6 @@
 import MotionToggle from "../Motion/MotionToggle";
+import TechnologyIcon from "../Common/TechnologyIcon";
+import "./theme-cycle.css";
 import { useEffect, useState, type ReactNode } from "react";
 import {
   LANGUAGE_THEMES,
@@ -47,22 +49,21 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 }
 export default function ThemeChoice() {
   const { theme, change } = useLanguageTheme();
+  const themes = Object.values(LANGUAGE_THEMES);
+  const current = LANGUAGE_THEMES[theme];
+  const next =
+    themes[(themes.findIndex((item) => item.id === theme) + 1) % themes.length];
   return (
     <div className="theme-controls">
-      <label className="theme-choice">
-        <span>Theme</span>
-        <select
-          aria-label="Language theme"
-          value={theme}
-          onChange={(e) => change(e.target.value as LanguageThemeKey)}
-        >
-          {Object.values(LANGUAGE_THEMES).map((t) => (
-            <option key={t.id} value={t.id}>
-              {t.shortName}
-            </option>
-          ))}
-        </select>
-      </label>
+      <button
+        type="button"
+        className="language-theme-cycle"
+        aria-label={`Change language theme. Current: ${current.shortName}. Next: ${next.shortName}`}
+        title={`${current.shortName} theme · Click for ${next.shortName}`}
+        onClick={() => change(next.id)}
+      >
+        <TechnologyIcon name={current.shortName} />
+      </button>
       <MotionToggle />
     </div>
   );
