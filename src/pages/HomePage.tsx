@@ -29,6 +29,7 @@ import CharacterGuide from "../components/Guide/CharacterGuide";
 import ThemeChoice from "../components/Guide/ThemeChoice";
 import { tiltCard, resetTilt } from "../components/Spatial/cardMotion";
 import "../spatial.css";
+import "../header-layout.css";
 
 const categories = ["All tools", ...TOOL_CATEGORIES];
 const categoryIcons = [LayoutGrid, Code2, Globe, Shapes, SlidersHorizontal];
@@ -161,9 +162,6 @@ export default function HomePage({
           <div className="topbar-actions">
             <DesignSwitcher design="classic" />
             <ThemeChoice />
-            <span className="local-status">
-              <span className="live-dot" /> Built for your browser
-            </span>
             <button className="search-shortcut" onClick={onSearch}>
               <Search size={15} />
               <span>Quick search</span>
