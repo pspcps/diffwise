@@ -1,3 +1,4 @@
+import PortfolioVersionSwitcher from "../components/Experience/PortfolioVersionSwitcher";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {
   Braces,
@@ -109,18 +110,7 @@ export default function PortfolioV3Page() {
           ))}
         </nav>
         <div className="v3-nav-right">
-          <details className="v3-versions">
-            <summary>
-              V3 <span aria-hidden="true">⌄</span>
-            </summary>
-            <div>
-              <a href="/portfolio/v1/">Original</a>
-              <a href="/portfolio/v2/">V2 · Profile</a>
-              <a href="/portfolio/v3/" aria-current="page">
-                V3 · Studio
-              </a>
-            </div>
-          </details>
+          <PortfolioVersionSwitcher fallback="v3" />
           <ThemeChoice />
         </div>
       </header>

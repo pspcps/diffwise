@@ -12,19 +12,11 @@ import { navigateTo, useSiteRoute } from "./seo/routes";
 import { toolPath } from "./seo/pages";
 import { applyPageMetadata } from "./seo/metadata";
 import SearchContent from "./seo/SearchContent";
-import {
-  browserSession,
-  chooseDesign,
-  PORTFOLIO_DESIGNS,
-} from "./utils/designExperience";
 import { rememberTool } from "./utils/toolHistory";
 import ToolWorkspace from "./components/Workspace/ToolWorkspace";
 import AdBanner from "./components/Ads/AdBanner";
 import AboutPanel from "./components/About/AboutPanel";
 const ResumePage = lazy(() => import("./pages/ResumePage"));
-const PortfolioV3Page = lazy(() => import("./pages/PortfolioV3Page"));
-const PortfolioV2Page = lazy(() => import("./pages/PortfolioV2Page"));
-const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
 const HomeExperience = lazy(
   () => import("./components/Experience/HomeExperience"),
 );
@@ -78,16 +70,6 @@ export default function App() {
     }
   }, [isTool, page.id]);
   useEffect(() => {
-    if (page.id.startsWith("portfolio-v")) {
-      chooseDesign(
-        PORTFOLIO_DESIGNS,
-        "psdev-portfolio-design-v1",
-        browserSession(),
-        page.id.slice("portfolio-".length),
-      );
-    }
-  }, [page.id]);
-  useEffect(() => {
     applyPageMetadata(page);
     const tracker = (
       window as unknown as { gtag?: (...args: unknown[]) => void }
@@ -126,47 +108,22 @@ export default function App() {
       </Suspense>
     );
 
-  if (page.id === "portfolio-v3")
-    return (
-      <Suspense
-        fallback={<div className="space-loading">Opening the studio…</div>}
-      >
-        <PortfolioV3Page />
-      </Suspense>
-    );
-
-  if (page.id === "portfolio-v2")
+  if (page.id === "portfolio" || page.id.startsWith("portfolio-v"))
     return (
       <Suspense
         fallback={<div className="space-loading">Opening portfolio…</div>}
       >
-        <PortfolioV2Page />
+        <PortfolioEntry
+          key={page.id}
+          onBack={goBack}
+          initialVersion={
+            page.id === "portfolio"
+              ? undefined
+              : (page.id.slice("portfolio-".length) as "v1" | "v2" | "v3")
+          }
+        />
       </Suspense>
     );
-
-  if (page.id === "portfolio")
-    return (
-      <Suspense
-        fallback={<div className="space-loading">Opening portfolio…</div>}
-      >
-        {route.legacy ? (
-          <div className="space-loading">Opening portfolio…</div>
-        ) : (
-          <PortfolioEntry />
-        )}
-      </Suspense>
-    );
-
-  // Portfolio is a full-page takeover
-  if (page.id === "portfolio-v1") {
-    return (
-      <Suspense
-        fallback={<div className="space-loading">Opening portfolio…</div>}
-      >
-        <PortfolioPage onBack={goBack} />
-      </Suspense>
-    );
-  }
 
   if (page.id === "home") {
     return (
@@ -177,7 +134,6 @@ export default function App() {
           }
         >
           <HomeExperience
-            key={route.search}
             search={route.search}
             onTool={handleModeChange}
             onPortfolio={goPortfolio}

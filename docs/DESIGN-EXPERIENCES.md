@@ -1,20 +1,21 @@
-# Random landing designs
+# Landing designs and portfolio versions
 
-The public entry points select a presentation in the browser. There is no permanent redirect or server-side user segmentation.
+The homepage defaults to **Classic** and `/portfolio/` defaults to **V3 Studio**. These defaults are deterministic. Refreshing does not shuffle either experience.
 
-- `/portfolio/`: selects `v1`, `v2` or `v3` with equal probability on first entry in a browsing tab, then replaces the entry URL with the chosen direct route. `/portfolio/v1/` is the stable original portfolio; v2 and v3 keep their direct routes. Explicitly visiting a version remembers that choice for subsequent entry visits in the same tab.
-- `/`: selects the Classic or 3D Studio homepage with equal probability. The root URL remains unchanged. `/?design=classic` and `/?design=studio` explicitly select a design. Both homepage headers include a design selector.
+Both homepages have a design selector and a **Surprise me** action. Every portfolio version has a **V1 Original / V2 Profile / V3 Studio** selector and the same Surprise me action. Selecting a design or using Surprise me remembers the result in local storage, independently for the homepage and portfolio. Surprise me chooses a different available design; ordinary renders and refreshes never invoke random selection.
 
-`sessionStorage` remembers these two choices independently. Reloading or returning from a tool does not change the design. A fresh browsing session can receive a different selection; copied/duplicated tabs may inherit browser session storage. When storage is blocked, the currently mounted experience still works, but choices may not persist after navigation. No tracking IDs or cookies are added.
+The portfolio renders the selected version directly at `/portfolio/`, without redirecting to a versioned URL. Existing `/portfolio/v1/`, `/portfolio/v2/` and `/portfolio/v3/` links remain supported. Selecting another version from one of those direct links returns to `/portfolio/` with that preference applied. The original portfolio is V1.
 
-The root document retains the existing deterministic prerendered content and canonical URL for both query variants. Each direct portfolio version has its own generated page, canonical URL, ProfilePage schema and sitemap entry. The legacy `#/portfolio` entry canonicalizes before selecting a version, preventing competing redirects. Direct version links bypass random selection.
+`/?design=classic` and `/?design=studio` remain explicit preview/selection links. Selecting a design through the header removes that query parameter while preserving other URL parameters. When storage is blocked or contains invalid data, stable defaults still work and manual choices remain active for the currently mounted page. No cookies or tracking identifiers are added. The previous automatically assigned session-storage choices are ignored; only the new preference keys are used.
 
 ## Studio homepage
 
-The additional homepage uses the 3D studio’s light surfaces, typography and original procedural desk. Its scene shortcuts open the catalog, JSON tool and builder portfolio. All twenty tools come from the shared catalog. Search, categories, the existing `psdev-favorites` local-storage list, recent tools, theme/motion controls, quick search, information links and the dedicated ad placement remain available. Tool workspace routes and processing logic are unchanged.
+The additional homepage uses light surfaces, typography and the original procedural 3D desk. Scene shortcuts open the catalog, JSON tool and builder portfolio. All twenty tools come from the shared catalog. Search, categories, the shared favorites list, recent tools, theme/motion controls, quick search, information links and the dedicated ad placement remain available. Tool workspace routes and processing logic are unchanged.
 
-The homepage and scene are lazy-loaded. The shared scene keeps its WebGL fallback, touch-scroll behavior, frame/DPR caps and resource cleanup. The design selector can always return to Classic.
+The homepage and scene are lazy-loaded. The scene retains its WebGL fallback, touch scrolling, frame/DPR caps and cleanup. Studio tool-link chips have explicit light backgrounds and dark text, including readable hover/focus states.
 
-Validation: `npm run test:designs` covers random buckets, remembered choices, explicit override, independent selection keys, blocked storage, direct portfolio routes and all twenty Studio tool links. Portfolio, SEO, content/catalog and production build checks cover the integrated routes. Browser controls are unavailable in this environment; visual desktop/mobile and WebGL review remains necessary in the deployment preview.
+The root document retains its canonical URL and deterministic prerendered content. Direct portfolio URLs retain their own metadata and sitemap entries. Text and source links remain available without waiting for 3D rendering.
 
-This change also integrates portfolio v3 from its previously merged feature branch into the main application branch, keeping its existing navigation and corrected seated pose.
+## Verification
+
+`npm run test:designs` covers defaults, persistence, explicit overrides, independent preference keys, invalid/blocked storage, Surprise me alternatives, direct portfolio routes and all twenty Studio tool links. Portfolio, SEO, content/catalog and production build checks cover the integrated routes. Browser controls are unavailable in this session; actual desktop/mobile appearance and WebGL interactions still need deployment-preview review.

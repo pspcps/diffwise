@@ -1,3 +1,4 @@
+import PortfolioVersionSwitcher from "../components/Experience/PortfolioVersionSwitcher";
 import {
   useEffect,
   useRef,
@@ -324,8 +325,7 @@ export default function PortfolioV2Page() {
           <span className="v2-top-label">Portfolio</span>
         </a>
         <div className="v2-top-actions">
-          <a href="/portfolio/v1/">Original portfolio</a>
-          <a href="/portfolio/v3/">3D portfolio v3</a>
+          <PortfolioVersionSwitcher fallback="v2" />
           <ThemeChoice />
         </div>
       </div>
