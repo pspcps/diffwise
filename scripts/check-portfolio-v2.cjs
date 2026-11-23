@@ -33,7 +33,7 @@ assert.equal(activePortfolioSection(positions,170,true),'Projects');
 assert.equal(activePortfolioSection([],170),undefined);
 assert.ok(html.includes(RESUME.email));assert.ok(html.includes('AI-DLC'));
 for (const employer of RESUME.experience) assert.ok(html.includes(escape(employer.company)));
-assert.ok(html.includes('href="/portfolio/"'));assert.ok(html.includes('href="/resume/"'));
+assert.ok(html.includes('href="/portfolio/v1/"'));assert.ok(html.includes('href="/resume/"'));
 assert.ok(html.includes('Private repository'));assert.ok(html.includes('workflow illustrations'));
 assert.ok(!html.includes('pagead2.googlesyndication.com'));
 assert.ok(!html.includes('richard@example.com'));assert.ok(!html.includes('Richard hanrick'));

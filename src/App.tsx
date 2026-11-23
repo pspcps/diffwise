@@ -17,9 +17,12 @@ import ToolWorkspace from "./components/Workspace/ToolWorkspace";
 import AdBanner from "./components/Ads/AdBanner";
 import AboutPanel from "./components/About/AboutPanel";
 const ResumePage = lazy(() => import("./pages/ResumePage"));
-const PortfolioV2Page = lazy(() => import("./pages/PortfolioV2Page"));
-const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
-const HomePage = lazy(() => import("./pages/HomePage"));
+const HomeExperience = lazy(
+  () => import("./components/Experience/HomeExperience"),
+);
+const PortfolioEntry = lazy(
+  () => import("./components/Experience/PortfolioEntry"),
+);
 import type { ViewMode } from "./types";
 
 import CommandPalette from "./components/CommandPalette/CommandPalette";
@@ -31,7 +34,14 @@ export default function App() {
   const isTool =
     !isResume &&
     !isInformationId(page.id) &&
-    !["home", "portfolio", "portfolio-v2", "notfound"].includes(page.id);
+    ![
+      "home",
+      "portfolio",
+      "portfolio-v1",
+      "portfolio-v2",
+      "portfolio-v3",
+      "notfound",
+    ].includes(page.id);
   const initialMode = isTool ? (page.id as ViewMode) : "text";
   const [mode, setMode] = useState<ViewMode>(initialMode);
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -98,25 +108,22 @@ export default function App() {
       </Suspense>
     );
 
-  if (page.id === "portfolio-v2")
+  if (page.id === "portfolio" || page.id.startsWith("portfolio-v"))
     return (
       <Suspense
         fallback={<div className="space-loading">Opening portfolio…</div>}
       >
-        <PortfolioV2Page />
+        <PortfolioEntry
+          key={page.id}
+          onBack={goBack}
+          initialVersion={
+            page.id === "portfolio"
+              ? undefined
+              : (page.id.slice("portfolio-".length) as "v1" | "v2" | "v3")
+          }
+        />
       </Suspense>
     );
-
-  // Portfolio is a full-page takeover
-  if (page.id === "portfolio") {
-    return (
-      <Suspense
-        fallback={<div className="space-loading">Opening portfolio…</div>}
-      >
-        <PortfolioPage onBack={goBack} />
-      </Suspense>
-    );
-  }
 
   if (page.id === "home") {
     return (
@@ -126,7 +133,8 @@ export default function App() {
             <div className="space-loading">Opening your workspace…</div>
           }
         >
-          <HomePage
+          <HomeExperience
+            search={route.search}
             onTool={handleModeChange}
             onPortfolio={goPortfolio}
             onSearch={() => setCommandPaletteOpen(true)}

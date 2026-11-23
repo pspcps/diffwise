@@ -1,3 +1,5 @@
+import DesignSwitcher from "../components/Experience/DesignSwitcher";
+import "../studio-home.css";
 import AdBanner from "../components/Ads/AdBanner";
 import SearchContent from "../seo/SearchContent";
 import { toolPath } from "../seo/pages";
@@ -157,6 +159,7 @@ export default function HomePage({
             <span>Overview</span>
           </div>
           <div className="topbar-actions">
+            <DesignSwitcher design="classic" />
             <ThemeChoice />
             <span className="local-status">
               <span className="live-dot" /> Built for your browser
@@ -309,7 +312,18 @@ export default function HomePage({
                   <a
                     href={toolPath(t.id)}
                     className="tool-card-link"
-                    onClick={event => {if(!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey&&event.button===0){event.preventDefault();onTool(t.id);}}}
+                    onClick={(event) => {
+                      if (
+                        !event.metaKey &&
+                        !event.ctrlKey &&
+                        !event.shiftKey &&
+                        !event.altKey &&
+                        event.button === 0
+                      ) {
+                        event.preventDefault();
+                        onTool(t.id);
+                      }
+                    }}
                   >
                     <h3>
                       {t.name}
@@ -349,7 +363,7 @@ export default function HomePage({
               </div>
             )}
           </section>
-          <SearchContent/>
+          <SearchContent />
           <section className="builder-banner">
             <div className="builder-monogram">
               pc<span>↗</span>
