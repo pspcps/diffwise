@@ -34,7 +34,7 @@ export const PRINT_RESUME = {
     ],
     [
       "Applied AI",
-      "AWS Bedrock, Claude, Gemini, Vertex AI, Strands Agents SDK, MCP, LangChain, Ollama, ChromaDB",
+      "AWS Bedrock, Claude, Gemini, Vertex AI, Strands Agents SDK, MCP, LangChain, Ollama, ChromaDB, AI-DLC",
     ],
   ],
   experience: [
