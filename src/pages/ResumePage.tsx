@@ -1,7 +1,7 @@
 import ResumeProfilePicker from "../components/Resume/ResumeProfilePicker";
 import ToolGuide from "../seo/ToolGuide";
 import SiteFooter from "../seo/SiteFooter";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import qrcode from "qrcode-generator";
 import { useResumeProfiles } from "../hooks/useResumeProfiles";
 import ResumeEditor from "../components/Resume/ResumeEditor";
@@ -11,7 +11,14 @@ import {
   contrastRatio,
 } from "../data/resumeDraft";
 import type { ResumeContent, ResumeAppearance } from "../data/resumeDraft";
-import { ArrowUpRight } from "lucide-react";
+import {
+  ArrowUpRight,
+  ArrowLeft,
+  ArrowRight,
+  FileText,
+  LayoutTemplate,
+  Check,
+} from "lucide-react";
 import { useCareerDuration } from "../hooks/useCareerDuration";
 import type { CSSProperties, MouseEvent, ReactNode } from "react";
 import {
@@ -245,64 +252,247 @@ function Gallery({
   previewTitle: string;
   profilePicker: ReactNode;
 }) {
+  const [layout, setLayout] = useState<"all" | "single" | "two">("all");
+  const templates = RESUME_TEMPLATES.filter(
+    (t) => layout === "all" || t.columns === (layout === "single" ? 1 : 2),
+  );
+  const showScoreHelp = () => {
+    const details = document.getElementById("ats-estimate");
+    if (details instanceof HTMLDetailsElement) details.open = true;
+    details?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+      block: "start",
+    });
+  };
   return (
     <div className="resume-gallery">
-      <nav className="resume-gallery-nav">
-        <a href="/portfolio/">← Portfolio</a>
-        <a href="/">PSDevTool.</a>
+      <nav className="resume-gallery-nav" aria-label="Resume navigation">
+        <a href="/">
+          <span className="resume-studio-mark">
+            <FileText size={19} aria-hidden="true" />
+          </span>{" "}
+          PSDevTool<span className="resume-nav-divider">/</span>
+          <span className="resume-nav-current">Resume Studio</span>
+        </a>
+        <a href="/portfolio/">
+          <ArrowLeft size={14} aria-hidden="true" /> Portfolio
+        </a>
       </nav>
       <main>
         <div className="resume-gallery-intro">
-          <p className="resume-eyebrow">ONE STORY. TEN WAYS TO TELL IT.</p>
-          <h1>A resume that opens doors.</h1>
-          <p>
-            Choose a profile and layout, then enter Edit mode to make it yours.
-            Save your details on this device and reuse them across every
-            template. Seven role profiles include a common resume and focused
-            versions for backend, cloud, applied AI, full-stack, architecture
-            and forward-deployed roles.
-          </p>
+          <div>
+            <p className="resume-eyebrow">
+              YOUR EXPERIENCE. YOUR NEXT CHAPTER.
+            </p>
+            <h1>Make your next move.</h1>
+            <p>
+              A thoughtful layout for the work you’ve done. Choose a template,
+              make it yours, and export your resume.
+            </p>
+          </div>
+          <a
+            className="resume-start-button"
+            href={`/resume/modern/${paper === "legal" ? "legal/" : ""}`}
+            onClick={followResumeLink}
+          >
+            Start with Modern <ArrowRight size={16} aria-hidden="true" />
+          </a>
         </div>
-        {profilePicker}
-        <p className="resume-selected-profile" role="status">
-          Showing: {previewTitle}
-        </p>
-        <nav className="resume-paper-options" aria-label="Resume paper size">
-          <a
-            href="/resume/"
-            onClick={followResumeLink}
-            aria-current={paper === "a4" ? "page" : undefined}
+        <section className="resume-gallery-setup" aria-label="Resume setup">
+          <div className="resume-setup-profile">
+            <span className="resume-setup-step">
+              01 <span>Your profile</span>
+            </span>
+            {profilePicker}
+          </div>
+          <div className="resume-setup-paper">
+            <span className="resume-setup-step">
+              02 <span>Paper size</span>
+            </span>
+            <nav
+              className="resume-paper-options"
+              aria-label="Resume paper size"
+            >
+              <a
+                href="/resume/"
+                onClick={followResumeLink}
+                aria-current={paper === "a4" ? "page" : undefined}
+              >
+                {paper === "a4" && <Check size={13} aria-hidden="true" />} A4{" "}
+                <span>Focused</span>
+              </a>
+              <a
+                href="/resume/legal/"
+                onClick={followResumeLink}
+                aria-current={paper === "legal" ? "page" : undefined}
+              >
+                {paper === "legal" && <Check size={13} aria-hidden="true" />}{" "}
+                Legal <span>Expanded</span>
+              </a>
+            </nav>
+          </div>
+          <div className="resume-setup-context">
+            <p className="resume-selected-profile" role="status">
+              {previewTitle}
+            </p>
+            <p className="resume-paper-description">
+              {paper === "legal"
+                ? "8.5 × 14 in · Extra room for your experience."
+                : "210 × 297 mm · A focused starting point."}
+            </p>
+          </div>
+        </section>
+        <div className="resume-gallery-catalog-heading">
+          <div>
+            <h2>
+              <LayoutTemplate size={18} aria-hidden="true" /> Find your layout
+            </h2>
+            <p>
+              {RESUME_TEMPLATES.length} templates. Your details carry across
+              every one.
+            </p>
+          </div>
+          <div
+            className="resume-layout-filters"
+            role="group"
+            aria-label="Filter resume layouts"
           >
-            A4 · Focused
-          </a>
-          <a
-            href="/resume/legal/"
-            onClick={followResumeLink}
-            aria-current={paper === "legal" ? "page" : undefined}
-          >
-            Legal · Expanded
-          </a>
-        </nav>
-        <p className="resume-paper-description">
-          {paper === "legal"
-            ? "Legal (8.5 × 14 in): five engineering projects and all four open-source contributions / customizations."
-            : "A4 (210 × 297 mm): four engineering projects, one open-source contribution and no education section. Choose Legal for the expanded version."}
+            {(
+              [
+                ["all", "All layouts"],
+                ["single", "Single column"],
+                ["two", "Two columns"],
+              ] as const
+            ).map(([id, label]) => (
+              <button
+                type="button"
+                key={id}
+                aria-pressed={layout === id}
+                aria-label={label}
+                onClick={() => setLayout(id)}
+              >
+                {label}
+                <span>
+                  {id === "all"
+                    ? RESUME_TEMPLATES.length
+                    : RESUME_TEMPLATES.filter(
+                        (t) => t.columns === (id === "single" ? 1 : 2),
+                      ).length}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="resume-gallery-guidance">
+          <span>
+            <FileText size={14} aria-hidden="true" /> For ATS applications,
+            start with a single-column layout.
+          </span>
+          <button type="button" onClick={showScoreHelp}>
+            About formatting estimates{" "}
+            <ArrowUpRight size={13} aria-hidden="true" />
+          </button>
+        </div>
+        <p className="resume-layout-count" role="status">
+          Showing {templates.length}{" "}
+          {templates.length === 1 ? "layout" : "layouts"}
         </p>
-        <aside className="resume-gallery-note">
-          <strong>Applying through an ATS?</strong> Start with Classic, Modern
-          or Minimal. Single-column resumes have a more predictable reading
-          order. Two-column layouts offer a visual alternative for sharing
-          directly; parsing varies by system.
-        </aside>
+        <div className="resume-template-grid">
+          {templates.map((t) => (
+            <a
+              key={t.id}
+              href={`/resume/${t.id}/${paper === "legal" ? "legal/" : ""}`}
+              className="resume-template-card"
+              onClick={followResumeLink}
+              style={{ "--resume-accent": t.accent } as CSSProperties}
+            >
+              <div className="resume-preview-stage">
+                <div className="resume-template-labels">
+                  <span>
+                    {t.columns === 1 ? "Single column" : "Two columns"}
+                  </span>
+                  {t.id === "modern" && (
+                    <span className="resume-recommended">
+                      Good starting point
+                    </span>
+                  )}
+                </div>
+                <div
+                  className={`resume-template-preview preview-${t.style}`}
+                  aria-hidden="true"
+                >
+                  <div className="preview-name">
+                    {previewName || "PRAKASH CHOUDHARY"}
+                  </div>
+                  <div className="preview-subtitle">{previewTitle}</div>
+                  <div className="preview-contact" />
+                  <div className={`preview-body preview-cols-${t.columns}`}>
+                    <div>
+                      {[1, 2, 3].map((i) => (
+                        <div className="preview-section" key={i}>
+                          <b />
+                          {[1, 2, 3].map((j) => (
+                            <i key={j} />
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                    <div>
+                      {[1, 2, 3, 4].map((i) => (
+                        <div className="preview-section" key={i}>
+                          <b />
+                          {[1, 2, 3].map((j) => (
+                            <i key={j} />
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="resume-template-info">
+                <h2>
+                  {t.name}
+                  <ArrowUpRight size={19} aria-hidden="true" />
+                </h2>
+                <p>{t.description}</p>
+                <div className="resume-template-card-footer">
+                  <div>
+                    <p
+                      className="resume-format-score"
+                      title="Approximate ATS formatting heuristic, not an employer ATS or job-match score."
+                    >
+                      Formatting{" "}
+                      <b>
+                        {estimateResumeFormatting(t).score}
+                        <small>/100</small>
+                      </b>
+                    </p>
+                    <small className="resume-score-caption">
+                      Layout estimate only
+                    </small>
+                  </div>
+                  <strong>
+                    Use template <ArrowRight size={14} aria-hidden="true" />
+                  </strong>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
         <details className="resume-score-explanation" id="ats-estimate">
-          <summary>
-            How the approximate ATS formatting score is estimated
-          </summary>
+          <summary>How formatting estimates work</summary>
           <p>
-            This is a transparent layout heuristic, not a score from an ATS
-            vendor. It does not assess keywords, qualifications or match to a
-            job description, and has not been calibrated against employer
-            screening systems.
+            Single-column layouts provide a more predictable reading order for
+            automated parsers. Classic, Modern and Minimal are useful starting
+            points; two-column designs offer a visual option for direct sharing.
+          </p>
+          <p>
+            The numbers are a transparent layout heuristic, not a score from an
+            ATS vendor. They do not assess keywords, qualifications or job fit,
+            and have not been calibrated against employer screening systems.
           </p>
           <ul>
             {estimateResumeFormatting(RESUME_TEMPLATES[0]).checks.map(
@@ -317,73 +507,10 @@ function Gallery({
             )}
           </ul>
           <p>
-            The reading-order allowance is deliberately conservative: even a
-            single-column PDF can be interpreted differently by different
-            parsers. Two-column designs carry more reading-order uncertainty.
-            Use the score to compare layouts, not to predict an application
-            outcome.
+            Use the estimate to compare layouts. Review the exported PDF’s
+            reading order and tailor the content to the vacancy.
           </p>
         </details>
-        <div className="resume-template-grid">
-          {RESUME_TEMPLATES.map((t) => (
-            <a
-              key={t.id}
-              href={`/resume/${t.id}/${paper === "legal" ? "legal/" : ""}`}
-              className="resume-template-card"
-              onClick={followResumeLink}
-              style={{ "--resume-accent": t.accent } as CSSProperties}
-            >
-              <div
-                className={`resume-template-preview preview-${t.style}`}
-                aria-hidden="true"
-              >
-                <div className="preview-name">
-                  {previewName || "PRAKASH CHOUDHARY"}
-                </div>
-                <div className="preview-subtitle">{previewTitle}</div>
-                <div className="preview-contact" />
-                <div className={`preview-body preview-cols-${t.columns}`}>
-                  <div>
-                    {[1, 2, 3].map((i) => (
-                      <div className="preview-section" key={i}>
-                        <b />
-                        {[1, 2, 3].map((j) => (
-                          <i key={j} />
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                  <div>
-                    {[1, 2, 3, 4].map((i) => (
-                      <div className="preview-section" key={i}>
-                        <b />
-                        {[1, 2, 3].map((j) => (
-                          <i key={j} />
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="resume-template-info">
-                <span>{t.columns === 1 ? "SINGLE COLUMN" : "TWO COLUMNS"}</span>
-                <h2>
-                  {t.name}
-                  <ArrowUpRight size={19} aria-hidden="true" />
-                </h2>
-                <p>{t.description}</p>
-                <p className="resume-format-score">
-                  Approx. ATS formatting{" "}
-                  <b>{estimateResumeFormatting(t).score}/100</b>
-                </p>
-                <small className="resume-score-caption">
-                  Layout estimate · not a job-match score
-                </small>
-                <strong>Open resume →</strong>
-              </div>
-            </a>
-          ))}
-        </div>
         <ToolGuide toolId="resume" />
         <SiteFooter />
         <p className="resume-gallery-footer">
