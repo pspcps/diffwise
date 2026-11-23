@@ -1,4 +1,5 @@
-.theme-controls .language-theme-cycle {
+.theme-controls .language-theme-cycle,
+.language-theme-floating {
   display: inline-grid;
   place-items: center;
   flex-shrink: 0;
@@ -41,4 +42,45 @@
     width: 32px;
     height: 32px;
   }
+}
+
+.theme-controls-floating {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  order: 98;
+}
+.language-theme-floating.language-theme-cycle {
+  position: fixed;
+  top: 16px;
+  right: 64px;
+  z-index: 60;
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 3px 12px #0002;
+}
+.space-app .space-topbar .topbar-actions .theme-controls-floating {
+  order: 98;
+}
+.space-app .space-topbar .topbar-actions .design-shuffle-slot {
+  order: 99;
+}
+@media (max-width: 580px) {
+  .theme-controls-floating {
+    width: 36px;
+    height: 36px;
+  }
+  .language-theme-floating.language-theme-cycle {
+    top: 12px;
+    right: 56px;
+    width: 36px;
+    height: 36px;
+  }
+}
+.language-theme-floating:hover {
+  background: #385159;
+}
+.language-theme-floating:focus-visible {
+  outline: 3px solid #82aaa2;
+  outline-offset: 4px;
 }

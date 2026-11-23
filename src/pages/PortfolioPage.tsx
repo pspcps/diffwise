@@ -66,18 +66,28 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
     <div className="portfolio-space portfolio-atelier" ref={root}>
       <header className="portfolio-nav">
         <div className="portfolio-nav-inner">
-          <button
-            className="portfolio-identity"
-            aria-label="Prakash Choudhary — back to top"
-            onClick={() =>
-              root.current?.scrollTo({ top: 0, behavior: "smooth" })
-            }
-          >
-            <img src="/avatar.jpg" alt="" />
-            <span>
-              Prakash Choudhary<span className="brand-period">.</span>
-            </span>
-          </button>
+          <div className="portfolio-header-left">
+            <button
+              className="portfolio-back"
+              aria-label="Back to tools"
+              title="Back to tools"
+              onClick={onBack}
+            >
+              <ArrowLeft size={18} />
+            </button>
+            <button
+              className="portfolio-identity"
+              aria-label="Prakash Choudhary — back to top"
+              onClick={() =>
+                root.current?.scrollTo({ top: 0, behavior: "smooth" })
+              }
+            >
+              <img src="/avatar.jpg" alt="" />
+              <span>
+                Prakash Choudhary<span className="brand-period">.</span>
+              </span>
+            </button>
+          </div>
           <nav aria-label="Portfolio sections">
             <button onClick={() => scrollTo("projects")}>Work</button>
             <button onClick={() => scrollTo("about")}>About</button>
@@ -85,15 +95,7 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
             <button onClick={() => scrollTo("contact")}>Contact</button>
           </nav>
           <div className="portfolio-header-actions">
-            <ThemeChoice />
-            <button
-              className="toolbar-home"
-              aria-label="Back to tools"
-              title="Back to tools"
-              onClick={onBack}
-            >
-              <ArrowLeft size={16} /> <span>Back to tools</span>
-            </button>
+            <ThemeChoice floating />
             <PortfolioVersionSwitcher fallback="v1" />
           </div>
         </div>

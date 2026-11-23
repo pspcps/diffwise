@@ -260,3 +260,37 @@
     min-height: 36px;
   }
 }
+
+.portfolio-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  grid-column: 1;
+  grid-row: 1;
+}
+.portfolio-atelier .portfolio-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid #ffffff20;
+  border-radius: 50%;
+  background: #ffffff04;
+  color: #dce6d9;
+}
+.portfolio-atelier .portfolio-back:hover {
+  background: #ffffff0c;
+}
+@media (max-width: 580px) {
+  .portfolio-header-left {
+    gap: 9px;
+  }
+  .portfolio-atelier .portfolio-back {
+    width: 36px;
+    height: 36px;
+  }
+}

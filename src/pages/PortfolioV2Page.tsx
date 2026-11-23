@@ -326,7 +326,7 @@ export default function PortfolioV2Page() {
         </a>
         <div className="v2-top-actions">
           <PortfolioVersionSwitcher fallback="v2" />
-          <ThemeChoice />
+          <ThemeChoice floating />
         </div>
       </div>
       <div className="v2-layout">

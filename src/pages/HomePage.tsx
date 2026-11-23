@@ -161,7 +161,7 @@ export default function HomePage({
           </div>
           <div className="topbar-actions">
             <DesignSwitcher design="classic" />
-            <ThemeChoice />
+            <ThemeChoice floating />
             <button className="search-shortcut" onClick={onSearch}>
               <Search size={15} />
               <span>Quick search</span>

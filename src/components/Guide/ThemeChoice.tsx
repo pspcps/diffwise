@@ -1,4 +1,4 @@
-import MotionToggle from "../Motion/MotionToggle";
+import { createPortal } from "react-dom";
 import TechnologyIcon from "../Common/TechnologyIcon";
 import "./theme-cycle.css";
 import { useEffect, useState, type ReactNode } from "react";
@@ -47,24 +47,34 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     </ThemeContext.Provider>
   );
 }
-export default function ThemeChoice() {
+export default function ThemeChoice({
+  floating = false,
+}: {
+  floating?: boolean;
+}) {
   const { theme, change } = useLanguageTheme();
   const themes = Object.values(LANGUAGE_THEMES);
   const current = LANGUAGE_THEMES[theme];
   const next =
     themes[(themes.findIndex((item) => item.id === theme) + 1) % themes.length];
+  const button = (
+    <button
+      type="button"
+      className={`language-theme-cycle${floating ? " language-theme-floating" : ""}`}
+      aria-label={`Change language theme. Current: ${current.shortName}. Next: ${next.shortName}`}
+      title={`${current.shortName} theme · Click for ${next.shortName}`}
+      onClick={() => change(next.id)}
+    >
+      <TechnologyIcon name={current.shortName} />
+    </button>
+  );
   return (
-    <div className="theme-controls">
-      <button
-        type="button"
-        className="language-theme-cycle"
-        aria-label={`Change language theme. Current: ${current.shortName}. Next: ${next.shortName}`}
-        title={`${current.shortName} theme · Click for ${next.shortName}`}
-        onClick={() => change(next.id)}
-      >
-        <TechnologyIcon name={current.shortName} />
-      </button>
-      <MotionToggle />
+    <div
+      className={`theme-controls${floating ? " theme-controls-floating" : ""}`}
+    >
+      {floating && typeof document !== "undefined"
+        ? createPortal(button, document.body)
+        : button}
     </div>
   );
 }

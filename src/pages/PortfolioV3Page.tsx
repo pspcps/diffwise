@@ -111,7 +111,7 @@ export default function PortfolioV3Page() {
         </nav>
         <div className="v3-nav-right">
           <PortfolioVersionSwitcher fallback="v3" />
-          <ThemeChoice />
+          <ThemeChoice floating />
         </div>
       </header>
       <main id="v3-main">
