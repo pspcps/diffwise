@@ -3,10 +3,10 @@ import { getCareerDuration } from "../utils/careerDuration";
 export const PORTFOLIO_URL = "https://psdevtool.online/portfolio/";
 const DRISHTI_PROJECT = {
   name: "Project Drishti",
-  tech: "React, Firebase, Vertex AI Vision, Gemini",
-  url: "https://github.com/pspcps/project-drishti",
+  tech: "React, FastAPI, Vertex AI, Gemini",
+  url: "https://github.com/pspcps/Agentic-Project-Drishti",
   detail:
-    "Built camera-frame analysis and Firestore-backed incident, zone and responder workflows for an AI-assisted crowd-safety dashboard.",
+    "Built validated still-image analysis with structured Gemini findings, uncertainty/error handling and a scripted evaluation for operator-led hazard review.",
 };
 export const PRINT_RESUME = {
   name: RESUME.name,
@@ -90,14 +90,14 @@ export const PRINT_RESUME = {
       tech: "React, TypeScript, Monaco Editor, Web Workers",
       url: "https://github.com/pspcps/diffwise",
       detail:
-        "Built 20 browser tools for code comparison, structured-data inspection, API workflows and file processing, with searchable navigation and persistent themes.",
+        "Built 20 browser tools with Monaco, worker-based processing and saved resume profiles; packaged a VS Code extension in an open PR.",
     },
     {
-      name: "Kafbat UI",
+      name: "KafkaUI",
       tech: "Go, Kafka, Next.js, Python, Kubernetes",
       url: "https://github.com/pspcps/kafkaUI",
       detail:
-        "Built Kafka administration and replication workflows with Kubernetes-managed consumers and PostgreSQL, MySQL, SQL Server and MongoDB adapters.",
+        "Built a Go control plane and Kubernetes replication workers; added a development-branch PostgreSQL replay ledger and failure/recovery lab.",
     },
   ],
   contribution: {

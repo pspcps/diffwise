@@ -33,7 +33,7 @@ import { PROJECT_CASE_STUDIES } from "../data/projectCaseStudies";
 
 type Project = (typeof RESUME.projects)[number];
 const FILTERS = ["All projects", "AI & agents", "Developer tools"];
-const DEV_PROJECTS = ["PSDevTool", "Kafbat UI", "ApiDesk Studio", "SharpForge"];
+const DEV_PROJECTS = ["PSDevTool", "KafkaUI", "ApiDesk Studio", "Cairn IDE"];
 export default function PortfolioPage({ onBack }: { onBack: () => void }) {
   useCareerDuration();
   const root = useRef<HTMLDivElement>(null);
@@ -156,6 +156,12 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
                   <h3>{p.title}</h3>
                   <p>{p.subtitle}</p>
                   <p className="project-real-summary">{p.bullets[0]}</p>
+                  {PROJECT_CASE_STUDIES[p.title]?.evidence && (
+                    <p className="project-evidence-summary">
+                      <span>Evidence</span>{" "}
+                      {PROJECT_CASE_STUDIES[p.title].evidence}
+                    </p>
+                  )}
                   <div className="project-tech">
                     {p.tech.slice(0, 4).map((t) => (
                       <span className="technology-chip" key={t}>
@@ -164,12 +170,30 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
                       </span>
                     ))}
                   </div>
-                  <button
-                    className="project-details-button"
-                    onClick={() => setSelected(p)}
-                  >
-                    View case study <ArrowUpRight size={17} />
-                  </button>
+                  <div className="project-card-actions">
+                    <button
+                      className="project-details-button"
+                      onClick={() => setSelected(p)}
+                    >
+                      View case study <ArrowUpRight size={17} />
+                    </button>
+                    {p.github ? (
+                      <a
+                        className="project-source-link"
+                        href={p.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`View ${p.title} source on GitHub (opens in a new tab)`}
+                      >
+                        <GitFork size={15} aria-hidden="true" /> GitHub
+                        <ArrowUpRight size={14} aria-hidden="true" />
+                      </a>
+                    ) : (
+                      <span className="project-source-private">
+                        Private source
+                      </span>
+                    )}
+                  </div>
                 </div>
               </article>
             ))}

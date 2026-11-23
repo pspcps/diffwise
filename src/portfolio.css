@@ -444,7 +444,7 @@
   align-items: center;
   color: #7b9772;
   font:
-    7px ui-monospace,
+    9px ui-monospace,
     monospace;
   letter-spacing: 1.2px;
   margin-bottom: 19px;
@@ -455,6 +455,9 @@
 }
 .portfolio-atelier .project-space-content {
   padding: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 .portfolio-atelier .project-space-content > h3 {
   font-size: 21px;
@@ -464,16 +467,27 @@
   margin-bottom: 10px;
 }
 .portfolio-atelier .project-space-content > p {
-  font-size: 10px;
+  font-size: 12px;
   color: #9aac91;
 }
 .portfolio-atelier .project-real-summary {
   color: #aaba9f !important;
-  font-size: 11px !important;
+  font-size: 13px !important;
   line-height: 1.9 !important;
 }
+.portfolio-atelier .project-space-content > .project-evidence-summary {
+  color: #bbcbb2;
+  font-size: 11px;
+  line-height: 1.7;
+  margin: 12px 0 0;
+}
+.project-evidence-summary > span {
+  color: var(--user-accent);
+  font-weight: 600;
+  margin-right: 5px;
+}
 .portfolio-atelier .project-tech .technology-chip {
-  font-size: 8px;
+  font-size: 10px;
   padding: 5px 7px;
   background: #ffffff03;
   border-color: #ffffff0c;
@@ -484,11 +498,50 @@
   width: 12px;
   height: 12px;
 }
-.portfolio-atelier .project-details-button {
-  padding-top: 15px;
-  margin-top: 23px;
-  font-size: 10px !important;
-  color: #ccdfc1;
+.portfolio-atelier .project-tech {
+  margin-bottom: 23px;
+}
+.project-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.portfolio-atelier .project-card-actions .project-details-button,
+.portfolio-atelier .project-source-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: auto;
+  min-height: 44px;
+  padding: 8px 0;
+  margin: 0;
+  border: 0;
+  border-radius: 5px;
+  font-size: 12px !important;
+  color: inherit;
+  text-decoration: none;
+}
+.portfolio-atelier .project-source-link {
+  color: var(--user-accent);
+}
+.portfolio-atelier .project-card-actions button:hover,
+.portfolio-atelier .project-source-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.project-card-actions :is(button, a):focus-visible {
+  outline: 2px solid var(--user-accent);
+  outline-offset: 4px;
+}
+.project-source-private {
+  color: #9aac91;
+  font-size: 11px;
 }
 .portfolio-atelier .portfolio-about {
   border-bottom: 1px solid #ffffff0c;
