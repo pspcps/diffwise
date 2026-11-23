@@ -6,6 +6,7 @@ import {
   NOT_FOUND,
   PORTFOLIO_PAGE,
   PORTFOLIO_V2_PAGE,
+  PORTFOLIO_V3_PAGE,
   TOOL_PAGES,
   RESUME_PAGE,
   RESUME_PAGES,
@@ -31,6 +32,8 @@ export function resolveLocation(
       return { page: PORTFOLIO_PAGE, legacy: true, search };
     if (key === "#/portfolio/v2")
       return { page: PORTFOLIO_V2_PAGE, legacy: true, search };
+    if (key === "#/portfolio/v3")
+      return { page: PORTFOLIO_V3_PAGE, legacy: true, search };
     if (key === "#/resume") return { page: RESUME_PAGE, legacy: true, search };
     if (HASH_TO_MODE[key])
       return { page: pageForId(HASH_TO_MODE[key]), legacy: true, search };
@@ -44,6 +47,7 @@ export function resolveLocation(
         ? PORTFOLIO_PAGE
         : [
             PORTFOLIO_V2_PAGE,
+            PORTFOLIO_V3_PAGE,
             ...INFORMATION_PAGES,
             RESUME_PAGE,
             ...RESUME_PAGES,

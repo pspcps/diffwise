@@ -14,7 +14,7 @@
     "test:structured": "node scripts/check-structured-conversion.cjs",
     "test:content": "node scripts/check-site-content.cjs",
     "test:resume": "node scripts/check-resume-draft.cjs && node scripts/check-resume-profiles.cjs",
-    "test:portfolio": "node scripts/check-portfolio-v2.cjs"
+    "test:portfolio": "node scripts/check-portfolio-v2.cjs && node scripts/check-portfolio-v3.cjs"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.12.2",

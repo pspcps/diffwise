@@ -1530,3 +1530,7 @@
 .portfolio-v2 .v2-contact-line:first-of-type a {
   font-size: 0.875rem;
 }
+
+.v2-footer > div {
+  flex-wrap: wrap;
+}

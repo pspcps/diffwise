@@ -98,6 +98,12 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
         <a href="/portfolio/v2/" className="portfolio-version-link">
           Explore portfolio v2
         </a>
+        <a
+          href="/portfolio/v3/"
+          className="portfolio-version-link portfolio-studio-link"
+        >
+          Explore 3D portfolio v3
+        </a>
         <PortfolioHero onExplore={() => scrollTo("projects")} />
         <section className="portfolio-stats" aria-label="Career highlights">
           {RESUME.stats.map((s) => (

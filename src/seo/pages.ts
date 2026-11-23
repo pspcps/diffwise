@@ -9,6 +9,7 @@ export interface SearchPage {
     | "home"
     | "portfolio"
     | "portfolio-v2"
+    | "portfolio-v3"
     | "resume"
     | `resume-${string}`
     | "notfound";
@@ -100,6 +101,15 @@ export const PORTFOLIO_V2_PAGE: SearchPage = {
   description:
     "Explore Prakash Choudhary’s full-stack, distributed systems, cloud and applied AI work in a focused portfolio with project sources, experience and technical skills.",
 };
+export const PORTFOLIO_V3_PAGE: SearchPage = {
+  ...PORTFOLIO_PAGE,
+  id: "portfolio-v3",
+  path: "/portfolio/v3/",
+  name: "Prakash Choudhary · Portfolio v3",
+  title: "Prakash Choudhary — Interactive Engineering Studio",
+  description:
+    "Meet Prakash Choudhary through an interactive 3D engineering studio. Explore full-stack and applied AI projects, source code, career experience and technical skills.",
+};
 export const RESUME_PAGE: SearchPage = {
   ...PORTFOLIO_PAGE,
   id: "resume",
@@ -162,11 +172,13 @@ export function pageForId(id: SearchPage["id"]) {
       ? PORTFOLIO_PAGE
       : id === "portfolio-v2"
         ? PORTFOLIO_V2_PAGE
-        : id === "resume"
-          ? RESUME_PAGE
-          : [...INFORMATION_PAGES, ...RESUME_PAGES, ...TOOL_PAGES].find(
-              (p) => p.id === id,
-            ) || NOT_FOUND;
+        : id === "portfolio-v3"
+          ? PORTFOLIO_V3_PAGE
+          : id === "resume"
+            ? RESUME_PAGE
+            : [...INFORMATION_PAGES, ...RESUME_PAGES, ...TOOL_PAGES].find(
+                (p) => p.id === id,
+              ) || NOT_FOUND;
 }
 export function toolPath(id: ViewMode) {
   return pageForId(id).path;
