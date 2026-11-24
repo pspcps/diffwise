@@ -4,6 +4,7 @@ for(const extension of ['.ts','.tsx'])require.extensions[extension]=(module,file
  if(filename.endsWith('/TimeZone/TimeZoneView.tsx'))code+='\nmodule.exports.checks={localDateTime,wallTimeCandidates,offsetMinutes};';
  module._compile(code,filename);
 };
+require.extensions['.css']=()=>{};
 const {MAJOR_TIME_ZONES,fixedOffsetMinutes,zonedParts}=require('../src/data/majorTimeZones.ts');
 const {default:View,checks}=require('../src/components/TimeZone/TimeZoneView.tsx');
 assert.equal(MAJOR_TIME_ZONES.length,34);assert.equal(new Set(MAJOR_TIME_ZONES.map(z=>z.id)).size,34);
@@ -26,3 +27,17 @@ assert.equal((html.match(/role="img"/g)||[]).length,2);
 assert.ok(html.includes('Show all time zones'));assert.ok(!html.includes('label="City and regional zones'));
 assert.ok(html.includes('Pause live clocks'));assert.ok(html.includes('Major standard UTC offsets'));
 console.log('PASS 34 fixed-offset round trips, fractional offsets/date rollover, city DST vs fixed standard time, DST fold/gap, major-only default and two clocks.');
+
+const {timelineTime,plannerStart,HOUR_MS}=require('../src/utils/timeZoneTimeline.ts');
+const winter=Date.parse('2026-11-24T16:00:00Z');
+assert.equal(timelineTime(winter,'Asia/Kolkata').time,'21:30');
+assert.equal(timelineTime(winter,'America/Los_Angeles').time,'08:00');
+assert.equal(timelineTime(winter,'Pacific/Honolulu').time,'06:00');
+assert.equal(timelineTime(winter,'Asia/Kathmandu').time,'21:45');
+const start=plannerStart(winter,'Asia/Kolkata');assert.equal(timelineTime(start,'Asia/Kolkata').time,'15:00');
+assert.equal(timelineTime(start+6*HOUR_MS,'Asia/Kolkata').time,'21:00');
+const fold=Date.parse('2026-11-01T05:00:00Z');assert.equal(timelineTime(fold,'America/New_York').time,'01:00');assert.equal(timelineTime(fold+HOUR_MS,'America/New_York').time,'01:00');assert.notEqual(timelineTime(fold,'America/New_York').offset,timelineTime(fold+HOUR_MS,'America/New_York').offset);
+const Planner=require('../src/components/TimeZone/TimeZonePlanner.tsx').default;
+const planner=renderToStaticMarkup(React.createElement(Planner,{instant:winter,sourceZone:'Asia/Kolkata',targetZone:'Pacific/Honolulu',allZones:[],showAll:false,onSelect(){},onSourceZone(){}}));
+assert.equal((planner.match(/class="tz-planner-row"/g)||[]).length,3);assert.equal((planner.match(/aria-label="Select /g)||[]).length,72);assert.ok(planner.includes('Add time zone to planner'));assert.ok(planner.includes('Use Los Angeles as reference zone'));
+console.log('PASS multi-zone planner alignment, fractional offsets, DST repeated hours, three rows and 72 selectable shared timeline cells.');

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import TimeZonePlanner from "./TimeZonePlanner";
 import { ArrowLeftRight, CalendarDays, Clock3 } from "lucide-react";
 import {
   MAJOR_TIME_ZONES,
@@ -705,6 +706,19 @@ export default function TimeZoneView() {
           </div>
         )}
       </div>
+      <TimeZonePlanner
+        instant={instantMs}
+        sourceZone={sourceZone}
+        targetZone={targetZone}
+        allZones={TIME_ZONES}
+        showAll={showAll}
+        onSelect={(value) => {
+          setLive(false);
+          setInstantMs(value);
+          clearDrafts();
+        }}
+        onSourceZone={updateSourceZone}
+      />
     </section>
   );
 }
