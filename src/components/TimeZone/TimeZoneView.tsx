@@ -1,93 +1,196 @@
-import { useRef, useState } from 'react';
-import { ArrowLeftRight, CalendarDays, Clock3 } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import { ArrowLeftRight, CalendarDays, Clock3 } from "lucide-react";
+import {
+  MAJOR_TIME_ZONES,
+  fixedOffsetMinutes,
+  zonedParts,
+  zonedDescription,
+} from "../../data/majorTimeZones";
 
-const supportedTimeZones = (Intl as unknown as { supportedValuesOf?: (key: string) => string[] }).supportedValuesOf?.('timeZone') ?? [
-  'America/Los_Angeles', 'America/New_York', 'America/Sao_Paulo', 'Asia/Dubai', 'Asia/Kolkata', 'Asia/Singapore', 'Asia/Tokyo', 'Australia/Sydney', 'Europe/Berlin', 'Europe/London', 'UTC',
+const supportedTimeZones = (
+  Intl as unknown as { supportedValuesOf?: (key: string) => string[] }
+).supportedValuesOf?.("timeZone") ?? [
+  "America/Los_Angeles",
+  "America/New_York",
+  "America/Sao_Paulo",
+  "Asia/Dubai",
+  "Asia/Kolkata",
+  "Asia/Singapore",
+  "Asia/Tokyo",
+  "Australia/Sydney",
+  "Europe/Berlin",
+  "Europe/London",
+  "UTC",
 ];
-const TIME_ZONES = [...new Set(['UTC', Intl.DateTimeFormat().resolvedOptions().timeZone, ...supportedTimeZones])].sort();
+const TIME_ZONES = [
+  ...new Set([
+    "UTC",
+    Intl.DateTimeFormat().resolvedOptions().timeZone,
+    ...supportedTimeZones,
+  ]),
+].sort();
 
 function localDateTime(date: Date, timeZone: string) {
-  const parts = new Intl.DateTimeFormat('en-CA', {
-    timeZone, year: 'numeric', month: '2-digit', day: '2-digit',
-    hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23',
-  }).formatToParts(date);
-  const part = (type: string) => parts.find(item => item.type === type)?.value ?? '00';
-  return `${part('year')}-${part('month')}-${part('day')}T${part('hour')}:${part('minute')}:${part('second')}`;
+  const parts = zonedParts(date, timeZone, {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  });
+  const part = (type: string) =>
+    parts.find((item) => item.type === type)?.value ?? "00";
+  return `${part("year")}-${part("month")}-${part("day")}T${part("hour")}:${part("minute")}:${part("second")}`;
 }
 
 function wallTimeCandidates(value: string, timeZone: string) {
-  const match = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2})(?::(\d{2})(?:\.(\d{1,9}))?)?)?$/.exec(value);
+  const match =
+    /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2})(?::(\d{2})(?:\.(\d{1,9}))?)?)?$/.exec(
+      value,
+    );
   if (!match) return [] as Date[];
-  const [, yearText, monthText, dayText, hourText = '00', minuteText = '00', secondText = '00', fractionText = ''] = match;
-  const [year, month, day, hour, minute, second] = [yearText, monthText, dayText, hourText, minuteText, secondText].map(Number);
+  const [
+    ,
+    yearText,
+    monthText,
+    dayText,
+    hourText = "00",
+    minuteText = "00",
+    secondText = "00",
+    fractionText = "",
+  ] = match;
+  const [year, month, day, hour, minute, second] = [
+    yearText,
+    monthText,
+    dayText,
+    hourText,
+    minuteText,
+    secondText,
+  ].map(Number);
   const dateCheck = new Date(Date.UTC(year, month - 1, day));
-  if (dateCheck.getUTCFullYear() !== year || dateCheck.getUTCMonth() !== month - 1 || dateCheck.getUTCDate() !== day || hour > 23 || minute > 59 || second > 59) return [];
+  if (
+    dateCheck.getUTCFullYear() !== year ||
+    dateCheck.getUTCMonth() !== month - 1 ||
+    dateCheck.getUTCDate() !== day ||
+    hour > 23 ||
+    minute > 59 ||
+    second > 59
+  )
+    return [];
   const normalized = `${yearText}-${monthText}-${dayText}T${hourText}:${minuteText}:${secondText}`;
-  const milliseconds = Number((fractionText + '000').slice(0, 3));
-  const desiredUtc = Date.UTC(year, month - 1, day, hour, minute, second, milliseconds);
+  const milliseconds = Number((fractionText + "000").slice(0, 3));
+  const desiredUtc = Date.UTC(
+    year,
+    month - 1,
+    day,
+    hour,
+    minute,
+    second,
+    milliseconds,
+  );
   const offsets = new Set<number>();
   for (let hours = -48; hours <= 48; hours += 3) {
-    offsets.add(offsetMinutes(new Date(desiredUtc + hours * 60 * 60 * 1000), timeZone));
+    offsets.add(
+      offsetMinutes(new Date(desiredUtc + hours * 60 * 60 * 1000), timeZone),
+    );
   }
   return [...offsets]
-    .map(offset => new Date(desiredUtc - offset * 60 * 1000))
-    .filter(date => localDateTime(date, timeZone) === normalized)
+    .map((offset) => new Date(desiredUtc - offset * 60 * 1000))
+    .filter((date) => localDateTime(date, timeZone) === normalized)
     .sort((left, right) => left.getTime() - right.getTime());
 }
 
 function zoneLabel(zone: string) {
-  return zone.replaceAll('_', ' ');
+  return zone.replaceAll("_", " ");
 }
 
 function offsetMinutes(date: Date, timeZone: string) {
-  const parts = new Intl.DateTimeFormat('en-CA', {
-    timeZone, year: 'numeric', month: '2-digit', day: '2-digit',
-    hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+  const fixed = fixedOffsetMinutes(timeZone);
+  if (fixed !== null) return fixed;
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
   }).formatToParts(date);
-  const part = (type: string) => Number(parts.find(item => item.type === type)?.value ?? 0);
-  const localAsUtc = Date.UTC(part('year'), part('month') - 1, part('day'), part('hour'), part('minute'));
-  return Math.round((localAsUtc - Math.floor(date.getTime() / 60000) * 60000) / 60000);
+  const part = (type: string) =>
+    Number(parts.find((item) => item.type === type)?.value ?? 0);
+  const localAsUtc = Date.UTC(
+    part("year"),
+    part("month") - 1,
+    part("day"),
+    part("hour"),
+    part("minute"),
+  );
+  return Math.round(
+    (localAsUtc - Math.floor(date.getTime() / 60000) * 60000) / 60000,
+  );
 }
 
 function offsetLabel(date: Date, timeZone: string) {
   const minutes = offsetMinutes(date, timeZone);
-  const sign = minutes < 0 ? '-' : '+';
+  const sign = minutes < 0 ? "-" : "+";
   const absolute = Math.abs(minutes);
-  return `UTC${sign}${String(Math.floor(absolute / 60)).padStart(2, '0')}:${String(absolute % 60).padStart(2, '0')}`;
+  return `UTC${sign}${String(Math.floor(absolute / 60)).padStart(2, "0")}:${String(absolute % 60).padStart(2, "0")}`;
 }
 
 function zoneName(date: Date, timeZone: string) {
+  const major = MAJOR_TIME_ZONES.find((zone) => zone.id === timeZone);
+  if (major) return major.abbreviation;
   const offset = offsetMinutes(date, timeZone);
   const seasonalNames: Record<string, [number, string, string]> = {
-    'America/Los_Angeles': [-7 * 60, 'PDT', 'PST'],
-    'America/Vancouver': [-7 * 60, 'PDT', 'PST'],
-    'America/New_York': [-4 * 60, 'EDT', 'EST'],
-    'America/Toronto': [-4 * 60, 'EDT', 'EST'],
-    'Europe/London': [60, 'BST', 'GMT'],
-    'Europe/Paris': [120, 'CEST', 'CET'],
-    'Europe/Berlin': [120, 'CEST', 'CET'],
-    'Asia/Kolkata': [330, 'IST', 'IST'],
-    'Asia/Tokyo': [540, 'JST', 'JST'],
-    'Australia/Sydney': [660, 'AEDT', 'AEST'],
+    "America/Los_Angeles": [-7 * 60, "PDT", "PST"],
+    "America/Vancouver": [-7 * 60, "PDT", "PST"],
+    "America/New_York": [-4 * 60, "EDT", "EST"],
+    "America/Toronto": [-4 * 60, "EDT", "EST"],
+    "Europe/London": [60, "BST", "GMT"],
+    "Europe/Paris": [120, "CEST", "CET"],
+    "Europe/Berlin": [120, "CEST", "CET"],
+    "Asia/Kolkata": [330, "IST", "IST"],
+    "Asia/Tokyo": [540, "JST", "JST"],
+    "Australia/Sydney": [660, "AEDT", "AEST"],
   };
   const seasonal = seasonalNames[timeZone];
   if (seasonal) return offset === seasonal[0] ? seasonal[1] : seasonal[2];
-  return new Intl.DateTimeFormat('en', { timeZone, timeZoneName: 'short' })
-    .formatToParts(date).find(part => part.type === 'timeZoneName')?.value ?? timeZone;
+  return (
+    new Intl.DateTimeFormat("en", { timeZone, timeZoneName: "short" })
+      .formatToParts(date)
+      .find((part) => part.type === "timeZoneName")?.value ?? timeZone
+  );
 }
 
 function epochDate(value: string) {
   if (!value.trim()) return null;
   const timestamp = Number(value);
   if (!Number.isFinite(timestamp)) return null;
-  const date = new Date(Math.abs(timestamp) < 100_000_000_000 ? timestamp * 1000 : timestamp);
+  const date = new Date(
+    Math.abs(timestamp) < 100_000_000_000 ? timestamp * 1000 : timestamp,
+  );
   return Number.isNaN(date.getTime()) ? null : date;
 }
 
 function isoDate(value: string) {
-  const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.(\d{1,9}))?)?(Z|[+-]\d{2}:\d{2})$/i.exec(value.trim());
+  const match =
+    /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.(\d{1,9}))?)?(Z|[+-]\d{2}:\d{2})$/i.exec(
+      value.trim(),
+    );
   if (!match) return null;
-  const [, yearText, monthText, dayText, hourText, minuteText, secondText = '00', , offset] = match;
+  const [
+    ,
+    yearText,
+    monthText,
+    dayText,
+    hourText,
+    minuteText,
+    secondText = "00",
+    ,
+    offset,
+  ] = match;
   const year = Number(yearText);
   const month = Number(monthText);
   const day = Number(dayText);
@@ -95,9 +198,17 @@ function isoDate(value: string) {
   const minute = Number(minuteText);
   const second = Number(secondText);
   const dateCheck = new Date(Date.UTC(year, month - 1, day));
-  if (dateCheck.getUTCFullYear() !== year || dateCheck.getUTCMonth() !== month - 1 || dateCheck.getUTCDate() !== day || hour > 23 || minute > 59 || second > 59) return null;
-  if (offset.toUpperCase() !== 'Z') {
-    const [offsetHour, offsetMinute] = offset.slice(1).split(':').map(Number);
+  if (
+    dateCheck.getUTCFullYear() !== year ||
+    dateCheck.getUTCMonth() !== month - 1 ||
+    dateCheck.getUTCDate() !== day ||
+    hour > 23 ||
+    minute > 59 ||
+    second > 59
+  )
+    return null;
+  if (offset.toUpperCase() !== "Z") {
+    const [offsetHour, offsetMinute] = offset.slice(1).split(":").map(Number);
     if (offsetHour > 23 || offsetMinute > 59) return null;
   }
   const timestamp = Date.parse(value);
@@ -111,7 +222,11 @@ function timestampInputDate(value: string, localTimeZone: string) {
   const zonedIsoDate = isoDate(trimmed);
   if (zonedIsoDate) return zonedIsoDate;
 
-  if (/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,9})?)?)?$/.test(trimmed)) {
+  if (
+    /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,9})?)?)?$/.test(
+      trimmed,
+    )
+  ) {
     return wallTimeCandidates(trimmed, localTimeZone)[0] ?? null;
   }
 
@@ -119,23 +234,117 @@ function timestampInputDate(value: string, localTimeZone: string) {
   return Number.isNaN(parsed) ? null : new Date(parsed);
 }
 
+function ZoneClock({ date, zone }: { date: Date; zone: string }) {
+  const time = localDateTime(date, zone).slice(11);
+  const [hour, minute, second] = time.split(":").map(Number);
+  const angleHour = (hour % 12) * 30 + minute * 0.5,
+    angleMinute = minute * 6 + second * 0.1;
+  return (
+    <div className="flex items-center justify-center gap-5 rounded-xl border border-[#344435] bg-[#141a16] p-4">
+      <svg
+        viewBox="0 0 120 120"
+        width="112"
+        height="112"
+        role="img"
+        aria-label={`${zoneLabel(zone)} clock: ${time}`}
+        className="shrink-0"
+      >
+        <circle
+          cx="60"
+          cy="60"
+          r="56"
+          fill="#0d120f"
+          stroke="#718675"
+          strokeWidth="1.5"
+        />
+        {Array.from({ length: 12 }, (_, index) => (
+          <line
+            key={index}
+            x1="60"
+            y1="9"
+            x2="60"
+            y2={index % 3 === 0 ? "17" : "13"}
+            stroke={index % 3 === 0 ? "#e4ebdd" : "#718675"}
+            strokeWidth={index % 3 === 0 ? "2" : "1"}
+            transform={`rotate(${index * 30} 60 60)`}
+          />
+        ))}
+        <line
+          x1="60"
+          y1="60"
+          x2="60"
+          y2="32"
+          stroke="#e4ebdd"
+          strokeWidth="4"
+          strokeLinecap="round"
+          transform={`rotate(${angleHour} 60 60)`}
+        />
+        <line
+          x1="60"
+          y1="60"
+          x2="60"
+          y2="20"
+          stroke="var(--user-accent, #c8edb6)"
+          strokeWidth="3"
+          strokeLinecap="round"
+          transform={`rotate(${angleMinute} 60 60)`}
+        />
+        <line
+          x1="60"
+          y1="68"
+          x2="60"
+          y2="17"
+          stroke="#f3d58c"
+          strokeWidth="1"
+          transform={`rotate(${second * 6} 60 60)`}
+        />
+        <circle cx="60" cy="60" r="4" fill="#f3d58c" />
+      </svg>
+      <div>
+        <p className="font-mono text-xl font-semibold tabular-nums text-[#e4ebdd]">
+          {time}
+        </p>
+        <p className="mt-1 text-xs text-[#b1bea8]">
+          {zoneName(date, zone)} · {offsetLabel(date, zone)}
+        </p>
+      </div>
+    </div>
+  );
+}
 export default function TimeZoneView() {
-  const initialZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+  const initialZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
   const [sourceZone, setSourceZone] = useState(initialZone);
-  const [targetZone, setTargetZone] = useState('UTC');
+  const [targetZone, setTargetZone] = useState("UTC");
+  const [showAll, setShowAll] = useState(false);
+  const [live, setLive] = useState(true);
+
   const [instantMs, setInstantMs] = useState(Date.now);
+  useEffect(() => {
+    if (!live) return;
+    const timer = setInterval(() => {
+      if (!document.hidden) setInstantMs(Date.now());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [live]);
   const [epochDraft, setEpochDraft] = useState<string | null>(null);
   const [sourceDraft, setSourceDraft] = useState<string | null>(null);
   const [targetDraft, setTargetDraft] = useState<string | null>(null);
-  const [sourceError, setSourceError] = useState('');
-  const [targetError, setTargetError] = useState('');
-  const [ambiguous, setAmbiguous] = useState<{ side: 'source' | 'target'; candidates: Date[] } | null>(null);
-  const pickerRefs = useRef<Record<'source' | 'target', HTMLInputElement | null>>({ source: null, target: null });
+  const [sourceError, setSourceError] = useState("");
+  const [targetError, setTargetError] = useState("");
+  const [ambiguous, setAmbiguous] = useState<{
+    side: "source" | "target";
+    candidates: Date[];
+  } | null>(null);
+  const pickerRefs = useRef<
+    Record<"source" | "target", HTMLInputElement | null>
+  >({ source: null, target: null });
 
   const instant = new Date(instantMs);
   const epochValue = epochDraft ?? String(instantMs);
-  const epochDateDraft = epochDraft === null ? instant : timestampInputDate(epochDraft, sourceZone);
-  const epochDraftInvalid = epochDraft !== null && epochDraft.trim().length > 0 && !epochDateDraft;
+  const epochDateDraft =
+    epochDraft === null ? instant : timestampInputDate(epochDraft, sourceZone);
+  const epochDraftInvalid =
+    epochDraft !== null && epochDraft.trim().length > 0 && !epochDateDraft;
   const sourceTime = sourceDraft ?? localDateTime(instant, sourceZone);
   const targetTime = targetDraft ?? localDateTime(instant, targetZone);
 
@@ -143,20 +352,21 @@ export default function TimeZoneView() {
     setEpochDraft(null);
     setSourceDraft(null);
     setTargetDraft(null);
-    setSourceError('');
-    setTargetError('');
+    setSourceError("");
+    setTargetError("");
     setAmbiguous(null);
   };
 
-  const updateLocalTime = (value: string, side: 'source' | 'target') => {
-    const timeZone = side === 'source' ? sourceZone : targetZone;
-    const setDraft = side === 'source' ? setSourceDraft : setTargetDraft;
-    const setError = side === 'source' ? setSourceError : setTargetError;
+  const updateLocalTime = (value: string, side: "source" | "target") => {
+    setLive(false);
+    const timeZone = side === "source" ? sourceZone : targetZone;
+    const setDraft = side === "source" ? setSourceDraft : setTargetDraft;
+    const setError = side === "source" ? setSourceError : setTargetError;
     setEpochDraft(null);
     setDraft(value);
 
     if (!value) {
-      setError('');
+      setError("");
       setAmbiguous(null);
       return;
     }
@@ -165,52 +375,59 @@ export default function TimeZoneView() {
     if (absoluteTime) {
       setInstantMs(absoluteTime.getTime());
       setDraft(null);
-      setError('');
+      setError("");
       setEpochDraft(null);
-      if (side === 'source') {
+      if (side === "source") {
         setTargetDraft(null);
-        setTargetError('');
+        setTargetError("");
       } else {
         setSourceDraft(null);
-        setSourceError('');
+        setSourceError("");
       }
       setAmbiguous(null);
       return;
     }
 
-    const localIso = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,9})?)?)?$/.test(value);
+    const localIso =
+      /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,9})?)?)?$/.test(
+        value,
+      );
     const candidates = localIso ? wallTimeCandidates(value, timeZone) : [];
-    const recognizedDate = candidates[0] ?? (localIso ? null : timestampInputDate(value, timeZone));
+    const recognizedDate =
+      candidates[0] ?? (localIso ? null : timestampInputDate(value, timeZone));
     if (!recognizedDate) {
-      setError(localIso
-        ? 'This local time is invalid or falls in a daylight-saving gap.'
-        : 'Enter a recognized date string, ISO timestamp, or local date/time.');
+      setError(
+        localIso
+          ? "This local time is invalid or falls in a daylight-saving gap."
+          : "Enter a recognized date string, ISO timestamp, or local date/time.",
+      );
       setAmbiguous(null);
       return;
     }
 
     setInstantMs(recognizedDate.getTime());
     setDraft(null);
-    setError('');
-    if (side === 'source') {
+    setError("");
+    if (side === "source") {
       setTargetDraft(null);
-      setTargetError('');
+      setTargetError("");
     } else {
       setSourceDraft(null);
-      setSourceError('');
+      setSourceError("");
     }
     setAmbiguous(candidates.length > 1 ? { side, candidates } : null);
   };
 
   const updateEpoch = (value: string) => {
+    setLive(false);
     setEpochDraft(value);
     const date = timestampInputDate(value, sourceZone);
     if (!date) return;
     setInstantMs(date.getTime());
     setSourceDraft(null);
     setTargetDraft(null);
-    setSourceError('');
-    setTargetError('');
+    setSourceError("");
+    setTargetError("");
     setAmbiguous(null);
   };
 
@@ -223,6 +440,7 @@ export default function TimeZoneView() {
   };
 
   const setCurrentTime = () => {
+    setLive(true);
     setInstantMs(Date.now());
     clearDrafts();
   };
@@ -236,26 +454,27 @@ export default function TimeZoneView() {
   const updateSourceZone = (zone: string) => {
     setSourceZone(zone);
     setSourceDraft(null);
-    setSourceError('');
+    setSourceError("");
     setAmbiguous(null);
   };
 
   const updateTargetZone = (zone: string) => {
     setTargetZone(zone);
     setTargetDraft(null);
-    setTargetError('');
+    setTargetError("");
     setAmbiguous(null);
   };
 
-  const openDatePicker = (side: 'source' | 'target') => {
+  const openDatePicker = (side: "source" | "target") => {
+    setLive(false);
     const picker = pickerRefs.current[side];
     if (!picker) return;
-    if (typeof picker.showPicker === 'function') picker.showPicker();
+    if (typeof picker.showPicker === "function") picker.showPicker();
     else picker.click();
   };
 
-  const localPanel = (side: 'source' | 'target') => {
-    const isSource = side === 'source';
+  const localPanel = (side: "source" | "target") => {
+    const isSource = side === "source";
     const timeZone = isSource ? sourceZone : targetZone;
     const value = isSource ? sourceTime : targetTime;
     const error = isSource ? sourceError : targetError;
@@ -264,78 +483,227 @@ export default function TimeZoneView() {
     return (
       <section className="flex min-w-0 flex-col gap-3 border border-[#344435] bg-[#111612] p-4">
         <div className="flex items-center justify-between gap-2">
-          <h2 className="text-xs font-semibold text-[#e4ebdd]">{isSource ? 'Source local time' : 'Converted local time'}</h2>
-          <span className="text-[10px] text-[#b1bea8]">{zoneName(instant, timeZone)} · {offsetLabel(instant, timeZone)}</span>
+          <h2 className="text-xs font-semibold text-[#e4ebdd]">
+            {isSource ? "Source local time" : "Converted local time"}
+          </h2>
+          <span className="text-[10px] text-[#b1bea8]">
+            {zoneName(instant, timeZone)} · {offsetLabel(instant, timeZone)}
+          </span>
         </div>
         <label className="flex flex-col gap-1.5">
           <span className="text-[10px] text-[#9eac96]">Date and time</span>
           <span className="relative block">
-            <input type="text" value={value} onChange={event => updateLocalTime(event.target.value, side)}
-              aria-label={`${isSource ? 'Source' : 'Converted'} local date and time`} placeholder="Paste a date, ISO timestamp, or local time"
-              className={`h-11 w-full min-w-0 rounded-md border bg-[#141a16] py-2 pl-3 pr-10 font-mono text-xs text-[#e4ebdd] outline-none focus:border-[#c8edb6]/50 ${error ? 'border-[#f19aa6]/70' : 'border-[#344435]'}`} />
-            <button type="button" onClick={() => openDatePicker(side)} title="Choose date and time" aria-label={`Choose ${isSource ? 'source' : 'converted'} date and time`} className="absolute inset-y-0 right-0 flex w-9 items-center justify-center text-white hover:text-[#c8edb6]"><CalendarDays size={15} /></button>
-            <input ref={element => { pickerRefs.current[side] = element; }} type="datetime-local" step="1" value={localDateTime(instant, timeZone)}
-              onChange={event => { if (event.target.value) updateLocalTime(event.target.value, side); }} aria-hidden="true" tabIndex={-1}
-              className="pointer-events-none absolute right-0 top-0 h-px w-px opacity-0" style={{ colorScheme: 'dark' }} />
+            <input
+              type="text"
+              value={value}
+              onChange={(event) => updateLocalTime(event.target.value, side)}
+              aria-label={`${isSource ? "Source" : "Converted"} local date and time`}
+              placeholder="Paste a date, ISO timestamp, or local time"
+              className={`h-11 w-full min-w-0 rounded-md border bg-[#141a16] py-2 pl-3 pr-10 font-mono text-xs text-[#e4ebdd] outline-none focus:border-[#c8edb6]/50 ${error ? "border-[#f19aa6]/70" : "border-[#344435]"}`}
+            />
+            <button
+              type="button"
+              onClick={() => openDatePicker(side)}
+              title="Choose date and time"
+              aria-label={`Choose ${isSource ? "source" : "converted"} date and time`}
+              className="absolute inset-y-0 right-0 flex w-9 items-center justify-center text-white hover:text-[#c8edb6]"
+            >
+              <CalendarDays size={15} />
+            </button>
+            <input
+              ref={(element) => {
+                pickerRefs.current[side] = element;
+              }}
+              type="datetime-local"
+              step="1"
+              value={localDateTime(instant, timeZone)}
+              onChange={(event) => {
+                if (event.target.value)
+                  updateLocalTime(event.target.value, side);
+              }}
+              aria-hidden="true"
+              tabIndex={-1}
+              className="pointer-events-none absolute right-0 top-0 h-px w-px opacity-0"
+              style={{ colorScheme: "dark" }}
+            />
           </span>
-          {error && <span role="alert" className="text-[10px] text-[#f19aa6]">{error}</span>}
+          {error && (
+            <span role="alert" className="text-[10px] text-[#f19aa6]">
+              {error}
+            </span>
+          )}
         </label>
         <label className="flex flex-col gap-1.5">
           <span className="text-[10px] text-[#9eac96]">Time zone</span>
-          <select value={timeZone} onChange={event => updateZone(event.target.value)} aria-label={`${isSource ? 'Source' : 'Converted'} time zone`}
-            className="h-10 w-full min-w-0 rounded-md border border-[#344435] bg-[#141a16] px-2 text-[11px] text-[#e4ebdd] outline-none focus:border-[#c8edb6]/50">
-            {TIME_ZONES.map(zone => <option key={zone} value={zone}>{zoneLabel(zone)} · {zoneName(instant, zone)} · {offsetLabel(instant, zone)}</option>)}
+          <select
+            value={timeZone}
+            onChange={(event) => updateZone(event.target.value)}
+            aria-label={`${isSource ? "Source" : "Converted"} time zone`}
+            className="h-10 w-full min-w-0 rounded-md border border-[#344435] bg-[#141a16] px-2 text-[11px] text-[#e4ebdd] outline-none focus:border-[#c8edb6]/50"
+          >
+            <optgroup label="Major standard UTC offsets">
+              {MAJOR_TIME_ZONES.map((zone) => (
+                <option key={zone.id} value={zone.id}>
+                  {zone.offsetLabel} · {zone.label} ({zone.abbreviation})
+                </option>
+              ))}
+            </optgroup>
+            {showAll ? (
+              <optgroup label="City and regional zones · daylight saving applied">
+                {TIME_ZONES.filter((zone) => zone !== "UTC").map((zone) => (
+                  <option key={zone} value={zone}>
+                    {zoneLabel(zone)} · {zoneName(instant, zone)} ·{" "}
+                    {offsetLabel(instant, zone)}
+                  </option>
+                ))}
+              </optgroup>
+            ) : (
+              fixedOffsetMinutes(timeZone) === null && (
+                <optgroup label="Your selected city zone">
+                  <option value={timeZone}>
+                    {zoneLabel(timeZone)} · {zoneName(instant, timeZone)} ·{" "}
+                    {offsetLabel(instant, timeZone)}
+                  </option>
+                </optgroup>
+              )
+            )}
           </select>
         </label>
+        <ZoneClock date={instant} zone={timeZone} />
         <p className="min-h-8 text-[10px] leading-4 text-[#9eac96]">
-          {new Intl.DateTimeFormat(undefined, { timeZone, dateStyle: 'full', timeStyle: 'long' }).format(instant)}
+          {zonedDescription(instant, timeZone)}
         </p>
       </section>
     );
   };
 
-  const secondsValue = (instantMs / 1000).toFixed(3).replace(/\.?0+$/, '');
+  const secondsValue = (instantMs / 1000).toFixed(3).replace(/\.?0+$/, "");
 
   return (
     <section className="flex h-full min-h-0 flex-col overflow-auto bg-[#171d19] text-[#e4ebdd]">
       <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[#344435] bg-[#111612] px-4 py-3">
         <div>
           <h1 className="text-sm font-semibold">Time Zone Converter</h1>
-          <p className="mt-0.5 text-[11px] text-[#9eac96]">Edit either local time or the epoch; all three values stay in sync.</p>
+          <p className="mt-0.5 text-[11px] text-[#9eac96]">
+            Major UTC offsets first. Edit either local time or the epoch to
+            pause live clocks.
+          </p>
         </div>
-        <button onClick={setCurrentTime} className="flex items-center gap-1.5 rounded-md border border-[#344435] px-2.5 py-1.5 text-[11px] text-[#b1bea8] hover:border-[#899980] hover:text-[#e4ebdd]"><Clock3 size={12} />Now</button>
+        <div className="flex flex-wrap items-center gap-3">
+          <label className="flex cursor-pointer items-center gap-2 text-xs text-[#e4ebdd]">
+            <input
+              type="checkbox"
+              checked={showAll}
+              onChange={(event) => setShowAll(event.target.checked)}
+              className="accent-[#c8edb6]"
+            />
+            Show all time zones
+          </label>
+          <button
+            type="button"
+            aria-pressed={live}
+            onClick={() => (live ? setLive(false) : setCurrentTime())}
+            className="rounded-md border border-[#344435] px-2.5 py-1.5 text-xs text-[#c8edb6]"
+          >
+            {live ? "Pause live clocks" : "Resume live clocks"}
+          </button>
+          <button
+            onClick={setCurrentTime}
+            className="flex items-center gap-1.5 rounded-md border border-[#344435] px-2.5 py-1.5 text-[11px] text-[#b1bea8] hover:border-[#899980] hover:text-[#e4ebdd]"
+          >
+            <Clock3 size={12} />
+            Now
+          </button>
+        </div>
       </header>
 
+      <p className="border-b border-[#344435] px-4 py-2 text-xs leading-5 text-[#b1bea8]">
+        Major entries are fixed standard offsets (UTC−12 to UTC+14). City zones
+        in “Show all” follow daylight saving. Your selected city remains
+        available when the list is collapsed.
+      </p>
       <div className="mx-auto grid w-full max-w-7xl flex-1 content-center items-stretch gap-3 px-4 py-6 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(220px,0.8fr)_minmax(0,1fr)]">
-        {localPanel('source')}
+        {localPanel("source")}
 
         <section className="flex min-w-0 flex-col justify-center gap-3 border border-[#c8edb6]/30 bg-[#141a16] p-4">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-xs font-semibold text-[#c8edb6]">Epoch timestamp</h2>
-            <button onClick={swapZones} title="Swap source and converted time zones" aria-label="Swap time zones"
-              className="flex h-8 w-8 items-center justify-center rounded-md border border-[#344435] text-[#c8edb6] hover:bg-[#c8edb6]/10"><ArrowLeftRight size={14} /></button>
+            <h2 className="text-xs font-semibold text-[#c8edb6]">
+              Epoch timestamp
+            </h2>
+            <button
+              onClick={swapZones}
+              title="Swap source and converted time zones"
+              aria-label="Swap time zones"
+              className="flex h-8 w-8 items-center justify-center rounded-md border border-[#344435] text-[#c8edb6] hover:bg-[#c8edb6]/10"
+            >
+              <ArrowLeftRight size={14} />
+            </button>
           </div>
           <label className="flex flex-col gap-1.5">
-            <span className="text-[10px] text-[#b1bea8]">Milliseconds or ISO timestamp</span>
-            <input type="text" value={epochValue} onChange={event => updateEpoch(event.target.value)} placeholder="Epoch ms, ISO, or browser Date string"
-              onBlur={() => { if (epochDateDraft) setEpochDraft(null); }} aria-label="Epoch milliseconds or date string"
-              className={`h-11 w-full min-w-0 rounded-md border bg-[#0d120f] px-3 font-mono text-sm text-[#e4ebdd] outline-none focus:border-[#c8edb6]/60 ${epochDraftInvalid ? 'border-[#f19aa6]/70' : 'border-[#344435]'}`} />
-            {epochDraftInvalid && <span role="alert" className="text-[10px] text-[#f19aa6]">Enter seconds, milliseconds, or an ISO 8601 timestamp.</span>}
+            <span className="text-[10px] text-[#b1bea8]">
+              Milliseconds or ISO timestamp
+            </span>
+            <input
+              type="text"
+              value={epochValue}
+              onChange={(event) => updateEpoch(event.target.value)}
+              placeholder="Epoch ms, ISO, or browser Date string"
+              onBlur={() => {
+                if (epochDateDraft) setEpochDraft(null);
+              }}
+              aria-label="Epoch milliseconds or date string"
+              className={`h-11 w-full min-w-0 rounded-md border bg-[#0d120f] px-3 font-mono text-sm text-[#e4ebdd] outline-none focus:border-[#c8edb6]/60 ${epochDraftInvalid ? "border-[#f19aa6]/70" : "border-[#344435]"}`}
+            />
+            {epochDraftInvalid && (
+              <span role="alert" className="text-[10px] text-[#f19aa6]">
+                Enter seconds, milliseconds, or an ISO 8601 timestamp.
+              </span>
+            )}
           </label>
           <div className="border-t border-[#344435] pt-2 text-[10px] leading-5 text-[#9eac96]">
-            <div>Seconds: <span className="font-mono text-[#e4ebdd]">{secondsValue}</span></div>
-            <div>Milliseconds: <span className="font-mono text-[#e4ebdd]">{instantMs}</span></div>
-            <div className="mt-1 text-[#899980]">Accepts seconds, milliseconds, ISO, and standard browser/GMT date strings.</div>
+            <div>
+              Seconds:{" "}
+              <span className="font-mono text-[#e4ebdd]">{secondsValue}</span>
+            </div>
+            <div>
+              Milliseconds:{" "}
+              <span className="font-mono text-[#e4ebdd]">{instantMs}</span>
+            </div>
+            <div className="mt-1 text-[#899980]">
+              Accepts seconds, milliseconds, ISO, and standard browser/GMT date
+              strings.
+            </div>
           </div>
         </section>
 
-        {localPanel('target')}
+        {localPanel("target")}
 
-        {ambiguous && <div className="flex flex-wrap items-center justify-center gap-2 border border-[#f3d58c]/20 bg-[#111612] p-3 text-[11px] lg:col-span-3">
-          <span className="text-[#f3d58c]">This local time occurs twice because of daylight saving. Choose one:</span>
-          {ambiguous.candidates.map((candidate, index) => <button key={candidate.toISOString()} onClick={() => chooseAmbiguousTime(candidate)}
-            className="rounded-md border border-[#344435] px-2.5 py-1.5 text-[#e4ebdd] hover:border-[#c8edb6]/50">{index === 0 ? 'Earlier' : 'Later'} · {zoneName(candidate, ambiguous.side === 'source' ? sourceZone : targetZone)} · {offsetLabel(candidate, ambiguous.side === 'source' ? sourceZone : targetZone)}</button>)}
-        </div>}
+        {ambiguous && (
+          <div className="flex flex-wrap items-center justify-center gap-2 border border-[#f3d58c]/20 bg-[#111612] p-3 text-[11px] lg:col-span-3">
+            <span className="text-[#f3d58c]">
+              This local time occurs twice because of daylight saving. Choose
+              one:
+            </span>
+            {ambiguous.candidates.map((candidate, index) => (
+              <button
+                key={candidate.toISOString()}
+                onClick={() => chooseAmbiguousTime(candidate)}
+                className="rounded-md border border-[#344435] px-2.5 py-1.5 text-[#e4ebdd] hover:border-[#c8edb6]/50"
+              >
+                {index === 0 ? "Earlier" : "Later"} ·{" "}
+                {zoneName(
+                  candidate,
+                  ambiguous.side === "source" ? sourceZone : targetZone,
+                )}{" "}
+                ·{" "}
+                {offsetLabel(
+                  candidate,
+                  ambiguous.side === "source" ? sourceZone : targetZone,
+                )}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
