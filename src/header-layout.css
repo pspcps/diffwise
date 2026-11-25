@@ -1,0 +1,296 @@
+/* Header geometry is scoped to V1 and Classic, independent of older layout rules. */
+.portfolio-atelier .portfolio-nav {
+  display: block;
+  height: auto;
+  min-height: 72px;
+  padding: 0 16px 0 28px;
+}
+.portfolio-atelier .portfolio-nav-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  min-height: 72px;
+  gap: 24px;
+}
+.portfolio-atelier .portfolio-nav .portfolio-identity {
+  justify-self: start;
+  padding: 0;
+  min-height: 40px;
+  white-space: nowrap;
+}
+.portfolio-atelier .portfolio-nav .portfolio-identity > span {
+  display: inline;
+}
+.portfolio-atelier .portfolio-nav .portfolio-nav-inner nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+.portfolio-atelier .portfolio-nav .portfolio-nav-inner nav button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 0;
+  font-size: 13px;
+}
+.portfolio-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  justify-self: end;
+  gap: 12px;
+}
+.portfolio-header-actions .theme-controls {
+  gap: 8px;
+}
+.portfolio-atelier .portfolio-header-actions .toolbar-home {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 7px 12px;
+  border: 1px solid #ffffff20;
+  border-radius: 8px;
+  background: #ffffff04;
+  font-size: 12px !important;
+  white-space: nowrap;
+}
+:is(.portfolio-header-actions, .space-topbar .topbar-actions)
+  .theme-controls
+  .motion-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+.space-app .space-topbar {
+  height: 72px;
+  min-height: 72px;
+  padding: 0 16px 0 32px;
+  gap: 20px;
+}
+.space-app .space-topbar .topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+  flex-wrap: nowrap;
+}
+.space-topbar .topbar-actions .search-shortcut {
+  order: 0;
+  min-height: 36px;
+  padding: 8px 12px;
+}
+.space-topbar .topbar-actions .theme-controls {
+  order: 1;
+  gap: 8px;
+}
+.space-topbar .topbar-actions .profile-button {
+  order: 2;
+  width: 36px;
+  height: 36px;
+}
+.space-topbar .topbar-actions .design-shuffle-slot {
+  order: 3;
+}
+@media (max-width: 1100px) {
+  .portfolio-atelier .portfolio-nav-inner {
+    gap: 18px;
+  }
+  .portfolio-atelier .portfolio-nav .portfolio-nav-inner nav {
+    gap: 18px;
+  }
+  .portfolio-header-actions {
+    gap: 9px;
+  }
+}
+@media (max-width: 900px) {
+  .portfolio-atelier .portfolio-nav-inner {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: 72px auto;
+    gap: 0 16px;
+  }
+  .portfolio-atelier .portfolio-nav .portfolio-identity {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .portfolio-atelier .portfolio-header-actions {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .portfolio-atelier .portfolio-nav .portfolio-nav-inner nav {
+    grid-column: 1/-1;
+    grid-row: 2;
+    gap: 30px;
+    border-top: 1px solid #ffffff0c;
+    padding: 2px 0 5px;
+  }
+  .space-app .space-topbar .breadcrumb {
+    font-size: 11px;
+    gap: 8px;
+  }
+  .space-topbar .search-shortcut kbd {
+    display: none;
+  }
+}
+@media (max-width: 580px) {
+  .portfolio-atelier .portfolio-nav {
+    padding: 0 12px;
+  }
+  .portfolio-atelier .portfolio-nav-inner {
+    grid-template-rows: 60px auto;
+    gap: 0 8px;
+  }
+  .portfolio-atelier .portfolio-nav .portfolio-identity > span {
+    font-size: 12px;
+  }
+  .portfolio-atelier .portfolio-header-actions {
+    gap: 8px;
+  }
+  .portfolio-atelier .portfolio-header-actions .toolbar-home {
+    width: 32px;
+    height: 32px;
+    min-height: 32px;
+    padding: 0;
+    border-radius: 50%;
+  }
+  .portfolio-atelier .portfolio-header-actions .toolbar-home > span {
+    display: none;
+  }
+  .portfolio-atelier .portfolio-header-actions .toolbar-home::after {
+    content: none;
+  }
+  .portfolio-atelier .portfolio-nav .portfolio-nav-inner nav {
+    gap: 24px;
+  }
+  .portfolio-atelier .portfolio-nav .portfolio-nav-inner nav button {
+    font-size: 12px;
+    min-height: 40px;
+  }
+  :is(.portfolio-header-actions, .space-topbar .topbar-actions)
+    .theme-controls
+    .motion-toggle {
+    width: 32px;
+    height: 32px;
+  }
+  .portfolio-header-actions .theme-controls {
+    gap: 6px;
+  }
+  .space-app .space-topbar {
+    height: 60px;
+    min-height: 60px;
+    padding: 0 12px;
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+  .space-app .space-topbar .topbar-actions {
+    width: auto;
+    gap: 8px;
+  }
+  .space-app .space-topbar .breadcrumb {
+    display: none;
+  }
+  .space-topbar .topbar-actions .search-shortcut {
+    width: 32px;
+    height: 32px;
+    min-height: 32px;
+    padding: 0;
+    justify-content: center;
+  }
+  .space-topbar .search-shortcut > span {
+    display: none;
+  }
+  .space-topbar .topbar-actions .profile-button {
+    width: 32px;
+    height: 32px;
+  }
+  .space-topbar .topbar-actions .theme-controls {
+    gap: 6px;
+  }
+}
+@media (max-width: 420px) {
+  .portfolio-atelier .portfolio-nav .portfolio-identity > span {
+    display: none;
+  }
+  .space-topbar .mobile-brand .space-brand > span:last-child {
+    display: none;
+  }
+  .space-topbar .mobile-brand .space-brand {
+    gap: 0;
+    padding: 0;
+  }
+}
+
+:is(.portfolio-header-actions, .space-topbar .topbar-actions)
+  .theme-controls
+  :is(.language-theme-cycle, .motion-toggle) {
+  width: 40px;
+  height: 40px;
+}
+.portfolio-atelier .portfolio-header-actions .toolbar-home {
+  min-height: 40px;
+}
+.space-topbar .topbar-actions .profile-button {
+  width: 40px;
+  height: 40px;
+}
+.space-topbar .topbar-actions .search-shortcut {
+  min-height: 40px;
+}
+@media (max-width: 580px) {
+  :is(.portfolio-header-actions, .space-topbar .topbar-actions)
+    .theme-controls
+    :is(.language-theme-cycle, .motion-toggle) {
+    width: 36px;
+    height: 36px;
+  }
+  .portfolio-atelier .portfolio-header-actions .toolbar-home {
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+  .space-topbar .topbar-actions .profile-button {
+    width: 36px;
+    height: 36px;
+  }
+  .space-topbar .topbar-actions .search-shortcut {
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+}
+
+.portfolio-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  grid-column: 1;
+  grid-row: 1;
+}
+.portfolio-atelier .portfolio-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid #ffffff20;
+  border-radius: 50%;
+  background: #ffffff04;
+  color: #dce6d9;
+}
+.portfolio-atelier .portfolio-back:hover {
+  background: #ffffff0c;
+}
+@media (max-width: 580px) {
+  .portfolio-header-left {
+    gap: 9px;
+  }
+  .portfolio-atelier .portfolio-back {
+    width: 36px;
+    height: 36px;
+  }
+}

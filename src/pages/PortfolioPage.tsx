@@ -26,6 +26,7 @@ import CharacterGuide from "../components/Guide/CharacterGuide";
 import ThemeChoice from "../components/Guide/ThemeChoice";
 import { tiltCard, resetTilt } from "../components/Spatial/cardMotion";
 import "../spatial.css";
+import "../header-layout.css";
 const InteractiveArchitectureDiagram = lazy(
   () => import("../components/Portfolio/InteractiveArchitectureDiagram"),
 );
@@ -64,26 +65,40 @@ export default function PortfolioPage({ onBack }: { onBack: () => void }) {
   return (
     <div className="portfolio-space portfolio-atelier" ref={root}>
       <header className="portfolio-nav">
-        <ThemeChoice />
-        <button
-          className="portfolio-identity"
-          onClick={() => root.current?.scrollTo({ top: 0, behavior: "smooth" })}
-        >
-          <img src="/avatar.jpg" alt="" />
-          <span>
-            Prakash Choudhary<span className="brand-period">.</span>
-          </span>
-        </button>
-        <nav aria-label="Portfolio sections">
-          <button onClick={() => scrollTo("projects")}>Work</button>
-          <button onClick={() => scrollTo("about")}>About</button>
-          <button onClick={() => scrollTo("experience")}>Experience</button>
-          <button onClick={() => scrollTo("contact")}>Contact</button>
-        </nav>
-        <button className="toolbar-home" onClick={onBack}>
-          <ArrowLeft size={14} /> Back to tools
-        </button>
-        <PortfolioVersionSwitcher fallback="v1" />
+        <div className="portfolio-nav-inner">
+          <div className="portfolio-header-left">
+            <button
+              className="portfolio-back"
+              aria-label="Back to tools"
+              title="Back to tools"
+              onClick={onBack}
+            >
+              <ArrowLeft size={18} />
+            </button>
+            <button
+              className="portfolio-identity"
+              aria-label="Prakash Choudhary — back to top"
+              onClick={() =>
+                root.current?.scrollTo({ top: 0, behavior: "smooth" })
+              }
+            >
+              <img src="/avatar.jpg" alt="" />
+              <span>
+                Prakash Choudhary<span className="brand-period">.</span>
+              </span>
+            </button>
+          </div>
+          <nav aria-label="Portfolio sections">
+            <button onClick={() => scrollTo("projects")}>Work</button>
+            <button onClick={() => scrollTo("about")}>About</button>
+            <button onClick={() => scrollTo("experience")}>Experience</button>
+            <button onClick={() => scrollTo("contact")}>Contact</button>
+          </nav>
+          <div className="portfolio-header-actions">
+            <ThemeChoice floating />
+            <PortfolioVersionSwitcher fallback="v1" />
+          </div>
+        </div>
       </header>
       {!selected && (
         <CharacterGuide

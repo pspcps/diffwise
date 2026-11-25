@@ -70,7 +70,7 @@ export const HOME_PAGE: SearchPage = {
     {
       question: "Can I choose a theme or reduce motion?",
       answer:
-        "Yes. Choose a language theme and use the motion control. The app remembers those preferences and respects system reduced-motion settings.",
+        "Yes. Click the language logo to cycle themes; your choice is remembered. Animations follow your system’s reduced-motion setting.",
     },
   ],
   related: [],

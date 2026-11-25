@@ -10,9 +10,11 @@ The portfolio renders the selected version directly at `/portfolio/`, without re
 
 ## Studio homepage
 
-The additional homepage uses light surfaces, typography and the original procedural 3D desk. Scene shortcuts open the catalog, JSON tool and builder portfolio. All twenty tools come from the shared catalog. Search, categories, the shared favorites list, recent tools, theme/motion controls, quick search, information links and the dedicated ad placement remain available. Tool workspace routes and processing logic are unchanged.
+The additional homepage uses light surfaces, typography and the original procedural 3D desk. Scene shortcuts open the catalog, JSON tool and builder portfolio. All twenty tools come from the shared catalog. Search, categories, the shared favorites list, recent tools, theme controls, quick search, information links and the dedicated ad placement remain available. Tool workspace routes and processing logic are unchanged.
 
-The homepage and scene are lazy-loaded. The scene retains its WebGL fallback, touch scrolling, frame/DPR caps and cleanup. Studio tool-link chips have explicit light backgrounds and dark text, including readable hover/focus states.
+The homepage and scene are lazy-loaded. The language theme icon is fixed immediately beside shuffle. The global animation-toggle icon is removed; animations are enabled automatically and respect the system reduced-motion setting, including previously paused installations. Desk auto-rotation keeps its separate pause/resume control.
+
+The scene retains its WebGL fallback, touch scrolling, frame/DPR caps and cleanup. Studio tool-link chips have explicit light backgrounds and dark text, including readable hover/focus states.
 
 The root document retains its canonical URL and deterministic prerendered content. Direct portfolio URLs retain their own metadata and sitemap entries. Text and source links remain available without waiting for 3D rendering.
 

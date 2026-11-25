@@ -94,7 +94,7 @@ export default function StudioHomePage({
         </a>
         <div className="studio-header-controls">
           <DesignSwitcher design="studio" />
-          <ThemeChoice />
+          <ThemeChoice floating />
           <button
             className="studio-quick-search"
             onClick={onSearch}
