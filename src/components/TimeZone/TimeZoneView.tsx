@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import TimeZonePlanner from "./TimeZonePlanner";
+import { formatPlannerTime } from "../../utils/timeZoneTimeline";
 import { ArrowLeftRight, CalendarDays, Clock3 } from "lucide-react";
 import {
   MAJOR_TIME_ZONES,
@@ -235,7 +236,15 @@ function timestampInputDate(value: string, localTimeZone: string) {
   return Number.isNaN(parsed) ? null : new Date(parsed);
 }
 
-function ZoneClock({ date, zone }: { date: Date; zone: string }) {
+function ZoneClock({
+  date,
+  zone,
+  hour12,
+}: {
+  date: Date;
+  zone: string;
+  hour12: boolean;
+}) {
   const time = localDateTime(date, zone).slice(11);
   const [hour, minute, second] = time.split(":").map(Number);
   const angleHour = (hour % 12) * 30 + minute * 0.5,
@@ -247,7 +256,7 @@ function ZoneClock({ date, zone }: { date: Date; zone: string }) {
         width="112"
         height="112"
         role="img"
-        aria-label={`${zoneLabel(zone)} clock: ${time}`}
+        aria-label={`${zoneLabel(zone)} clock: ${formatPlannerTime({ hour, minute }, hour12, second)}`}
         className="shrink-0"
       >
         <circle
@@ -303,7 +312,7 @@ function ZoneClock({ date, zone }: { date: Date; zone: string }) {
       </svg>
       <div>
         <p className="font-mono text-xl font-semibold tabular-nums text-[#e4ebdd]">
-          {time}
+          {formatPlannerTime({ hour, minute }, hour12, second)}
         </p>
         <p className="mt-1 text-xs text-[#b1bea8]">
           {zoneName(date, zone)} · {offsetLabel(date, zone)}
@@ -316,14 +325,20 @@ export default function TimeZoneView() {
   const initialZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
   const [sourceZone, setSourceZone] = useState(initialZone);
   const [targetZone, setTargetZone] = useState("UTC");
+  const [hour12, setHour12] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [live, setLive] = useState(true);
+  const liveRef = useRef(true);
+  const pauseLive = () => {
+    liveRef.current = false;
+    setLive(false);
+  };
 
   const [instantMs, setInstantMs] = useState(Date.now);
   useEffect(() => {
     if (!live) return;
     const timer = setInterval(() => {
-      if (!document.hidden) setInstantMs(Date.now());
+      if (liveRef.current && !document.hidden) setInstantMs(Date.now());
     }, 1000);
     return () => clearInterval(timer);
   }, [live]);
@@ -359,7 +374,7 @@ export default function TimeZoneView() {
   };
 
   const updateLocalTime = (value: string, side: "source" | "target") => {
-    setLive(false);
+    pauseLive();
     const timeZone = side === "source" ? sourceZone : targetZone;
     const setDraft = side === "source" ? setSourceDraft : setTargetDraft;
     const setError = side === "source" ? setSourceError : setTargetError;
@@ -375,7 +390,7 @@ export default function TimeZoneView() {
     const absoluteTime = isoDate(value);
     if (absoluteTime) {
       setInstantMs(absoluteTime.getTime());
-      setDraft(null);
+      setDraft(value);
       setError("");
       setEpochDraft(null);
       if (side === "source") {
@@ -407,7 +422,7 @@ export default function TimeZoneView() {
     }
 
     setInstantMs(recognizedDate.getTime());
-    setDraft(null);
+    setDraft(value);
     setError("");
     if (side === "source") {
       setTargetDraft(null);
@@ -420,7 +435,7 @@ export default function TimeZoneView() {
   };
 
   const updateEpoch = (value: string) => {
-    setLive(false);
+    pauseLive();
     setEpochDraft(value);
     const date = timestampInputDate(value, sourceZone);
     if (!date) return;
@@ -440,11 +455,14 @@ export default function TimeZoneView() {
     setAmbiguous(null);
   };
 
-  const setCurrentTime = () => {
+  const setCurrentTime = (now: number) => {
+    liveRef.current = true;
     setLive(true);
-    setInstantMs(Date.now());
+    setInstantMs(now);
     clearDrafts();
   };
+
+  const handleNowClick = () => setCurrentTime(Date.now());
 
   const swapZones = () => {
     setSourceZone(targetZone);
@@ -467,7 +485,7 @@ export default function TimeZoneView() {
   };
 
   const openDatePicker = (side: "source" | "target") => {
-    setLive(false);
+    pauseLive();
     const picker = pickerRefs.current[side];
     if (!picker) return;
     if (typeof picker.showPicker === "function") picker.showPicker();
@@ -497,6 +515,13 @@ export default function TimeZoneView() {
             <input
               type="text"
               value={value}
+              onFocus={pauseLive}
+              onBlur={() => {
+                if (!error) {
+                  if (isSource) setSourceDraft(null);
+                  else setTargetDraft(null);
+                }
+              }}
               onChange={(event) => updateLocalTime(event.target.value, side)}
               aria-label={`${isSource ? "Source" : "Converted"} local date and time`}
               placeholder="Paste a date, ISO timestamp, or local time"
@@ -570,9 +595,9 @@ export default function TimeZoneView() {
             )}
           </select>
         </label>
-        <ZoneClock date={instant} zone={timeZone} />
+        <ZoneClock date={instant} zone={timeZone} hour12={hour12} />
         <p className="min-h-8 text-[10px] leading-4 text-[#9eac96]">
-          {zonedDescription(instant, timeZone)}
+          {zonedDescription(instant, timeZone, hour12)}
         </p>
       </section>
     );
@@ -586,11 +611,23 @@ export default function TimeZoneView() {
         <div>
           <h1 className="text-sm font-semibold">Time Zone Converter</h1>
           <p className="mt-0.5 text-[11px] text-[#9eac96]">
-            Major UTC offsets first. Edit either local time or the epoch to
-            pause live clocks.
+            Focus a time field to pause live clocks. Date inputs use 24-hour
+            ISO; clocks and the planner follow your display format.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
+          <label className="flex items-center gap-2 text-xs text-[#e4ebdd]">
+            Time format
+            <select
+              aria-label="Time display format"
+              value={hour12 ? "12" : "24"}
+              onChange={(event) => setHour12(event.target.value === "12")}
+              className="rounded-md border border-[#536b56] bg-[#19221b] p-2"
+            >
+              <option value="24">24-hour</option>
+              <option value="12">12-hour (AM/PM)</option>
+            </select>
+          </label>
           <label className="flex cursor-pointer items-center gap-2 text-xs text-[#e4ebdd]">
             <input
               type="checkbox"
@@ -603,13 +640,13 @@ export default function TimeZoneView() {
           <button
             type="button"
             aria-pressed={live}
-            onClick={() => (live ? setLive(false) : setCurrentTime())}
+            onClick={live ? pauseLive : handleNowClick}
             className="rounded-md border border-[#344435] px-2.5 py-1.5 text-xs text-[#c8edb6]"
           >
             {live ? "Pause live clocks" : "Resume live clocks"}
           </button>
           <button
-            onClick={setCurrentTime}
+            onClick={handleNowClick}
             className="flex items-center gap-1.5 rounded-md border border-[#344435] px-2.5 py-1.5 text-[11px] text-[#b1bea8] hover:border-[#899980] hover:text-[#e4ebdd]"
           >
             <Clock3 size={12} />
@@ -647,6 +684,7 @@ export default function TimeZoneView() {
             <input
               type="text"
               value={epochValue}
+              onFocus={pauseLive}
               onChange={(event) => updateEpoch(event.target.value)}
               placeholder="Epoch ms, ISO, or browser Date string"
               onBlur={() => {
@@ -713,11 +751,14 @@ export default function TimeZoneView() {
         allZones={TIME_ZONES}
         showAll={showAll}
         onSelect={(value) => {
-          setLive(false);
+          pauseLive();
           setInstantMs(value);
           clearDrafts();
         }}
         onSourceZone={updateSourceZone}
+        onLocalTime={(value) => updateLocalTime(value, "source")}
+        hour12={hour12}
+        onPause={pauseLive}
       />
     </section>
   );

@@ -2,11 +2,11 @@ import { useMemo, useState, type KeyboardEvent } from "react";
 import { ChevronLeft, ChevronRight, Home, Plus, X } from "lucide-react";
 import { MAJOR_TIME_ZONES } from "../../data/majorTimeZones";
 import {
-  HOUR_MS,
   timelineTime,
   plannerStart,
   offsetDifference,
   shortZoneLabel,
+  formatPlannerTime,
 } from "../../utils/timeZoneTimeline";
 import "./time-zone-planner.css";
 const COMMON_CITIES = [
@@ -33,6 +33,9 @@ export default function TimeZonePlanner({
   showAll,
   onSelect,
   onSourceZone,
+  onLocalTime,
+  hour12 = false,
+  onPause,
 }: {
   instant: number;
   sourceZone: string;
@@ -41,20 +44,30 @@ export default function TimeZonePlanner({
   showAll: boolean;
   onSelect: (instant: number) => void;
   onSourceZone: (zone: string) => void;
+  onLocalTime: (value: string) => void;
+  hour12?: boolean;
+  onPause?: () => void;
 }) {
   const [extras, setExtras] = useState<string[]>(["America/Los_Angeles"]);
   const [candidate, setCandidate] = useState("Pacific/Honolulu");
+  const [step, setStep] = useState(60);
   const [hover, setHover] = useState<number | null>(null);
   const [range, setRange] = useState(() => ({
     zone: sourceZone,
-    start: plannerStart(instant, sourceZone),
+    step,
+    start: plannerStart(instant, sourceZone, step),
   }));
   if (
     range.zone !== sourceZone ||
+    range.step !== step ||
     instant < range.start ||
-    instant >= range.start + 24 * HOUR_MS
+    instant >= range.start + 24 * step * 60000
   )
-    setRange({ zone: sourceZone, start: plannerStart(instant, sourceZone) });
+    setRange({
+      zone: sourceZone,
+      step,
+      start: plannerStart(instant, sourceZone, step),
+    });
   const zones = [...new Set([sourceZone, targetZone, ...extras])].slice(0, 8);
   const zoneKey = JSON.stringify(zones);
   const rows = useMemo(() => {
@@ -62,20 +75,29 @@ export default function TimeZonePlanner({
     return ids.map((zone) => ({
       zone,
       cells: Array.from({ length: 24 }, (_, index) =>
-        timelineTime(range.start + index * HOUR_MS, zone),
+        timelineTime(range.start + index * step * 60000, zone),
       ),
     }));
-  }, [zoneKey, range.start]);
+  }, [zoneKey, range.start, step]);
   const index = Math.max(
     0,
-    Math.min(23, Math.floor((instant - range.start) / HOUR_MS)),
+    Math.min(23, Math.floor((instant - range.start) / (step * 60000))),
   );
   const baseTime = timelineTime(instant, sourceZone);
+  const windowMinutes = step * 24;
+  const durationLabel =
+    windowMinutes % 60 === 0
+      ? `${windowMinutes / 60} hours`
+      : `${windowMinutes} minutes`;
+  const preview =
+    hover === null
+      ? null
+      : timelineTime(range.start + hover * step * 60000, sourceZone);
   const available = [
     ...new Set([...COMMON_CITIES, ...(showAll ? allZones : [])]),
   ];
   function choose(hour: number) {
-    onSelect(range.start + hour * HOUR_MS);
+    onSelect(range.start + hour * step * 60000);
   }
   function move(event: KeyboardEvent<HTMLButtonElement>, hour: number) {
     const next =
@@ -100,9 +122,10 @@ export default function TimeZonePlanner({
   function shift(direction: number) {
     setRange({
       zone: sourceZone,
-      start: range.start + direction * 24 * HOUR_MS,
+      step,
+      start: range.start + direction * 24 * step * 60000,
     });
-    onSelect(instant + direction * 24 * HOUR_MS);
+    onSelect(instant + direction * 24 * step * 60000);
   }
   function makeBase(zone: string) {
     setExtras((previous) => [...new Set([...previous, sourceZone])]);
@@ -114,15 +137,15 @@ export default function TimeZonePlanner({
         <div>
           <h2 id="tz-planner-heading">Find a time that works across zones</h2>
           <p>
-            Click an hour to compare the same moment everywhere. Your converter
-            updates above.
+            Click a time slot to compare the same moment everywhere. Your
+            converter updates above.
           </p>
         </div>
         <div className="tz-planner-range">
           <button
             type="button"
             onClick={() => shift(-1)}
-            aria-label="Previous 24 hours"
+            aria-label={`Previous ${durationLabel}`}
           >
             <ChevronLeft size={17} />
           </button>
@@ -133,7 +156,7 @@ export default function TimeZonePlanner({
           <button
             type="button"
             onClick={() => shift(1)}
-            aria-label="Next 24 hours"
+            aria-label={`Next ${durationLabel}`}
           >
             <ChevronRight size={17} />
           </button>
@@ -172,6 +195,39 @@ export default function TimeZonePlanner({
           <Plus size={16} />
           Add zone
         </button>
+        <label className="tz-planner-step">
+          <span>Timeline interval</span>
+          <select
+            aria-label="Timeline interval"
+            value={step}
+            onChange={(event) => {
+              setStep(Number(event.target.value));
+              setHover(null);
+            }}
+          >
+            <option value="60">1 hour</option>
+            <option value="30">30 minutes</option>
+            <option value="15">15 minutes</option>
+            <option value="5">5 minutes</option>
+            <option value="1">1 minute</option>
+          </select>
+        </label>
+        <label className="tz-planner-exact">
+          <span>Exact reference time</span>
+          <input
+            type="time"
+            step="60"
+            aria-label="Exact reference time"
+            onFocus={onPause}
+            value={baseTime.time}
+            onChange={(event) => {
+              if (event.target.value)
+                onLocalTime(
+                  `${baseTime.date}T${event.target.value.length === 5 ? event.target.value + ":00" : event.target.value}`,
+                );
+            }}
+          />
+        </label>
         <span className="tz-planner-legend">
           <i data-period="work" />
           09–17
@@ -185,17 +241,55 @@ export default function TimeZonePlanner({
         Up to 8 zones. Shading is a local-hour guide, not a promise of
         availability. Use the house icon to change the reference zone.
       </p>
-      <div className="tz-planner-scroll">
+      <div className="tz-planner-selection-status">
+        <span>
+          <i className="tz-selected-key" />
+          Selected: <strong>
+            {formatPlannerTime(baseTime, hour12)}
+          </strong> · {baseTime.date} · {shortZoneLabel(sourceZone)}
+        </span>
+        {preview && hover !== index && (
+          <span>
+            <i className="tz-hover-key" />
+            Preview: <strong>{formatPlannerTime(preview, hour12)}</strong> ·
+            click to select
+          </span>
+        )}
+        <span>{durationLabel} shown</span>
+      </div>
+      <div className="tz-planner-scroll" onMouseLeave={() => setHover(null)}>
         <div className="tz-planner-table">
+          <div className="tz-planner-column-overlays" aria-hidden="true">
+            <span
+              className="tz-planner-selected-column"
+              style={{ gridColumn: index + 1 }}
+            />
+            {hover !== null && hover !== index && (
+              <span
+                className="tz-planner-hover-column"
+                style={{ gridColumn: hover + 1 }}
+              />
+            )}
+          </div>
           <div className="tz-planner-table-heading">
             <span>Location · selected local time</span>
             <div>
               {Array.from({ length: 24 }, (_, hour) => (
                 <span
                   key={hour}
-                  className={hour === index ? "is-selected" : ""}
+                  className={
+                    hour === index
+                      ? "is-selected"
+                      : hour === hover
+                        ? "is-preview"
+                        : ""
+                  }
                 >
-                  {hour === index ? "Selected" : ""}
+                  {hour === index
+                    ? "Selected"
+                    : hour === hover
+                      ? "Preview"
+                      : ""}
                 </span>
               ))}
             </div>
@@ -239,7 +333,7 @@ export default function TimeZonePlanner({
                     </span>
                   </div>
                   <div className="tz-planner-local">
-                    <strong>{local.time}</strong>
+                    <strong>{formatPlannerTime(local, hour12)}</strong>
                     <span>{local.date}</span>
                   </div>
                 </div>
@@ -252,7 +346,7 @@ export default function TimeZonePlanner({
                       type="button"
                       key={hour}
                       data-period={cell.period}
-                      data-midnight={cell.hour === 0}
+                      data-midnight={cell.hour === 0 && cell.minute === 0}
                       className={`${hour === index ? "is-selected" : ""} ${hour === hover ? "is-hovered" : ""}`}
                       aria-pressed={hour === index}
                       tabIndex={hour === index ? 0 : -1}
@@ -261,21 +355,21 @@ export default function TimeZonePlanner({
                       onBlur={() => setHover(null)}
                       onClick={() => choose(hour)}
                       onKeyDown={(event) => move(event, hour)}
-                      aria-label={`Select ${cell.date} ${cell.time} in ${zone}, UTC offset ${offsetDifference(cell.offset)}`}
-                      title={`${cell.date} ${cell.time} · ${zone} · UTC offset ${offsetDifference(cell.offset)}`}
+                      aria-label={`Select ${cell.date} ${formatPlannerTime(cell, hour12)} in ${zone}, UTC offset ${offsetDifference(cell.offset)}`}
                     >
                       {(hour === 0 || cell.date !== cells[hour - 1].date) && (
                         <span className="tz-planner-day-badge">
                           {cell.date.slice(5)}
                         </span>
                       )}
-                      <span>{String(cell.hour).padStart(2, "0")}</span>
+                      <span>
+                        {hour12
+                          ? cell.hour % 12 || 12
+                          : String(cell.hour).padStart(2, "0")}
+                      </span>
                       <small>
-                        {cell.minute
-                          ? String(cell.minute).padStart(2, "0")
-                          : cell.hour === 0
-                            ? cell.date.slice(5)
-                            : "00"}
+                        {String(cell.minute).padStart(2, "0")}
+                        {hour12 ? (cell.hour < 12 ? " am" : " pm") : ""}
                       </small>
                     </button>
                   ))}
@@ -286,9 +380,9 @@ export default function TimeZonePlanner({
         </div>
       </div>
       <p className="tz-planner-hint">
-        The grid spans 24 elapsed hours. Date labels show local day changes;
-        city rows follow daylight saving, so an hour can repeat or be skipped.
-        Left/right arrow keys move between columns.
+        The grid shows 24 equal time slots at the chosen interval. Date labels
+        show local day changes; city rows follow daylight saving, so an hour can
+        repeat or be skipped. Left/right arrow keys move between columns.
       </p>
     </section>
   );

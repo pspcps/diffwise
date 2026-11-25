@@ -41,3 +41,20 @@ const Planner=require('../src/components/TimeZone/TimeZonePlanner.tsx').default;
 const planner=renderToStaticMarkup(React.createElement(Planner,{instant:winter,sourceZone:'Asia/Kolkata',targetZone:'Pacific/Honolulu',allZones:[],showAll:false,onSelect(){},onSourceZone(){}}));
 assert.equal((planner.match(/class="tz-planner-row"/g)||[]).length,3);assert.equal((planner.match(/aria-label="Select /g)||[]).length,72);assert.ok(planner.includes('Add time zone to planner'));assert.ok(planner.includes('Use Los Angeles as reference zone'));
 console.log('PASS multi-zone planner alignment, fractional offsets, DST repeated hours, three rows and 72 selectable shared timeline cells.');
+
+const {formatPlannerTime}=require('../src/utils/timeZoneTimeline.ts');
+assert.equal(formatPlannerTime({hour:0,minute:5},true),'12:05 AM');
+assert.equal(formatPlannerTime({hour:12,minute:30},true),'12:30 PM');
+assert.equal(formatPlannerTime({hour:21,minute:45},true,7),'9:45:07 PM');
+assert.equal(formatPlannerTime({hour:21,minute:45},false),'21:45');
+for(const step of [1,5,15,30,60]){
+ const selected=Date.parse('2026-11-25T15:17:00Z');
+ const from=plannerStart(selected,'Asia/Kolkata',step);
+ assert.ok(selected>=from&&selected<from+24*step*60000);
+ const slot=timelineTime(from+6*step*60000,'Asia/Kolkata');
+ assert.equal(slot.minute%step,0);
+}
+assert.equal((planner.match(/class="tz-planner-selected-column"/g)||[]).length,1);
+assert.ok(planner.includes('Exact reference time'));assert.ok(planner.includes('1 minute'));
+assert.ok(html.includes('Time display format'));
+console.log('PASS minute-window bounds/alignment, 12/24-hour formatting, exact-time control and one continuous selected-column overlay.');

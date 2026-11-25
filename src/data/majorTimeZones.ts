@@ -68,10 +68,15 @@ export function zonedParts(
     offset === null ? date : new Date(date.getTime() + offset * 60000),
   );
 }
-export function zonedDescription(date: Date, zone: string): string {
+export function zonedDescription(
+  date: Date,
+  zone: string,
+  hour12 = false,
+): string {
   const offset = fixedOffsetMinutes(zone);
   return new Intl.DateTimeFormat(undefined, {
     timeZone: offset === null ? zone : "UTC",
+    hour12,
     dateStyle: "full",
     timeStyle: offset === null ? "long" : "medium",
   }).format(offset === null ? date : new Date(date.getTime() + offset * 60000));

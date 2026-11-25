@@ -43,10 +43,12 @@ export function timelineTime(instant: number, zone: string) {
           : "night",
   };
 }
-export function plannerStart(instant: number, zone: string) {
+export function plannerStart(instant: number, zone: string, stepMinutes = 60) {
   const time = timelineTime(instant, zone);
   return (
-    Math.floor(instant / 60000) * 60000 - time.minute * 60000 - 6 * HOUR_MS
+    Math.floor(instant / 60000) * 60000 -
+    (time.minute % stepMinutes) * 60000 -
+    6 * stepMinutes * 60000
   );
 }
 export function offsetDifference(minutes: number) {
@@ -60,4 +62,15 @@ export function shortZoneLabel(zone: string) {
     : zone.startsWith("UTC")
       ? zone
       : zone.split("/").at(-1)!.replaceAll("_", " ");
+}
+
+export function formatPlannerTime(
+  time: { hour: number; minute: number },
+  hour12: boolean,
+  second?: number,
+) {
+  const hour = hour12
+    ? String(time.hour % 12 || 12)
+    : String(time.hour).padStart(2, "0");
+  return `${hour}:${String(time.minute).padStart(2, "0")}${second === undefined ? "" : `:${String(second).padStart(2, "0")}`}${hour12 ? (time.hour < 12 ? " AM" : " PM") : ""}`;
 }

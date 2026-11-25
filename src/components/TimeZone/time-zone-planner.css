@@ -151,12 +151,15 @@
   border-block: 1px solid #344435;
 }
 .tz-planner-table {
+  --tz-label-width: 284px;
+  position: relative;
+  isolation: isolate;
   min-width: 1292px;
 }
 .tz-planner-table-heading,
 .tz-planner-row {
   display: grid;
-  grid-template-columns: 284px minmax(0, 1fr);
+  grid-template-columns: var(--tz-label-width) minmax(0, 1fr);
 }
 .tz-planner-table-heading {
   font-size: 11px;
@@ -167,7 +170,7 @@
   padding: 8px 14px;
   position: sticky;
   left: 0;
-  z-index: 3;
+  z-index: 5;
   background: #162018;
 }
 .tz-planner-table-heading > div {
@@ -186,7 +189,7 @@
 .tz-planner-label {
   position: sticky;
   left: 0;
-  z-index: 2;
+  z-index: 4;
   display: grid;
   grid-template-columns: 24px minmax(0, 1fr) auto;
   gap: 10px;
@@ -272,17 +275,17 @@
   box-shadow: inset 2px 0 #91a4bc;
 }
 .tz-planner-hours button.is-selected {
-  outline: 2px solid var(--user-accent, #c8edb6);
-  outline-offset: -2px;
-  z-index: 1;
   font-weight: 700;
 }
 .tz-planner-table-heading .is-selected {
-  color: #c8edb6;
-  background: #2b402d;
+  color: #ffffff;
+  background: #0c4a6e;
+  font-weight: 700;
 }
-.tz-planner-hours button.is-hovered {
-  box-shadow: inset 0 0 0 2px #e9e1a7;
+.tz-planner-table-heading .is-preview {
+  color: #241600;
+  background: #ffc969;
+  font-weight: 700;
 }
 .tz-planner :is(button, select):focus-visible {
   outline: 3px solid #e9e1a7;
@@ -321,11 +324,12 @@
     font-size: 11px;
   }
   .tz-planner-table {
+    --tz-label-width: 216px;
     min-width: 1128px;
   }
   .tz-planner-table-heading,
   .tz-planner-row {
-    grid-template-columns: 216px minmax(0, 1fr);
+    grid-template-columns: var(--tz-label-width) minmax(0, 1fr);
   }
   .tz-planner-label {
     padding: 13px 8px;
@@ -362,4 +366,92 @@
   padding: 2px 0;
   border-radius: 3px;
   z-index: 1;
+}
+
+.tz-planner-column-overlays {
+  position: absolute;
+  inset: 2px 0 2px var(--tz-label-width);
+  display: grid;
+  grid-template-columns: repeat(24, minmax(0, 1fr));
+  pointer-events: none;
+  z-index: 3;
+}
+.tz-planner-selected-column {
+  grid-row: 1;
+  border: 2px solid #f0f9ff;
+  box-shadow:
+    inset 0 0 0 2px #075985,
+    0 0 0 1px #075985;
+  background: #0ea5e913;
+  border-radius: 5px;
+}
+.tz-planner-hover-column {
+  grid-row: 1;
+  border: 3px dashed #ffbe5c;
+  box-shadow: inset 0 0 0 1px #352400;
+  background: #ffbe5c14;
+  border-radius: 5px;
+}
+.tz-planner-selection-status {
+  display: flex;
+  align-items: center;
+  gap: 12px 22px;
+  flex-wrap: wrap;
+  padding: 4px 24px 14px;
+  color: #b9c9b3;
+  font-size: 12px;
+}
+.tz-planner-selection-status > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.tz-planner-selection-status strong {
+  color: #eef4e8;
+}
+.tz-planner-selection-status > span:last-child {
+  margin-left: auto;
+}
+.tz-selected-key,
+.tz-hover-key {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+}
+.tz-selected-key {
+  background: #0c4a6e;
+  border: 2px solid #e0f2fe;
+}
+.tz-hover-key {
+  background: #493210;
+  border: 2px dashed #ffbe5c;
+}
+.tz-planner-toolbar .tz-planner-step,
+.tz-planner-toolbar .tz-planner-exact {
+  flex: 0 1 145px;
+}
+.tz-planner-exact input {
+  height: 40px;
+  min-width: 0;
+  border: 1px solid #536b56;
+  border-radius: 7px;
+  background: #19221b;
+  color: #e4ebdd;
+  padding: 8px 10px;
+  font-size: 13px;
+  color-scheme: dark;
+}
+.tz-planner-hours button:focus-visible {
+  outline: 2px solid #ffd875;
+  outline-offset: -6px;
+}
+@media (max-width: 600px) {
+  .tz-planner-selection-status {
+    padding-inline: 16px;
+    font-size: 11px;
+  }
+  .tz-planner-selection-status > span:last-child {
+    margin-left: 0;
+  }
 }
