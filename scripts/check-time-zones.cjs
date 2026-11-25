@@ -50,7 +50,7 @@ assert.equal(formatPlannerTime({hour:21,minute:45},false),'21:45');
 for(const step of [1,5,15,30,60]){
  const selected=Date.parse('2026-11-25T15:17:00Z');
  const from=plannerStart(selected,'Asia/Kolkata',step);
- assert.ok(selected>=from&&selected<from+24*step*60000);
+ assert.ok(selected>=from&&selected<from+24*HOUR_MS);
  const slot=timelineTime(from+6*step*60000,'Asia/Kolkata');
  assert.equal(slot.minute%step,0);
 }
@@ -58,3 +58,15 @@ assert.equal((planner.match(/class="tz-planner-selected-column"/g)||[]).length,1
 assert.ok(planner.includes('Exact reference time'));assert.ok(planner.includes('1 minute'));
 assert.ok(html.includes('Time display format'));
 console.log('PASS minute-window bounds/alignment, 12/24-hour formatting, exact-time control and one continuous selected-column overlay.');
+
+const {plannerSlotCount}=require('../src/utils/timeZoneTimeline.ts');
+for(const [step,count] of [[60,24],[30,48],[15,96],[5,288],[1,1440]]){
+ assert.equal(plannerSlotCount(step),count);
+ assert.equal(plannerSlotCount(step)*step*60000,24*HOUR_MS);
+ const selected=Date.parse('2026-11-25T15:17:00Z');
+ const from=plannerStart(selected,'Asia/Kolkata',step);
+ const last=from+(count-1)*step*60000;
+ assert.equal(last+step*60000-from,24*HOUR_MS);
+ assert.equal(timelineTime(from+6*HOUR_MS,'Asia/Kolkata').hour,20);
+}
+console.log('PASS every timeline interval spans a full 24 hours, including 1,440 selectable minute slots.');

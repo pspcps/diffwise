@@ -1,4 +1,11 @@
-import { useMemo, useState, type KeyboardEvent } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type KeyboardEvent,
+} from "react";
 import { ChevronLeft, ChevronRight, Home, Plus, X } from "lucide-react";
 import { MAJOR_TIME_ZONES } from "../../data/majorTimeZones";
 import {
@@ -7,6 +14,8 @@ import {
   offsetDifference,
   shortZoneLabel,
   formatPlannerTime,
+  plannerSlotCount,
+  HOUR_MS,
 } from "../../utils/timeZoneTimeline";
 import "./time-zone-planner.css";
 const COMMON_CITIES = [
@@ -51,6 +60,47 @@ export default function TimeZonePlanner({
   const [extras, setExtras] = useState<string[]>(["America/Los_Angeles"]);
   const [candidate, setCandidate] = useState("Pacific/Honolulu");
   const [step, setStep] = useState(60);
+  const slots = plannerSlotCount(step);
+  const scroll = useRef<HTMLDivElement>(null);
+  const table = useRef<HTMLDivElement>(null);
+  const pendingFocus = useRef<{ zone: string; slot: number } | null>(null);
+  const rowRefs = useRef(new Map<string, HTMLDivElement>());
+  const [viewport, setViewport] = useState({
+    left: 0,
+    width: 1200,
+    labelWidth: 284,
+  });
+  useEffect(() => {
+    const element = scroll.current;
+    if (!element) return;
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      setViewport({
+        left: element.scrollLeft,
+        width: element.clientWidth,
+        labelWidth: table.current
+          ? parseFloat(
+              getComputedStyle(table.current).getPropertyValue(
+                "--tz-label-width",
+              ),
+            ) || 284
+          : 284,
+      });
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(measure);
+    };
+    const resize = new ResizeObserver(schedule);
+    resize.observe(element);
+    element.addEventListener("scroll", schedule, { passive: true });
+    schedule();
+    return () => {
+      cancelAnimationFrame(frame);
+      resize.disconnect();
+      element.removeEventListener("scroll", schedule);
+    };
+  }, []);
   const [hover, setHover] = useState<number | null>(null);
   const [range, setRange] = useState(() => ({
     zone: sourceZone,
@@ -61,7 +111,7 @@ export default function TimeZonePlanner({
     range.zone !== sourceZone ||
     range.step !== step ||
     instant < range.start ||
-    instant >= range.start + 24 * step * 60000
+    instant >= range.start + 24 * HOUR_MS
   )
     setRange({
       zone: sourceZone,
@@ -70,25 +120,62 @@ export default function TimeZonePlanner({
     });
   const zones = [...new Set([sourceZone, targetZone, ...extras])].slice(0, 8);
   const zoneKey = JSON.stringify(zones);
+  const firstSlot = Math.max(
+    0,
+    Math.min(slots - 1, Math.floor(viewport.left / 42) - 6),
+  );
+  const lastSlot = Math.min(
+    slots,
+    Math.ceil(
+      (viewport.left + Math.max(42, viewport.width - viewport.labelWidth)) / 42,
+    ) + 6,
+  );
+  const visibleSlots = useMemo(
+    () =>
+      Array.from(
+        { length: Math.max(0, lastSlot - firstSlot) },
+        (_, index) => firstSlot + index,
+      ),
+    [firstSlot, lastSlot],
+  );
   const rows = useMemo(() => {
     const ids = JSON.parse(zoneKey) as string[];
     return ids.map((zone) => ({
       zone,
-      cells: Array.from({ length: 24 }, (_, index) =>
-        timelineTime(range.start + index * step * 60000, zone),
-      ),
+      cells: visibleSlots.map((slot) => ({
+        slot,
+        ...timelineTime(range.start + slot * step * 60000, zone),
+      })),
     }));
-  }, [zoneKey, range.start, step]);
+  }, [zoneKey, range.start, step, visibleSlots]);
   const index = Math.max(
     0,
-    Math.min(23, Math.floor((instant - range.start) / (step * 60000))),
+    Math.min(slots - 1, Math.floor((instant - range.start) / (step * 60000))),
   );
   const baseTime = timelineTime(instant, sourceZone);
-  const windowMinutes = step * 24;
-  const durationLabel =
-    windowMinutes % 60 === 0
-      ? `${windowMinutes / 60} hours`
-      : `${windowMinutes} minutes`;
+  const durationLabel = "24 hours";
+  useEffect(() => {
+    const element = scroll.current;
+    if (!element) return;
+    const slot = Math.floor((instant - range.start) / (step * 60000));
+    element.scrollLeft = Math.max(
+      0,
+      slot * 42 - (element.clientWidth - viewport.labelWidth) / 2,
+    );
+    // Recenter when interval/window changes; ordinary selections retain scroll position.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, range.start]);
+  useEffect(() => {
+    const pending = pendingFocus.current;
+    if (!pending) return;
+    const button = rowRefs.current
+      .get(pending.zone)
+      ?.querySelector<HTMLButtonElement>(`[data-slot="${pending.slot}"]`);
+    if (button) {
+      pendingFocus.current = null;
+      button.focus({ preventScroll: true });
+    }
+  }, [firstSlot, lastSlot, index]);
   const preview =
     hover === null
       ? null
@@ -99,33 +186,46 @@ export default function TimeZonePlanner({
   function choose(hour: number) {
     onSelect(range.start + hour * step * 60000);
   }
-  function move(event: KeyboardEvent<HTMLButtonElement>, hour: number) {
+  function move(
+    event: KeyboardEvent<HTMLButtonElement>,
+    hour: number,
+    zone: string,
+  ) {
     const next =
       event.key === "ArrowRight"
-        ? Math.min(23, hour + 1)
+        ? Math.min(slots - 1, hour + 1)
         : event.key === "ArrowLeft"
           ? Math.max(0, hour - 1)
           : event.key === "Home"
             ? 0
             : event.key === "End"
-              ? 23
+              ? slots - 1
               : -1;
     if (next < 0) return;
     event.preventDefault();
     choose(next);
-    const buttons =
-      event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>(
-        "button",
+    const button =
+      event.currentTarget.parentElement?.querySelector<HTMLButtonElement>(
+        `[data-slot="${next}"]`,
       );
-    buttons?.item(next)?.focus();
+    if (button) {
+      button.focus();
+    } else {
+      pendingFocus.current = { zone, slot: next };
+      if (scroll.current)
+        scroll.current.scrollLeft = Math.max(
+          0,
+          next * 42 - (scroll.current.clientWidth - viewport.labelWidth) / 2,
+        );
+    }
   }
   function shift(direction: number) {
     setRange({
       zone: sourceZone,
       step,
-      start: range.start + direction * 24 * step * 60000,
+      start: range.start + direction * 24 * HOUR_MS,
     });
-    onSelect(instant + direction * 24 * step * 60000);
+    onSelect(instant + direction * 24 * HOUR_MS);
   }
   function makeBase(zone: string) {
     setExtras((previous) => [...new Set([...previous, sourceZone])]);
@@ -257,8 +357,16 @@ export default function TimeZonePlanner({
         )}
         <span>{durationLabel} shown</span>
       </div>
-      <div className="tz-planner-scroll" onMouseLeave={() => setHover(null)}>
-        <div className="tz-planner-table">
+      <div
+        ref={scroll}
+        className="tz-planner-scroll"
+        onMouseLeave={() => setHover(null)}
+      >
+        <div
+          ref={table}
+          className="tz-planner-table"
+          style={{ "--tz-columns": slots } as CSSProperties}
+        >
           <div className="tz-planner-column-overlays" aria-hidden="true">
             <span
               className="tz-planner-selected-column"
@@ -274,9 +382,10 @@ export default function TimeZonePlanner({
           <div className="tz-planner-table-heading">
             <span>Location · selected local time</span>
             <div>
-              {Array.from({ length: 24 }, (_, hour) => (
+              {visibleSlots.map((hour) => (
                 <span
                   key={hour}
+                  style={{ gridColumn: hour + 1 }}
                   className={
                     hour === index
                       ? "is-selected"
@@ -339,25 +448,44 @@ export default function TimeZonePlanner({
                 </div>
                 <div
                   className="tz-planner-hours"
+                  ref={(element) => {
+                    if (element) rowRefs.current.set(zone, element);
+                    else rowRefs.current.delete(zone);
+                  }}
                   onMouseLeave={() => setHover(null)}
                 >
-                  {cells.map((cell, hour) => (
+                  {cells.map((cell) => (
                     <button
                       type="button"
-                      key={hour}
+                      key={cell.slot}
+                      data-slot={cell.slot}
+                      data-last-slot={cell.slot === slots - 1}
+                      style={{ gridColumn: cell.slot + 1 }}
                       data-period={cell.period}
                       data-midnight={cell.hour === 0 && cell.minute === 0}
-                      className={`${hour === index ? "is-selected" : ""} ${hour === hover ? "is-hovered" : ""}`}
-                      aria-pressed={hour === index}
-                      tabIndex={hour === index ? 0 : -1}
-                      onMouseEnter={() => setHover(hour)}
-                      onFocus={() => setHover(hour)}
+                      className={`${cell.slot === index ? "is-selected" : ""} ${cell.slot === hover ? "is-hovered" : ""}`}
+                      aria-pressed={cell.slot === index}
+                      tabIndex={
+                        cell.slot ===
+                        (index >= firstSlot && index < lastSlot
+                          ? index
+                          : firstSlot)
+                          ? 0
+                          : -1
+                      }
+                      onMouseEnter={() => setHover(cell.slot)}
+                      onFocus={() => setHover(cell.slot)}
                       onBlur={() => setHover(null)}
-                      onClick={() => choose(hour)}
-                      onKeyDown={(event) => move(event, hour)}
+                      onClick={() => choose(cell.slot)}
+                      onKeyDown={(event) => move(event, cell.slot, zone)}
                       aria-label={`Select ${cell.date} ${formatPlannerTime(cell, hour12)} in ${zone}, UTC offset ${offsetDifference(cell.offset)}`}
                     >
-                      {(hour === 0 || cell.date !== cells[hour - 1].date) && (
+                      {(cell.slot === 0 ||
+                        cell.date !==
+                          timelineTime(
+                            range.start + (cell.slot - 1) * step * 60000,
+                            zone,
+                          ).date) && (
                         <span className="tz-planner-day-badge">
                           {cell.date.slice(5)}
                         </span>
@@ -380,9 +508,10 @@ export default function TimeZonePlanner({
         </div>
       </div>
       <p className="tz-planner-hint">
-        The grid shows 24 equal time slots at the chosen interval. Date labels
-        show local day changes; city rows follow daylight saving, so an hour can
-        repeat or be skipped. Left/right arrow keys move between columns.
+        The grid always spans 24 elapsed hours. Smaller intervals add more
+        scrollable columns. Date labels show local day changes; city rows follow
+        daylight saving, so an hour can repeat or be skipped. Left/right arrow
+        keys move between columns.
       </p>
     </section>
   );

@@ -48,7 +48,7 @@ export function plannerStart(instant: number, zone: string, stepMinutes = 60) {
   return (
     Math.floor(instant / 60000) * 60000 -
     (time.minute % stepMinutes) * 60000 -
-    6 * stepMinutes * 60000
+    6 * HOUR_MS
   );
 }
 export function offsetDifference(minutes: number) {
@@ -73,4 +73,8 @@ export function formatPlannerTime(
     ? String(time.hour % 12 || 12)
     : String(time.hour).padStart(2, "0");
   return `${hour}:${String(time.minute).padStart(2, "0")}${second === undefined ? "" : `:${String(second).padStart(2, "0")}`}${hour12 ? (time.hour < 12 ? " AM" : " PM") : ""}`;
+}
+
+export function plannerSlotCount(stepMinutes: number) {
+  return 1440 / stepMinutes;
 }

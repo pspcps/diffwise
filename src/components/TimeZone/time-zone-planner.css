@@ -154,7 +154,8 @@
   --tz-label-width: 284px;
   position: relative;
   isolation: isolate;
-  min-width: 1292px;
+  width: calc(var(--tz-label-width) + var(--tz-columns, 24) * 42px);
+  min-width: 100%;
 }
 .tz-planner-table-heading,
 .tz-planner-row {
@@ -175,7 +176,7 @@
 }
 .tz-planner-table-heading > div {
   display: grid;
-  grid-template-columns: repeat(24, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--tz-columns, 24), minmax(0, 1fr));
 }
 .tz-planner-table-heading > div > span {
   text-align: center;
@@ -242,7 +243,7 @@
 }
 .tz-planner-hours {
   display: grid;
-  grid-template-columns: repeat(24, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--tz-columns, 24), minmax(0, 1fr));
   align-items: stretch;
   padding: 12px 0;
   position: relative;
@@ -257,10 +258,10 @@
   position: relative;
   min-width: 0;
 }
-.tz-planner-hours button:first-child {
+.tz-planner-hours button[data-slot="0"] {
   border-radius: 7px 0 0 7px;
 }
-.tz-planner-hours button:last-child {
+.tz-planner-hours button[data-last-slot="true"] {
   border-radius: 0 7px 7px 0;
 }
 .tz-planner-hours small {
@@ -325,7 +326,7 @@
   }
   .tz-planner-table {
     --tz-label-width: 216px;
-    min-width: 1128px;
+    min-width: 100%;
   }
   .tz-planner-table-heading,
   .tz-planner-row {
@@ -372,7 +373,7 @@
   position: absolute;
   inset: 2px 0 2px var(--tz-label-width);
   display: grid;
-  grid-template-columns: repeat(24, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--tz-columns, 24), minmax(0, 1fr));
   pointer-events: none;
   z-index: 3;
 }
