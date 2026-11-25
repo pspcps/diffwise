@@ -448,6 +448,7 @@ export default function TimeZonePlanner({
                 </div>
                 <div
                   className="tz-planner-hours"
+                  data-minute-view={step < 60}
                   ref={(element) => {
                     if (element) rowRefs.current.set(zone, element);
                     else rowRefs.current.delete(zone);
@@ -495,9 +496,15 @@ export default function TimeZonePlanner({
                           ? cell.hour % 12 || 12
                           : String(cell.hour).padStart(2, "0")}
                       </span>
-                      <small>
-                        {String(cell.minute).padStart(2, "0")}
-                        {hour12 ? (cell.hour < 12 ? " am" : " pm") : ""}
+                      <small className="tz-slot-subline">
+                        <span className="tz-minute-digits">
+                          {String(cell.minute).padStart(2, "0")}
+                        </span>
+                        {hour12 && (
+                          <span className="tz-period-label">
+                            {cell.hour < 12 ? "am" : "pm"}
+                          </span>
+                        )}
                       </small>
                     </button>
                   ))}
@@ -508,6 +515,12 @@ export default function TimeZonePlanner({
         </div>
       </div>
       <p className="tz-planner-hint">
+        {step < 60 && (
+          <>
+            <span className="tz-minute-example">30</span> badges show
+            minutes.{" "}
+          </>
+        )}
         The grid always spans 24 elapsed hours. Smaller intervals add more
         scrollable columns. Date labels show local day changes; city rows follow
         daylight saving, so an hour can repeat or be skipped. Left/right arrow
