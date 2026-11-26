@@ -52,7 +52,7 @@
       },
       {
         "question": "Can I expand and collapse code?",
-        "answer": "Use gutter arrows or Fold object/Unfold object at the cursor for individual sections, or Fold all/Unfold all for the document. Tree nodes expand independently and provide per-value copy buttons."
+        "answer": "Use gutter arrows for individual objects and arrays, or Expand all/Collapse all for the document. Tree nodes expand independently and provide per-value copy buttons. Decode nested JSON strings converts complete object/array strings on paste; disable it to preserve string values."
       },
       {
         "question": "Can Secret and SECRET environment prefixes become one object?",

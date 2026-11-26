@@ -1,3 +1,4 @@
+import { decodeJsonStrings } from "../../utils/decodeJsonStrings";
 import { parseJsonWithRecovery, JSON_REPAIR_WARNING } from "../../utils/jsonRecovery";
 import StructuredEditor from '../Common/StructuredEditor';
 import YAML from 'yaml';
@@ -404,6 +405,7 @@ export default function JsonToolsView() {
   const [copyError, setCopyError] = useState(false);
   const [autoSortKeys, setAutoSortKeys] = useState(true);
   const [autoRepair, setAutoRepair] = useState(true);
+  const [decodeNestedStrings, setDecodeNestedStrings] = useState(true);
   const [repairNotice, setRepairNotice] = useState("");
   const [mergeParentKeys, setMergeParentKeys] = useState(true);
   const [envResultView, setEnvResultView] = useState<"code" | "tree">("code");
@@ -517,6 +519,7 @@ export default function JsonToolsView() {
     pasted = false,
     sortOverride = autoSortKeys,
     repairOverride = autoRepair,
+    decodeOverride = decodeNestedStrings,
   ) => {
     setSource(text);
     setRepairNotice("");
@@ -532,7 +535,8 @@ export default function JsonToolsView() {
       const input = pasted
         ? parseStructuredInput(text, false, repairOverride)
         : { ...parseJsonWithRecovery(text, repairOverride), format: "json" };
-      const data = ordered(input.value, sortOverride);
+      const decoded = pasted && decodeOverride ? decodeJsonStrings(input.value) : { value: input.value, decoded: 0 };
+      const data = ordered(decoded.value, sortOverride);
       setRepairNotice(input.repaired ? JSON_REPAIR_WARNING : "");
       if (pasted) setSource(JSON.stringify(data, null, 2));
       if (pasted && view === "editor" && input.format === "xml") {
@@ -551,7 +555,7 @@ export default function JsonToolsView() {
       }
       setConversionNotice(
         pasted
-          ? `Detected ${input.format.toUpperCase()} · converted automatically`
+          ? `Detected ${input.format.toUpperCase()} · converted automatically${decoded.decoded ? ` · decoded ${decoded.decoded} nested JSON string(s) into objects/arrays` : ""}`
           : "Live conversion",
       );
     } catch (error) {
@@ -633,7 +637,7 @@ export default function JsonToolsView() {
     }
     handleConvertEnvToJson(text);
   };
-  const handleEnvJsonChange = (text: string, pasted = false, repairOverride = autoRepair) => {
+  const handleEnvJsonChange = (text: string, pasted = false, repairOverride = autoRepair, decodeOverride = decodeNestedStrings) => {
     setEnvJsonOutput(text);
     setRepairNotice("");
     if (!text.trim()) {
@@ -646,7 +650,9 @@ export default function JsonToolsView() {
         ? parseStructuredInput(text, false, repairOverride)
         : parseJsonWithRecovery(text, repairOverride);
       setRepairNotice(input.repaired ? JSON_REPAIR_WARNING : "");
-      const data = ordered(input.value);
+      const decoded = pasted && decodeOverride ? decodeJsonStrings(input.value) : { value: input.value, decoded: 0 };
+      const data = ordered(decoded.value);
+      setConversionNotice(decoded.decoded ? `Decoded ${decoded.decoded} nested JSON string(s) into objects/arrays` : "Live conversion");
       setEnvSource(jsonToEnvString(data, "", nestDoubleUnderscore));
       if (pasted) setEnvJsonOutput(JSON.stringify(data, null, 2));
       setEnvError("");
@@ -776,6 +782,16 @@ export default function JsonToolsView() {
         <div className="flex flex-wrap items-center gap-1.5">
           <label className="flex items-center gap-1.5 text-[11px] text-[#b1bea8]">
             <input type="checkbox" checked={autoRepair} onChange={e => { const enabled = e.target.checked; setAutoRepair(enabled); setRepairNotice(""); if (enabled) { if (view === "env") handleEnvJsonChange(envJsonOutput, false, enabled); else handleJsonChange(source, false, autoSortKeys, enabled); } }} /> Repair JSON automatically
+          </label>
+          <label className="flex items-center gap-1.5 text-[11px] text-[#b1bea8]" title="On paste, convert complete JSON strings into objects or arrays. Other strings stay unchanged. Turn off to preserve string types on future pastes.">
+            <input type="checkbox" checked={decodeNestedStrings} onChange={event => {
+              const enabled = event.target.checked;
+              setDecodeNestedStrings(enabled);
+              if (enabled) {
+                if (view === "env") handleEnvJsonChange(envJsonOutput, true, autoRepair, enabled);
+                else handleJsonChange(source, true, autoSortKeys, autoRepair, enabled);
+              }
+            }} /> Decode nested JSON strings
           </label>
           <label className="flex items-center gap-1.5 text-[11px] text-[#b1bea8]">
             <input
@@ -935,7 +951,7 @@ export default function JsonToolsView() {
 
       {view === "editor" ? (
         <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-2">
-          <label className="flex min-h-0 flex-col border-b border-[#344435] md:border-b-0 md:border-r">
+          <div className="flex min-h-0 flex-col border-b border-[#344435] md:border-b-0 md:border-r">
             <span className="shrink-0 px-4 py-2 text-[11px] text-[#b1bea8]">
               Input JSON
             </span>
@@ -950,7 +966,7 @@ export default function JsonToolsView() {
               spellCheck={false}
               className="min-h-0 flex-1 resize-none bg-[#141a16] px-4 py-3 font-mono text-[12px] leading-6 text-[#e4ebdd] outline-none placeholder:text-[#899980] focus:ring-1 focus:ring-inset focus:ring-[#c8edb6]/20"
             />
-          </label>
+          </div>
           <div className="flex min-h-0 flex-col">
             <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 px-4 py-2 text-[11px] text-[#b1bea8]">
               <span>
