@@ -33,32 +33,18 @@ export default function StructuredEditor({
         {language !== "dotenv" && (
           <>
             <button
-              aria-label={`Fold current object ${language}`}
-              title="Place the cursor in an object, then fold it"
-              onClick={() => void fold("editor.fold")}
-            >
-              Fold object
-            </button>
-            <button
-              aria-label={`Unfold current object ${language}`}
-              title="Expand the object at the cursor"
-              onClick={() => void fold("editor.unfold")}
-            >
-              Unfold object
-            </button>
-            <button
-              aria-label={`Fold all ${language}`}
+              aria-label={`Collapse all ${language}`}
               onClick={() => void fold("editor.foldAll")}
             >
               <ChevronsDownUp size={13} />
-              <span>Fold all</span>
+              <span>Collapse all</span>
             </button>
             <button
-              aria-label={`Unfold all ${language}`}
+              aria-label={`Expand all ${language}`}
               onClick={() => void fold("editor.unfoldAll")}
             >
               <ChevronsUpDown size={13} />
-              <span>Unfold all</span>
+              <span>Expand all</span>
             </button>
           </>
         )}

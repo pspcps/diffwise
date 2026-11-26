@@ -29,3 +29,16 @@ assert.equal(recover('{"a":1}').repaired,false);assert.throws(()=>recover('{"a":
 assert.equal(parseStructuredInput('{a:1,}',false,true).repaired,true);assert.throws(()=>parseStructuredInput('{a:1,}',false,false));
 assert.equal({}.polluted,undefined);assert.equal(recover('{"__proto__":{"polluted":true},}').value.__proto__.polluted,true);assert.equal({}.polluted,undefined);
 console.log('PASS JSON recovery for quotes, commas, comments and closing brackets; strict mode, bounds and unrecoverable input.');
+const {decodeJsonStrings:decode}=require('../src/utils/decodeJsonStrings.ts');
+const body={items:[{title:'A "quoted" address',position:{lat:36.17216,lng:-115.05463},more:JSON.stringify({values:[1,2]})}]};
+const wrapped={coord_id:'IDL|014878',body:JSON.stringify(body),status:200};
+const decoded=decode(wrapped);
+assert.equal(decoded.decoded,2);
+assert.deepEqual(decoded.value,{coord_id:wrapped.coord_id,body:{...body,items:[{...body.items[0],more:{values:[1,2]}}]},status:200});
+assert.equal(typeof wrapped.body,'string');
+assert.deepEqual(decode([JSON.stringify(JSON.stringify({a:1})), 'false','123','null','"hello"','C:\\Users\\test','{"broken":']).value,[{a:1},'false','123','null','"hello"','C:\\Users\\test','{"broken":']);
+const unsafe=decode(JSON.parse('{"body":"{\\"__proto__\\":{\\"polluted\\":true}}"}')).value;
+assert.equal(Object.hasOwn(unsafe.body,'__proto__'),true);assert.equal({}.polluted,undefined);
+assert.equal(decode({body:'{"big":"'+'x'.repeat(2000000)+'"}'}).decoded,0);
+assert.deepEqual(decode(decoded.value).value,decoded.value);
+console.log('PASS recursive nested JSON string decoding, repeated encoding, unchanged scalar/invalid strings, safe keys, idempotence and input bounds.');
